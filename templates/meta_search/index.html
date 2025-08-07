@@ -12,7 +12,7 @@
 <!-- Header -->
 <header class="header">
   <div class="logo">
-    <img src="{% static 'meta_search/arrow-icon.png' %}" alt="Expedia Icon">
+    <img src="{% static 'meta_search/logos/arrow-icon3.png' %}" alt="Expedia Icon">
     <span>Expedia</span>
   </div>
   <div class="nav-actions">
@@ -26,19 +26,42 @@
 </header>
 
 <!-- Hero Section -->
+
+
 <section class="hero">
-  <div class="hero-overlay">
+  <!-- SVG for custom clip path curve -->
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="hero-clip">
+    <defs>
+      <clipPath id="heroClip" clipPathUnits="objectBoundingBox">
+        <path d="M0,0 H1 V0.85 C1,1,0.75,1,0.6,0.92 C0.45,0.84,0.4,0.84,0.3,0.92 C0.15,1,0,1,0,0 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <!-- Hero image with curved clip path -->
+  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="Hero Image" class="hero-img" />
+
+  <!-- Floating images on right -->
+  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="Float 1" class="floating-img float-right-top" />
+  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="Float 2" class="floating-img float-right-bottom" />
+
+  <!-- Text + CTA overlay -->
+  <div class="hero-text-overlay">
     <h1>Experience The Magic Of Relaxation</h1>
     <p>Indulge in the epitome of coastal living as you discover the breathtaking beauty and tranquility of luxury.</p>
-    <div class="search-bar">
-      <div class="avatars">
-        <img src="{% static 'meta_search/user1.png' %}" alt="user" />
-        <span>Trusted by over 25k+ people</span>
-      </div>
-      <button class="btn">Explore Now 🔍</button>
+  </div>
+
+  <div class="hero-cta-box">
+    <div class="avatars">
+      <img src="{% static 'meta_search/user1.png' %}" alt="user">
+      <img src="{% static 'meta_search/user2.png' %}" alt="user">
+      <img src="{% static 'meta_search/user3.png' %}" alt="user">
     </div>
+    <span class="trust-text">Trusted by over 25k+ people</span>
+    <button class="btn">Explore Now 🔍</button>
   </div>
 </section>
+
 
 <!-- Partners Section -->
 <section class="partners">
@@ -115,7 +138,7 @@
   <div class="footer-container">
     <div class="footer-left">
       <div class="footer-brand">
-        <img src="{% static 'meta_search/arrow-icon.png' %}" alt="Logo" class="footer-logo" />
+        <img src="{% static 'meta_search/logos/arrow-icon.png' %}" alt="Logo" class="footer-logo" />
         <span class="footer-title">Expedia</span>
       </div>
       <p>2025 Expedia Booking Corporation Ltd.</p>
