@@ -1,0 +1,34 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}Withdrawal Submitted{% endblock %}
+{% block breadcrumb %}Home / my Wallet / Withdrawal / Success{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/withdraw.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="wdw">
+  <div class="shell">
+    <h1>Withdrawal Submitted</h1>
+
+    <div class="card">
+      <div class="inner">
+        {% if wr %}
+          <p>Request ID: <strong>#{{ wr.id }}</strong></p>
+          <p>Amount: <strong>{{ wr.amount|floatformat:2 }}</strong> {{ wr.currency }}</p>
+          <p>Status: <strong>{{ wr.status|title }}</strong></p>
+        {% else %}
+          <p>Your withdrawal request has been submitted.</p>
+        {% endif %}
+
+        <a href="{% url 'withdrawal' %}" class="submit" style="display:inline-flex;width:auto;margin-top:10px">
+          Back to Withdraw
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% load i18n %}
+
+<header class="header">
+  <div class="logo">
+    <!-- keep your logo img if you want; removed here since we're going emoji-only -->
+    <span>Expedia</span>
+  </div>
+
+  <div class="nav-actions" style="position:relative;">
+    <!-- Language trigger (emoji + native name) -->
+    <div class="lang-select" id="langTrigger" tabindex="0" aria-haspopup="true" aria-expanded="false">
+      {% get_current_language as LANGUAGE_CODE %}
+      {% get_language_info for LANGUAGE_CODE as current %}
+      {% if LANGUAGE_CODE == 'fr' %}🇫🇷
+      {% elif LANGUAGE_CODE == 'es' %}🇪🇸
+      {% elif LANGUAGE_CODE == 'de' %}🇩🇪
+      {% elif LANGUAGE_CODE == 'it' %}🇮🇹
+      {% elif LANGUAGE_CODE == 'pt' %}🇵🇹
+      {% elif LANGUAGE_CODE == 'ar' %}🇸🇦
+      {% elif LANGUAGE_CODE == 'zh-hans' %}🇨🇳
+      {% elif LANGUAGE_CODE == 'ja' %}🇯🇵
+      {% elif LANGUAGE_CODE == 'ko' %}🇰🇷
+      {% elif LANGUAGE_CODE == 'ru' %}🇷🇺
+      {% else %}🇬🇧{% endif %}
+      <span>{{ current.name_local }}</span>
+      <span style="font-size:0.7rem;">&#9662;</span>
+    </div>
+
+    <!-- Language menu (built from settings.LANGUAGES) -->
+    <div id="langMenu" style="display:none; position:absolute; top:54px; right:0; background:#fff; border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,.08); padding:6px; z-index:9999; min-width:200px;">
+      <form method="post" action="{% url 'set_language' %}" style="margin:0;">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
+        {% get_available_languages as avail_codes %}
+        {% get_language_info_list for avail_codes as langs %}
+        {% for l in langs %}
+          <button type="submit" name="language" value="{{ l.code }}"
+                  class="lang-option"
+                  style="display:flex;align-items:center;gap:10px;padding:8px 12px;width:100%;background:#fff;border-radius:8px;">
+            {% if l.code == 'fr' %}🇫🇷
+            {% elif l.code == 'es' %}🇪🇸
+            {% elif l.code == 'de' %}🇩🇪
+            {% elif l.code == 'it' %}🇮🇹
+            {% elif l.code == 'pt' %}🇵🇹
+            {% elif l.code == 'ar' %}🇸🇦
+            {% elif l.code == 'zh-hans' %}🇨🇳
+            {% elif l.code == 'ja' %}🇯🇵
+            {% elif l.code == 'ko' %}🇰🇷
+            {% elif l.code == 'ru' %}🇷🇺
+            {% else %}🇬🇧{% endif %}
+            <span>{{ l.name_local }}</span>
+            {% if l.code != l.name %}<span style="color:#777;margin-left:6px;">({{ l.name }})</span>{% endif %}
+          </button>
+        {% endfor %}
+      </form>
+    </div>
+
+    <button type="button" class="btn" onclick="window.location.href='{% url 'signup' %}'">
+      {% trans "Get started" %}
+    </button>
+  </div>
+</header>
+
+<script>
+  // Simple dropdown behavior
+  const trigger = document.getElementById('langTrigger');
+  const menu = document.getElementById('langMenu');
+  function openMenu(){ menu.style.display='block'; trigger.setAttribute('aria-expanded','true'); }
+  function closeMenu(){ menu.style.display='none'; trigger.setAttribute('aria-expanded','false'); }
+  trigger?.addEventListener('click', (e)=>{ e.stopPropagation(); menu.style.display==='block'?closeMenu():openMenu(); });
+  trigger?.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openMenu();} if(e.key==='Escape'){closeMenu();} });
+  document.addEventListener('click', (e)=>{ if(!menu.contains(e.target)&&!trigger.contains(e.target)) closeMenu(); });
+</script>

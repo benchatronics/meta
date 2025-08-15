@@ -1,0 +1,48 @@
+{% load static i18n %}
+
+{# Folder with flag images #}
+{% static 'meta_search/flags/' as FLAGS_BASE %}
+
+<div class="lang-wrapper">
+  <!-- Trigger: current language with flag -->
+  <div class="lang-select" id="langTrigger" tabindex="0" aria-haspopup="true" aria-expanded="false">
+    {% get_current_language as LANGUAGE_CODE %}
+    {% get_language_info for LANGUAGE_CODE as current %}
+    <img src="{{ FLAGS_BASE }}{{ LANGUAGE_CODE }}.png" alt="{{ current.name_local }}" style="width:18px;height:12px;">
+    <span>{{ current.name_local }}</span>
+    <span style="font-size:.7rem;">&#9662;</span>
+  </div>
+
+  <!-- Dropdown: built from settings.LANGUAGES -->
+  <div id="langMenu" class="lang-menu" style="display:none;">
+    <form method="post" action="{% url 'set_language' %}" style="margin:0;">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      {% get_available_languages as avail_codes %}
+      {% get_language_info_list for avail_codes as langs %}
+      {% for l in langs %}
+        <button type="submit" name="language" value="{{ l.code }}"
+          style="display:flex;gap:8px;align-items:center;width:100%;padding:8px 10px;background:#fff;border-radius:6px;">
+          <img src="{{ FLAGS_BASE }}{{ l.code }}.png" alt="{{ l.name_local }}" style="width:18px;height:12px;">
+          <span>{{ l.name_local }}</span>
+          {% if l.code != l.name %}<span style="color:#777;margin-left:6px;">({{ l.name }})</span>{% endif %}
+        </button>
+      {% endfor %}
+    </form>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const trigger = document.getElementById('langTrigger');
+    const menu = document.getElementById('langMenu');
+    if(!trigger || !menu) return;
+
+    function openMenu(){ menu.style.display='block'; trigger.setAttribute('aria-expanded','true'); }
+    function closeMenu(){ menu.style.display='none'; trigger.setAttribute('aria-expanded','false'); }
+
+    trigger.addEventListener('click', (e)=>{ e.stopPropagation(); menu.style.display==='block'?closeMenu():openMenu(); });
+    trigger.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openMenu();} if(e.key==='Escape'){closeMenu();} });
+    document.addEventListener('click', (e)=>{ if(!menu.contains(e.target) && !trigger.contains(e.target)) closeMenu(); });
+  })();
+</script>

@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}Auth{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'meta_search/signup.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div class="shell">
+  <!-- LEFT HALF -->
+  <aside class="left">
+    <div class="brand">
+      <img src="{% static 'meta_search/logos/arrow-icon.png' %}" alt="Expedia">
+      <span></span>
+    </div>
+
+    <div class="left-content">
+      <h2>{% block left_title %}{% endblock %}</h2>
+      <div class="underline"></div>
+    </div>
+
+    <div class="home-area">
+      <!-- Rectangular primary back button -->
+      <a href="javascript:history.back()" class="back-btn-rect" aria-label="Go back">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+      <a href="/" class="home-link">Home</a>
+    </div>
+  </aside>
+
+  <!-- RIGHT HALF (background only) -->
+  <main class="right"></main>
+</div>
+
+<!-- Centered card -->
+<div class="signup-wrapper">
+  {% block intro %}{% endblock %}
+
+  {% block form %}
+  <form class="signup-form" method="post" novalidate {% block form_attrs %}{% endblock %}>
+    {% csrf_token %}
+    {% block form_errors %}
+      {% if form.non_field_errors %}
+        <ul class="errorlist">{{ form.non_field_errors }}</ul>
+      {% endif %}
+    {% endblock %}
+
+    {% block form_fields %}{% endblock %}
+
+    {% block form_actions %}{% endblock %}
+  </form>
+  {% endblock %}
+
+  {% block below_form %}{% endblock %}
+</div>
+
+{% block extra_js %}
+<script>
+  // Password eye toggles (works for any child that renders .eye-btn with data-target)
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('.eye-btn');
+    if(!btn) return;
+    const id = btn.getAttribute('data-target');
+    const input = document.getElementById(id);
+    if(!input) return;
+    input.type = (input.type === 'password') ? 'text' : 'password';
+    btn.classList.toggle('showing');
+  });
+</script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,102 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}Deposit{% endblock %}
+{% block breadcrumb %}Home / my Wallet / Deposit{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/deposit.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<section class="dep">
+  <div class="shell">
+    <h1>Deposit</h1>
+
+    <div class="card">
+      <div class="inner grid">
+        <!-- If your urls are namespaced as wallet:, keep wallet:deposit. Otherwise use 'deposit' -->
+        <form method="post" action="{% url 'deposit' %}" id="depositForm">
+          {% csrf_token %}
+
+          <!-- Amount + Currency -->
+          <div class="group">
+            <div class="section-title">Amount</div>
+
+            <div class="ctrl">
+              <span class="prefix" id="currSymbol">{{ symbol }}</span>
+              <input type="number" name="amount" step="0.01" min="0" placeholder="0.00" required>
+              <div class="select">{{ form.currency }}</div>
+            </div>
+
+            <!-- Preset chips -->
+            <div class="chips">
+              {% for v in presets %}
+                <button class="chip" type="button" data-amt="{{ v }}">{{ v }}</button>
+              {% endfor %}
+            </div>
+
+            <div class="muted">Minimum 10. Choose a preset or enter an amount.</div>
+          </div>
+
+          <!-- Network / Payment method -->
+          <div class="group">
+            <div class="section-title" style="margin-top:10px">Payment Method</div>
+            <div class="method">
+              <label class="opt active">
+                <input type="radio" name="network" value="ETH" class="sr-only" checked>
+                <span class="bullet"><i class="fa-brands fa-ethereum"></i></span>
+                <span>Ethereum (ERC20)</span>
+              </label>
+
+              <label class="opt">
+                <input type="radio" name="network" value="TRC20" class="sr-only">
+                <span class="bullet" style="color:#2563eb;background:#eff6ff"><i class="fa-solid fa-dollar-sign"></i></span>
+                <span>USDT (TRC20)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="group">
+            <button class="submit" type="submit">Proceed to Pay →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+  // Currency symbol swap
+  const symbolMap = { EUR:"€", USD:"$", GBP:"£" };
+  const currSel = document.querySelector('select[name="currency"]');
+  const sym = document.getElementById('currSymbol');
+  if (currSel && sym){
+    currSel.addEventListener('change', ()=>{ sym.textContent = symbolMap[currSel.value] || "€"; });
+  }
+
+  // Preset chips -> fill amount
+  document.querySelectorAll('.dep .chip').forEach(ch=>{
+    ch.addEventListener('click', ()=>{
+      const i = document.querySelector('.dep input[name="amount"]');
+      if (i) i.value = Number(ch.dataset.amt).toFixed(2);
+    });
+  });
+
+  // Toggle network highlight
+  document.querySelectorAll('.dep .opt').forEach(label=>{
+    const input = label.querySelector('input[type="radio"]');
+    label.addEventListener('click', ()=>{
+      document.querySelectorAll('.dep .opt').forEach(l=>l.classList.remove('active'));
+      label.classList.add('active');
+      if (input) input.checked = true;
+    });
+  });
+</script>
+{% endblock %}

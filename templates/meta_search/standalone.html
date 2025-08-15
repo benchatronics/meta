@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Withdraw — Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#fff; --text:#0f172a; --muted:#6b7280; --line:#e5e7eb;
+    --blue:#1663d6; --blue-700:#0f4cb1; --green:#10b981; --red:#ef4444;
+    --radius:14px; --shadow:0 16px 30px rgba(17,23,42,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
+  .page{max-width:1100px;margin:34px auto;padding:0 22px}
+
+  /* ================= Scoped Withdraw Content ================= */
+  .wdx{display:grid;gap:18px}
+
+  /* success strip (top right like your PNG) */
+  .wdx .notice{
+    display:flex;align-items:center;gap:10px;background:#ecfdf5;border:1px solid #bbf7d0;
+    color:#065f46;border-radius:10px;padding:10px 12px;position:relative;overflow:hidden
+  }
+  .wdx .notice .bar{position:absolute;left:0;top:0;height:3px;background:#10b981;width:100%}
+  .wdx .notice i{color:#10b981}
+
+  h1{margin:0 0 4px;font-size:28px}
+
+  .wdx .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)
+  }
+  .wdx .card .inner{padding:18px}
+
+  .wdx .title{font-weight:700;margin:0 0 12px}
+  .wdx label{display:block;font-size:13px;color:#475569;margin:12px 0 6px}
+
+  /* amount row (with eye + €) */
+  .wdx .group{
+    display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;
+    padding:8px 8px;background:#fbfcff
+  }
+  .wdx .group input{
+    flex:1;border:none;background:transparent;outline:none;font:inherit;padding:8px 8px
+  }
+  .wdx .suffix, .wdx .ghost{
+    display:grid;place-items:center;min-width:40px;height:36px;border-radius:10px;border:1px solid var(--line);background:#fff
+  }
+  .wdx .ghost{cursor:pointer}
+  .wdx .hint{font-size:12px;color:var(--muted);margin-top:6px}
+
+  /* address field w/ error */
+  .wdx .single{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:8px 8px;background:#fff}
+  .wdx .single.invalid{border-color:#fecaca;background:#fef2f2}
+  .wdx .error{display:flex;align-items:center;gap:8px;color:#b91c1c;font-size:12px;margin-top:6px}
+  .wdx .error i{color:#ef4444}
+
+  /* method buttons */
+  .wdx .subhead{font-weight:700;margin:16px 0 8px}
+  .wdx .methods{display:grid;gap:10px}
+  .wdx .method{
+    display:flex;align-items:center;gap:10px;width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);
+    background:#fff;font-weight:700;cursor:pointer;text-align:left
+  }
+  .wdx .method .ico{
+    width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:#eef2ff;color:#1663d6
+  }
+  .wdx .method.active{outline:2px solid #bbf7d0;background:#ecfdf5}
+  .wdx .submit{
+    margin-top:12px;display:block;width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--blue);
+    background:var(--blue);color:#fff;font-weight:700;cursor:pointer
+  }
+  .wdx .submit:hover{background:var(--blue-700);border-color:var(--blue-700)}
+
+  /* layout: single column like PNG (content centered, no right sidebar here) */
+
+  /* tiny helper to mask amount when eye is off */
+  .wdx .masked{-webkit-text-security:disc}
+</style>
+</head>
+<body>
+<div class="page">
+  <section class="wdx">
+
+    <!-- success strip -->
+    <div class="notice">
+      <div class="bar"></div>
+      <i class="fa-solid fa-circle-check"></i>
+      <span>Your withdrawal method is verified.</span>
+    </div>
+
+    <h1>Withdraw</h1>
+
+    <div class="card">
+      <div class="inner">
+        <div class="title">Withdrawal</div>
+
+        <label for="amt">Amount</label>
+        <div class="group">
+          <input id="amt" type="text" inputmode="decimal" placeholder="100" value="100">
+          <button class="ghost" id="eye" title="Show/Hide amount"><i class="fa-regular fa-eye"></i></button>
+          <div class="suffix">€</div>
+        </div>
+        <div class="hint">Min €10 • Max €5,000 per request</div>
+
+        <label for="addr">Address</label>
+        <div class="single invalid">
+          <input id="addr" type="text" placeholder="Paste address (e.g. TRC20)">
+          <button class="ghost" title="Scan code"><i class="fa-solid fa-qrcode"></i></button>
+        </div>
+        <div class="error"><i class="fa-solid fa-circle-xmark"></i> Incorrect Address</div>
+
+        <div class="subhead">Withdrawal Method</div>
+        <div class="methods">
+          <button class="method active" data-val="CRYPTOCOIN">
+            <span class="ico"><i class="fa-solid fa-coins"></i></span> CRYPTOCOIN
+          </button>
+          <button class="method" data-val="USDT (TRC20)">
+            <span class="ico"><i class="fa-solid fa-dollar-sign"></i></span> USDT (TRC20)
+          </button>
+        </div>
+
+        <button class="submit">WITHDRAW</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Eye toggles masking on amount
+  const amt = document.getElementById('amt');
+  const eye = document.getElementById('eye');
+  let masked = false;
+  eye.addEventListener('click', () => {
+    masked = !masked;
+    amt.classList.toggle('masked', masked);
+    eye.querySelector('i').classList.toggle('fa-eye');
+    eye.querySelector('i').classList.toggle('fa-eye-slash');
+  });
+
+  // Select method
+  document.querySelectorAll('.wdx .method').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.wdx .method').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

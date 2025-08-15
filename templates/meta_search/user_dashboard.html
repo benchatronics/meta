@@ -1,0 +1,201 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}Dashboard — Tasks & Rewards{% endblock %}
+{% block breadcrumb %}Home / dashboard{% endblock %}
+
+{% block extra_head %}
+  <!-- Icons + page CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'meta_search/user_dashboard.css' %}">
+  <style>
+    /* Small page-only helpers you had inline */
+    .save-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+    .fav-count {
+      position: absolute; top: -6px; right: -6px; background: #ff4d4f; color: #fff;
+      font-size: 10px; font-weight: 700; border-radius: 50%; padding: 2px 5px; line-height: 1;
+      min-width: 16px; text-align: center;
+    }
+    .pill-select { position: relative; cursor: pointer; }
+    .pill-select select {
+      appearance: none; -webkit-appearance: none; -moz-appearance: none;
+      padding-right: 32px;
+      cursor: pointer;
+    }
+    .pill-select .caret {
+      position: absolute;
+      right: 10px; top: 50%; transform: translateY(-50%);
+      pointer-events: auto; cursor: pointer; z-index: 1;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- CONTENT ONLY (inherits sidebar/topbar from base) -->
+  <div class="ud">
+    <div class="greet">
+      <h1>Good morning, {{ request.user.phone|default:'User' }} <span>👋</span></h1>
+      <p>Let’s do some task and earn reward</p>
+    </div>
+
+    <!-- FILTER STRIP -->
+    <form method="get" class="filters" id="ratingForm">
+      <div class="pill">
+        <i class="fa-solid fa-location-dot"></i>
+        <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
+      </div>
+      <div class="pill">
+        <i class="fa-regular fa-calendar"></i>
+        <input type="date" name="date" value="{{ request.GET.date }}">
+      </div>
+      <div class="pill pill-select">
+        <i class="fa-regular fa-star"></i>
+        <select id="ratingFilter" name="rating" onchange="document.getElementById('ratingForm').submit()">
+          <option value="">Rating</option>
+          <option value="3"   {% if request.GET.rating == '3' %}selected{% endif %}>3+</option>
+          <option value="3.5" {% if request.GET.rating == '3.5' %}selected{% endif %}>3.5+</option>
+          <option value="4"   {% if request.GET.rating == '4' %}selected{% endif %}>4+</option>
+          <option value="4.5" {% if request.GET.rating == '4.5' %}selected{% endif %}>4.5+</option>
+        </select>
+        <i class="fa-solid fa-chevron-down caret"></i>
+      </div>
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    <!-- TABS -->
+    <div class="tabs" id="tabs">
+      <div class="tab {% if active_tab == 'recommended' %}active{% endif %}" data-tab="recommended">Recommended</div>
+      <div class="tab {% if active_tab == 'popular' %}active{% endif %}" data-tab="popular">Popular</div>
+      <div class="tab {% if active_tab == 'rating' %}active{% endif %}" data-tab="rating">Rating</div>
+    </div>
+
+    <!-- GRID SECTIONS -->
+    {% for tab, hotels in hotel_tabs %}
+    <section class="grid" id="{% if tab == 'rating' %}ratingTab{% else %}{{ tab }}{% endif %}" {% if tab != active_tab %}style="display:none;"{% endif %}>
+      {% for hotel in hotels %}
+      <article class="card">
+        <div class="cover">
+          <img src="{{ hotel.cover_src }}"
+               alt="{{ hotel.name }}"
+               loading="lazy"
+               onerror="this.src='{% static 'images/placeholder.jpg' %}'">
+          <div class="save">
+            <button class="save-btn"
+                    type="button"
+                    aria-label="Save {{ hotel.name }}"
+                    data-slug="{{ hotel.slug }}"
+                    aria-pressed="{{ hotel.is_favorited|yesno:'true,false' }}">
+              <i class="{% if hotel.is_favorited %}fa-solid{% else %}fa-regular{% endif %} fa-bookmark"></i>
+              <span class="fav-count">{{ hotel.favorites_total }}</span>
+            </button>
+          </div>
+        </div>
+        <div class="content">
+          <div class="title">{{ hotel.name }}</div>
+          <p class="desc">{{ hotel.description_short }}</p>
+          <div class="metas">
+            <div class="country">
+              <i class="fa-solid fa-location-dot"></i> {{ hotel.country.flag }} {{ hotel.country.name }}
+            </div>
+            <div class="right">
+              <div class="score">{{ hotel.score }}</div>
+              <div class="chip {% if hotel.label == 'perfect' %}green{% elif hotel.label == 'good' %}blue{% else %}amber{% endif %}">
+                {{ hotel.get_label_display }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% empty %}
+      <p>No {{ tab }} hotels available.</p>
+      {% endfor %}
+    </section>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+  // Tabs (client-side switching; server sets initial active_tab)
+  const tabs = document.querySelectorAll('.tab');
+  const sections = {
+    recommended: document.getElementById('recommended'),
+    popular: document.getElementById('popular'),
+    rating: document.getElementById('ratingTab')
+  };
+  function showTab(tabName) {
+    tabs.forEach(t => t.classList.remove('active'));
+    const activeEl = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    if (activeEl) activeEl.classList.add('active');
+    Object.values(sections).forEach(sec => sec && (sec.style.display = 'none'));
+    if (sections[tabName]) sections[tabName].style.display = 'grid';
+  }
+  tabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+  showTab('{{ active_tab|default:"recommended" }}');
+
+  // Favorites (AJAX)
+  const isAuth = {{ request.user.is_authenticated|yesno:"true,false" }};
+  const signinUrl = "{% url 'signin' %}?next={{ request.path|urlencode }}";
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  function attachSaveHandlers(scope=document) {
+    scope.querySelectorAll('.save-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!isAuth) {
+          window.location.href = signinUrl;
+          return;
+        }
+        const slug = btn.dataset.slug;
+        try {
+          const res = await fetch(`{% url 'toggle_favorite' 'SLUG_PLACEHOLDER' %}`.replace('SLUG_PLACEHOLDER', slug), {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrftoken, 'X-Requested-With': 'XMLHttpRequest' }
+          });
+          const data = await res.json();
+          if (data.ok) {
+            const icon = btn.querySelector('i');
+            const countSpan = btn.querySelector('.fav-count');
+            if (data.favorited) {
+              icon.classList.remove('fa-regular'); icon.classList.add('fa-solid');
+              btn.setAttribute('aria-pressed', 'true');
+            } else {
+              icon.classList.remove('fa-solid'); icon.classList.add('fa-regular');
+              btn.setAttribute('aria-pressed', 'false');
+            }
+            if (countSpan) countSpan.textContent = data.count;
+          }
+        } catch (e) { console.error(e); }
+      });
+    });
+  }
+  attachSaveHandlers(document);
+
+  // Caret & pill click opens rating dropdown
+  (function () {
+    const pill = document.querySelector('.pill-select');
+    if (!pill) return;
+    const select = document.getElementById('ratingFilter');
+    const caret  = pill.querySelector('.caret');
+
+    function openSelect(evt){
+      evt.preventDefault();
+      evt.stopPropagation();
+      if (!select) return;
+      select.focus();
+      select.click();
+    }
+    if (caret) caret.addEventListener('click', openSelect);
+    pill.addEventListener('click', function(e){
+      if (e.target === select) return; // let native click work
+      openSelect(e);
+    });
+  })();
+</script>
+{% endblock %}

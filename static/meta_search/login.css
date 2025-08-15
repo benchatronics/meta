@@ -1,0 +1,207 @@
+/* Base styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fefefe;
+    color: #222;
+  }
+  
+  /* Background */
+  .login-bg {
+    background: url("/static/meta_search/login-bg.jpg") no-repeat center center/cover;
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+    position: relative;
+  }
+  
+  /* Header */
+  .login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .back-btn {
+    background-color: #1d5cff;
+    color: white;
+    font-weight: bold;
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  
+  .logo {
+    width: 100px;
+  }
+  
+  /* Title */
+  .login-title {
+    text-align: center;
+    font-size: 2.2rem;
+    color: white;
+    margin-top: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  
+  /* Card */
+  .login-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    max-width: 480px;
+    margin: 2rem auto;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  }
+  
+  .intro {
+    text-align: center;
+    color: #444;
+    margin-bottom: 2rem;
+  }
+  
+  /* Form fields */
+  .login-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .login-form input,
+  .login-form select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 1rem;
+  }
+  
+  .input-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .input-group select {
+    flex: 1;
+    max-width: 90px;
+  }
+  
+  .input-group input {
+    flex: 2;
+  }
+  
+  /* Password with eye icon */
+  .input-icon {
+    position: relative;
+  }
+  
+  .input-icon input {
+    width: 100%;
+    padding-right: 2.5rem;
+  }
+  
+  .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 30%;
+    cursor: pointer;
+    font-size: 1rem;
+    background: none;
+    border: none;
+  }
+  
+  /* Submit button */
+  .btn {
+    width: 100%;
+    background-color: #1d5cff;
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+  .btn:hover {
+    background-color: #164ad8;
+  }
+  
+  /* Forgot password */
+  .forgot {
+    text-align: right;
+    margin-top: 1rem;
+  }
+  
+  .forgot a {
+    color: #1d5cff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .forgot a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Flash messages */
+  .flash-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+  
+  .flash {
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .flash.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .flash.error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .flash.info {
+    background-color: #cce5ff;
+    color: #004085;
+  }
+  
+  /* Field & form errors */
+  .form-errors,
+  .field-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-radius: 8px;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .form-errors p,
+  .field-error p {
+    margin: 0;
+  }
+  
+  
+  
+  /* ensure inputs are visible on mobile */
+  .login-form input, .login-form select, .login-form textarea {
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    color: #222;
+    display: block;
+  }
+  .input-icon input { padding-right: 2.5rem; }
+  .eye-icon { background: transparent; border: 0; }
+  

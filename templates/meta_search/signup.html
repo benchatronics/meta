@@ -1,0 +1,61 @@
+{% extends "base_auth.html" %}
+
+{% block title %}Sign Up - Expedia{% endblock %}
+{% block left_title %}Sign Up{% endblock %}
+{% block intro %}<p class="intro">Hello friend, let’s get you registered</p>{% endblock %}
+
+{% block form_fields %}
+  {# PHONE #}
+  <label for="{{ form.phone_number.id_for_label }}">Phone</label>
+  {{ form.phone_number.errors }}
+  <div class="phone_number_field">
+    {{ form.country_code }}
+    {{ form.phone_number }}
+  </div>
+
+  {# PASSWORD #}
+  <label for="{{ form.password1.id_for_label }}">Password</label>
+  {{ form.password1.errors }}
+  <div class="field has-left-ic">
+    <svg class="left-ic" viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 1 1 6 0v3H9z"/>
+    </svg>
+    {{ form.password1 }}
+    <button type="button" class="eye-btn" data-target="{{ form.password1.id_for_label }}" aria-label="Show/Hide password"></button>
+  </div>
+
+  {# CONFIRM PASSWORD #}
+  <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+  {{ form.password2.errors }}
+  <div class="field has-left-ic">
+    <svg class="left-ic" viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 1 1 6 0v3H9z"/>
+    </svg>
+    {{ form.password2 }}
+    <button type="button" class="eye-btn" data-target="{{ form.password2.id_for_label }}" aria-label="Show/Hide confirm password"></button>
+  </div>
+
+  {# INVITATION CODE #}
+  <label for="{{ form.invitation_code.id_for_label }}">Invitation Code</label>
+  {{ form.invitation_code.errors }}
+  <div class="field">
+    {{ form.invitation_code }}
+  </div>
+
+  {# CAPTCHA #}
+  <label for="{{ form.captcha.id_for_label }}">Captcha</label>
+  {{ form.captcha.errors }}
+  <div class="captcha-field">
+    {{ form.captcha }}
+  </div>
+{% endblock %}
+
+{% block form_actions %}
+  <button type="submit" class="btn-primary">Get Started</button>
+{% endblock %}
+
+{% block below_form %}
+  <p class="login-link">
+    Already have an account? <a href="{% url 'signin' %}">Login</a>
+  </p>
+{% endblock %}

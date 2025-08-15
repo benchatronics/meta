@@ -1,0 +1,114 @@
+:root{
+  --blue:#0b4da3;         /* sidebar */
+  --text:#111;
+  --muted:#6b7280;        /* gray-500 */
+  --border:#e5e7eb;       /* gray-200 */
+  --card:#ffffff;
+  --bg:#f7f8fb;
+  --radius:14px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color:var(--text);
+  background:var(--bg);
+}
+
+/* ===== Layout grid ===== */
+.app{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  min-height:100vh;
+}
+.app.collapsed{ grid-template-columns:84px 1fr; }
+
+/* ===== Sidebar ===== */
+.sidebar{
+  background:var(--blue);
+  color:#fff;
+  padding:22px 16px;
+  position:sticky; top:0; height:100vh;
+  overflow:hidden;
+}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.brand-button{height:32px;width:32px;border-radius:8px;background:#ffd54a;display:grid;place-items:center;font-weight:700}
+.brand-name{font-weight:700}
+.sb-toggle{
+  margin-left:auto;
+  border:1px solid rgba(255,255,255,.25);
+  height:36px;width:36px;border-radius:10px;
+  background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer
+}
+
+/* Profile (avatar stacked above meta) */
+.profile{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  margin:24px 0 18px;text-align:center;
+}
+.avatar{
+  height:64px;width:64px;border-radius:50%;
+  background:#ffe6b3;overflow:hidden;position:relative;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+.avatar img{height:100%;width:100%;object-fit:cover;display:block}
+.status-dot{
+  position:absolute;right:-2px;bottom:-2px;height:12px;width:12px;border-radius:50%;
+  background:#4ade80;border:3px solid var(--blue);
+}
+.meta{display:flex;flex-direction:column;gap:2px}
+.meta .id{font-size:12px;opacity:.9}
+.meta .phone{font-size:12px;opacity:.8}
+
+/* Nav */
+.nav{margin-top:18px;display:grid;gap:8px}
+.nav h6{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.75;margin:14px 10px 6px}
+.link{
+  display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;
+  text-decoration:none;color:#e9efff;opacity:.95
+}
+.link:hover{background:rgba(255,255,255,.08)}
+.link.active{background:rgba(255,255,255,.18)}
+.link svg{flex:0 0 18px}
+.label{white-space:nowrap}
+.bottom{margin-top:auto}
+
+/* Collapsed sidebar */
+.app.collapsed .brand-name{display:none}
+.app.collapsed .meta{display:none}
+.app.collapsed .profile{justify-content:center}
+.app.collapsed .link{justify-content:center}
+.app.collapsed .link .label{display:none}
+.app.collapsed .nav h6{display:none}
+
+/* ===== Main / Topbar ===== */
+.main{padding:28px 28px 48px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin:-8px 0 10px}
+.breadcrumb{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px}
+.crumb-home{
+  height:26px;width:26px;border:1px solid var(--border);border-radius:8px;
+  display:grid;place-items:center;background:#fff
+}
+.bell{
+  height:36px;width:36px;border:1px solid var(--border);border-radius:12px;
+  background:#fff;display:grid;place-items:center
+}
+
+/* ===== Shared UI bits ===== */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 14px;border-radius:12px;border:1px solid var(--border);
+  background:#f8fafc;color:#111;font-weight:600;cursor:pointer
+}
+.btn.primary{background:#1663d6;color:#fff;border-color:#1663d6}
+.btn:active{transform:translateY(1px)}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:40}
+  .main{padding:18px}
+}

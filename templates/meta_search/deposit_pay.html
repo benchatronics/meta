@@ -1,0 +1,59 @@
+{% extends "base_user.html" %}
+{% load static %}
+{% block title %}Pay Deposit{% endblock %}
+{% block breadcrumb %}Home / my Wallet / Deposit / Pay{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/deposit.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+{% block content %}
+<section class="dep">
+  <div class="shell">
+    <h1>Pay Deposit</h1>
+    <div class="card"><div class="inner pay-grid">
+      <div class="left">
+        <div class="section-title">Scan to Pay</div>
+        <div class="qrbox">
+          {% if qr_data_uri %}
+            <img src="{{ qr_data_uri }}" alt="QR code">
+          {% else %}
+            <div class="qr-fallback">QR Unavailable</div>
+          {% endif %}
+        </div>
+        <div class="muted">Network: <strong>{{ dep.get_network_display }}</strong></div>
+      </div>
+      <div class="right">
+        <div class="row"><div class="label">Amount</div><div class="value">{{ symbol }} {{ dep.amount|floatformat:2 }}</div></div>
+        <div class="row"><div class="label">Reference</div><div class="value mono">#{{ dep.reference }}</div></div>
+        <div class="row">
+          <div class="label">Wallet Address</div>
+          <div class="value addr">
+            <span id="payAddr">{{ dep.pay_to.address }}</span>
+            <button class="copy" data-clip="#payAddr"><i class="fa-regular fa-copy"></i> Copy</button>
+          </div>
+        </div>
+        <form method="post" action="{% url 'wallet:deposit_verify' dep.id %}">{% csrf_token %}
+          <button class="submit" type="submit">I’ve Paid – Verify</button>
+        </form>
+        <div class="muted" style="margin-top:8px">We’ll check the network and update your balance when confirmed.</div>
+      </div>
+    </div></div>
+  </div>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+  document.querySelectorAll('.dep .copy').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const sel = btn.getAttribute('data-clip');
+      const el = document.querySelector(sel);
+      if (!el) return;
+      navigator.clipboard.writeText(el.textContent.trim()).then(()=>{
+        btn.innerHTML='<i class="fa-solid fa-check"></i> Copied';
+        setTimeout(()=>btn.innerHTML='<i class="fa-regular fa-copy"></i> Copy', 1200);
+      });
+    });
+  });
+</script>
+{% endblock %}

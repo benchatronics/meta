@@ -1,0 +1,65 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}My Wallet{% endblock %}
+{% block breadcrumb %}Home / my wallet{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'meta_search/wallet.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1>My Wallet</h1>
+
+  <section class="card wallet">
+    <div class="wallet-summary">
+      <div class="summary-item">
+        <div class="summary-title">Current Balance</div>
+        <div class="money">
+          <div class="currency">€ 0.00</div>
+          <div class="eye" title="Show/Hide">👁️</div>
+        </div>
+        <div class="actions">
+        </button>
+          <button class="btn primary" onclick="window.location.href='{% url 'deposit' %}'">
+            Deposit <span style="font-size:14px">↗</span></button>
+          <button class="btn" onclick="window.location.href='{% url 'withdrawal' %}'">
+            Withdraw <span style="font-size:14px">↘</span>
+        </button>
+        
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-title">Trial Bonus</div>
+        <div class="money">
+          <div class="currency">€ 300.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="header">
+      <div class="section-title">Transactions History</div>
+      <div class="filter">
+        <div class="select">All ▾</div>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>State</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="5" class="empty">No Transaction History</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

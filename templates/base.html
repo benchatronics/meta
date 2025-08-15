@@ -1,0 +1,21 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}Expedia - Magic of Relaxation{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'meta_search/index.css' %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  {% include "meta_search/includes/_header.html" %}
+
+  {% block content %}{% endblock %}
+
+  {% include "meta_search/includes/_footer.html" %}
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,300 @@
+/* Withdraw page (content only). Uses .wdw scope to avoid clashes. */
+.wdw {
+  --card: #ffffff;
+  --muted: #6b7280;
+  --line: #e8edf4;
+  --shadow: 0 18px 40px rgba(20,40,80,.08);
+  --blue: #2935ea;
+  --blue-700: #232fd8;
+  --success-bg: #e9fdf4;
+  --success-border: #b7f7d9;
+  --success-text: #0e7a55;
+  --danger-bg: #fff1f2;
+  --danger-border: #fecdd3;
+  --danger-text: #991b1b;
+  --warn-bg: #fff7ed;
+  --warn-border: #fed7aa;
+  --warn-text: #9a3412;
+  --info-bg: #eff6ff;
+  --info-border: #bfdbfe;
+  --info-text: #1d4ed8;
+  --space: 18px;
+  color: #0f172a;
+}
+
+/* container */
+.wdw .shell { max-width: 860px; margin: 0 auto; }
+
+/* verified banner */
+.wdw .banner {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--success-bg); border: 1px solid var(--success-border);
+  color: var(--success-text);
+  padding: 12px 16px; border-radius: 12px; margin: 10px 0 18px;
+}
+
+/* title */
+.wdw h1 { margin: 0 0 12px; font-size: 28px; font-weight: 800; letter-spacing: .2px; }
+
+/* flash messages */
+.wdw .flash { display: grid; gap: 10px; margin: 0 0 14px; }
+.wdw .alert {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border-radius: 12px; border: 1px solid; font-size: 14px;
+}
+.wdw .alert i { margin-top: 2px; }
+.wdw .alert.success { background: var(--success-bg); border-color: var(--success-border); color: var(--success-text); }
+.wdw .alert.error, .wdw .alert.danger { background: var(--danger-bg); border-color: var(--danger-border); color: var(--danger-text); }
+.wdw .alert.warning { background: var(--warn-bg); border-color: var(--warn-border); color: var(--warn-text); }
+.wdw .alert.info { background: var(--info-bg); border-color: var(--info-border); color: var(--info-text); }
+
+/* card */
+.wdw .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+.wdw .card .inner { padding: 26px; }
+.wdw .grid { display: grid; grid-template-columns: 1fr; gap: var(--space); }
+
+/* sections */
+.wdw .section-title { font-weight: 700; margin: 0 0 12px; }
+.wdw .muted { color: var(--muted); font-size: 13px; }
+.wdw .group { display: block; margin-bottom: var(--space); }
+
+/* amount input */
+.wdw .amount-wrap { position: relative; }
+.wdw .ctrl {
+  display: flex; align-items: center; gap: 12px;
+  background: #fbfcff; border: 1px solid var(--line);
+  border-radius: 14px; padding: 13px 14px;
+}
+.wdw .ctrl .prefix { font-weight: 700; color: #334155; }
+.wdw .ctrl input {
+  border: none; outline: none; background: transparent; font: inherit; width: 100%;
+  -moz-appearance: textfield;
+}
+.wdw .ctrl input::-webkit-outer-spin-button,
+.wdw .ctrl input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.wdw .ctrl .btns { display: flex; gap: 10px; margin-left: auto; }
+.wdw .ctrl .iconbtn {
+  height: 36px; width: 36px; border-radius: 10px; border: 1px solid var(--line);
+  background: #fff; display: grid; place-items: center; cursor: pointer;
+}
+
+/* address */
+.wdw .addr-wrap { display: grid; gap: 8px; }
+.wdw .addr {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 12px; padding: 12px;
+}
+.wdw .addr input { border: none; outline: none; background: transparent; font: inherit; width: 100%; }
+.wdw .addr .qr {
+  height: 34px; width: 34px; border-radius: 8px; border: 1px solid var(--line);
+  display: grid; place-items: center; background: #fff; cursor: pointer;
+}
+.wdw .addr.error { background: var(--danger-bg); border-color: var(--danger-border); }
+.wdw .err-row { display: flex; align-items: center; gap: 8px; color: var(--danger-text); font-size: 13px; }
+
+/* disabled address input */
+.wdw .addr input[disabled] { background: #f9fafb; color: #9ca3af; cursor: not-allowed; }
+
+/* Bind Wallet link */
+.wdw .bind-link {
+  font-size: 13px; color: #e11d48; font-weight: 700; text-decoration: none;
+  border-left: 1px solid var(--line); padding-left: 10px;
+}
+.wdw .bind-link:hover { text-decoration: underline; }
+
+/* Update address link */
+.wdw .update-link {
+  font-size: 13px; color: #1d4ed8; font-weight: 700; text-decoration: none;
+  border-left: 1px solid var(--line); padding-left: 10px; white-space: nowrap;
+}
+.wdw .update-link:hover { text-decoration: underline; }
+
+/* helper/question line */
+.wdw .addr-actions { display: flex; justify-content: flex-end; position: relative; }
+.wdw .bind-help {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: #e11d48; text-decoration: none; margin-top: 2px;
+}
+.wdw .bind-help i { color: #e11d48; }
+.wdw .bind-help:hover { color: #b91c1c; text-decoration: underline; }
+
+/* Tooltip */
+.wdw .tooltip { position: relative; }
+.wdw .tooltip:where(:hover,:focus,:focus-visible)::after {
+  content: attr(data-tip);
+  position: absolute; right: 0; top: calc(100% + 10px);
+  max-width: 340px; background: #111827; color: #fff;
+  padding: 10px 12px; border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.2);
+  font-size: 12px; line-height: 1.45;
+  z-index: 9999; pointer-events: none;
+}
+.wdw .tooltip:where(:hover,:focus,:focus-visible)::before {
+  content: "";
+  position: absolute; right: 10px; top: calc(100% + 2px);
+  border: 8px solid transparent; border-bottom-color: #111827;
+  z-index: 9999; pointer-events: none;
+}
+
+/* methods */
+.wdw .method { display: grid; gap: 12px; }
+.wdw .opt {
+  display: flex; align-items: center; gap: 12px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 12px; padding: 14px; cursor: pointer; transition: all .25s ease;
+}
+.wdw .opt:hover { border-color: var(--blue); background: #f8faff; }
+.wdw .opt .bullet {
+  height: 36px; width: 36px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: #eef2ff; color: #4338ca; flex: 0 0 auto;
+}
+.wdw .bullet i { font-size: 18px; }
+.wdw .opt span { font-weight: 700; }
+.wdw .opt.active {
+  background: #e8fdf1;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+}
+/* Checkmark for active method */
+.wdw .opt.active::after {
+  content: "\f00c";
+  font-family: "Font Awesome 6 Free"; font-weight: 900;
+  color: #10b981; margin-left: auto; font-size: 16px;
+}
+
+/* Ethereum bullet */
+.wdw .opt .bullet.eth { background: #eef2ff; color: #627eea; }
+
+/* USDT TRC20 */
+.wdw .opt .bullet.tether { background: #26a17b; }
+.wdw .opt .bullet.tether svg { width: 18px; height: 18px; display: block; }
+
+/* submit */
+.wdw .submit {
+  display: block; width: 100%; padding: 16px 18px;
+  border-radius: 12px; border: 1px solid #1e2ae0;
+  background: var(--blue); color: #fff; font-weight: 800;
+  letter-spacing: .06em; margin-top: 6px;
+}
+.wdw .submit:hover { background: var(--blue-700); }
+
+/* sr-only */
+.wdw .sr-only {
+  position: absolute!important; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* responsive */
+@media (max-width: 720px) {
+  .wdw .shell { max-width: 100%; }
+  .wdw .card .inner { padding: 20px; }
+}
+
+/* QR modal */
+.wdw .qr-modal{
+  position:fixed; inset:0; background:rgba(15,23,42,.45);
+  display:grid; place-items:center; z-index:1000;
+}
+.wdw .qr-dialog{
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  box-shadow:var(--shadow); width:min(520px, 92vw); max-width:520px;
+  overflow:hidden;
+}
+.wdw .qr-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 14px; border-bottom:1px solid var(--line);
+  font-weight:700;
+}
+.wdw .qr-close{
+  background:#fff; border:1px solid var(--line); border-radius:8px;
+  width:34px; height:34px; cursor:pointer;
+}
+.wdw .qr-body{ padding:14px; }
+.wdw .qr-or{
+  text-align:center; font-size:12px; color:var(--muted);
+  margin:12px 0;
+}
+.wdw .qr-filebtn{
+  display:inline-block; border:1px dashed var(--line); border-radius:10px;
+  padding:10px 12px; cursor:pointer; font-weight:600;
+}
+.wdw .qr-tip{
+  margin-top:10px; font-size:12px; color:var(--muted);
+}
+.wdw .qr-footer{
+  display:flex; gap:8px; justify-content:flex-end; padding:12px 14px; border-top:1px solid var(--line);
+}
+.wdw .qr-footer .qr-cancel,
+.wdw .qr-footer .qr-cam-switch{
+  background:#fff; border:1px solid var(--line); border-radius:10px;
+  padding:10px 12px; cursor:pointer;
+}
+.wdw .qr-footer .qr-cancel:hover{ background:#f9fafb; }
+.wdw .qr-footer .qr-cam-switch:hover{ background:#f9fafb; }
+
+
+/* Make method labels a bit fancier */
+.wdw .opt.pill {
+  border-radius: 14px;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+.wdw .opt.pill:hover { transform: translateY(-1px); }
+.wdw .opt.pill.active {
+  background:#e8fdf1;
+  border-color:#10b981;
+  box-shadow:0 0 0 3px rgba(16,185,129,.15);
+}
+
+/* Pretty label input with icon */
+.wdw .pretty-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.wdw .pretty-input input#id_label {
+  width:100%;
+  border:1px solid var(--line);
+  background:#fbfcff;
+  padding:12px 38px 12px 12px;
+  border-radius:12px;
+  font:inherit;
+  outline:none;
+}
+.wdw .pretty-input input#id_label:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(41,53,234,.12);
+}
+.wdw .pretty-input i {
+  position:absolute;
+  right:12px;
+  pointer-events:none;
+  font-size:15px;
+  color:#64748b;
+}
+
+/* Center action buttons and style secondary */
+.wdw .actions-center {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+.wdw .btn-secondary {
+  background:#6b7280 !important;
+  border-color:#6b7280 !important;
+}
+.wdw .btn-secondary:hover { filter: brightness(0.95); }
+
+/* QR modal minor helpers */
+.wdw .qr-modal { position:fixed; inset:0; background:rgba(0,0,0,.45); display:grid; place-items:center; z-index:1000; }
+.wdw .qr-dialog { background:#fff; border-radius:14px; width:min(520px, 92vw); box-shadow:var(--shadow); }
+.wdw .qr-header, .wdw .qr-footer { padding:12px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+.wdw .qr-footer { border-bottom:none; border-top:1px solid var(--line); }
+.wdw .qr-body { padding:14px; }
+.wdw .qr-close { background:transparent; border:none; font-size:22px; line-height:1; cursor:pointer; }
+.wdw .qr-filebtn { display:inline-block; padding:8px 12px; border:1px solid var(--line); border-radius:10px; cursor:pointer; background:#fbfcff; }
+.wdw .qr-or { text-align:center; color:var(--muted); font-size:12px; margin:10px 0; }
+.wdw .qr-tip { margin-top:10px; color:#475569; font-size:12px; }
+.wdw .qr-error { margin-top:10px; }

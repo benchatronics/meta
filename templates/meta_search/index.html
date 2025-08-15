@@ -1,36 +1,13 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Expedia - Magic of Relaxation</title>
-  <link rel="stylesheet" href="{% static 'meta_search/index.css' %}" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-<body>
+{% extends "base.html" %}
+{% load static i18n %}
 
-<!-- Header -->
-<header class="header">
-  <div class="logo">
-    <img src="{% static 'meta_search/logos/arrow-icon3.png' %}" alt="Expedia Icon">
-    <span>Expedia</span>
-  </div>
-  <div class="nav-actions">
-    <div class="lang-select">
-      <img src="{% static 'meta_search/uk-flag.png' %}" alt="UK Flag">
-      <span>English</span>
-      <span style="font-size: 0.7rem;">&#9662;</span>
-    </div>
-    <button class="btn">Get started</button>
-  </div>
-</header>
+{% block title %}Expedia - Magic of Relaxation{% endblock %}
 
-<!-- Hero Section -->
+{% block content %}
 
-
+<!-- =================== HERO =================== -->
 <section class="hero">
-  <!-- SVG for custom clip path curve -->
-  <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="hero-clip">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="hero-clip" aria-hidden="true">
     <defs>
       <clipPath id="heroClip" clipPathUnits="objectBoundingBox">
         <path d="M0,0 H1 V0.85 C1,1,0.75,1,0.6,0.92 C0.45,0.84,0.4,0.84,0.3,0.92 C0.15,1,0,1,0,0 Z" />
@@ -38,126 +15,190 @@
     </defs>
   </svg>
 
-  <!-- Hero image with curved clip path -->
-  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="Hero Image" class="hero-img" />
+  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="{% trans 'Seaside resort at dusk' %}" class="hero-img" />
 
-  <!-- Floating images on right -->
-  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="Float 1" class="floating-img float-right-top" />
-  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="Float 2" class="floating-img float-right-bottom" />
+  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="" class="floating-img float-right-top" aria-hidden="true" />
+  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="" class="floating-img float-right-bottom" aria-hidden="true" />
 
-  <!-- Text + CTA overlay -->
   <div class="hero-text-overlay">
-    <h1>Experience The Magic Of Relaxation</h1>
-    <p>Indulge in the epitome of coastal living as you discover the breathtaking beauty and tranquility of luxury.</p>
+    <h1>{% trans "Experience The Magic Of Relaxation" %}</h1>
+    <p>{% trans "Indulge in the epitome of coastal living as you discover the breathtaking beauty and tranquility of luxury." %}</p>
   </div>
 
   <div class="hero-cta-box">
     <div class="avatars">
-      <img src="{% static 'meta_search/user1.png' %}" alt="user">
-      <img src="{% static 'meta_search/user2.png' %}" alt="user">
-      <img src="{% static 'meta_search/user3.png' %}" alt="user">
+      <img src="{% static 'meta_search/user1.png' %}" alt="{% trans 'Customer avatar 1' %}">
+      <img src="{% static 'meta_search/user2.png' %}" alt="{% trans 'Customer avatar 2' %}">
+      <img src="{% static 'meta_search/user3.png' %}" alt="{% trans 'Customer avatar 3' %}">
     </div>
-    <span class="trust-text">Trusted by over 25k+ people</span>
-    <button class="btn">Explore Now 🔍</button>
+    <span class="trust-text">{% trans "Trusted by over 25k+ people" %}</span>
+    <button class="btn">{% trans "Explore Now" %} 🔍</button>
   </div>
 </section>
 
-
-<!-- Partners Section -->
-<section class="partners">
-  <img src="{% static 'meta_search/airbnb.png' %}" alt="airbnb">
-  <img src="{% static 'meta_search/expedia.png' %}" alt="expedia">
-  <img src="{% static 'meta_search/trivago.png' %}" alt="trivago">
-  <img src="{% static 'meta_search/booking.png' %}" alt="booking">
+<!-- =================== PARTNERS =================== -->
+<section class="partners" aria-label="{% trans 'Travel partners' %}">
+  <img src="{% static 'meta_search/airbnb.png' %}" alt="Airbnb">
+  <img src="{% static 'meta_search/expedia.png' %}" alt="Expedia">
+  <img src="{% static 'meta_search/trivago.png' %}" alt="Trivago">
+  <img src="{% static 'meta_search/booking.png' %}" alt="Booking.com">
 </section>
 
-<!-- Features Section -->
+<!-- =================== FEATURES (collage + stepper) =================== -->
 <section class="features">
-  <div class="image-group">
-    <img src="{% static 'meta_search/relax1.jpg' %}" class="img1" alt="Relax 1">
-    <img src="{% static 'meta_search/relax2.jpg' %}" class="img2" alt="Relax 2">
-    <img src="{% static 'meta_search/relax3.jpg' %}" class="img3" alt="Relax 3">
+  <!-- Collage -->
+  <div class="image-group" aria-hidden="true">
+    <img src="{% static 'meta_search/images/poolrelaxation.png' %}" class="img1" alt="">
+    <img src="{% static 'meta_search/images/hero-side2.png' %}" class="img2" alt="">
+    <img src="{% static 'meta_search/images/overlookingvalley.png' %}" class="img3" alt="">
   </div>
+
+  <!-- Text / Stepper -->
   <div class="text-group">
-    <h3>Premium Facilities</h3>
+    <h3>{% trans "Premium Facilities" %}</h3>
     <ol class="facility-list">
-      <li><strong>Exclusive Sunset View</strong><br>You witness the beauty of the world from your room</li>
-      <li><strong>Integrated Tourist Area</strong><br>Enhancing your travel experience</li>
-      <li><strong>Nature-Inspired Pool</strong><br>Serene swimming pool with a touch of paradise</li>
+      <li>
+        <strong>{% trans "Exclusive Sunset View" %}</strong><br>
+        {% trans "You witness the beauty of the world from your room" %}
+      </li>
+      <li>
+        <strong>{% trans "Integrated Tourist Area" %}</strong><br>
+        {% trans "Enhancing your travel experience" %}
+      </li>
+      <li>
+        <strong>{% trans "Nature-Inspired Pool" %}</strong><br>
+        {% trans "Serene swimming pool with a touch of paradise" %}
+      </li>
     </ol>
   </div>
 </section>
 
-<!-- Reward Section -->
-<section class="reward">
-  <div class="card">
-    <h4>Rate Apartments</h4>
-    <p>Get to randomly rate apartments based on view and aesthetic</p>
-    <h4>Get Rewarded</h4>
-    <p>Earn rewards instantly</p>
-    <button class="btn">Explore Now →</button>
+<!-- =================== REWARD (card + flipping carousel) =================== -->
+<section class="reward" id="reward">
+  <!-- Left: card -->
+  <div class="reward-card" aria-labelledby="rewardTitle">
+    <h3 id="rewardTitle">{% trans "Get Rewarded" %}</h3>
+
+    <div class="reward-item">
+      <svg class="ri-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 17.27-5.18 3.05 1.4-5.99-4.64-4.03 6.1-.52L12 3l2.32 6.78 6.1.52-4.64 4.03 1.4 5.99z"/></svg>
+      <div class="ri-text">
+        <h4>{% trans "Rate Apartments" %}</h4>
+        <p>{% trans "Give random objective ratings based on view and aesthetics." %}</p>
+      </div>
+    </div>
+
+    <div class="reward-item">
+      <svg class="ri-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 3H7a2 2 0 0 0-2 2v14l7-3 7 3V5a2 2 0 0 0-2-2z"/></svg>
+      <div class="ri-text">
+        <h4>{% trans "Get Rewarded" %}</h4>
+        <p>{% trans "Earn instant rewards from the apartments you rate." %}</p>
+      </div>
+    </div>
+
+    <button class="btn reward-cta">{% trans "Explore Now" %} →</button>
   </div>
-  <div class="room-image">
-    <img src="{% static 'meta_search/room.jpg' %}" alt="Room">
+
+  <!-- Right: flipping carousel -->
+  <div class="reward-carousel" role="region" aria-label="{% trans 'Featured apartments carousel' %}">
+    <button class="car-btn prev" aria-label="{% trans 'Previous slide' %}">‹</button>
+    <button class="car-btn next" aria-label="{% trans 'Next slide' %}">›</button>
+
+    <ul class="car-slides">
+      <li class="car-slide is-active">
+        <img src="{% static 'meta_search/images/overlookingvalley.png' %}" alt="{% trans 'Modern apartment interior' %}">
+      </li>
+      <li class="car-slide">
+        <img src="{% static 'meta_search/images/poolrelaxation.png' %}" alt="{% trans 'Resort pool at sunset' %}">
+      </li>
+      <li class="car-slide">
+        <img src="{% static 'meta_search/images/hero-side6.png' %}" alt="{% trans 'Scenic valley view' %}">
+      </li>
+    </ul>
+
+    <div class="car-dots" aria-hidden="true">
+      <button class="is-active" data-slide="0"></button>
+      <button data-slide="1"></button>
+      <button data-slide="2"></button>
+    </div>
   </div>
 </section>
 
-<!-- Client Review Section -->
+<!-- =================== REVIEWS =================== -->
 <section class="reviews">
   <div class="review-text">
-    <h2>Clients Review</h2>
-    <p>See some honest reviews from our users on the platform</p>
+    <h2>{% trans "Clients Review" %}</h2>
+    <p>{% trans "See some honest reviews from our users on the platform" %}</p>
   </div>
 
   <div class="client-wrapper">
     <div class="client">
-      <img src="{% static 'meta_search/client.png' %}" alt="Client">
+      <img src="{% static 'meta_search/client.png' %}" alt="{% trans 'Client' %}">
       <blockquote>
-        Had a great experience using this for solid bookings.<br>
-        Customer service was top-notch.<br>
-        <strong style="float: right;">— James Lee</strong>
+        {% trans "Had a great experience using this for solid bookings. Customer service was top-notch." %}<br>
+        <strong>— James Lee</strong>
       </blockquote>
     </div>
   </div>
 </section>
 
-<!-- CTA Section -->
+<!-- =================== CTA =================== -->
 <section class="cta">
   <div class="cta-text">
-    <h2>Get your inspiration of luxury and get rewarded</h2>
-    <p>Earn new rewards at every step you take under true luxury.</p>
-    <button class="btn">See More</button>
+    <h2>{% trans "Get your inspiration of luxury and get rewarded" %}</h2>
+    <p>{% trans "Earn new rewards at every step you take under true luxury." %}</p>
+    <button class="btn">{% trans "See More" %}</button>
   </div>
   <div class="cta-image">
-    <img src="{% static 'meta_search/luxury.jpg' %}" alt="Luxury">
+    <img src="{% static 'meta_search/luxury.jpg' %}" alt="{% trans 'Luxury inspiration' %}">
   </div>
 </section>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-left">
-      <div class="footer-brand">
-        <img src="{% static 'meta_search/logos/arrow-icon.png' %}" alt="Logo" class="footer-logo" />
-        <span class="footer-title">Expedia</span>
-      </div>
-      <p>2025 Expedia Booking Corporation Ltd.</p>
-    </div>
-    <div class="footer-right">
-      <div class="footer-links-row">
-        <a href="#">Home</a>
-        <a href="#">Contact Us</a>
-        <a href="#">About Us</a>
-        <a href="#">FAQ</a>
-        <a href="#">Level</a>
-      </div>
-      <div class="footer-links-row">
-        <a href="#">Imprint</a>
-        <a href="#">Privacy</a>
-      </div>
-    </div>
-  </div>
-</footer>
+{% endblock %}
 
-</body>
-</html>
+{% block extra_js %}
+<script>
+  // Minimal flipping carousel
+  (function () {
+    const root = document.querySelector('.reward-carousel');
+    if (!root) return;
+
+    const slides = Array.from(root.querySelectorAll('.car-slide'));
+    const dots   = Array.from(root.querySelectorAll('.car-dots button'));
+    const prev   = root.querySelector('.car-btn.prev');
+    const next   = root.querySelector('.car-btn.next');
+
+    let i = 0, busy = false;
+
+    function go(n) {
+      if (busy) return;
+      busy = true;
+
+      const cur = slides[i];
+      i = (n + slides.length) % slides.length;
+      const nxt = slides[i];
+
+      cur.classList.remove('is-active');
+      cur.classList.add('flip-out');
+      nxt.classList.add('flip-in');
+
+      dots.forEach((d, idx) => d.classList.toggle('is-active', idx === i));
+
+      setTimeout(() => {
+        cur.classList.remove('flip-out');
+        nxt.classList.remove('flip-in');
+        nxt.classList.add('is-active');
+        busy = false;
+      }, 550);
+    }
+
+    prev.addEventListener('click', () => go(i - 1));
+    next.addEventListener('click', () => go(i + 1));
+    dots.forEach((d, idx) => d.addEventListener('click', () => go(idx)));
+
+    // Auto-play
+    let t = setInterval(() => go(i + 1), 5000);
+    root.addEventListener('mouseenter', () => clearInterval(t));
+    root.addEventListener('mouseleave', () => (t = setInterval(() => go(i + 1), 5000)));
+  })();
+</script>
+{% endblock %}

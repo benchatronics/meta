@@ -1,0 +1,324 @@
+# Spanish translations for your project.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-11 09:54+0000\n"
+"PO-Revision-Date: 2025-08-09 18:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: main/forms.py:45 main/forms.py:210
+msgid "Country code"
+msgstr "Código de país"
+
+#: main/forms.py:50 main/forms.py:215
+msgid "Enter your phone number"
+msgstr "Ingrese su número de teléfono"
+
+#: main/forms.py:54 main/forms.py:219
+msgid "Phone number"
+msgstr "Número de teléfono"
+
+#: main/forms.py:59
+msgid "Enter your invitation code"
+msgstr "Ingrese su código de invitación"
+
+#: main/forms.py:62
+msgid "Invitation code"
+msgstr "Código de invitación"
+
+#: main/forms.py:64
+msgid "I am not a robot"
+msgstr "No soy un robot"
+
+#: main/forms.py:75 main/forms.py:224
+msgid "Enter your password"
+msgstr "Ingrese su contraseña"
+
+#: main/forms.py:79
+msgid "Re-enter your password"
+msgstr "Vuelva a ingresar su contraseña"
+
+#: main/forms.py:100 main/forms.py:249 main/views.py:47
+msgid "Invalid phone number format."
+msgstr "Formato de número de teléfono inválido."
+
+#: main/forms.py:103 main/forms.py:252 main/views.py:49
+msgid "This phone number is not possible for the selected country."
+msgstr "Este número de teléfono no es posible para el país seleccionado."
+
+#: main/forms.py:105 main/forms.py:254 main/views.py:51
+msgid "This phone number is not valid for the selected country."
+msgstr "Este número de teléfono no es válido para el país seleccionado."
+
+#: main/forms.py:120 main/forms.py:268
+#, python-format
+msgid ""
+"Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
+msgstr ""
+"La longitud del número de teléfono debe estar entre %(lo)d y %(hi)d dígitos "
+"para %(country)s."
+
+#: main/forms.py:132
+msgid "An account with this phone already exists."
+msgstr "Ya existe una cuenta con este número de teléfono."
+
+#: main/forms.py:162 main/forms.py:228 templates/meta_search/signin.html:75
+msgid "Password"
+msgstr "Contraseña"
+
+#: main/forms.py:164
+msgid ""
+"Raw passwords are not stored, so there is no way to see this user’s "
+"password, but you can change the password using the “Change password” form."
+msgstr ""
+"Las contraseñas no se almacenan en texto plano, por lo que no hay forma de "
+"ver la contraseña de este usuario, pero puede cambiarla usando el formulario "
+"“Cambiar contraseña”."
+
+#: main/forms.py:191
+msgid "User phone (E.164 or local NG)"
+msgstr "Teléfono del usuario (E.164 o formato local NG)"
+
+#: main/forms.py:192
+msgid "+2348012345678 or 080..."
+msgstr "+2348012345678 o 080..."
+
+#: main/forms.py:194 main/views.py:76
+msgid "New password"
+msgstr "Nueva contraseña"
+
+#: main/forms.py:195 main/views.py:77
+msgid "Confirm new password"
+msgstr "Confirmar nueva contraseña"
+
+#: main/forms.py:201 main/views.py:82
+msgid "Passwords do not match."
+msgstr "Las contraseñas no coinciden."
+
+#: main/views.py:75
+msgid "Verification code"
+msgstr "Código de verificación"
+
+#: main/views.py:110
+msgid "No account found for that phone."
+msgstr "No se encontró ninguna cuenta para ese número de teléfono."
+
+#: main/views.py:115
+#, python-format
+msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
+msgstr "Su código de restablecimiento es: %(otp)s. Expira en 10 minutos."
+
+#: main/views.py:118
+msgid "We sent a verification code to your phone."
+msgstr "Hemos enviado un código de verificación a su teléfono."
+
+#: main/views.py:121 main/views.py:167 main/views.py:218 main/views.py:244
+msgid "Please correct the errors below."
+msgstr "Por favor, corrija los errores a continuación."
+
+#: main/views.py:135
+msgid "Start by entering your phone number."
+msgstr "Comience ingresando su número de teléfono."
+
+#: main/views.py:143
+msgid "Invalid or expired code."
+msgstr "Código inválido o expirado."
+
+#: main/views.py:149
+msgid "Account not found. Please start over."
+msgstr "Cuenta no encontrada. Por favor, comience de nuevo."
+
+#: main/views.py:160
+msgid "Your password has been reset. You can now sign in."
+msgstr "Su contraseña ha sido restablecida. Ahora puede iniciar sesión."
+
+#: main/views.py:213
+msgid "Welcome back!"
+msgstr "¡Bienvenido de nuevo!"
+
+#: main/views.py:216
+msgid "Invalid phone or password."
+msgstr "Teléfono o contraseña inválidos."
+
+#: main/views.py:241
+msgid "Account created!"
+msgstr "¡Cuenta creada!"
+
+#: main/views.py:257
+msgid "You have been logged out."
+msgstr "Ha cerrado sesión."
+
+#: main/views.py:303
+msgid "Invalid phone format. Please enter a valid number."
+msgstr "Formato de teléfono inválido. Por favor, ingrese un número válido."
+
+#: main/views.py:309
+#, python-format
+msgid "No user found with phone %(phone)s."
+msgstr "No se encontró ningún usuario con el teléfono %(phone)s."
+
+#: main/views.py:325
+#, python-format
+msgid "Password reset for %(phone)s."
+msgstr "Contraseña restablecida para %(phone)s."
+
+#: templates/meta_search/includes/_header.html:60
+msgid "Get started"
+msgstr "Comenzar"
+
+#: templates/meta_search/index.html:24
+msgid "Experience The Magic Of Relaxation"
+msgstr "Experimenta la magia de la relajación"
+
+#: templates/meta_search/index.html:25
+msgid ""
+"Indulge in the epitome of coastal living as you discover the breathtaking "
+"beauty and tranquility of luxury."
+msgstr ""
+"Sumérgete en lo mejor de la vida costera mientras descubres la impresionante "
+"belleza y tranquilidad del lujo."
+
+#: templates/meta_search/index.html:34
+msgid "Trusted by over 25k+ people"
+msgstr "Con la confianza de más de 25,000 personas"
+
+#: templates/meta_search/index.html:35 templates/meta_search/index.html:71
+msgid "Explore Now"
+msgstr "Explorar ahora"
+
+#: templates/meta_search/index.html:55
+msgid "Premium Facilities"
+msgstr "Instalaciones premium"
+
+#: templates/meta_search/index.html:57
+msgid "Exclusive Sunset View"
+msgstr "Vista exclusiva al atardecer"
+
+#: templates/meta_search/index.html:57
+msgid "You witness the beauty of the world from your room"
+msgstr "Disfruta de la belleza del mundo desde tu habitación"
+
+#: templates/meta_search/index.html:58
+msgid "Integrated Tourist Area"
+msgstr "Área turística integrada"
+
+#: templates/meta_search/index.html:58
+msgid "Enhancing your travel experience"
+msgstr "Mejorando tu experiencia de viaje"
+
+#: templates/meta_search/index.html:59
+msgid "Nature-Inspired Pool"
+msgstr "Piscina inspirada en la naturaleza"
+
+#: templates/meta_search/index.html:59
+msgid "Serene swimming pool with a touch of paradise"
+msgstr "Piscina serena con un toque de paraíso"
+
+#: templates/meta_search/index.html:67
+msgid "Rate Apartments"
+msgstr "Calificar apartamentos"
+
+#: templates/meta_search/index.html:68
+msgid "Get to randomly rate apartments based on view and aesthetic"
+msgstr "Califica aleatoriamente apartamentos según la vista y la estética"
+
+#: templates/meta_search/index.html:69
+msgid "Get Rewarded"
+msgstr "Obtén recompensas"
+
+#: templates/meta_search/index.html:70
+msgid "Earn rewards instantly"
+msgstr "Gana recompensas al instante"
+
+#: templates/meta_search/index.html:81
+msgid "Clients Review"
+msgstr "Opiniones de clientes"
+
+#: templates/meta_search/index.html:82
+msgid "See some honest reviews from our users on the platform"
+msgstr "Vea algunas opiniones sinceras de nuestros usuarios en la plataforma"
+
+#: templates/meta_search/index.html:89
+msgid ""
+"Had a great experience using this for solid bookings. Customer service was "
+"top-notch."
+msgstr ""
+"Tuve una gran experiencia usando esto para reservas seguras. El servicio al "
+"cliente fue excelente."
+
+#: templates/meta_search/index.html:99
+msgid "Get your inspiration of luxury and get rewarded"
+msgstr "Inspírate con el lujo y obtén recompensas"
+
+#: templates/meta_search/index.html:100
+msgid "Earn new rewards at every step you take under true luxury."
+msgstr "Gana nuevas recompensas en cada paso que des bajo el verdadero lujo."
+
+#: templates/meta_search/index.html:101
+msgid "See More"
+msgstr "Ver más"
+
+#: templates/meta_search/signin.html:6
+msgid "Sign In - Expedia"
+msgstr ""
+
+#: templates/meta_search/signin.html:18 templates/meta_search/signin.html:19
+msgid "Expedia"
+msgstr ""
+
+#: templates/meta_search/signin.html:23 templates/meta_search/signin.html:94
+msgid "Sign In"
+msgstr ""
+
+#: templates/meta_search/signin.html:28
+#, fuzzy
+#| msgid "Welcome back!"
+msgid "Go back"
+msgstr "¡Bienvenido de nuevo!"
+
+#: templates/meta_search/signin.html:31
+msgid "Home"
+msgstr ""
+
+#: templates/meta_search/signin.html:41
+msgid "Welcome back, please sign in"
+msgstr ""
+
+#: templates/meta_search/signin.html:62
+msgid "Phone"
+msgstr ""
+
+#: templates/meta_search/signin.html:82
+#, fuzzy
+#| msgid "New password"
+msgid "Show/Hide password"
+msgstr "Nueva contraseña"
+
+#: templates/meta_search/signin.html:87
+msgid "Captcha"
+msgstr ""
+
+#: templates/meta_search/signin.html:97
+msgid "Don’t have an account?"
+msgstr ""
+
+#: templates/meta_search/signin.html:97
+msgid "Create one"
+msgstr ""
+
+#: templates/meta_search/signin.html:99
+#, fuzzy
+#| msgid "New password"
+msgid "Forgotten password?"
+msgstr "Nueva contraseña"

@@ -1,0 +1,322 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}Withdraw{% endblock %}
+{% block breadcrumb %}Home / my Wallet / Withdrawal{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'meta_search/withdrawal.css' %}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* currency button dropdown (right of amount) */
+    .wdw .currency-wrap{position:relative}
+    .wdw .currency-menu{
+      position:absolute; right:0; top:110%;
+      background:#fff; border:1px solid var(--line); border-radius:10px;
+      box-shadow:0 12px 28px rgba(0,0,0,.12);
+      padding:6px; min-width:140px; display:none; z-index:30;
+    }
+    .wdw .currency-menu .choice{
+      display:flex; align-items:center; gap:8px;
+      font-size:13px; padding:8px 10px; border-radius:8px; cursor:pointer;
+      position:relative;
+    }
+    .wdw .currency-menu .choice:hover{ background:#f8fafc }
+    .wdw .currency-menu input{ accent-color:#111827 }
+    .wdw .currency-wrap.open .currency-menu{ display:block }
+    /* Checkmark on selected currency */
+    .wdw .currency-menu .choice.selected::after{
+      content:"\f00c";
+      font-family:"Font Awesome 6 Free"; font-weight:900;
+      color:#10b981; font-size:14px; margin-left:auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<section class="wdw">
+  <div class="shell">
+
+    {% if method_verified %}
+      <div class="banner">
+        <i class="fa-solid fa-circle-check"></i>
+        Your withdrawal method is verified.
+      </div>
+    {% endif %}
+
+    <h1>Withdraw</h1>
+
+    {% if messages %}
+      <div class="flash" aria-live="polite">
+        {% for message in messages %}
+          <div class="alert {{ message.tags|default:'info' }}" role="alert">
+            {% if 'success' in message.tags %}
+              <i class="fa-solid fa-circle-check"></i>
+            {% elif 'error' in message.tags or 'danger' in message.tags %}
+              <i class="fa-solid fa-circle-xmark"></i>
+            {% elif 'warning' in message.tags %}
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            {% else %}
+              <i class="fa-solid fa-circle-info"></i>
+            {% endif %}
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="card">
+      <div class="inner grid">
+        <form method="post" action="{% url 'withdrawal' %}" class="wdw-form">
+          {% csrf_token %}
+
+          <!-- Hidden address id expected by the view -->
+          <input type="hidden" name="address_id" value="{{ selected.id|default:'' }}">
+
+          <!-- Amount -->
+          <div class="group">
+            <div class="section-title">Withdrawal</div>
+            <div class="muted" style="margin-bottom:10px">Amount</div>
+
+            <div class="amount-wrap">
+              <div class="ctrl">
+                <span class="prefix" id="fiatPrefix">{{ fiat_symbol|default:"€" }}</span>
+                <input
+                  type="number"
+                  name="amount"
+                  id="amountInput"
+                  value="{{ form.amount.value|default:'' }}"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  required>
+                <div class="btns">
+                  <button type="button" class="iconbtn" data-eye title="Show/Hide"><i class="fa-regular fa-eye"></i></button>
+
+                  <!-- Currency button + inline menu -->
+                  <div class="currency-wrap">
+                    <button type="button" class="iconbtn" id="currencyBtn" aria-haspopup="true" aria-expanded="false" title="Currency">
+                      <i id="currencyIcon" class="fa-solid {% if form.currency.value == 'USD' %}fa-dollar-sign{% elif form.currency.value == 'GBP' %}fa-sterling-sign{% else %}fa-euro-sign{% endif %}"></i>
+                    </button>
+                    <div class="currency-menu" id="currencyMenu" role="menu" aria-hidden="true">
+                      <label class="choice {% if form.currency.value == 'EUR' or not form.currency.value %}selected{% endif %}" data-symbol="€" data-code="EUR">
+                        <input type="radio" name="currency" value="EUR"
+                               {% if form.currency.value == "EUR" or not form.currency.value %}checked{% endif %}>
+                        EUR (Euro)
+                      </label>
+                      <label class="choice {% if form.currency.value == 'USD' %}selected{% endif %}" data-symbol="$" data-code="USD">
+                        <input type="radio" name="currency" value="USD"
+                               {% if form.currency.value == "USD" %}checked{% endif %}>
+                        USD (US Dollar)
+                      </label>
+                      <label class="choice {% if form.currency.value == 'GBP' %}selected{% endif %}" data-symbol="£" data-code="GBP">
+                        <input type="radio" name="currency" value="GBP"
+                               {% if form.currency.value == "GBP" %}checked{% endif %}>
+                        GBP (Pound)
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Min/Max display that updates when currency changes -->
+            <div class="muted" id="minMax" style="margin-top:8px">
+              Min €10 • Max €5,000 per request
+            </div>
+
+            {% if form.non_field_errors %}
+              <div class="err-row" style="margin-top:8px">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ form.non_field_errors|striptags }}
+              </div>
+            {% endif %}
+            {% if form.amount.errors %}
+              <div class="err-row" style="margin-top:6px">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ form.amount.errors|first }}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Address -->
+          <div class="group addr-wrap">
+            <div class="muted">Address</div>
+
+            {% if selected %}
+              <!-- Show the bound (verified/selected) address read-only -->
+              <div class="addr">
+                <input type="text" value="{{ selected.address }}" readonly aria-label="Bound wallet address">
+                <a href="{% url 'withdraw_add_address' %}" class="update-link">Update address</a>
+              </div>
+              <div class="muted" style="margin-top:4px">
+                Network: {{ selected.network|default:"TRC20" }}
+              </div>
+            {% else %}
+              <!-- No address yet: keep disabled input + Bind link + helper -->
+              <div class="addr {% if address_error %}error{% endif %}">
+                <input type="text" name="address" value="" placeholder="Bind your wallet address first" disabled>
+                <a href="{% url 'withdraw_add_address' %}" class="bind-link">Bind Wallet Address</a>
+              </div>
+
+              <div class="addr-actions">
+                <a href="{% url 'withdraw_add_address' %}"
+                   class="bind-help tooltip"
+                   tabindex="0"
+                   data-tip="You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste your wallet address → verify (email/SMS) → the address will be saved and auto-filled here.">
+                  <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+                  Bind wallet address?
+                </a>
+              </div>
+
+              {% if address_error %}
+                <div class="err-row">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  {{ address_error }}
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
+
+          <!-- Methods -->
+          <div class="group">
+            <div class="section-title">Withdrawal Method</div>
+            <div class="method">
+              <!-- Ethereum -->
+              <label class="opt {% if method == 'crypto' %}active{% endif %}">
+                <input type="radio" name="method" value="crypto" class="sr-only" {% if method == 'crypto' or not method %}checked{% endif %}>
+                <span class="bullet eth"><i class="fa-brands fa-ethereum" aria-hidden="true"></i></span>
+                <span>ETHEREUM</span>
+              </label>
+
+              <!-- USDT (TRC20) -->
+              <label class="opt usdt {% if method == 'usdt_trc20' %}active{% endif %}">
+                <input type="radio" name="method" value="usdt_trc20" class="sr-only" {% if method == 'usdt_trc20' %}checked{% endif %}>
+                <span class="bullet tether" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" role="img" focusable="false" aria-hidden="true">
+                    <circle cx="16" cy="16" r="16" fill="#26a17b"></circle>
+                    <path fill="#FFFFFF" d="M26 9.9c0-1-4.5-1.9-10-1.9S6 8.9 6 9.9c0 .8 2.7 1.5 6.5 1.8v2.7c-3.7.3-6.2 1-6.2 1.8 0 .8 2.5 1.5 6.2 1.8V24h4.9v-5.9c3.8-.3 6.6-1 6.6-1.9 0-.8-2.8-1.6-6.6-1.9V11.7C23.3 11.4 26 10.7 26 9.9z"/>
+                  </svg>
+                </span>
+                <span>USDT (TRC20)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="group">
+            <button class="submit" type="submit">WITHDRAW</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+  // Constants for fiat behavior (client-side UX only; server still validates)
+  const CURRENCY_META = {
+    EUR: { symbol: "€", icon: "fa-euro-sign",  min: 10,   max: 5000 },
+    USD: { symbol: "$", icon: "fa-dollar-sign", min: 10,   max: 5000 },
+    GBP: { symbol: "£", icon: "fa-sterling-sign", min: 10, max: 5000 }
+  };
+
+  // Currency dropdown interactions
+  (function(){
+    const btn = document.getElementById('currencyBtn');
+    const icon = document.getElementById('currencyIcon');
+    const wrap = btn?.closest('.currency-wrap');
+    const menu = document.getElementById('currencyMenu');
+    const prefix = document.getElementById('fiatPrefix');
+    const minMax = document.getElementById('minMax');
+    const amt = document.getElementById('amountInput');
+
+    if (!btn || !menu || !wrap || !prefix || !minMax || !amt || !icon) return;
+
+    function closeMenu(){ wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    function openMenu(){ wrap.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      wrap.classList.contains('open') ? closeMenu() : openMenu();
+    });
+
+    // Update UI when a currency is selected
+    function applyCurrency(code){
+      const meta = CURRENCY_META[code] || CURRENCY_META.EUR;
+
+      // prefix symbol
+      prefix.textContent = meta.symbol;
+
+      // icon on the button
+      icon.className = 'fa-solid ' + meta.icon;
+
+      // min/max text
+      minMax.textContent = `Min ${meta.symbol}${meta.min.toLocaleString()} • Max ${meta.symbol}${meta.max.toLocaleString()} per request`;
+
+      // input attributes + placeholder
+      amt.min = meta.min;
+      amt.max = meta.max;
+      amt.placeholder = `${meta.symbol}0.00`;
+    }
+
+    // handle choosing from menu
+    menu.querySelectorAll('label.choice').forEach(choice=>{
+      choice.addEventListener('click', ()=>{
+        // mark selected visually
+        menu.querySelectorAll('label.choice').forEach(c=>c.classList.remove('selected'));
+        choice.classList.add('selected');
+
+        // check the radio
+        const radio = choice.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+
+        // apply UI + close
+        const code = choice.getAttribute('data-code') || 'EUR';
+        applyCurrency(code);
+        closeMenu();
+      });
+    });
+
+    // init from current checked value
+    (function init(){
+      const checked = menu.querySelector('input[name="currency"]:checked');
+      const code = checked ? checked.value : 'EUR';
+      const selectedLabel = checked ? checked.closest('label.choice') : null;
+      if (selectedLabel){
+        menu.querySelectorAll('label.choice').forEach(c=>c.classList.remove('selected'));
+        selectedLabel.classList.add('selected');
+      }
+      applyCurrency(code);
+    })();
+
+    document.addEventListener('click', (e)=>{
+      if (!wrap.contains(e.target)) closeMenu();
+    });
+  })();
+
+  // Toggle method highlight (ETH / TRC20) + checkmark handled via CSS
+  document.querySelectorAll('.wdw .opt').forEach(label=>{
+    const input = label.querySelector('input[type="radio"]');
+    label.addEventListener('click', ()=>{
+      document.querySelectorAll('.wdw .opt').forEach(l=>l.classList.remove('active'));
+      label.classList.add('active');
+      if (input) input.checked = true;
+    });
+  });
+
+  // (Optional) show/hide amount – demo only
+  const eyeBtn = document.querySelector('.wdw [data-eye]');
+  if (eyeBtn){
+    eyeBtn.addEventListener('click', ()=>{
+      const el = document.querySelector('.wdw input[name="amount"]');
+      if (!el) return;
+      if (el.type === 'password') { el.type = 'number'; eyeBtn.innerHTML = '<i class="fa-regular fa-eye"></i>'; }
+      else { el.type = 'password'; eyeBtn.innerHTML = '<i class="fa-regular fa-eye-slash"></i>'; }
+    });
+  }
+</script>
+{% endblock %}

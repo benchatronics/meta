@@ -1,0 +1,129 @@
+/* Wallet page only */
+
+h1 {
+    font-size: 28px;
+    margin: 14px 0 18px;
+  }
+  
+  /* Wallet summary cards */
+  .wallet-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px; /* Added padding for breathing space */
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  
+  .summary-title {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  
+  .money {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  
+  .currency {
+    font-weight: 700;
+    font-size: 40px;
+  }
+  
+  .eye {
+    height: 36px;
+    width: 36px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  
+  /* Transactions section */
+  .section {
+    margin-top: 18px;
+  }
+  
+  .section .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .section-title {
+    font-weight: 600;
+  }
+  
+  .filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .select {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  thead th {
+    background: #f9fafb;
+    color: var(--muted);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  tbody td {
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .empty {
+    padding: 40px;
+    text-align: center;
+    color: #9aa1ad;
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .wallet-summary {
+      grid-template-columns: 1fr;
+    }
+  }
+  
