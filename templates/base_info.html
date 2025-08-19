@@ -1,0 +1,53 @@
+{% extends "base_user.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "info" %}{% endblock %}
+{% block breadcrumb %}Home / info{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'meta_search/settings.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<section class="settings-page">
+  <h1>Info</h1>
+
+  <div class="settings-grid">
+    <!-- Left: Info under-cover (tabs) -->
+    <aside class="tabs-card">
+      <ul class="tab-list">
+        <li class="tab-item {% if current_info == 'about' %}active{% endif %}">
+          <i class="fa-solid fa-circle-info"></i>
+          <a href="{% url 'info_page' 'about' %}">{% trans "About us" %}</a>
+        </li>
+        <li class="tab-item {% if current_info == 'contact' %}active{% endif %}">
+          <i class="fa-solid fa-address-book"></i>
+          <a href="{% url 'info_page' 'contact' %}">{% trans "Contact us" %}</a>
+        </li>
+        <li class="tab-item {% if current_info == 'help' %}active{% endif %}">
+          <i class="fa-solid fa-circle-question"></i>
+          <a href="{% url 'info_page' 'help' %}">{% trans "Help" %}</a>
+        </li>
+        <li class="tab-item {% if current_info == 'level' %}active{% endif %}">
+          <i class="fa-solid fa-trophy"></i>
+          <a href="{% url 'info_page' 'level' %}">{% trans "Level" %}</a>
+        </li>
+        <li class="tab-item {% if current_info == 'signin_reward' %}active{% endif %}">
+          <i class="fa-solid fa-gift"></i>
+          <a href="{% url 'info_page' 'signin_reward' %}">{% trans "Sign-in reward" %}</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Right: Per-info content goes here -->
+    <section class="card">
+      <div class="card-body">
+        {% block info_content %}{% endblock %}
+      </div>
+    </section>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}{% endblock %}

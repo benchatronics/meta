@@ -1,7 +1,22 @@
 {% extends "base_auth.html" %}
 
 {% block title %}Sign Up - Expedia{% endblock %}
+{% block body_class %}signup-page{% endblock %}
 {% block left_title %}Sign Up{% endblock %}
+
+{# Optional: inline safeguard so the gradient shows even if the global CSS isn't loaded yet #}
+{% block extra_css %}
+<style>
+  /* Signup-specific background with gradient fallback under the image */
+  body.signup-page .left{
+    background:
+      url("/static/meta_search/images/signupimg.png") center/cover no-repeat,
+      linear-gradient(160deg, #173B88 0%, #0b4da3 100%);
+    background-color: #0b4da3; /* solid fallback */
+  }
+</style>
+{% endblock %}
+
 {% block intro %}<p class="intro">Hello friend, let’s get you registered</p>{% endblock %}
 
 {% block form_fields %}

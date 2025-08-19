@@ -1,0 +1,28 @@
+{# templates/meta_search/info_page.html #}
+{% extends "base_info.html" %}
+{% load i18n %}
+
+{% block info_content %}
+ 
+  {# Optional announcements #}
+  {% if announces %}
+    <div class="info-announcements">
+      {% for a in announces %}
+        <article class="info-announcement">
+          <h4 class="info-annc-title">{{ a.title }}</h4>
+          <div class="info-annc-body">{{ a.body|linebreaks }}</div>
+        </article>
+      {% endfor %}
+      <div class="info-annc-actions">
+        <a class="info-btn outline" href="{% url 'announcements' %}">{% trans "View all announcements" %}</a>
+      </div>
+    </div>
+  {% endif %}
+
+  <article class="info-article">
+    <h3 class="info-heading">{{ page.title }}</h3>
+    <div class="info-bodytext">
+      {{ page.body|linebreaks }}
+    </div>
+  </article>
+{% endblock %}

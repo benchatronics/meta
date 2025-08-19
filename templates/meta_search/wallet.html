@@ -11,55 +11,139 @@
 {% block content %}
   <h1>My Wallet</h1>
 
-  <section class="card wallet">
+  {# Optional one-time banner when bonus granted #}
+  {% if request.user.wallet.trial_bonus_at %}
+    <div class="alert success" role="status" style="margin:10px 0;">
+      🎁 Trial bonus added: <strong>{{ request.user.wallet.bonus_eur }}</strong>.
+    </div>
+  {% endif %}
+
+  <section class="card wallet" aria-labelledby="wallet-summary-title">
+    <h2 id="wallet-summary-title" class="sr-only">Wallet Summary</h2>
     <div class="wallet-summary">
+
+      <!-- Cash balance -->
       <div class="summary-item">
-        <div class="summary-title">Current Balance</div>
+        <div class="summary-title">Cash Balance</div>
         <div class="money">
-          <div class="currency">€ 0.00</div>
-          <div class="eye" title="Show/Hide">👁️</div>
+          <div class="currency js-money" data-value="{{ request.user.wallet.cash_eur|default:'€ 0.00' }}">••••</div>
+          <button class="eye" type="button" title="Show/Hide" aria-label="Show or hide balance">👁️</button>
         </div>
         <div class="actions">
-        </button>
           <button class="btn primary" onclick="window.location.href='{% url 'deposit' %}'">
-            Deposit <span style="font-size:14px">↗</span></button>
+            Deposit <span aria-hidden="true" style="font-size:14px">↗</span>
+          </button>
           <button class="btn" onclick="window.location.href='{% url 'withdrawal' %}'">
-            Withdraw <span style="font-size:14px">↘</span>
-        </button>
-        
+            Withdraw <span aria-hidden="true" style="font-size:14px">↘</span>
+          </button>
         </div>
       </div>
+
+      <!-- Trial bonus -->
       <div class="summary-item">
         <div class="summary-title">Trial Bonus</div>
         <div class="money">
-          <div class="currency">€ 300.00</div>
+          <div class="currency js-money" data-value="{{ request.user.wallet.bonus_eur|default:'€ 0.00' }}">••••</div>
+          <button class="eye" type="button" title="Show/Hide" aria-label="Show or hide bonus">👁️</button>
         </div>
       </div>
+
     </div>
   </section>
 
-  <section class="section">
+  <section class="section txns" aria-labelledby="transactions-title">
     <div class="header">
-      <div class="section-title">Transactions History</div>
+      <h2 id="transactions-title" class="section-title">Transactions History</h2>
+
+      <!-- Filter -->
       <div class="filter">
-        <div class="select">All ▾</div>
+        <label for="tx-filter" class="sr-only">Filter</label>
+        <select id="tx-filter" class="select">
+          <option value="all" selected>All</option>
+          <option value="cash">Cash</option>
+          <option value="bonus">Bonus</option>
+          <option value="deposit">Deposit</option>
+          <option value="withdrawal">Withdrawal</option>
+        </select>
       </div>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Date</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>State</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td colspan="5" class="empty">No Transaction History</td>
-        </tr>
-      </tbody>
-    </table>
+
+    <!-- Responsive table wrapper -->
+    <div class="table-wrap">
+      <table class="tx-table">
+        <thead>
+          <tr>
+            <th scope="col">Kind</th>
+            <th scope="col">Bucket</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Memo</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% with txns=request.user.wallet.txns.all %}
+            {% if txns %}
+              {% for t in txns %}
+                <tr>
+                  <td data-label="Kind">{{ t.kind }}</td>
+                  <td data-label="Bucket">{% if t.bucket %}{{ t.bucket }}{% else %}CASH{% endif %}</td>
+                  <td data-label="Amount">{{ t.amount_eur }}</td>
+                  <td data-label="Memo">{{ t.memo }}</td>
+                  <td data-label="Date">{{ t.created_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="5" class="empty">No Transaction History</td>
+              </tr>
+            {% endif %}
+          {% endwith %}
+        </tbody>
+      </table>
+    </div>
   </section>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+  // Mask/unmask balances
+  (function(){
+    function toggle(moneyEl){
+      const cur = moneyEl.querySelector('.currency');
+      if (!cur) return;
+      const hidden = cur.getAttribute('data-hidden') === '1';
+      if (hidden){
+        cur.textContent = cur.getAttribute('data-value') || '€ 0.00';
+        cur.setAttribute('data-hidden','0');
+      }else{
+        cur.textContent = '••••';
+        cur.setAttribute('data-hidden','1');
+      }
+    }
+    // initialize masked
+    document.querySelectorAll('.js-money').forEach(el=>{
+      el.setAttribute('data-hidden','1');
+      if(!el.getAttribute('data-value')) el.setAttribute('data-value','€ 0.00');
+    });
+    // bind eyes
+    document.querySelectorAll('.money .eye').forEach(btn=>{
+      btn.addEventListener('click', ()=> toggle(btn.closest('.money')));
+    });
+
+    // (Optional) simple filter hook (no backend)
+    const sel = document.getElementById('tx-filter');
+    if (sel){
+      sel.addEventListener('change', () => {
+        const val = sel.value;
+        document.querySelectorAll('.tx-table tbody tr').forEach(tr => {
+          if (val === 'all') { tr.hidden = false; return; }
+          const bucket = (tr.querySelector('[data-label="Bucket"]')?.textContent || '').toLowerCase();
+          const kind   = (tr.querySelector('[data-label="Kind"]')?.textContent || '').toLowerCase();
+          tr.hidden = !(bucket.includes(val) || kind.includes(val));
+        });
+      });
+    }
+  })();
+</script>
 {% endblock %}

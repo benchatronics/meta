@@ -1,204 +1,26 @@
-{% extends "base.html" %}
-{% load static i18n %}
-
-{% block title %}Expedia - Magic of Relaxation{% endblock %}
-
-{% block content %}
-
-<!-- =================== HERO =================== -->
-<section class="hero">
-  <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="hero-clip" aria-hidden="true">
-    <defs>
-      <clipPath id="heroClip" clipPathUnits="objectBoundingBox">
-        <path d="M0,0 H1 V0.85 C1,1,0.75,1,0.6,0.92 C0.45,0.84,0.4,0.84,0.3,0.92 C0.15,1,0,1,0,0 Z" />
-      </clipPath>
-    </defs>
-  </svg>
-
-  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="{% trans 'Seaside resort at dusk' %}" class="hero-img" />
-
-  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="" class="floating-img float-right-top" aria-hidden="true" />
-  <img src="{% static 'meta_search/images/hero-side2.png' %}" alt="" class="floating-img float-right-bottom" aria-hidden="true" />
-
-  <div class="hero-text-overlay">
-    <h1>{% trans "Experience The Magic Of Relaxation" %}</h1>
-    <p>{% trans "Indulge in the epitome of coastal living as you discover the breathtaking beauty and tranquility of luxury." %}</p>
+<div id="compat-gate" style="display:none;position:fixed;inset:0;background:#0b1220;color:#e6edf3;z-index:99999;display:grid;place-items:center">
+  <div style="max-width:520px;background:#0f1a2b;border:1px solid rgba(255,255,255,.08);padding:22px 20px;border-radius:14px;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial">
+    <h1 style="margin:0 0 8px;font-size:18px">Unsupported browser</h1>
+    <p style="margin:0 0 8px;color:#9fb0c2">
+      Please update to a modern browser (latest Chrome, Edge, Safari, or Firefox with the latest extension ) to continue.
+    </p>
   </div>
-
-  <div class="hero-cta-box">
-    <div class="avatars">
-      <img src="{% static 'meta_search/user1.png' %}" alt="{% trans 'Customer avatar 1' %}">
-      <img src="{% static 'meta_search/user2.png' %}" alt="{% trans 'Customer avatar 2' %}">
-      <img src="{% static 'meta_search/user3.png' %}" alt="{% trans 'Customer avatar 3' %}">
-    </div>
-    <span class="trust-text">{% trans "Trusted by over 25k+ people" %}</span>
-    <button class="btn">{% trans "Explore Now" %} 🔍</button>
-  </div>
-</section>
-
-<!-- =================== PARTNERS =================== -->
-<section class="partners" aria-label="{% trans 'Travel partners' %}">
-  <img src="{% static 'meta_search/airbnb.png' %}" alt="Airbnb">
-  <img src="{% static 'meta_search/expedia.png' %}" alt="Expedia">
-  <img src="{% static 'meta_search/trivago.png' %}" alt="Trivago">
-  <img src="{% static 'meta_search/booking.png' %}" alt="Booking.com">
-</section>
-
-<!-- =================== FEATURES (collage + stepper) =================== -->
-<section class="features">
-  <!-- Collage -->
-  <div class="image-group" aria-hidden="true">
-    <img src="{% static 'meta_search/images/poolrelaxation.png' %}" class="img1" alt="">
-    <img src="{% static 'meta_search/images/hero-side2.png' %}" class="img2" alt="">
-    <img src="{% static 'meta_search/images/overlookingvalley.png' %}" class="img3" alt="">
-  </div>
-
-  <!-- Text / Stepper -->
-  <div class="text-group">
-    <h3>{% trans "Premium Facilities" %}</h3>
-    <ol class="facility-list">
-      <li>
-        <strong>{% trans "Exclusive Sunset View" %}</strong><br>
-        {% trans "You witness the beauty of the world from your room" %}
-      </li>
-      <li>
-        <strong>{% trans "Integrated Tourist Area" %}</strong><br>
-        {% trans "Enhancing your travel experience" %}
-      </li>
-      <li>
-        <strong>{% trans "Nature-Inspired Pool" %}</strong><br>
-        {% trans "Serene swimming pool with a touch of paradise" %}
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- =================== REWARD (card + flipping carousel) =================== -->
-<section class="reward" id="reward">
-  <!-- Left: card -->
-  <div class="reward-card" aria-labelledby="rewardTitle">
-    <h3 id="rewardTitle">{% trans "Get Rewarded" %}</h3>
-
-    <div class="reward-item">
-      <svg class="ri-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 17.27-5.18 3.05 1.4-5.99-4.64-4.03 6.1-.52L12 3l2.32 6.78 6.1.52-4.64 4.03 1.4 5.99z"/></svg>
-      <div class="ri-text">
-        <h4>{% trans "Rate Apartments" %}</h4>
-        <p>{% trans "Give random objective ratings based on view and aesthetics." %}</p>
-      </div>
-    </div>
-
-    <div class="reward-item">
-      <svg class="ri-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 3H7a2 2 0 0 0-2 2v14l7-3 7 3V5a2 2 0 0 0-2-2z"/></svg>
-      <div class="ri-text">
-        <h4>{% trans "Get Rewarded" %}</h4>
-        <p>{% trans "Earn instant rewards from the apartments you rate." %}</p>
-      </div>
-    </div>
-
-    <button class="btn reward-cta">{% trans "Explore Now" %} →</button>
-  </div>
-
-  <!-- Right: flipping carousel -->
-  <div class="reward-carousel" role="region" aria-label="{% trans 'Featured apartments carousel' %}">
-    <button class="car-btn prev" aria-label="{% trans 'Previous slide' %}">‹</button>
-    <button class="car-btn next" aria-label="{% trans 'Next slide' %}">›</button>
-
-    <ul class="car-slides">
-      <li class="car-slide is-active">
-        <img src="{% static 'meta_search/images/overlookingvalley.png' %}" alt="{% trans 'Modern apartment interior' %}">
-      </li>
-      <li class="car-slide">
-        <img src="{% static 'meta_search/images/poolrelaxation.png' %}" alt="{% trans 'Resort pool at sunset' %}">
-      </li>
-      <li class="car-slide">
-        <img src="{% static 'meta_search/images/hero-side6.png' %}" alt="{% trans 'Scenic valley view' %}">
-      </li>
-    </ul>
-
-    <div class="car-dots" aria-hidden="true">
-      <button class="is-active" data-slide="0"></button>
-      <button data-slide="1"></button>
-      <button data-slide="2"></button>
-    </div>
-  </div>
-</section>
-
-<!-- =================== REVIEWS =================== -->
-<section class="reviews">
-  <div class="review-text">
-    <h2>{% trans "Clients Review" %}</h2>
-    <p>{% trans "See some honest reviews from our users on the platform" %}</p>
-  </div>
-
-  <div class="client-wrapper">
-    <div class="client">
-      <img src="{% static 'meta_search/client.png' %}" alt="{% trans 'Client' %}">
-      <blockquote>
-        {% trans "Had a great experience using this for solid bookings. Customer service was top-notch." %}<br>
-        <strong>— James Lee</strong>
-      </blockquote>
-    </div>
-  </div>
-</section>
-
-<!-- =================== CTA =================== -->
-<section class="cta">
-  <div class="cta-text">
-    <h2>{% trans "Get your inspiration of luxury and get rewarded" %}</h2>
-    <p>{% trans "Earn new rewards at every step you take under true luxury." %}</p>
-    <button class="btn">{% trans "See More" %}</button>
-  </div>
-  <div class="cta-image">
-    <img src="{% static 'meta_search/luxury.jpg' %}" alt="{% trans 'Luxury inspiration' %}">
-  </div>
-</section>
-
-{% endblock %}
-
-{% block extra_js %}
+</div>
 <script>
-  // Minimal flipping carousel
   (function () {
-    const root = document.querySelector('.reward-carousel');
-    if (!root) return;
+    const ok =
+      'fetch' in window &&
+      'AbortController' in window &&
+      'crypto' in window &&
+      'IntersectionObserver' in window &&
+      CSS && CSS.supports?.('selector(:has(*))') === true &&
+      CSS.supports?.('container-type: inline-size') === true; // very new
 
-    const slides = Array.from(root.querySelectorAll('.car-slide'));
-    const dots   = Array.from(root.querySelectorAll('.car-dots button'));
-    const prev   = root.querySelector('.car-btn.prev');
-    const next   = root.querySelector('.car-btn.next');
-
-    let i = 0, busy = false;
-
-    function go(n) {
-      if (busy) return;
-      busy = true;
-
-      const cur = slides[i];
-      i = (n + slides.length) % slides.length;
-      const nxt = slides[i];
-
-      cur.classList.remove('is-active');
-      cur.classList.add('flip-out');
-      nxt.classList.add('flip-in');
-
-      dots.forEach((d, idx) => d.classList.toggle('is-active', idx === i));
-
-      setTimeout(() => {
-        cur.classList.remove('flip-out');
-        nxt.classList.remove('flip-in');
-        nxt.classList.add('is-active');
-        busy = false;
-      }, 550);
+    if (!ok) {
+      document.getElementById('compat-gate').style.display = 'grid';
+      // optionally hide your app root here
+      const root = document.getElementById('app') || document.body;
+      root.style.visibility = 'hidden';
     }
-
-    prev.addEventListener('click', () => go(i - 1));
-    next.addEventListener('click', () => go(i + 1));
-    dots.forEach((d, idx) => d.addEventListener('click', () => go(idx)));
-
-    // Auto-play
-    let t = setInterval(() => go(i + 1), 5000);
-    root.addEventListener('mouseenter', () => clearInterval(t));
-    root.addEventListener('mouseleave', () => (t = setInterval(() => go(i + 1), 5000)));
   })();
 </script>
-{% endblock %}

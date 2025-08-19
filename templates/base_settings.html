@@ -1,0 +1,47 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+{% block breadcrumb %}Home / setting / {{ current_tab|default:"profile" }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'meta_search/settings.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<section class="settings-page">
+  <h1>Setting</h1>
+
+  <div class="settings-grid">
+    <!-- Left: Settings under-cover (tabs) -->
+    <aside class="tabs-card">
+      <ul class="tab-list">
+        <li class="tab-item {% if current_tab == 'profile' %}active{% endif %}">
+          <i class="fa-regular fa-user"></i>
+          <a href="{% url 'profile_settings' %}">Profile</a>
+        </li>
+        <li class="tab-item {% if current_tab == 'language' %}active{% endif %}">
+          <i class="fa-solid fa-language"></i>
+          <a href="{% url 'language_setting' %}">Language</a>
+        </li>
+        <li class="tab-item {% if current_tab == 'change_password' %}active{% endif %}">
+          <i class="fa-solid fa-lock"></i>
+          <a href="{% url 'setting_change_password' %}">Change password</a>
+        </li>
+        <li class="tab-item {% if current_tab == 'withdrawal_password' %}active{% endif %}">
+          <i class="fa-solid fa-key"></i>
+          <a href="">Withdrawal password</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Right: Per-tab content goes here -->
+    <section class="card">
+      <div class="card-body">
+        {% block settings_content %}{% endblock %}
+      </div>
+    </section>
+  </div>
+</section>
+{% endblock %}

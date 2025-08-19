@@ -20,25 +20,21 @@
     <!-- Sidebar (fixed menu) -->
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-button" title="Dashboard">↗</div>
-        <div class="brand-name"> </div>
-
-        <!-- Collapse toggle (dash menu behavior INSIDE the sidebar) -->
-        <button class="sb-toggle" id="sbToggle" aria-label="Collapse sidebar" title="Collapse">
-          <!-- chevrons -->
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
+        <a class="brand-button" href="{% url 'user_dashboard' %}" title="Dashboard">
+          <img src="{% static 'meta_search/images/logo_emoji.png' %}" alt="Dashboard" style="width:20px; height:20px; vertical-align:middle;">
+        </a>
+        <div class="brand-name"></div>
+        {# NOTE: toggle moved to the TOPBAR breadcrumb — keep this area clean #}
       </div>
 
       <!-- User info (avatar + meta) -->
       <div class="profile" title="{{ request.user.get_full_name|default:request.user.username }}">
         <div class="avatar">
+          <!-- SAFEST VERSION: server-side choose a valid src (no onerror loop) -->
           <img
-            src="{% firstof user_avatar request.user.profile.avatar.url static 'images/avatar-placeholder.jpg' %}"
+            src="{% if user_avatar %}{{ user_avatar }}{% elif request.user.profile.avatar %}{{ request.user.profile.avatar.url }}{% else %}{% static 'meta_search/images/avatar-placeholder.png' %}{% endif %}"
             alt="User avatar"
-            onerror="this.src='{% static 'meta_search/images/avatar-placeholder.png' %}'">
+            width="48" height="48" loading="lazy">
           <span class="status-dot"></span>
         </div>
         <div class="meta">
@@ -68,11 +64,11 @@
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
           <span class="label">My Wallet</span>
         </a>
-        <a class="link {% if active_page == 'settings' %}active{% endif %}" href="#" title="Settings">
+        <a class="link {% if active_page == 'settings' %}active{% endif %}" href="{% url 'profile_settings' %}" title="Settings">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-3 3 3 3"/><path d="M9 18h9a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v9"/></svg>
           <span class="label">Settings</span>
         </a>
-        <a class="link {% if active_page == 'info' %}active{% endif %}" href="#" title="Info">
+        <a class="link {% if active_page == 'info' %}active{% endif %}" href="{% url 'info_index' %}" title="Info">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
           <span class="label">Info</span>
         </a>
@@ -88,13 +84,60 @@
 
     <!-- Main panel -->
     <main class="main">
-      <!-- Single topbar (no duplicates) -->
+      <!-- Topbar -->
       <div class="topbar">
         <div class="breadcrumb">
           <span class="crumb-home">🏠</span>
-          <span>{% block breadcrumb %}Home / setting / my wallet{% endblock %}</span>
+
+          {# >>> MOBILE+DESKTOP TOGGLE lives here, BESIDE HOME <<< #}
+          <button class="sb-toggle" id="sbToggle" aria-label="Menu / Collapse" title="Menu">
+            <!-- default hamburger; JS swaps to chevrons when collapsed -->
+            ☰
+          </button>
+          
+          {# hiding breadcrumb on mobile #}
+          <span class="dreadcrumb">
+            {% block breadcrumb %}Home / setting / my wallet{% endblock %}
+          </span>
+
+          <style>
+            
+            @media (max-width: 620px){
+              /* Ensure the container is a positioning context */
+              .topbar .breadcrumb { position: relative; }
+            
+              /* Absolutely center the logo block */
+              .topbar .breadcrumb .dreadcrumb{
+                position: absolute;
+                left: 420%;
+                top: 50%;
+                transform: translate(-50%, -50%); /* center both axes */
+                width: 120px;
+                height: 28px;
+                font-size: 0;         /* hide breadcrumb text */
+                color: transparent;
+                line-height: 0;
+                pointer-events: none; /* don't block clicks on the menu/home */
+              }
+            
+              .topbar .breadcrumb .dreadcrumb::before{
+                content: "";
+                display: block;
+                width: 100%;
+                height: 100%;
+                background: url("{% static 'meta_search/logos/arrow-icon3.png' %}") no-repeat center;
+                background-size: contain;
+              }
+            }
+            
+            
+          </style>
         </div>
-        <div class="bell" title="Notifications">🔔</div>
+
+        <div class="bell" title="Announcements">
+          <a href="{% url 'announcements' %}" aria-label="Announcements">🔔</a>
+          {# Optional badge: <span class="badge">3</span> #}
+        </div>
       </div>
 
       <!-- Page content -->
@@ -104,34 +147,119 @@
 
   {% block extra_scripts %}
   <script>
-    // Collapse behavior (dash menu inside sidebar)
+    // ===== Collapse & Mobile Off-canvas =====
     const appEl = document.getElementById('app');
     const sbToggle = document.getElementById('sbToggle');
 
+    function isMobile(){ return window.matchMedia('(max-width: 900px)').matches; }
+
     function setCollapsed(collapsed){
       appEl.classList.toggle('collapsed', !!collapsed);
-      // flip chevron direction
-      const svg = sbToggle.querySelector('svg');
-      if (!svg) return;
-      if (collapsed) {
-        svg.innerHTML = '<polyline points="9 18 15 12 9 6"></polyline>'; // chevron >>
-      } else {
-        svg.innerHTML = '<polyline points="15 18 9 12 15 6"></polyline>'; // chevron <<
+      // Update icon to chevrons (desktop) for visual feedback
+      const svgLike = sbToggle; // we used text icon; can swap if you prefer SVG
+      if (svgLike){
+        if (collapsed) {
+          svgLike.textContent = '»'; // collapsed
+        } else {
+          svgLike.textContent = '«'; // expanded
+        }
       }
       sbToggle.setAttribute('title', collapsed ? 'Expand' : 'Collapse');
       try { localStorage.setItem('sb_collapsed', collapsed ? '1' : '0'); } catch(e){}
     }
 
-    // restore last state
+    // Restore last state (desktop only)
     try {
       const saved = localStorage.getItem('sb_collapsed');
-      if (saved === '1') setCollapsed(true);
+      if (saved === '1' && !isMobile()) setCollapsed(true);
     } catch(e){}
 
-    sbToggle?.addEventListener('click', () => {
-      setCollapsed(!appEl.classList.contains('collapsed'));
+    // Toggle behavior
+    sbToggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isMobile()){
+        appEl.classList.toggle('nav-open');  // open/close off-canvas
+        return;
+      }
+      setCollapsed(!appEl.classList.contains('collapsed')); // desktop collapse
     });
+
+    // Close mobile menu when clicking outside the sidebar (backdrop/pseudo-element)
+    document.addEventListener('click', (e) => {
+      if (!appEl.classList.contains('nav-open')) return;
+      const sidebar = document.getElementById('sidebar');
+      if ((sidebar && sidebar.contains(e.target)) || e.target.closest('#sbToggle')) return;
+      appEl.classList.remove('nav-open');
+    });
+
+    // ESC closes mobile menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') appEl.classList.remove('nav-open');
+    });
+
+    // Auto-close menu after tapping a nav link on mobile
+    document.querySelectorAll('.nav .link').forEach(a=>{
+      a.addEventListener('click', ()=>{
+        if (isMobile()) appEl.classList.remove('nav-open');
+      });
+    });
+
+    // Keep collapsed state only for desktop; reset when entering mobile
+    const mq = window.matchMedia('(max-width: 900px)');
+    if (mq.addEventListener) {
+      mq.addEventListener('change', () => {
+        if (mq.matches) {
+          appEl.classList.remove('collapsed');   // use off-canvas in mobile
+          // Reset icon to hamburger on mobile
+          if (sbToggle) sbToggle.textContent = '☰';
+        } else {
+          appEl.classList.remove('nav-open');     // ensure off-canvas is closed on desktop
+          try { if (localStorage.getItem('sb_collapsed') === '1') setCollapsed(true); } catch(e){}
+        }
+      });
+    }
   </script>
+
+  <!-- ======== MOBILE BOTTOM NAV (Home/Tasks/Reward/Wallet) ======== -->
+  <nav class="mobile-bottom-nav" role="tablist" aria-label="Primary">
+    <!-- Home -->
+    <a class="{% if active_page == 'home' %}active{% endif %}" href="{% url 'user_dashboard' %}" title="Home" role="tab" aria-selected="{% if active_page == 'home' %}true{% else %}false{% endif %}">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9"/>
+      </svg>
+      <span>Home</span>
+      <span class="dot" aria-hidden="true"></span>
+    </a>
+
+    <!-- Tasks -->
+    <a class="{% if active_page == 'task' %}active{% endif %}" href="#" title="Tasks" role="tab" aria-selected="{% if active_page == 'task' %}true{% else %}false{% endif %}">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8h10M7 12h6"/>
+      </svg>
+      <span>Tasks</span>
+      <span class="dot" aria-hidden="true"></span>
+    </a>
+
+    <!-- Reward -->
+    <a class="{% if active_page == 'rewards' %}active{% endif %}" href="#" title="Reward" role="tab" aria-selected="{% if active_page == 'rewards' %}true{% else %}false{% endif %}">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m12 17 3 3 7-7"/><path d="M20 10V7a2 2 0 0 0-2-2H6a2 2 0 0 0 2 2v10a2 2 0 0 0 2 2h6"/>
+      </svg>
+      <span>Reward</span>
+      <span class="dot" aria-hidden="true"></span>
+    </a>
+
+    <!-- Wallet -->
+    <a class="{% if active_page == 'wallet' %}active{% endif %}" href="{% url 'wallet' %}" title="Wallet" role="tab" aria-selected="{% if active_page == 'wallet' %}true{% else %}false{% endif %}">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+      </svg>
+      <span>Wallet</span>
+      <span class="dot" aria-hidden="true"></span>
+    </a>
+  </nav>
+  <!-- ======== /MOBILE BOTTOM NAV ======== -->
+
   {% endblock %}
 </body>
 </html>

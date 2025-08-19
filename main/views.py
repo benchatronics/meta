@@ -6,7 +6,7 @@ import hashlib
 import json
 from decimal import Decimal
 from io import BytesIO
-
+from django.db import IntegrityError, transaction
 import phonenumbers
 from django import forms
 from django.conf import settings
@@ -40,9 +40,12 @@ from .forms import (
 from .models import (
     Wallet, PayoutAddress, WithdrawalRequest, AddressType, Currency,
     DepositAddress, DepositRequest, Network,
-    Hotel, Favorite
+    Hotel, Favorite, InfoPage, Announcement
 )
 from .services import confirm_deposit
+
+from django.contrib.auth import update_session_auth_hash
+from .forms import ChangePasswordForm
 
 
 # -----------------------------
@@ -200,6 +203,10 @@ def index(request):
 
 @csrf_protect
 def signin(request):
+    # If user is already signed in, don't show the signin page
+    if request.user.is_authenticated:
+        messages.info(request, _("You're already signed in."))
+        return redirect('user_dashboard')
     """
     Phone-based login using LoginForm (country_code + phone_number + password).
     - Validates & normalizes phone to E.164 in the form.
@@ -248,6 +255,9 @@ def signin(request):
 
 
 def signup_view(request):
+    if request.user.is_authenticated:
+        messages.info(request, _("You're already signed in."))
+        return redirect('user_dashboard')
     """
     Signup view passing request into the form (for IP & country capture).
     Auto-logs in after successful signup.
@@ -696,18 +706,56 @@ def withdrawal(request):
 
 @login_required
 def add_address(request):
-    """Create ETH/TRC20 payout address; returns to withdrawal with it preselected."""
+    """
+    Replace/update flow, resilient to existing duplicates.
+    Keeps the newest record for (user, address_type) and deletes the rest,
+    then updates that survivor.
+    """
     if request.method == "POST":
-        form = AddressForm(request.POST)
+        form = AddressForm(request.user, request.POST)
         if form.is_valid():
-            addr = form.save(commit=False)
-            addr.user = request.user
-            addr.save()
-            messages.success(request, "Payout address added.")
-            nxt = request.GET.get("next") or reverse("withdrawal")
-            return redirect(f"{nxt}?address={addr.id}")
+            cd = form.cleaned_data
+            try:
+                with transaction.atomic():
+                    # Lock all rows for this user+network to avoid races
+                    qs = (PayoutAddress.objects
+                          .select_for_update()
+                          .filter(user=request.user, address_type=cd["address_type"])
+                          .order_by("-created_at", "-id"))
+
+                    if qs.exists():
+                        # Keep the newest as primary; delete other duplicates
+                        primary = qs.first()
+                        dup_ids = list(qs.values_list("pk", flat=True))[1:]
+                        if dup_ids:
+                            PayoutAddress.objects.filter(pk__in=dup_ids).delete()
+
+                        # Update the survivor
+                        primary.address = cd["address"]
+                        primary.label = cd.get("label", "") or ""
+                        primary.is_verified = True
+                        primary.save()
+                        addr, created = primary, False
+                    else:
+                        # No existing — create fresh
+                        addr = PayoutAddress.objects.create(
+                            user=request.user,
+                            address_type=cd["address_type"],
+                            address=cd["address"],
+                            label=cd.get("label", "") or "",
+                            is_verified=True,
+                        )
+                        created = True
+
+                messages.success(request, "Payout address added." if created else "Payout address updated.")
+                nxt = request.GET.get("next") or reverse("withdrawal")
+                return redirect(f"{nxt}?address={addr.id}")
+
+            except IntegrityError:
+                messages.error(request, "Could not save your payout address due to a conflict. Please try again.")
     else:
-        form = AddressForm()
+        form = AddressForm(request.user)
+
     return render(request, "meta_search/address_add.html", {"form": form})
 
 
@@ -756,11 +804,9 @@ def deposit(request):
     )
 
 
-
-
 @login_required
 def deposit_pay(request, pk):
-    """Payment page: shows QR, address, amount, reference, and verify button."""
+    """Payment page with 20s TTL + Telegram escalation."""
     dep = get_object_or_404(DepositRequest, pk=pk, user=request.user)
     payload = dep.pay_to.address
 
@@ -769,18 +815,43 @@ def deposit_pay(request, pk):
     try:
         import qrcode
         img = qrcode.make(payload)
-        buf = BytesIO()
-        img.save(buf, format="PNG")
+        buf = BytesIO(); img.save(buf, format="PNG")
         qr_b64 = base64.b64encode(buf.getvalue()).decode("ascii")
         qr_data_uri = f"data:image/png;base64,{qr_b64}"
     except Exception:
         qr_data_uri = None
 
-    return render(request, "deposit_pay.html", {
+    support_telegram_url = getattr(settings, "SUPPORT_TELEGRAM_URL", "https://t.me/benchatronics")
+
+    # ---- TTL: force 20 seconds (for 20s) ----
+    ttl_seconds = 20
+
+    waited_seconds = None
+    show_telegram_now = False
+    if dep.status == "awaiting_review" and dep.verified_at:
+        delta = timezone.now() - dep.verified_at
+        waited_seconds = int(delta.total_seconds())
+        show_telegram_now = waited_seconds >= ttl_seconds
+
+    return render(request, "meta_search/deposit_pay.html", {
         "dep": dep,
         "symbol": _symbol(dep.currency),
         "qr_data_uri": qr_data_uri,
+        "support_telegram_url": support_telegram_url,
+        "telegram_ttl_seconds": ttl_seconds,  # JS reads this
+        "show_telegram_now": show_telegram_now,
     })
+
+
+@login_required
+def deposit_status(request, pk):
+    """Lightweight status poller for the pay page."""
+    dep = get_object_or_404(DepositRequest, pk=pk, user=request.user)
+    return JsonResponse({
+        "status": dep.status,
+        "verified_at": dep.verified_at.isoformat() if dep.verified_at else None,
+    })
+
 
 
 @login_required
@@ -858,3 +929,107 @@ def deposit_webhook_confirm(request):
 
     confirmed_now = confirm_deposit(dep)
     return JsonResponse({"ok": True, "confirmed": confirmed_now, "status": dep.status})
+
+
+def settings_profile(request):
+    return render(request, "meta_search/profile_settings.html", {
+        "active_page": "settings",
+        "current_tab": "profile",
+    })
+
+#language 
+def language_settings(request):
+    return render(request, "meta_search/language.html", {
+        "active_page": "settings",
+        "current_tab": "language",
+    })
+
+
+@csrf_protect
+@login_required
+def settings_change_password(request):
+    """
+    Fully dynamic change-password:
+    - country_code + phone_number (must match account)
+    - captcha (django-simple-captcha)
+    - old_password / new_password1 / new_password2
+    - messages + ?next redirect (same pattern as signin/signup)
+    """
+    redirect_to = request.GET.get('next') or request.POST.get('next') or 'settings_change_password'
+
+    if request.method == 'POST':
+        form = ChangePasswordForm(user=request.user, data=request.POST, request=request)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # keep session
+            messages.success(request, _("Password updated."))
+            return redirect(redirect_to)
+        messages.error(request, _("Please correct the errors below."))
+    else:
+        form = ChangePasswordForm(user=request.user, request=request)
+
+    return render(request, 'meta_search/settings_change_password.html', {
+        'form': form,
+        'next': redirect_to,
+        'active_page': 'settings',
+        'current_tab': 'change_password',
+    })
+
+
+"""
+def info_page(request, key):
+    page = get_object_or_404(InfoPage, key=key, is_published=True)
+    # Show a small stack of current announcements at the top of every info page
+    announces = Announcement.objects.active()[:5]
+    return render(request, "meta_search/info_page.html", {
+        "page": page,
+        "announces": announces,
+        "active_page": "info",  #sidebar highlights this
+    })
+"""
+
+    
+def announcements_list(request):
+    items = Announcement.objects.active()
+    return render(request, "meta_search/announcements.html", {
+        "items": items,
+        "active_page": "info",
+    })
+
+
+INFO_KEYS = {"about", "contact", "help", "level", "signin_reward"}
+
+def _announces_top3():
+    # Works whether you added a custom .active() manager or not
+    try:
+        return Announcement.objects.active()[:3]
+    except Exception:
+        return Announcement.objects.order_by("-created_at")[:3]
+
+@login_required
+def info_index(request):
+    """
+    Clicking 'Info' should open 'About us' by default.
+    We simply redirect to /info/about/ so base_info.html renders with the left menu active.
+    """
+    return redirect("info_page", key="about")
+
+@login_required
+def info_page(request, key: str):
+    """
+    Render a single Info page (About, Contact, Help, Level, Sign-in reward)
+    inside base_info.html. Left menu is handled by the template; we pass
+    `current_info` to light up the active item.
+    """
+    page = get_object_or_404(InfoPage, key=key, is_published=True)
+    announces = _announces_top3()
+
+    # Only highlight known left-menu items; other keys still render but won't highlight.
+    current_info = key if key in INFO_KEYS else None
+
+    return render(request, "meta_search/info_page.html", {
+        "page": page,
+        "announces": announces,
+        "active_page": "info",   # highlights 'Info' in base_user sidebar (if you use it)
+        "current_info": current_info,
+    })

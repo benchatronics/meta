@@ -228,3 +228,98 @@ ul.errorlist{
 
 /* Optional: ensure the overlay never blocks clicks */
 .left::after{ pointer-events: none; }
+
+
+/* =========================================================
+   AUTH — Per-page backgrounds + gradient fallback
+
+   ========================================================= */
+
+/* Default/fallback for any auth page without a body class */
+.left{
+  background:
+    url("/static/meta_search/images/siginupimg.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important; /* solid fallback */
+}
+
+/* Signup */
+body.signup-page .left{
+  background:
+    url("/static/meta_search/images/siginupimg.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important;
+}
+
+/* Signin */
+body.signin-page .left{
+  background:
+    url("/static/meta_search/images/signinimg.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important;
+}
+
+/* Reset Password — Step 1 */
+body.reset-step1-page .left{
+  background:
+    url("/static/meta_search/images/reset-step1.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important;
+}
+
+/* Reset Password — Step 2 */
+body.reset-step2-page .left{
+  background:
+    url("/static/meta_search/images/reset-step1.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important;
+}
+
+/* Ensure the overlay doesn’t block clicks (belt & suspenders) */
+.left::after{ pointer-events: none; }
+
+/* Mobile: always keep Home visible, even if earlier rules hide it */
+@media (max-width:640px){
+  .home-link{ display:inline-flex !important; align-items:center; }
+}
+
+/* ===========================================
+   Raise the form card on mobile/short screens
+   =========================================== */
+
+/* Phones (portrait & most small tablets) */
+@media (max-width:640px){
+  /* Give the hero a bit more height so overlap doesn’t crop */
+  .left{ min-height: 360px; }
+
+  /* Pull the card up so users see it immediately */
+  .signup-wrapper{
+    top: -120px;              /* was -70px */
+    margin: 0 auto 10px;      /* tighter bottom gap */
+  }
+}
+
+/* Very short viewports (landscape phones / small devices) */
+@media (max-height:560px) and (max-width:960px){
+  .left{ min-height: 280px; }   /* still enough room behind the card */
+  .signup-wrapper{
+    top: -140px;                /* pull higher when height is tight */
+    margin: 0 auto 6px;
+  }
+}
+
+/* Ultra-narrow phones */
+@media (max-width:320px){
+  .signup-wrapper{
+    top: -90px;                 /* slightly less aggressive for tiny width */
+  }
+}
+
+/* Tall modern phones: scale the lift with viewport height */
+@media (min-width:360px) and (max-width:640px) and (min-height:720px){
+  .signup-wrapper{
+    top: clamp(-120px, -18vh, -80px);
+  }
+}
+
+

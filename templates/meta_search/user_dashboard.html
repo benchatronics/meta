@@ -62,6 +62,68 @@
       <button type="submit" class="search-btn">Search</button>
     </form>
 
+    {# ==== MOBILE-ONLY Canva header + filters (non-destructive) ==== #}
+<div class="mxp-mobile-only" aria-label="Mobile header & filters">
+  <!-- Greeting + avatar (links to profile) -->
+  <section class="mxp-greeting">
+    <a href="{% url 'profile_settings' %}" class="mxp-avatar-link" aria-label="View profile">
+      <img
+        class="mxp-avatar"
+        src="{% firstof user_avatar request.user.profile.avatar.url %}"
+        alt="Your avatar"
+        onerror="this.src='{% static 'meta_search/images/avatar-placeholder.png' %}'">
+    </a>
+    <div class="mxp-greet-text">
+      <h1 class="mxp-hello">
+        Good morning, {{ request.user.phone|default:'User' }} <span class="mxp-wave" role="img" aria-label="wave">👋</span>
+      </h1>
+      <p class="mxp-sub">Let’s do some task and earn reward</p>
+      <a href="{% url 'profile_settings' %}" class="mxp-profile-link">View Profile</a>
+    </div>
+  </section>
+
+  <!-- Filters bar: pill + round search -->
+  <section class="mxp-filters-bar">
+    <button id="mxpFilterToggle" type="button" class="mxp-filters-pill" aria-expanded="false" aria-controls="mxpTaskFilterForm">
+      <span class="left">
+        <i class="fa-solid fa-sliders"></i>
+        Filters
+      </span>
+      <i class="fa-solid fa-chevron-down mxp-caret" aria-hidden="true"></i>
+    </button>
+    <!-- Round search submits the mobile form below -->
+    <button class="mxp-search-btn" type="submit" form="mxpTaskFilterForm" aria-label="Search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </section>
+
+  <!-- Collapsible panel with a MOBILE COPY of the form (desktop keeps your original) -->
+  <form id="mxpTaskFilterForm" class="mxp-filter-panel" method="get" action="">
+    <div class="pill">
+      <i class="fa-solid fa-location-dot"></i>
+      <input type="text" name="location" placeholder="Location" value="{{ request.GET.location|default:'' }}">
+    </div>
+    <div class="pill">
+      <i class="fa-regular fa-calendar"></i>
+      <input type="date" name="date" value="{{ request.GET.date|default:'' }}">
+    </div>
+    <div class="pill pill-select">
+      <i class="fa-regular fa-star"></i>
+      <select name="rating" id="mxp_rating" onchange="this.form.submit()">
+        <option value="">Rating</option>
+        <option value="3"   {% if request.GET.rating == '3' %}selected{% endif %}>3+</option>
+        <option value="3.5" {% if request.GET.rating == '3.5' %}selected{% endif %}>3.5+</option>
+        <option value="4"   {% if request.GET.rating == '4' %}selected{% endif %}>4+</option>
+        <option value="4.5" {% if request.GET.rating == '4.5' %}selected{% endif %}>4.5+</option>
+      </select>
+      <i class="fa-solid fa-chevron-down caret"></i>
+    </div>
+    {# no internal Search button here; the round button above submits this form #}
+  </form>
+</div>
+{# ==== /MOBILE-ONLY block ==== #}
+
+
     <!-- TABS -->
     <div class="tabs" id="tabs">
       <div class="tab {% if active_tab == 'recommended' %}active{% endif %}" data-tab="recommended">Recommended</div>
@@ -198,4 +260,18 @@
     });
   })();
 </script>
+
+<script>
+  (function(){
+    const toggle = document.getElementById('mxpFilterToggle');
+    const panel  = document.getElementById('mxpTaskFilterForm');
+    if (!toggle || !panel) return;
+
+    toggle.addEventListener('click', function(){
+      const open = panel.classList.toggle('open');
+      this.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }, {passive:true});
+  })();
+</script>
+
 {% endblock %}

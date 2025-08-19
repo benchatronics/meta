@@ -2,8 +2,24 @@
 {% load i18n %}
 
 {% block title %}{% trans "Sign In - Expedia" %}{% endblock %}
+{% block body_class %}signin-page{% endblock %}
 {% block left_title %}{% trans "Sign In" %}{% endblock %}
-{% block intro %}<p class="intro">{% trans "Welcome back, please sign in" %}</p>{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Signin-specific background with gradient fallback under the image */
+  body.signin-page .left{
+    background:
+      url("/static/meta_search/images/signinimg.png") center/cover no-repeat,
+      linear-gradient(160deg, #173B88 0%, #0b4da3 100%);
+    background-color:#0b4da3; /* solid fallback */
+  }
+</style>
+{% endblock %}
+
+{% block intro %}
+  <p class="intro">{% trans "Welcome back, please sign in" %}</p>
+{% endblock %}
 
 {% block form_attrs %}action="{% url 'signin' %}"{% endblock %}
 

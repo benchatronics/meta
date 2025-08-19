@@ -1,0 +1,46 @@
+{# templates/meta_search/info_index.html #}
+{% extends "base_info.html" %}
+{% load i18n %}
+
+{% block info_content %}
+  <h3 class="info-heading">{% trans "Info Center" %}</h3>
+  <p class="info-sub">{% trans "Pick a section on the left, or use the quick links below." %}</p>
+
+  {# Optional announcements #}
+  {% if announces %}
+    <div class="info-announcements">
+      {% for a in announces %}
+        <article class="info-announcement">
+          <h4 class="info-annc-title">{{ a.title }}</h4>
+          <div class="info-annc-body">{{ a.body|linebreaks }}</div>
+        </article>
+      {% endfor %}
+      <div class="info-annc-actions">
+        <a class="info-btn outline" href="{% url 'announcements' %}">{% trans "View all announcements" %}</a>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="info-quick-links">
+    <a class="info-btn {% if current_info|default:'about' == 'about' %}is-active{% endif %}"
+       href="{% url 'info_page' 'about' %}">
+      <i class="fa-solid fa-circle-info"></i> {% trans "About us" %}
+    </a>
+    <a class="info-btn {% if current_info == 'contact' %}is-active{% endif %}"
+       href="{% url 'info_page' 'contact' %}">
+      <i class="fa-solid fa-address-book"></i> {% trans "Contact us" %}
+    </a>
+    <a class="info-btn {% if current_info == 'help' %}is-active{% endif %}"
+       href="{% url 'info_page' 'help' %}">
+      <i class="fa-solid fa-circle-question"></i> {% trans "Help" %}
+    </a>
+    <a class="info-btn {% if current_info == 'level' %}is-active{% endif %}"
+       href="{% url 'info_page' 'level' %}">
+      <i class="fa-solid fa-trophy"></i> {% trans "Level" %}
+    </a>
+    <a class="info-btn {% if current_info == 'signin_reward' %}is-active{% endif %}"
+       href="{% url 'info_page' 'signin_reward' %}">
+      <i class="fa-solid fa-gift"></i> {% trans "Sign-in reward" %}
+    </a>
+  </div>
+{% endblock %}

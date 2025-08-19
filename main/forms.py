@@ -5,15 +5,14 @@ from django.utils.translation import gettext_lazy as _
 from captcha.fields import CaptchaField
 import phonenumbers
 import requests
+from django.contrib.auth.forms import PasswordChangeForm
 from decimal import Decimal
 from .models import PayoutAddress, AddressType, Currency, Network
 from .constants import MIN_EUR, MAX_EUR, FEE_PCT, FEE_FIXED_EUR
 from .models import CustomUser
 from .country_codes import COUNTRY_CODES  # (dial, display, min_len, max_len)
-
-
-
-
+from django.core.exceptions import ValidationError
+import re
 
 # Helper: map dial -> (display, min_len, max_len)
 _DIAL_RULES = {dial: (disp, lo, hi) for dial, disp, lo, hi in COUNTRY_CODES}
@@ -292,21 +291,49 @@ MAX_EUR = 5000
 FEE_PCT = Decimal("0.015")
 FEE_FIXED_EUR = Decimal("1.00")
 
+
+ETH_RE = re.compile(r'^0x[a-fA-F0-9]{40}$')
+TRC20_RE = re.compile(r'^T[1-9A-HJ-NP-Za-km-z]{33}$')
 class AddressForm(forms.ModelForm):
     class Meta:
         model = PayoutAddress
         fields = ["address_type", "address", "label"]
 
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user  # needed to assign on save
+
     def clean_address(self):
         addr_type = self.cleaned_data.get("address_type")
         addr = (self.cleaned_data.get("address") or "").strip()
+
         if addr_type == AddressType.ETH:
-            if not (addr.startswith("0x") and len(addr) == 42):
-                raise forms.ValidationError("Invalid Ethereum address.")
+            if not ETH_RE.match(addr):
+                raise forms.ValidationError("Invalid Ethereum address (must start with 0x and be 42 characters).")
+            # normalize ETH to lowercase after 0x
+            addr = '0x' + addr[2:].lower()
+
         elif addr_type == AddressType.TRC20:
-            if not (addr.startswith("T") and 30 <= len(addr) <= 50):
-                raise forms.ValidationError("Invalid TRC20 address.")
+            if not TRC20_RE.match(addr):
+                raise forms.ValidationError("Invalid TRC20 address (starts with T and is 34 characters).")
+
         return addr
+
+    def clean(self):
+        # No duplicate check here — the view will replace/update existing entry.
+        return super().clean()
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        obj.user = self.user
+        # optional: keep normalization here too, if model.save doesn't already do it
+        if obj.address_type == AddressType.ETH and obj.address.startswith('0x') and len(obj.address) == 42:
+            obj.address = '0x' + obj.address[2:].lower()
+        if commit:
+            obj.save()
+        return obj
+
+
 """
 #fixed currency to euro
 class WithdrawalForm(forms.Form):
@@ -381,11 +408,109 @@ class DepositForm(forms.Form):
         return amt
 
 
-class AddressForm(forms.ModelForm):
-    class Meta:
-        model = PayoutAddress
-        fields = ["address_type", "address", "label"]
-        widgets = {
-            "address": forms.TextInput(attrs={"class": "pill-input"}),
-            "label": forms.TextInput(attrs={"class": "pill-input"}),
-        }
+
+# Reuse your COUNTRY_CODES / _DIAL_RULES
+COUNTRY_CODE_CHOICES = [(dial, disp) for dial, disp, _, _ in COUNTRY_CODES]
+
+class ChangePasswordForm(PasswordChangeForm):
+    """
+    Dynamic change-password:
+    - country_code + phone_number (normalized to E.164)
+    - captcha (django-simple-captcha)
+    - old_password / new_password1 / new_password2 (PasswordChangeForm)
+    """
+    country_code = forms.ChoiceField(
+        choices=COUNTRY_CODE_CHOICES,
+        widget=forms.Select(attrs={'class': 'country-select'}),
+        label=_("Country code"),
+    )
+    phone_number = forms.CharField(
+        max_length=20,
+        widget=forms.TextInput(attrs={
+            'placeholder': _("Enter your phone number"),
+            'autocomplete': 'tel',
+            'class': 'cc-input',
+        }),
+        label=_("Phone number"),
+    )
+    captcha = CaptchaField(label=_("I am not a robot"))
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)   # parity with your SignupForm
+        super().__init__(*args, **kwargs)
+
+        # Prefill from user.phone if present
+        stored = getattr(self.user, "phone", None) or getattr(self.user, "phone_number", None)
+        if stored and isinstance(stored, str) and stored.startswith("+"):
+            try:
+                pn = phonenumbers.parse(stored, None)
+                cc = f"+{pn.country_code}"
+                national = re.sub(r"\D+", "", str(pn.national_number))
+                if cc in dict(COUNTRY_CODE_CHOICES):
+                    self.fields["country_code"].initial = cc
+                self.fields["phone_number"].initial = national
+            except Exception:
+                pass
+
+        # UX hints for password fields
+        for name in ("old_password", "new_password1", "new_password2"):
+            if name in self.fields:
+                self.fields[name].widget.attrs.update({
+                    "placeholder": _("Enter your password"),
+                    "class": "pwd-input",
+                    "autocomplete": "current-password" if name == "old_password" else "new-password",
+                })
+
+    def _normalize_to_e164(self, country_dial: str, raw: str) -> str:
+        cleaned = []
+        for ch in (raw or "").strip():
+            if ch.isdigit():
+                cleaned.append(ch)
+            elif ch == '+' and not cleaned:
+                cleaned.append(ch)
+        number = ''.join(cleaned)
+
+        if not number.startswith('+'):
+            number = f"{country_dial}{number.lstrip('0')}"
+        if number.startswith(country_dial + '0'):
+            number = country_dial + number[len(country_dial):].lstrip('0')
+
+        try:
+            parsed = phonenumbers.parse(number, None)
+        except phonenumbers.NumberParseException:
+            raise forms.ValidationError(_("Invalid phone number format."))
+
+        if not phonenumbers.is_possible_number(parsed):
+            raise forms.ValidationError(_("This phone number is not possible for the selected country."))
+        if not phonenumbers.is_valid_number(parsed):
+            raise forms.ValidationError(_("This phone number is not valid for the selected country."))
+
+        return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)
+
+    def clean(self):
+        cleaned = super().clean()
+        dial = cleaned.get("country_code")
+        raw = cleaned.get("phone_number")
+
+        if dial and raw:
+            # Optional length hint like your Login/Signup
+            disp, lo, hi = _DIAL_RULES.get(dial, (None, None, None))
+            local_digits = ''.join(ch for ch in raw if ch.isdigit())
+            if lo and hi and not (lo <= len(local_digits) <= hi):
+                self.add_error('phone_number', _(
+                    "Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
+                ) % {"lo": lo, "hi": hi, "country": disp})
+                return cleaned
+
+            try:
+                normalized = self._normalize_to_e164(dial, raw)
+            except forms.ValidationError as e:
+                self.add_error('phone_number', e)
+                return cleaned
+
+            cleaned["phone"] = normalized
+            user_phone = getattr(self.user, "phone", None) or getattr(self.user, "phone_number", None)
+            if user_phone and str(user_phone) != normalized:
+                self.add_error('phone_number', _("Phone does not match your account."))
+
+        return cleaned

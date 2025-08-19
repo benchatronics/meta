@@ -18,6 +18,16 @@ DEPOSIT_WEBHOOK_SECRET = os.getenv(
 )
 
 
+#telegram channel for verification
+# settings.py
+SUPPORT_TELEGRAM_URL = "https://t.me/benchatronics"
+TELEGRAM_VERIFY_TTL_MINUTES = 1
+
+#trial bonus , it can be reset here for only new users
+TRIAL_BONUS_ENABLED = True
+TRIAL_BONUS_EUR = 300    # easy to change later (e.g., 0 to disable without removing the feature)
+
+
 
 # Base paths
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +36,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-2x^94vgug#2-*q6&-(bfy^s)!an^je)r(m=(*ouk#)g@62-ul0"
 DEBUG = True
 ALLOWED_HOSTS = [
-    "10.129.154.86",
+    "10.224.34.19",
     "scamperlinks.pythonanywhere.com",
     "localhost",
     "127.0.0.1",

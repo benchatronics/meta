@@ -1,0 +1,54 @@
+{% extends "base_settings.html" %}
+{% load i18n %}
+
+{% block title %}Settings — Language{% endblock %}
+{% block breadcrumb %}Home / setting / language{% endblock %}
+
+{% block settings_content %}
+<h3>{% trans "Language" %}</h3>
+<div class="sub">{% trans "Select your language." %}</div>
+
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as avail_codes %}
+{% get_language_info_list for avail_codes as langs %}
+
+<form method="post" action="{% url 'set_language' %}">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
+  <div class="lang-grid">
+    {% for l in langs %}
+      <button type="submit"
+              name="language"
+              value="{{ l.code }}"
+              class="lang-pill {% if l.code == LANGUAGE_CODE %}selected{% endif %}">
+        {# Same flag mapping style you use in the header #}
+        {% if l.code == 'fr' %}🇫🇷
+        {% elif l.code == 'es' or l.code == 'es-MX' or l.code == 'es-AR' %}🇪🇸
+        {% elif l.code == 'de' %}🇩🇪
+        {% elif l.code == 'it' %}🇮🇹
+        {% elif l.code == 'pt' %}🇵🇹
+        {% elif l.code == 'ar' %}🇸🇦
+        {% elif l.code == 'zh-hans' or l.code == 'zh' %}🇨🇳
+        {% elif l.code == 'ja' %}🇯🇵
+        {% elif l.code == 'ko' %}🇰🇷
+        {% elif l.code == 'ru' %}🇷🇺
+        {% elif l.code == 'nl' %}🇳🇱
+        {% elif l.code == 'pl' %}🇵🇱
+        {% elif l.code == 'fi' %}🇫🇮
+        {% elif l.code == 'sv' %}🇸🇪
+        {% elif l.code == 'no' %}🇳🇴
+        {% elif l.code == 'bg' %}🇧🇬
+        {% elif l.code == 'uk' %}🇺🇦
+        {% elif l.code == 'en-US' %}🇺🇸
+        {% else %}🇬🇧{% endif %}
+        <span class="flag"></span>
+        <span>{{ l.name_local }}</span>
+        {% if l.code != l.name %}
+          <span style="color:#777;margin-left:6px;">({{ l.name }})</span>
+        {% endif %}
+      </button>
+    {% endfor %}
+  </div>
+</form>
+{% endblock %}

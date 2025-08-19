@@ -1,59 +1,262 @@
 {% extends "base_user.html" %}
 {% load static %}
+
 {% block title %}Pay Deposit{% endblock %}
 {% block breadcrumb %}Home / my Wallet / Deposit / Pay{% endblock %}
+
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/deposit.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'meta_search/deposit_pay.css' %}">
 {% endblock %}
+
 {% block content %}
-<section class="dep">
+<section class="pay-scope">
   <div class="shell">
-    <h1>Pay Deposit</h1>
-    <div class="card"><div class="inner pay-grid">
-      <div class="left">
-        <div class="section-title">Scan to Pay</div>
-        <div class="qrbox">
-          {% if qr_data_uri %}
-            <img src="{{ qr_data_uri }}" alt="QR code">
-          {% else %}
-            <div class="qr-fallback">QR Unavailable</div>
-          {% endif %}
-        </div>
-        <div class="muted">Network: <strong>{{ dep.get_network_display }}</strong></div>
+   
+    {% if messages %}
+      <div class="alerts" role="status" aria-live="polite">
+        {% for message in messages %}
+          <div class="alert {{ message.tags|default:'info' }}">{{ message }}</div>
+        {% endfor %}
       </div>
-      <div class="right">
-        <div class="row"><div class="label">Amount</div><div class="value">{{ symbol }} {{ dep.amount|floatformat:2 }}</div></div>
-        <div class="row"><div class="label">Reference</div><div class="value mono">#{{ dep.reference }}</div></div>
-        <div class="row">
-          <div class="label">Wallet Address</div>
-          <div class="value addr">
-            <span id="payAddr">{{ dep.pay_to.address }}</span>
-            <button class="copy" data-clip="#payAddr"><i class="fa-regular fa-copy"></i> Copy</button>
+    {% endif %}
+
+    <section class="pay-card">
+      <header class="pay-head">
+        <h2>Payment details</h2>
+        <a class="change-method" href="{% url 'deposit' %}">Change payment method</a>
+      </header>
+
+      <div class="pay-body">
+        <div class="row-top">
+          <div class="asset">
+            {% if dep.network == "TRC20" %}
+              <span class="token usdt">T</span><span class="asset-name">USDT</span>
+            {% elif dep.network == "ETH" %}
+              <span class="token eth" aria-label="Ethereum">Ξ</span><span class="asset-name">Ethereum</span>
+            {% else %}
+              <span class="token eth">Ξ</span><span class="asset-name">{{ dep.get_network_display }}</span>
+            {% endif %}
+          </div>
+
+          <div class="amount-wrap">
+            <span id="amountText">{{ symbol }} {{ dep.amount|floatformat:2 }}</span>
+            <button class="copy" type="button" data-copy="#amountText" aria-label="Copy amount">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
           </div>
         </div>
-        <form method="post" action="{% url 'wallet:deposit_verify' dep.id %}">{% csrf_token %}
-          <button class="submit" type="submit">I’ve Paid – Verify</button>
-        </form>
-        <div class="muted" style="margin-top:8px">We’ll check the network and update your balance when confirmed.</div>
+
+        <div class="divider"></div>
+
+        <div class="grid">
+          <div>
+            <div class="qr-box">
+              {% if qr_data_uri %}
+                <img src="{{ qr_data_uri }}" alt="QR code">
+              {% else %}
+                <div id="qrcode"></div>
+              {% endif %}
+            </div>
+            <!-- Show network name here -->
+            <div class="qr-hint">Scan to pay · {{ dep.get_network_display }}</div>
+          </div>
+
+          <!-- Right details + timing payloads -->
+          <div class="right"
+               data-ttl-sec="{{ telegram_ttl_seconds|default:20 }}"
+               {% if dep.verified_at %}data-verified-at="{{ dep.verified_at|date:'c' }}"{% endif %}
+               data-symbol="{{ symbol }}"
+               data-amount="{{ dep.amount|floatformat:2 }}"
+               data-ref="{{ dep.reference }}"
+               data-network="{{ dep.get_network_display }}"
+               data-tg-url="{{ support_telegram_url }}">
+
+            <div class="pair"><div class="label">Network</div><div class="value">{{ dep.get_network_display }}</div></div>
+            <div class="pair"><div class="label">Amount</div><div class="value" id="amountText2">{{ symbol }} {{ dep.amount|floatformat:2 }}</div></div>
+
+            <div class="pair" style="align-items:start">
+              <div class="label" style="padding-top:4px">Address</div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div id="addr" class="mono">{{ dep.pay_to.address }}</div>
+                <button class="copy" type="button" data-copy="#addr" aria-label="Copy address">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Reference with copy -->
+            <div class="pair">
+              <div class="label">Reference</div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <div id="refText" class="value mono">#{{ dep.reference }}</div>
+                <button class="copy" type="button" data-copy="#refText" aria-label="Copy reference">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+                </button>
+              </div>
+            </div>
+
+            {% if dep.status == "awaiting_payment" %}
+              <form id="verifyForm" method="post" action="{% url 'deposit_verify' dep.id %}" novalidate>
+                {% csrf_token %}
+                <button class="pay-btn" id="verifyBtn" type="submit">I’ve Paid — Verify</button>
+              </form>
+              <div class="eta">We’ll check the network and update your balance when confirmed.</div>
+
+            {% elif dep.status == "awaiting_review" %}
+              {% if show_telegram_now %}
+                <a id="verifyNowLink"
+                   class="pay-btn"
+                   href="{{ support_telegram_url }}"
+                   target="_blank" rel="noopener noreferrer"
+                   data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me.">Verify now</a>
+                <div class="quick-hint">Need quick approval? Use <strong>Verify now</strong>.</div>
+              {% else %}
+                <button class="pay-btn" type="button" id="verifyingBtn" disabled><span class="spinner" aria-hidden="true"></span>Verifying…</button>
+                <a id="verifyNowLink"
+                   class="pay-btn"
+                   href="{{ support_telegram_url }}"
+                   target="_blank" rel="noopener noreferrer"
+                   data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me."
+                   style="display:none;">Verify now</a>
+                <div class="eta" id="eta"></div>
+                <div class="quick-hint" id="quickHint">Need quick approval? You can use <strong>Verify now</strong>.</div>
+              {% endif %}
+
+            {% elif dep.status == "failed" %}
+              <div class="alert error">Payment failed{% if dep.failure_reason %}: {{ dep.failure_reason }}{% endif %}.</div>
+              <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Try again</a>
+
+            {% elif dep.status == "draft" %}
+              <div class="alert info">This deposit is a draft.</div>
+              <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Continue to deposit</a>
+
+            {% elif dep.status == "completed" or dep.status == "confirmed" or dep.status == "credited" or dep.status == "success" %}
+              <div class="alert success">Thanks! Recieved We’ll verify the payment shortly.</div>
+              <a href="{% url 'wallet' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Go to Wallet</a>
+
+            {% else %}
+              <div class="alert info">Status: {{ dep.status }}</div>
+            {% endif %}
+          </div>
+        </div>
       </div>
-    </div></div>
+    </section>
   </div>
+
+  <div class="toast" id="toast">Copied</div>
 </section>
 {% endblock %}
+
 {% block extra_scripts %}
-{{ block.super }}
 <script>
-  document.querySelectorAll('.dep .copy').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const sel = btn.getAttribute('data-clip');
-      const el = document.querySelector(sel);
-      if (!el) return;
-      navigator.clipboard.writeText(el.textContent.trim()).then(()=>{
-        btn.innerHTML='<i class="fa-solid fa-check"></i> Copied';
-        setTimeout(()=>btn.innerHTML='<i class="fa-regular fa-copy"></i> Copy', 1200);
-      });
+  // Scope root
+  const scope = document.querySelector('.pay-scope');
+
+  // Copy + toast
+  function copyFrom(selector){
+    const el = scope.querySelector(selector); if(!el) return;
+    const text = (el.textContent||el.innerText).trim();
+    navigator.clipboard.writeText(text).then(()=>{
+      const t = scope.querySelector('#toast');
+      t.classList.add('show'); clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=>t.classList.remove('show'),1400);
     });
+  }
+  scope.querySelectorAll('.copy').forEach(btn=>{
+    btn.addEventListener('click',()=> copyFrom(btn.getAttribute('data-copy')));
   });
+
+  // Verify (awaiting_payment) UX
+  (function(){
+    const f = scope.querySelector('#verifyForm'); const b = scope.querySelector('#verifyBtn');
+    if(f&&b){ f.addEventListener('submit', ()=>{
+      b.disabled = true; b.innerHTML = '<span class="spinner" aria-hidden="true"></span>Verifying…'; b.setAttribute('aria-busy','true');
+    }, {passive:true}); }
+  })();
+
+  // Local QR fallback if server QR missing
+  (function(){
+    const box = scope.querySelector('#qrcode'); if(!box) return;
+    function QRBitBuffer(){this.buffer=[];this.length=0;}
+    QRBitBuffer.prototype.put=function(num,len){for(let i=0;i<len;i++) this.putBit(((num>>(len-i-1))&1)==1)};
+    QRBitBuffer.prototype.putBit=function(b){this.buffer.push(b?1:0);this.length++};
+    function QRSimple(data){this.data=unescape(encodeURIComponent(data));this.size=29;this.modules=Array(this.size).fill(0).map(()=>Array(this.size).fill(null));this._finders();this._timing();this._data();}
+    QRSimple.prototype._finders=function(){const pts=[[0,0],[this.size-7,0],[0,this.size-7]];for(const [x,y] of pts){for(let r=-1;r<=7;r++)for(let c=-1;c<=7;c++){const xx=x+c,yy=y+r;if(xx<0||yy<0||xx>=this.size||yy>=this.size) continue;const on=(r===0||r===6||c===0||c===6)||(r>=2&&r<=4&&c>=2&&c<=4);this.modules[yy][xx]=on;}}};
+    QRSimple.prototype._timing=function(){for(let i=8;i<this.size-8;i++){this.modules[6][i]=(i%2===0);this.modules[i][6]=(i%2===0);}};
+    QRSimple.prototype._data=function(){const buf=new QRBitBuffer();buf.put(4,4);buf.put(this.data.length,8);for(let i=0;i<this.data.length;i++) buf.put(this.data.charCodeAt(i),8);for(let t=0;t<4;t++) buf.put(0,1);let dir=-1,bit=0;for(let col=this.size-1; col>0; col-=2){if(col===6) col--;for(let r0=0;r0<this.size;r0++){const r=dir>0?r0:(this.size-1-r0);for(let c=0;c<2;c++){if(this.modules[r][col-c]!==null) continue;this.modules[r][col-c]=(buf.buffer[bit++]||0)?1:0;}}dir*=-1;}};
+    QRSimple.prototype.renderTo=function(el,scale){scale=4;const n=this.size,s=n*scale;const cvs=document.createElement('canvas');cvs.width=cvs.height=s;const ctx=cvs.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,s,s);ctx.fillStyle='#000';for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(this.modules[r][c]) ctx.fillRect(c*scale,r*scale,scale,scale);el.innerHTML='';el.appendChild(cvs);};
+    const addr=(scope.querySelector('#addr')?.textContent||'').trim();
+    if(addr) try{ new QRSimple(addr).renderTo(box,4); }catch(e){ box.innerHTML='<small style="color:#d00">QR error</small>'; }
+  })();
+
+  // Awaiting_review: countdown + JSON polling + swap + new-tab open + persistent hint
+  (function(){
+    const right = scope.querySelector('.right'); if(!right) return;
+    const verifyingBtn  = scope.querySelector('#verifyingBtn');
+    const verifyNowLink = scope.querySelector('#verifyNowLink');
+    const eta           = scope.querySelector('#eta');
+
+    const ttlSec = parseInt(right.dataset.ttlSec||'20',10);
+    const sinceMs = Date.parse(right.dataset.verifiedAt||'')||Date.now();
+    const leftSec = ()=>Math.max(0, ttlSec - Math.floor((Date.now()-sinceMs)/1000));
+    const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+    // Countdown text
+    if(eta && verifyingBtn){
+      const tick=()=>{ const l=leftSec(); eta.textContent = l ? `Verifying… (${fmt(l)} left)` : `You can use “Verify now” for quick help.`; };
+      tick(); var etaTimer = setInterval(tick,1000);
+    }
+
+    // Poll /status/ every 5s while visible & under TTL
+    async function pollStatus(){
+      if(document.visibilityState!=='visible') return;
+      if(leftSec()<=0) return;
+      try{
+        const r=await fetch("{% url 'deposit_status' dep.id %}",{headers:{'X-Requested-With':'fetch'}});
+        if(!r.ok) return; const j=await r.json();
+        if(j.status && j.status!=="awaiting_review"){ location.reload(); }
+      }catch(e){}
+    }
+    if(verifyingBtn){ var pollTimer=setInterval(pollStatus,5000); }
+
+    // Swap to link after TTL
+    function maybeSwap(){
+      if(!verifyingBtn || !verifyNowLink) return;
+      if(verifyNowLink.style.display!=='none') return;
+      if(leftSec()<=0){
+        verifyingBtn.remove();
+        verifyNowLink.style.display='inline-flex';
+        verifyNowLink.focus();
+        if(pollTimer) clearInterval(pollTimer);
+        if(etaTimer) clearInterval(etaTimer);
+      }
+    }
+    if(verifyingBtn){ var swapTimer=setInterval(maybeSwap,500); maybeSwap(); }
+
+    // Prefill message + open support in new tab (deep link then web)
+    if(verifyNowLink){
+      verifyNowLink.addEventListener('click',function(e){
+        e.preventDefault();
+        const symbol=right.dataset.symbol||'', amount=right.dataset.amount||'',
+              ref=right.dataset.ref||'', network=right.dataset.network||'',
+              tgUrl=right.dataset.tgUrl||this.href,
+              tmpl=this.getAttribute('data-msg-template')||'I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me.';
+        const msg=tmpl.replace('{symbol}',symbol).replace('{amount}',amount).replace('{network}',network).replace('{ref}',ref);
+
+        if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(msg).catch(()=>{}); }
+
+        const m=tgUrl.match(/t\.me\/([^/?#]+)/i)||tgUrl.match(/telegram\.me\/([^/?#]+)/i);
+        const handle=m?m[1]:'';
+        const deep=handle?`tg://resolve?domain=${encodeURIComponent(handle)}&text=${encodeURIComponent(msg)}`:null;
+
+        let opened=false;
+        if(deep){ const w=window.open(deep,'_blank','noopener'); opened=!!w; }
+        setTimeout(()=>{ if(!opened){ window.open(tgUrl||(handle?`https://t.me/${handle}`:''),'_blank','noopener'); } },400);
+      });
+    }
+  })();
 </script>
 {% endblock %}

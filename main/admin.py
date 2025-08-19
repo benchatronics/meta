@@ -1,11 +1,17 @@
-# main/admin.py
+
+from django.conf import settings
+from django.db.models import F
+from django.utils import timezone
+from django.http import HttpResponse
+import csv
 from django import forms
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin
-
 from .forms import AdminUserCreationForm, AdminUserChangeForm
 from .models import (
     CustomUser,
+    InfoPage,
+    Announcement,
     Country,
     Hotel,
     Favorite,
@@ -151,11 +157,165 @@ class FavoriteAdmin(admin.ModelAdmin):
 
 
 # ------------------ WALLET / PAYOUT / WITHDRAWAL / DEPOSIT ADDRESS ADMINS ------------------
+
+# --- Optional inline for ledger (WalletTxn). Safe if model not present. ---
+try:
+    from .models import WalletTxn
+
+    class WalletTxnInline(admin.TabularInline):
+        model = WalletTxn
+        extra = 0
+        can_delete = False
+        ordering = ("-created_at",)
+        # Show bucket + friendly € column; read-only inline
+        readonly_fields = ("created_at", "kind", "bucket", "amount_eur_safe", "memo", "created_by")
+        fields = ("created_at", "kind", "bucket", "amount_eur_safe", "memo", "created_by")
+
+        @admin.display(description="Amount (€)")
+        def amount_eur_safe(self, obj):
+            # Defensive: handle None or bad values gracefully
+            try:
+                cents = int(obj.amount_cents) if obj.amount_cents is not None else 0
+            except (TypeError, ValueError):
+                cents = 0
+            sign = "-" if cents < 0 else ""
+            return f"{sign}€{abs(cents) / 100:,.2f}"
+
+except Exception:
+    WalletTxnInline = None  # inline hidden if model not available
+
+
+# --- Filter: has/hasn't received signup bonus ---
+class HasTrialBonusFilter(admin.SimpleListFilter):
+    title = "Has trial bonus?"
+    parameter_name = "has_bonus"
+
+    def lookups(self, request, model_admin):
+        return (("yes", "Yes"), ("no", "No"))
+
+    def queryset(self, request, queryset):
+        if self.value() == "yes":
+            return queryset.filter(trial_bonus_at__isnull=False)
+        if self.value() == "no":
+            return queryset.filter(trial_bonus_at__isnull=True)
+        return queryset
+
+
+# --- Actions ---
+@admin.action(description="Grant €300 trial bonus to selected (only if not already granted)")
+def grant_trial_bonus(modeladmin, request, queryset):
+    bonus_eur = int(getattr(settings, "TRIAL_BONUS_EUR", 300))
+    if not getattr(settings, "TRIAL_BONUS_ENABLED", True) or bonus_eur <= 0:
+        messages.error(request, "Trial bonus is disabled in settings.")
+        return
+
+    bonus_cents = bonus_eur * 100
+    # Only wallets that haven't been granted
+    qs = queryset.filter(trial_bonus_at__isnull=True)
+
+    granted = 0
+    for w in qs.select_for_update():
+        with transaction.atomic():
+            # Double-check inside txn
+            updated = Wallet.objects.filter(pk=w.pk, trial_bonus_at__isnull=True).update(
+                bonus_cents=F("bonus_cents") + bonus_cents,
+                trial_bonus_at=timezone.now(),
+            )
+            if not updated:
+                continue
+            granted += 1
+
+            # Write a ledger row if the model exists
+            try:
+                WalletTxn.objects.create(
+                    wallet=w,
+                    amount_cents=bonus_cents,
+                    kind="BONUS",
+                    bucket="BONUS",
+                    memo="Admin action: signup trial bonus",
+                    created_by=getattr(request, "user", None),
+                )
+            except Exception:
+                pass
+
+    if granted:
+        messages.success(request, f"Granted €{bonus_eur} trial bonus to {granted} wallet(s).")
+    else:
+        messages.info(request, "No wallets updated (maybe all selected already have the bonus).")
+
+
+@admin.action(description="Export selected wallets to CSV")
+def export_wallets_csv(modeladmin, request, queryset):
+    resp = HttpResponse(content_type="text/csv")
+    resp["Content-Disposition"] = 'attachment; filename="wallets.csv"'
+    writer = csv.writer(resp)
+    writer.writerow([
+        "user_id", "username", "email", "phone",
+        "cash_eur", "bonus_eur", "total_eur", "pending_eur",
+        "trial_bonus_at",
+    ])
+    for w in queryset.select_related("user"):
+        u = w.user
+        writer.writerow([
+            getattr(u, "id", ""),
+            getattr(u, "username", ""),
+            getattr(u, "email", ""),
+            getattr(u, "phone", ""),  # remove if your User has no phone field
+            f"{w.balance_cents / 100:.2f}",
+            f"{w.bonus_cents / 100:.2f}",
+            f"{(w.balance_cents + w.bonus_cents) / 100:.2f}",
+            f"{w.pending_cents / 100:.2f}",
+            w.trial_bonus_at.isoformat() if w.trial_bonus_at else "",
+        ])
+    return resp
+
+
 @admin.register(Wallet)
 class WalletAdmin(admin.ModelAdmin):
-    list_display = ("user", "balance_cents", "pending_cents")
-    search_fields = ("user__phone",)
+    list_display = (
+        "user",
+        "cash_eur_col",
+        "bonus_eur_col",
+        "total_eur_col",
+        "pending_eur_col",
+        "has_bonus",
+        "trial_bonus_at",
+    )
+    list_display_links = ("user",)
+    list_filter = (HasTrialBonusFilter,)
+    search_fields = ("user__username", "user__email", "user__phone", "user__id")  # drop user__phone if absent
     autocomplete_fields = ("user",)
+    ordering = ("-balance_cents",)  # sort by cash; change if needed
+    list_select_related = ("user",)
+    actions = [grant_trial_bonus, export_wallets_csv]
+    readonly_fields = ("trial_bonus_at",)
+    inlines = [WalletTxnInline] if WalletTxnInline else []
+    empty_value_display = "—"
+
+    @admin.display(description="Cash (€)", ordering="balance_cents")
+    def cash_eur_col(self, obj):
+        return f"€{obj.balance_cents / 100:,.2f}"
+
+    @admin.display(description="Bonus (€)", ordering="bonus_cents")
+    def bonus_eur_col(self, obj):
+        # Handle if column just added and some rows default to NULL in DB (shouldn't with default=0)
+        cents = getattr(obj, "bonus_cents", 0) or 0
+        return f"€{cents / 100:,.2f}"
+
+    @admin.display(description="Total (€)")
+    def total_eur_col(self, obj):
+        cents = (obj.balance_cents or 0) + (getattr(obj, "bonus_cents", 0) or 0)
+        return f"€{cents / 100:,.2f}"
+
+    @admin.display(description="Pending (€)", ordering="pending_cents")
+    def pending_eur_col(self, obj):
+        return f"€{obj.pending_cents / 100:,.2f}"
+
+    @admin.display(boolean=True, description="Has bonus?")
+    def has_bonus(self, obj):
+        return obj.trial_bonus_at is not None
+
+
 
 
 @admin.register(PayoutAddress)
@@ -270,3 +430,16 @@ class DepositRequestAdmin(admin.ModelAdmin):
     search_fields = ("reference", "user__phone")
     autocomplete_fields = ("user",)
     actions = [admin_confirm_deposits]
+
+
+@admin.register(InfoPage)
+class InfoPageAdmin(admin.ModelAdmin):
+    list_display = ("key", "title", "is_published", "updated_at")
+    list_filter = ("is_published", "key")
+    search_fields = ("title", "body")
+
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
+    list_display = ("title", "pinned", "is_published", "starts_at", "ends_at", "created_at")
+    list_filter = ("pinned", "is_published")
+    search_fields = ("title", "body")

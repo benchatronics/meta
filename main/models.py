@@ -7,8 +7,9 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from django.utils import timezone
-
-
+from django.db import models, transaction
+from django.db.models import F
+from django.utils.translation import gettext_lazy as _
 
 # ---------- Custom User ----------
 class CustomUserManager(BaseUserManager):
@@ -210,18 +211,156 @@ class AddressType(models.TextChoices):
 class Network(models.TextChoices):
     ETH   = "ETH", "Ethereum (ERC20)"
     TRC20 = "TRC20", "USDT (TRC20)"
+    
+#wallet balance and bonus 
 
-# User wallet
 class Wallet(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="wallet")
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="wallet"
+    )
+
+    # Real money (cash)
     balance_cents = models.BigIntegerField(default=0)
+
+    # Trial / bonus balance (separate from cash)
+    bonus_cents = models.BigIntegerField(default=0)
+
+    # Pending funds (e.g., in-flight deposits)
     pending_cents = models.BigIntegerField(default=0)
 
-    def balance(self): return self.balance_cents / 100
+    # Mark when the signup trial bonus was granted (None = not yet)
+    trial_bonus_at = models.DateTimeField(blank=True, null=True)
+
+    # --- Helpers ---
+    def balance(self) -> float:
+        """Total balance in EUR as float (cash + bonus)."""
+        return (self.balance_cents + self.bonus_cents) / 100
+
+    @property
+    def cash_eur(self) -> str:
+        return f"€{self.balance_cents / 100:,.2f}"
+
+    @property
+    def bonus_eur(self) -> str:
+        return f"€{self.bonus_cents / 100:,.2f}"
+
+    @property
+    def total_eur(self) -> str:
+        return f"€{(self.balance_cents + self.bonus_cents) / 100:,.2f}"
+
+    def __str__(self):
+        return f"Wallet({self.user})"
+
+    # --- Atomic balance mutations with ledger rows ---
+    def credit(self, amount_cents: int, *, bucket: str = "CASH", kind: str = "ADJUST", memo: str = "", created_by=None):
+        """
+        Increase a balance bucket (CASH or BONUS) and write a WalletTxn.
+        amount_cents must be positive.
+        """
+        if amount_cents <= 0:
+            raise ValueError("credit() requires positive amount_cents")
+        if bucket not in ("CASH", "BONUS"):
+            raise ValueError("bucket must be 'CASH' or 'BONUS'")
+
+        with transaction.atomic():
+            if bucket == "CASH":
+                Wallet.objects.filter(pk=self.pk).update(balance_cents=F("balance_cents") + amount_cents)
+            else:
+                Wallet.objects.filter(pk=self.pk).update(bonus_cents=F("bonus_cents") + amount_cents)
+
+            WalletTxn.objects.create(
+                wallet=self,
+                amount_cents=amount_cents,
+                kind=kind,
+                bucket=bucket,
+                memo=memo,
+                created_by=created_by,
+            )
+
+    def debit(self, amount_cents: int, *, bucket: str = "CASH", kind: str = "ADJUST", memo: str = "", created_by=None):
+        """
+        Decrease a balance bucket (CASH or BONUS) and write a WalletTxn.
+        amount_cents must be positive; it is stored as negative in the ledger.
+        """
+        if amount_cents <= 0:
+            raise ValueError("debit() requires positive amount_cents")
+        if bucket not in ("CASH", "BONUS"):
+            raise ValueError("bucket must be 'CASH' or 'BONUS'")
+
+        with transaction.atomic():
+            if bucket == "CASH":
+                Wallet.objects.filter(pk=self.pk).update(balance_cents=F("balance_cents") - amount_cents)
+            else:
+                Wallet.objects.filter(pk=self.pk).update(bonus_cents=F("bonus_cents") - amount_cents)
+
+            WalletTxn.objects.create(
+                wallet=self,
+                amount_cents=-amount_cents,
+                kind=kind,
+                bucket=bucket,
+                memo=memo,
+                created_by=created_by,
+            )
+
+
+class WalletTxn(models.Model):
+    """
+    Ledger row for wallet movements.
+    Positive amount_cents = credit, negative = debit.
+    """
+    KIND_CHOICES = [
+        ("BONUS", "Bonus"),
+        ("DEPOSIT", "Deposit"),
+        ("WITHDRAW", "Withdraw"),
+        ("ADJUST", "Adjust"),
+    ]
+    BUCKET_CHOICES = [
+        ("CASH", "Cash"),
+        ("BONUS", "Bonus"),
+    ]
+
+    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name="txns")
+    amount_cents = models.BigIntegerField(default=0)  # no nulls; defaults to 0
+    kind = models.CharField(max_length=20, choices=KIND_CHOICES)
+    bucket = models.CharField(max_length=10, choices=BUCKET_CHOICES, default="CASH")  # which balance was touched
+    memo = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+
+    class Meta:
+        ordering = ("-created_at",)
+        indexes = [
+            models.Index(fields=["wallet", "-created_at"]),
+        ]
+
+    @property
+    def amount_eur(self) -> str:
+        sign = "-" if self.amount_cents < 0 else ""
+        return f"{sign}€{abs(self.amount_cents) / 100:,.2f}"
+
+    def __str__(self):
+        sign = "+" if self.amount_cents >= 0 else "-"
+        return f"{self.wallet.user} {self.kind}/{self.bucket} {sign}€{abs(self.amount_cents)/100:.2f}"
+
+
+
+
+
+
+#pay address add
+class AddressType(models.TextChoices):
+    ETH = 'ETH', 'Ethereum (ERC-20)'
+    TRC20 = 'TRC20', 'USDT (TRC-20)'
 
 # Saved payout addresses (for withdrawals)
 class PayoutAddress(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="payout_addresses")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="payout_addresses"
+    )
     label = models.CharField(max_length=64, blank=True)
     address_type = models.CharField(max_length=10, choices=AddressType.choices)
     address = models.CharField(max_length=128)
@@ -229,7 +368,38 @@ class PayoutAddress(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user", "address_type", "address")
+        # Enforce ONE address per network per user (prevents "second time" crash pattern)
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'address_type'],
+                name='uniq_user_network_address'
+            ),
+        ]
+        # Helpful indexes for lookups
+        indexes = [
+            models.Index(fields=['user', 'address_type']),
+        ]
+        # Remove legacy unique_together if it exists in your code/migrations
+        # unique_together = (('user', 'address_type', 'address'),)
+
+    def __str__(self):
+        return f'{self.user} — {self.address_type} — {self.label or self.address[:8]}…'
+
+    def normalize(self):
+        """Normalize address casing/whitespace before save."""
+        if not self.address:
+            return
+        self.address = self.address.strip()
+        # Keep 0x prefix; normalize hex to lowercase for ETH
+        if self.address_type == AddressType.ETH and self.address.startswith('0x') and len(self.address) == 42:
+            self.address = '0x' + self.address[2:].lower()
+
+    def save(self, *args, **kwargs):
+        self.normalize()
+        super().save(*args, **kwargs)
+
+
+
 """
 # Withdrawal requests
 class WithdrawalRequest(models.Model):
@@ -327,3 +497,53 @@ class DepositRequest(models.Model):
     def amount(self): return self.amount_cents / 100
     @staticmethod
     def new_reference(): return get_random_string(12).upper()
+
+
+class InfoPage(models.Model):
+    class Key(models.TextChoices):
+        ABOUT = "about", _("About us")
+        CONTACT = "contact", _("Contact us")
+        HELP = "help", _("Help")
+        LEVEL = "level", _("Level")
+        SIGNIN_REWARD = "signin_reward", _("Sign-in reward")
+
+    key = models.CharField(max_length=32, choices=Key.choices, unique=True)
+    title = models.CharField(max_length=120)
+    body = models.TextField(blank=True)  # write your copy here
+    is_published = models.BooleanField(default=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("key",)
+
+    def __str__(self):
+        return self.get_key_display()
+
+
+class AnnouncementQuerySet(models.QuerySet):
+    def active(self):
+        now = timezone.now()
+        return self.filter(
+            is_published=True
+        ).filter(
+            models.Q(starts_at__lte=now) | models.Q(starts_at__isnull=True)
+        ).filter(
+            models.Q(ends_at__gte=now) | models.Q(ends_at__isnull=True)
+        )
+
+class Announcement(models.Model):
+    title = models.CharField(max_length=140)
+    body = models.TextField()
+    pinned = models.BooleanField(default=False)   # show first
+    is_published = models.BooleanField(default=True)
+    starts_at = models.DateTimeField(null=True, blank=True)
+    ends_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = AnnouncementQuerySet.as_manager()
+
+    class Meta:
+        ordering = ("-pinned", "-created_at")
+
+    def __str__(self):
+        return self.title

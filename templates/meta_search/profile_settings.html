@@ -1,0 +1,46 @@
+{% extends "base_settings.html" %}
+
+{% block title %}Settings — Profile{% endblock %}
+{% block breadcrumb %}Home / setting / profile{% endblock %}
+
+{% block settings_content %}
+<h3>Basic Info</h3>
+<div class="sub">manage your details and personal preference here.</div>
+
+<div class="profile-row">
+  <div class="avatar">
+    <img src="https://i.pravatar.cc/80?img=13" alt="Avatar">
+  </div>
+  <div>
+    <div class="btn-row">
+      <label class="btn outline" for="avatarInput">Change image</label>
+      <input id="avatarInput" type="file" accept="image/*" hidden>
+      <button class="btn danger" type="button">Delete image</button>
+    </div>
+    <div class="hint">JPG, PNG. we recommend 80x80 to 200x200.</div>
+  </div>
+</div>
+
+<div class="info-grid">
+  <div class="field">
+    <div class="label">User ID</div>
+    <div class="value">UIDF4534A</div>
+  </div>
+  <div class="field">
+    <div class="label">Phone Number</div>
+    <div class="value">9009</div>
+  </div>
+  <div class="field">
+    <div class="label">Language</div>
+    <div class="value">ENGLISH</div>
+  </div>
+  <div class="field">
+    <div class="label">Level</div>
+    <div class="value">LEVEL 1</div>
+  </div>
+</div>
+
+<div class="actions">
+  <button class="btn primary" type="button">Save Changes</button>
+</div>
+{% endblock %}

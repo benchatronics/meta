@@ -1,0 +1,30 @@
+{# templates/meta_search/announcements.html #}
+{% extends "base_user.html" %}
+{% load i18n %}
+{% load static%}
+{% block title %}{% trans "Announcements" %}{% endblock %}
+{% block breadcrumb %}Home / info / announcements{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'meta_search/settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="settings-page">
+  <h1>{% trans "Announcements" %}</h1>
+  <div class="card"><div class="card-body">
+    {% if items %}
+      <div class="form-grid">
+        {% for a in items %}
+          <div class="group">
+            <div class="label">{{ a.title }}</div>
+            <div class="sub">{{ a.created_at|date:"Y-m-d H:i" }}</div>
+            <div class="value" style="margin-top:6px;">{{ a.body|linebreaks }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="sub">{% trans "No announcements at the moment." %}</div>
+    {% endif %}
+  </div></div>
+</section>
+{% endblock %}

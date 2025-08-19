@@ -140,3 +140,88 @@
 .ud .sr-only{
   position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0
 }
+
+/* Location / Date / Rating / Search strip */
+.ud .filters { display: none !important; }
+
+/* ===== Phone-only hides (do NOT affect menu/toggle) ===== */
+@media (max-width: 620px){
+  /* Greeting section inside the dashboard */
+  .ud .greet { display: none !important; }
+}
+
+/* (Optional) if your “phone” breakpoint differs, change 620px above) */
+
+/* ===== Mobile-only header + filters ===== */
+:root{
+  --mxp-muted:#6b7280;
+  --mxp-border:#e5e7eb;
+  --mxp-shadow:0 6px 18px rgba(20,40,80,.06);
+}
+
+@media (max-width: 900px){
+  /* hide original desktop pieces on phones WITHOUT changing your HTML */
+  .ud > .greet,
+  .ud > form.filters{ display: none !important; }
+
+  .mxp-mobile-only{ display:block; }
+
+  .mxp-greeting{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 12px; background:#fff; border-bottom:1px solid var(--mxp-border);
+  }
+  .mxp-avatar{ width:48px; height:48px; border-radius:999px; object-fit:cover; box-shadow:var(--mxp-shadow); }
+  .mxp-hello{ margin:0; font:700 18px/1.25 "Poppins", system-ui; color:#111; }
+  .mxp-sub{ margin:4px 0 0; font:500 13px/1.3 "Poppins", system-ui; color:var(--mxp-muted); }
+  .mxp-profile-link{ margin-top:6px; display:inline-block; font:600 12px/1 "Poppins"; color:#2451FF; text-decoration:none; }
+  .mxp-wave{ display:inline-block; transform-origin:70% 70%; }
+
+  .mxp-filters-bar{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 12px; background:#fff; border-bottom:1px solid #eee;
+  }
+  .mxp-filters-pill{
+    flex:1; display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px; border:1px solid var(--mxp-border); border-radius:16px; background:#fff;
+    box-shadow:var(--mxp-shadow); font-weight:600; color:#111827;
+  }
+  .mxp-filters-pill .left{ display:flex; align-items:center; gap:10px; }
+  .mxp-search-btn{
+    width:46px; height:46px; display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--mxp-border); border-radius:14px; background:#fff; box-shadow:var(--mxp-shadow);
+  }
+
+  /* Panel holds the MOBILE copy of the form */
+  .mxp-filter-panel{
+    background:#fff; overflow:hidden;
+    transition:max-height .25s ease, padding .25s ease;
+    max-height:0; padding:0 12px; border-bottom:1px solid transparent;
+  }
+  .mxp-filter-panel.open{
+    max-height:480px; padding:8px 12px 14px; border-bottom-color:#eee;
+  }
+  .mxp-filter-panel .pill{
+    display:flex; align-items:center; gap:8px;
+    height:44px; padding:0 12px; margin-bottom:10px;
+    border:1px solid var(--mxp-border); border-radius:12px; background:#fff;
+  }
+  .mxp-filter-panel .pill i{ color:#6b7280; }
+  .mxp-filter-panel input[type="text"],
+  .mxp-filter-panel input[type="date"],
+  .mxp-filter-panel select{
+    flex:1; height:100%; border:none; outline:none; background:transparent;
+    font-size:15px; color:#1f2937;
+  }
+  .mxp-filter-panel .pill-select{ position:relative; }
+  .mxp-filter-panel .pill-select .caret{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    pointer-events:none; color:#6b7280;
+  }
+}
+
+/* Desktop/tablet: hide the mobile block */
+@media (min-width: 901px){
+  .mxp-mobile-only{ display: none !important; }
+}
+
+/* ===== end of Mobile-only header + filters ===== */

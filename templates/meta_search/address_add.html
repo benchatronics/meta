@@ -5,7 +5,7 @@
 {% block breadcrumb %}Home / my Wallet / Add Address{% endblock %}
 
 {% block extra_head %}
-  <link rel="stylesheet" href="{% static 'meta_search/withdrawal.css' %}">
+  <link rel="stylesheet" href="{% static 'meta_search/add_address.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 {% endblock %}
 
@@ -38,12 +38,12 @@
         <form method="post" action="">
           {% csrf_token %}
 
-          <!-- Address Type (ETH / TRC20) -->
+          <!-- Address Type -->
           <div class="group">
             <div class="section-title">Address Type</div>
-            <div class="method">
+            <div class="method" id="methodPills">
               {% for val, label in form.address_type.field.choices %}
-                {% if val in 'ETH,TRC20' %}
+                {% if val == 'ETH' or val == 'TRC20' %}
                   {% with is_checked=form.address_type.value|default:form.address_type.initial %}
                     <label class="opt {% if is_checked == val %}active{% endif %}">
                       <input
@@ -79,33 +79,31 @@
             {% endif %}
           </div>
 
-          <!-- Address + scan -->
+          <!-- Address -->
           <div class="group addr-wrap">
             <div class="section-title">Address</div>
-            <div class="addr {% if form.address.errors %}error{% endif %}">
+
+            <div class="addr {% if form.address.errors %}error{% endif %}" id="addrRow">
               {{ form.address }}
-              <button class="qr" type="button" title="Scan QR" id="openScan">
-                <i class="fa-solid fa-qrcode"></i>
-              </button>
+            </div>
+
+            <div id="addrHint" class="muted">Select a network to see the required format.</div>
+
+            <div id="addrClientError" class="err-row" aria-live="polite" hidden>
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span></span>
             </div>
 
             {% if form.address.errors %}
-              <div class="err-row">
+              <div class="err-row" style="margin-top:6px">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 {{ form.address.errors.0 }}
               </div>
             {% endif %}
-
-            <div class="addr-actions">
-              <span class="bind-help tooltip" tabindex="0"
-                    data-tip="Scan a wallet QR or paste the address. TRC20 usually starts with ‘T’; Ethereum starts with ‘0x’.">
-                <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
-                How to add the right address?
-              </span>
-            </div>
           </div>
+          
 
-          <!-- Label (optional) -->
+          <!-- Label -->
           <div class="group">
             <div class="section-title">Label (optional)</div>
             {{ form.label }}
@@ -127,191 +125,146 @@
     </div>
   </div>
 </section>
-
-<!-- ============== QR Scan Modal ============== -->
-<div id="qrModal" class="qr-modal" hidden>
-  <div class="qr-dialog">
-    <div class="qr-header">
-      <strong>Scan Wallet QR</strong>
-      <button type="button" class="qr-close" aria-label="Close">&times;</button>
-    </div>
-
-    <div class="qr-body">
-      <div id="qrReader" style="width:100%;min-height:220px;display:flex;align-items:center;justify-content:center">
-        <div id="qrFallback" class="muted" style="text-align:center;display:none">
-          <p>Camera not available. You can still scan from an image.</p>
-        </div>
-      </div>
-
-      <div class="qr-or">OR</div>
-
-      <!-- File upload fallback (scan from image) -->
-      <label class="qr-filebtn">
-        <input id="qrFile" type="file" accept="image/*" capture="environment" hidden>
-        Choose a QR image (PNG/JPG)
-      </label>
-
-      <div id="qrPreviewWrap" style="display:none;margin-top:10px">
-        <div class="muted" style="margin-bottom:6px">Preview of selected image</div>
-        <img id="qrPreview" alt="QR preview" style="max-width:100%;border-radius:10px;border:1px solid var(--line)">
-      </div>
-
-      <div class="qr-tip">
-        Tip: TRC20 addresses start with <code>T</code>. Ethereum/ERC20 start with <code>0x</code>.
-      </div>
-    </div>
-
-    <div class="qr-footer">
-      <button type="button" class="qr-cam-switch" id="toggleFacing" data-facing="environment">Use Front Camera</button>
-      <button type="button" class="qr-cancel">Cancel</button>
-    </div>
-  </div>
-</div>
 {% endblock %}
 
 {% block extra_scripts %}
-{{ block.super }}
-<script src="https://unpkg.com/html5-qrcode@2.3.9/minified/html5-qrcode.min.js"></script>
 <script>
-/* Make the radio pills clickable */
-document.querySelectorAll('.wdw .method .opt').forEach(label=>{
-  const input = label.querySelector('input[type="radio"]');
-  label.addEventListener('click', ()=>{
-    label.closest('.method').querySelectorAll('.opt').forEach(l=>l.classList.remove('active'));
-    label.classList.add('active');
-    if (input) input.checked = true;
+(function () {
+  const scope = document.querySelector('.wdw');
+  if (!scope) return;
+
+  // Elements
+  const form = scope.querySelector('form');
+  const addrRow = scope.querySelector('#addrRow');
+  const addrInput = scope.querySelector('input[name="{{ form.address.name }}"]') || scope.querySelector('#walletAddress');
+  const hintEl = scope.querySelector('#addrHint');
+  const clientErrRow = scope.querySelector('#addrClientError');
+  const clientErrText = clientErrRow ? clientErrRow.querySelector('span') : null;
+
+  // Make the radio pills clickable + keep radios in sync
+  scope.querySelectorAll('.method .opt').forEach(label=>{
+    const input = label.querySelector('input[type="radio"]');
+    label.addEventListener('click', ()=>{
+      label.closest('.method').querySelectorAll('.opt').forEach(l=>l.classList.remove('active'));
+      label.classList.add('active');
+      if (input) {
+        input.checked = true;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
   });
-});
 
-(function(){
-  const addrInput = document.getElementById('id_address') || document.querySelector('input[name="address"]');
-  const modal     = document.getElementById('qrModal');
-  const openBtn   = document.getElementById('openScan');
-  const closeBtn  = modal.querySelector('.qr-close');
-  const cancelBtn = modal.querySelector('.qr-cancel');
-  const toggleBtn = document.getElementById('toggleFacing');
-  const fileInput = document.getElementById('qrFile');
-  const preview   = document.getElementById('qrPreview');
-  const previewWrap = document.getElementById('qrPreviewWrap');
-  const readerDiv = document.getElementById('qrReader');
-  const fallbackDiv = document.getElementById('qrFallback');
+  // Regex patterns & hints
+  const patterns = {
+    ETH: /^0x[a-fA-F0-9]{40}$/,
+    TRC20: /^T[1-9A-HJ-NP-Za-km-z]{33}$/
+  };
+  const hints = {
+    ETH: 'Ethereum address must start with 0x and be 42 characters total (0x + 40 hex).',
+    TRC20: 'TRC20 address must start with T and be 34 characters (Base58).'
+  };
 
-  let html5QrCode = null;
-  let cameraId = null;
-  let facing = 'environment';
-
-  const isSecure =
-    location.protocol === 'https:' ||
-    location.hostname === 'localhost' ||
-    location.hostname === '127.0.0.1';
-
-  function showFlash(kind, text){
-    let wrap = document.querySelector('.wdw .flash');
-    if (!wrap){
-      wrap = document.createElement('div');
-      wrap.className = 'flash';
-      const shell = document.querySelector('.wdw .shell');
-      const card = document.querySelector('.wdw .card');
-      shell.insertBefore(wrap, card);
-    }
-    const item = document.createElement('div');
-    item.className = 'alert ' + kind;
-    item.innerHTML = '<i class="fa-solid '+ (kind==='error'?'fa-circle-xmark':kind==='warning'?'fa-triangle-exclamation':'fa-circle-info') +'"></i><span>'+ text +'</span>';
-    wrap.appendChild(item);
-    setTimeout(()=>item.remove(), 5000);
+  function getSelectedNetwork() {
+    const checked = scope.querySelector('input[type="radio"][name="{{ form.address_type.name }}"]:checked');
+    if (checked && checked.value) return checked.value;
+    const activePill = scope.querySelector('.method .opt.active input[type="radio"]');
+    return activePill ? activePill.value : null;
   }
 
-  openBtn.addEventListener('click', async ()=>{
-    previewWrap.style.display = 'none';
-    modal.hidden = false;
+  function updateHint() {
+    const net = getSelectedNetwork();
+    if (!hintEl) return;
+    hintEl.textContent = net ? hints[net] : 'Select a network to see the required format.';
+  }
 
-    if (!isSecure){
-      // No camera on insecure origins
-      fallbackDiv.style.display = 'block';
-      readerDiv.style.minHeight = '0';
-      showFlash('warning', 'Camera requires HTTPS (or localhost). Use the image upload below.');
-      return;
+  function showClientError(msg) {
+    if (clientErrRow && clientErrText) {
+      clientErrText.textContent = msg;
+      clientErrRow.hidden = false;
     }
+    addrRow.classList.add('error');
+    if (addrInput) addrInput.setAttribute('aria-invalid','true');
+  }
 
-    try{
-      const cams = await Html5Qrcode.getCameras();
-      if (!cams || !cams.length){
-        fallbackDiv.style.display = 'block';
-        showFlash('warning', 'No camera found. Use the image upload below.');
+  function clearClientError() {
+    if (clientErrRow && clientErrText) {
+      clientErrText.textContent = '';
+      clientErrRow.hidden = true;
+    }
+    addrRow.classList.remove('error');
+    if (addrInput) addrInput.removeAttribute('aria-invalid');
+  }
+
+  function validateInline() {
+    clearClientError();
+    const net = getSelectedNetwork();
+    const val = (addrInput && addrInput.value || '').trim();
+    if (!net || !val) return true; // don't nag yet
+    if (!patterns[net].test(val)) {
+      showClientError(`This address is not a valid ${net === 'ETH' ? 'Ethereum (ERC-20)' : 'USDT (TRC-20)'} address for the selected network.`);
+      return false;
+    }
+    return true;
+  }
+
+  // Events
+  scope.querySelectorAll('input[type="radio"][name="{{ form.address_type.name }}"]').forEach(r=>{
+    r.addEventListener('change', () => { updateHint(); validateInline(); });
+  });
+  if (addrInput) {
+    addrInput.addEventListener('input', clearClientError);
+    addrInput.addEventListener('blur', validateInline);
+  }
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      const net = getSelectedNetwork();
+      const val = (addrInput && addrInput.value || '').trim();
+
+      if (!net) {
+        e.preventDefault();
+        showClientError('Please select a network (Ethereum or USDT TRC20).');
         return;
       }
-      // pick back camera if available
-      const back = cams.find(c => /back|rear|environment/i.test(c.label));
-      cameraId = (facing === 'environment' && back) ? back.id : cams[0].id;
-
-      if (html5QrCode){ await stopScanner(); }
-      html5QrCode = new Html5Qrcode('qrReader');
-      await html5QrCode.start(
-        cameraId,
-        { fps: 10, qrbox: { width: 240, height: 240 } },
-        onScanSuccess,
-        () => {}
-      );
-    }catch(err){
-      console.warn(err);
-      fallbackDiv.style.display = 'block';
-      showFlash('warning', 'Unable to access camera. Try uploading a QR image instead.');
-    }
-  });
-
-  async function stopScanner(){
-    if (html5QrCode){
-      try { await html5QrCode.stop(); await html5QrCode.clear(); } catch(e){}
-      html5QrCode = null;
-    }
+      if (!val) {
+        e.preventDefault();
+        showClientError('Please paste your wallet address.');
+        if (addrInput) addrInput.focus();
+        return;
+      }
+      if (!patterns[net].test(val)) {
+        e.preventDefault();
+        showClientError(`The address you entered is not valid for ${net === 'ETH' ? 'Ethereum (ERC-20)' : 'USDT (TRC-20)'}.\nTip: ${hints[net]}`);
+        if (addrInput) addrInput.focus();
+      }
+    });
   }
 
-  function closeModal(){
-    stopScanner().finally(()=> modal.hidden = true);
+  // Init on load
+  updateHint();
+  const checked = scope.querySelector('input[type="radio"][name="{{ form.address_type.name }}"]:checked');
+  if (checked) {
+    const pill = checked.closest('.opt');
+    if (pill) pill.classList.add('active');
   }
-  closeBtn.addEventListener('click', closeModal);
-  cancelBtn.addEventListener('click', closeModal);
-  document.addEventListener('keydown', (e)=>{ if(!modal.hidden && e.key==='Escape') closeModal(); });
-
-  toggleBtn.addEventListener('click', async ()=>{
-    facing = facing === 'environment' ? 'user' : 'environment';
-    toggleBtn.textContent = facing === 'environment' ? 'Use Front Camera' : 'Use Back Camera';
-    if (!modal.hidden) openBtn.click(); // restart with new facing
-  });
-
-  function onScanSuccess(text){
-    const value = (text || '').trim();
-    if (addrInput) addrInput.value = value;
-    // quick hint by network
-    const want = (document.querySelector('input[name="{{ form.address_type.name }}"]:checked')||{}).value;
-    const isTRX = /^T[1-9A-HJ-NP-Za-km-z]{25,34}$/.test(value);
-    const isETH = /^0x[a-fA-F0-9]{40}$/.test(value);
-    if (want === 'TRC20' && !isTRX) showFlash('warning','Scanned code may not be TRC20 (usually starts with "T").');
-    if (want === 'ETH' && !isETH)  showFlash('warning','Scanned code may not be Ethereum (starts with "0x").');
-    closeModal();
-  }
-
-  // Image upload scan (with preview)
-  fileInput.addEventListener('change', async (e)=>{
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    // preview
-    const fr = new FileReader();
-    fr.onload = () => {
-      preview.src = fr.result;
-      previewWrap.style.display = 'block';
-    };
-    fr.readAsDataURL(file);
-
-    try{
-      if (!html5QrCode) html5QrCode = new Html5Qrcode('qrReader');
-      const result = await html5QrCode.scanFile(file, true); // shows the image inside #qrReader
-      onScanSuccess(result);
-    }catch(err){
-      console.warn(err);
-      showFlash('error', 'Could not read a QR from that image. Make sure the code is sharp and well-lit.');
-    }
-  });
 })();
 </script>
+
+<script>
+  (function(){
+    const form = document.querySelector('.wdw form');
+    const btn  = form ? form.querySelector('button[type="submit"]') : null;
+    if (!form || !btn) return;
+  
+    form.addEventListener('submit', function(){
+      // Disable to stop double posts that can trigger constraint races
+      btn.disabled = true;
+      btn.setAttribute('aria-busy', 'true');
+      const orig = btn.textContent;
+      btn.dataset.orig = orig;
+      btn.textContent = 'Saving...';
+    });
+  })();
+  </script>
+  
 {% endblock %}
