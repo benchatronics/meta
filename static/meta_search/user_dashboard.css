@@ -330,4 +330,12 @@
    .grid { display: grid !important; } 
 */
 
+.emoji-icon{ display:inline-block; font-size:18px; line-height:1; vertical-align:middle; margin-right:8px; }
+.mxp-search-btn .emoji-icon{ font-size:20px; margin-right:0; }
+
+.emoji-caret{
+  display:inline-block; font-size:16px; line-height:1; vertical-align:middle;
+  margin-left:6px; transition:transform .2s ease;
+}
+#mxpFilterToggle[aria-expanded="true"] .emoji-caret{ transform: rotate(180deg); }
 

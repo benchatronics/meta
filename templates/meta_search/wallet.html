@@ -14,7 +14,7 @@
   {# Optional one-time banner when bonus granted #}
   {% if request.user.wallet.trial_bonus_at %}
     <div class="alert success" role="status" style="margin:10px 0;">
-      🎁 Trial bonus added: <strong>{{ request.user.wallet.bonus_eur }}</strong>.
+      🎁 Your trial Bonus has been credited successsfully: <strong>{{ request.user.wallet.bonus_eur }}</strong>.
     </div>
   {% endif %}
 

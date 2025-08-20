@@ -529,3 +529,104 @@
     font-size: 11px;
   }
 }
+
+
+/* =========================================
+   LANGUAGE (responsive, single-row on mobile)
+   ========================================= */
+
+/* Grid */
+.lang-grid{
+  display: grid;
+  grid-template-columns: 1fr;           /* one pill per row on mobile/tablet */
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* Desktop columns */
+@media (min-width: 980px){
+  .lang-grid{
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 14px;
+  }
+}
+@media (min-width: 1200px){
+  .lang-grid{
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+    gap: 16px;
+  }
+}
+
+/* Hide native radios; pair with label.lang-pill */
+.lang-grid .radio{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Pill */
+.lang-pill{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--border);
+  font: 600 clamp(13px, 3.6vw, 15px)/1.25 system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  min-height: 46px;
+  transition: box-shadow .15s ease, transform .08s ease, border-color .15s ease, background-color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;                           /* stretch across row on mobile */
+}
+
+.lang-pill .flag{
+  font-size: 18px;
+  line-height: 0;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+/* Text truncation (keeps layout stable on narrow screens) */
+.lang-pill .label,
+.lang-pill .altname{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ultra-small phones: hide alt/transliterated name */
+@media (max-width: 380px){
+  .lang-pill .altname{ display: none; }
+}
+
+/* States */
+.lang-pill:hover{ background: #eef2f7; }
+.lang-pill.selected{
+  background: var(--primary);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(47,87,255,.18);
+}
+
+/* Keyboard/focus accessibility */
+.lang-pill:focus-within{
+  outline: 2px solid rgba(47,87,255,.45);
+  outline-offset: 2px;
+}
+
+/* Radio-driven selection */
+.lang-grid .radio:checked + .lang-pill{
+  background: var(--primary);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(47,87,255,.18);
+}
+.lang-grid .radio:focus-visible + .lang-pill{
+  outline: 2px solid rgba(47,87,255,.45);
+  outline-offset: 2px;
+}
