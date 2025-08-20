@@ -223,5 +223,111 @@
 @media (min-width: 901px){
   .mxp-mobile-only{ display: none !important; }
 }
+@media (max-width: 900px){
+  .mxp-mobile-only .mxp-avatar{ border-radius:50% !important; }
+}
+
 
 /* ===== end of Mobile-only header + filters ===== */
+
+/* =========================================
+   Mobile/desktop visibility & mobile filters
+   ========================================= */
+
+/* sensible defaults */
+.mxp-mobile-only { display: none; }
+
+/* ---------- DESKTOP / TABLET (>=901px) ---------- */
+@media (min-width: 901px){
+
+  /* Show your original desktop greeting and desktop filter strip */
+  .ud > .greet { display: block !important; }
+  .ud > form.filters { display: block !important; }  /* if your base makes it flex/grid, that wins */
+
+  /* Hide the mobile-only block and its pieces */
+  .mxp-mobile-only,
+  .mxp-filters-bar,
+  .mxp-filter-panel { display: none !important; }
+}
+
+/* ---------- MOBILE (<=900px) ---------- */
+@media (max-width: 900px){
+
+  /* Hide the desktop versions on phones */
+  .ud > .greet { display: none !important; }
+  .ud > form.filters { display: none !important; }
+
+  /* Show the mobile header+filters block */
+  .mxp-mobile-only { display: block !important; }
+
+  /* ----- Mobile greeting (avatar + text) ----- */
+  .mxp-greeting{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 12px; background:#fff; border-bottom:1px solid #e5e7eb;
+  }
+  .mxp-avatar{
+    width:48px; height:48px; border-radius:999px; object-fit:cover;
+    box-shadow:0 6px 18px rgba(20,40,80,.06);
+  }
+  .mxp-hello{ margin:0; font:700 18px/1.25 "Poppins",system-ui; color:#111; }
+  .mxp-sub{ margin:4px 0 0; font:500 13px/1.3 "Poppins",system-ui; color:#6b7280; }
+  .mxp-profile-link{ margin-top:6px; display:inline-block; font:600 12px/1 "Poppins"; color:#2451FF; text-decoration:none; }
+
+  /* ----- Mobile Filters bar (pill + round search) ----- */
+  .mxp-filters-bar{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 12px; background:#fff; border-bottom:1px solid #eee;
+  }
+  .mxp-filters-pill{
+    flex:1; display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px; border:1px solid #e5e7eb; border-radius:16px; background:#fff;
+    box-shadow:0 6px 18px rgba(20,40,80,.06); font-weight:600; color:#111827;
+  }
+  .mxp-filters-pill .left{ display:flex; align-items:center; gap:10px; }
+  .mxp-search-btn{
+    width:46px; height:46px; display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid #e5e7eb; border-radius:14px; background:#fff; box-shadow:0 6px 18px rgba(20,40,80,.06);
+  }
+
+  /* ----- Collapsible panel that holds the MOBILE copy of the form ----- */
+  .mxp-filter-panel{
+    position: relative; /* keep it in normal flow so it doesn't cover content */
+    background:#fff; overflow:hidden;
+    max-height:0; padding:0 12px;
+    border-bottom:1px solid transparent;
+    transition:max-height .25s ease, padding .25s ease, border-color .25s ease;
+  }
+  .mxp-filter-panel.open{
+    max-height:480px; padding:8px 12px 14px;
+    border-bottom-color:#eee;
+  }
+
+  /* Fields inside the mobile panel */
+  .mxp-filter-panel .pill{
+    display:flex; align-items:center; gap:8px;
+    height:44px; padding:0 12px; margin-bottom:10px;
+    border:1px solid #e5e7eb; border-radius:12px; background:#fff;
+  }
+  .mxp-filter-panel .pill i{ color:#6b7280; }
+  .mxp-filter-panel input[type="text"],
+  .mxp-filter-panel input[type="date"],
+  .mxp-filter-panel select{
+    flex:1; height:100%; border:none; outline:none; background:transparent;
+    font-size:15px; color:#1f2937;
+  }
+  .mxp-filter-panel .pill-select{ position:relative; }
+  .mxp-filter-panel .pill-select .caret{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    pointer-events:none; color:#6b7280;
+  }
+
+  /* Make sure page content isn't hidden behind any fixed elements (e.g., a bottom nav) */
+  .main{ padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Optional: if any global CSS is too aggressive and hides content,
+   you can un-comment this to ensure the content grid shows.
+   .grid { display: grid !important; } 
+*/
+
+

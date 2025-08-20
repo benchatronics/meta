@@ -298,4 +298,56 @@ body{
       display: none !important;
     }
   }
-  
+
+ /* ===== Toggle visibility rules (updated) ===== */
+.sb-toggle-desktop{ display:none; }       /* default hidden */
+.sb-toggle-mobile{ display:inline-grid; } /* mobile shows topbar toggle */
+
+/* Desktop: show sidebar toggle, hide topbar toggle */
+@media (min-width: 901px){
+  .sb-toggle-desktop{ display:inline-grid; }
+  .topbar .breadcrumb .sb-toggle-mobile{ display:none; }
+
+  /* Brand row: logo far-left, toggle far-right */
+  .sidebar .brand{
+    display:flex; align-items:center; gap:10px;
+  }
+  /* push the toggle to the far right inside the sidebar padding */
+  .sb-toggle-desktop{
+    margin-left:auto;                 /* <<< pushes it to the right */
+    border:1px solid var(--border);
+    height:36px; width:36px; border-radius:10px;
+    background:#fff; color:var(--text);
+    display:grid; place-items:center; cursor:pointer;
+    transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+  }
+  .sb-toggle-desktop:hover{ box-shadow:0 8px 20px rgba(16,24,40,.08); }
+
+  /* When collapsed: stack and place toggle UNDER the logo, centered */
+  .app.collapsed .sidebar .brand{
+    flex-direction:column; align-items:center; gap:8px;
+  }
+  .app.collapsed .sb-toggle-desktop{
+    margin-left:0;                    /* reset auto push */
+    width:36px; height:36px;
+    margin-top:2px;                   /* sits under logo */
+  }
+}
+
+/* Mobile keeps original behavior (drawer) */
+@media (max-width: 900px){
+  .sb-toggle-desktop{ display:none; }
+  .topbar .breadcrumb .sb-toggle-mobile{
+    position:relative; margin-left:8px;
+    height:32px; width:32px; border-radius:8px;
+    background:#fff; color:var(--text); border:1px solid var(--border);
+    display:inline-grid; place-items:center;
+  }
+  .app.nav-open .topbar .breadcrumb .sb-toggle-mobile{
+    background:var(--blue); color:#fff; border-color:transparent;
+  }
+}
+
+@media (min-width:901px){
+  .sb-toggle-desktop{ transform:translateX(0); } /* or add margin-right:-2px if needed */
+}

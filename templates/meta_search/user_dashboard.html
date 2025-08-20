@@ -39,28 +39,122 @@
     </div>
 
     <!-- FILTER STRIP -->
-    <form method="get" class="filters" id="ratingForm">
-      <div class="pill">
-        <i class="fa-solid fa-location-dot"></i>
-        <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
-      </div>
-      <div class="pill">
-        <i class="fa-regular fa-calendar"></i>
-        <input type="date" name="date" value="{{ request.GET.date }}">
-      </div>
-      <div class="pill pill-select">
-        <i class="fa-regular fa-star"></i>
-        <select id="ratingFilter" name="rating" onchange="document.getElementById('ratingForm').submit()">
-          <option value="">Rating</option>
-          <option value="3"   {% if request.GET.rating == '3' %}selected{% endif %}>3+</option>
-          <option value="3.5" {% if request.GET.rating == '3.5' %}selected{% endif %}>3.5+</option>
-          <option value="4"   {% if request.GET.rating == '4' %}selected{% endif %}>4+</option>
-          <option value="4.5" {% if request.GET.rating == '4.5' %}selected{% endif %}>4.5+</option>
-        </select>
-        <i class="fa-solid fa-chevron-down caret"></i>
-      </div>
-      <button type="submit" class="search-btn">Search</button>
-    </form>
+    
+{# For desktop only #}
+<form method="get" class="filters" id="ratingForm">
+  <div class="pill">
+    <i class="fa-solid fa-location-dot"></i>
+    <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
+  </div>
+
+  <div class="pill">
+    <i class="fa-regular fa-calendar"></i>
+    <input type="date" name="date" value="{{ request.GET.date }}">
+  </div>
+
+  <div class="pill pill-select">
+    <i class="fa-regular fa-star"></i>
+    <select id="ratingFilter" name="rating" onchange="document.getElementById('ratingForm').submit()">
+      <option value="">Rating</option>
+      <option value="3"   {% if request.GET.rating == '3' %}selected{% endif %}>3+</option>
+      <option value="3.5" {% if request.GET.rating == '3.5' %}selected{% endif %}>3.5+</option>
+      <option value="4"   {% if request.GET.rating == '4' %}selected{% endif %}>4+</option>
+      <option value="4.5" {% if request.GET.rating == '4.5' %}selected{% endif %}>4.5+</option>
+    </select>
+    <i class="fa-solid fa-chevron-down caret"></i>
+  </div>
+
+  <button type="submit" class="search-btn">Search</button>
+</form>
+
+<style>
+/* Desktop-only inline styling for the filters row */
+@media (min-width: 901px){
+  /* Force show & put everything in one straight line (beats any previous !important) */
+  #ratingForm.filters{
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+    --f-height: 46px;   /* control height */
+    --f-radius: 12px;   /* control radius */
+  }
+
+  /* Equal widths for Location, Date, Rating */
+  #ratingForm .pill,
+  #ratingForm .pill-select{
+    flex: 1 1 0;
+    min-width: 0;
+    height: var(--f-height);
+    border-radius: var(--f-radius);
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f3f6fb;
+    border: 1px solid #e7edf6;
+  }
+  #ratingForm .pill i{ color:#8aa0c6; flex:0 0 auto; }
+
+  /* Inputs (Location + Date) */
+  #ratingForm .pill input[type="text"],
+  #ratingForm .pill input[type="date"]{
+    flex: 1 1 auto;
+    min-width: 0;
+    height: calc(var(--f-height) - 12px);
+    border: 0;
+    background: transparent;
+    font: inherit;
+    color: #2d3a58;
+    padding: 0 2px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  /* Rating select */
+  #ratingForm .pill-select{ position: relative; padding-right: 36px; }
+  #ratingForm .pill-select select{
+    flex: 1 1 auto;
+    min-width: 0;
+    height: calc(var(--f-height) - 12px);
+    border: 0;
+    background: transparent;
+    font: inherit;
+    color: #2d3a58;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  #ratingForm .pill-select .caret{
+    position: absolute;
+    right: 12px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #8aa0c6;
+  }
+
+  /* Search button matches height & radius */
+  #ratingForm .search-btn{
+    flex: 0 0 auto;
+    height: var(--f-height);
+    border-radius: var(--f-radius);
+    padding: 0 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+/* Optional: if an aggressive rule hides this form on mobile, keep it hidden */
+@media (max-width: 900px){
+  #ratingForm.filters{ display: none !important; }
+}
+</style>
+
+
 
     {# ==== MOBILE-ONLY Canva header + filters (non-destructive) ==== #}
 <div class="mxp-mobile-only" aria-label="Mobile header & filters">
