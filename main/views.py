@@ -877,6 +877,20 @@ def deposit_admin_confirm(request, pk):
     return redirect(reverse("admin:wallet_depositrequest_change", args=[dep.id]))
 
 
+from typing import Optional
+import base64, hashlib, hmac
+
+def _signature_valid(secret: str, raw_body: bytes, sig_header: Optional[str]) -> bool:
+    if not sig_header:
+        return False
+    expected = base64.b64encode(
+        hmac.new(secret.encode(), raw_body, hashlib.sha256).digest()
+    ).decode()
+    # normalize (optional) if incoming header might have spaces/newlines
+    return hmac.compare_digest(sig_header.strip(), expected)
+
+
+"""
 # -----------------------------
 # Deposit webhook (TWO-MODE, single definition)
 # -----------------------------
@@ -885,7 +899,7 @@ def _signature_valid(secret: str, raw_body: bytes, sig_header: str | None) -> bo
         return False
     expected = base64.b64encode(hmac.new(secret.encode(), raw_body, hashlib.sha256).digest()).decode()
     return hmac.compare_digest(sig_header, expected)
-
+"""
 
 @csrf_exempt
 def deposit_webhook_confirm(request):
