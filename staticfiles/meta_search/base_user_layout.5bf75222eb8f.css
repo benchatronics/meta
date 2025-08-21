@@ -1,0 +1,353 @@
+/* ================================
+   Base User Layout — Responsive CSS
+   ================================ */
+
+/* ===== Design tokens ===== */
+:root{
+  --blue:#0b4da3;         /* sidebar */
+  --text:#111;
+  --muted:#6b7280;        /* gray-500 */
+  --border:#e5e7eb;       /* gray-200 */
+  --card:#ffffff;
+  --bg:#f7f8fb;
+  --radius:14px;
+
+  --topbar-h: 56px;       /* visual topbar height for mobile alignments */
+}
+
+/* ===== Base reset ===== */
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color:var(--text);
+  background:var(--bg);
+}
+
+/* ===== Layout grid ===== */
+.app{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  min-height:100vh;
+}
+.app.collapsed{ grid-template-columns:84px 1fr; }
+
+/* ===== Sidebar ===== */
+.sidebar{
+  background:var(--blue);
+  color:#fff;
+  padding:22px 16px;
+  position:sticky; top:0;
+  height:100vh;
+  overflow:hidden;
+}
+@supports (height: 100dvh){
+  .sidebar{ height: 100dvh; } /* smoother on iOS */
+}
+
+.brand{ display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+.brand-button{
+  height:32px; width:32px; border-radius:8px; background:#ffd54a;
+  display:grid; place-items:center; font-weight:700; color:#111; text-decoration:none;
+}
+.brand-name{ font-weight:700; }
+
+/* NOTE: The toggle now lives in the TOPBAR breadcrumb (not inside .brand) */
+.sb-toggle{
+  border:1px solid var(--border);
+  height:36px; width:36px; border-radius:10px;
+  background:#fff; color:var(--text);
+  display:grid; place-items:center; cursor:pointer;
+  transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+}
+.sb-toggle:hover{ box-shadow:0 8px 20px rgba(16,24,40,.08); }
+
+/* ===== Profile ===== */
+.profile{
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  margin:24px 0 18px; text-align:center;
+}
+.avatar{
+  height:64px; width:64px; border-radius:50%;
+  background:#ffe6b3; overflow:hidden; position:relative;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+.avatar img{ height:100%; width:100%; object-fit:cover; display:block; }
+.status-dot{
+  position:absolute; right:-2px; bottom:-2px; height:12px; width:12px; border-radius:50%;
+  background:#4ade80; border:3px solid var(--blue);
+}
+.meta{ display:flex; flex-direction:column; gap:2px; }
+.meta .id{ font-size:12px; opacity:.9; }
+.meta .phone{ font-size:12px; opacity:.9; }
+
+/* ===== Nav ===== */
+.nav{ margin-top:18px; display:grid; gap:8px; }
+.nav h6{
+  font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  opacity:.9; margin:14px 10px 6px;
+}
+.link{
+  display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px;
+  text-decoration:none; color:#e9efff; background:transparent;
+}
+.link:hover{ background:rgba(255,255,255,.10); }
+.link.active{ background:rgba(255,255,255,.22); }
+.link svg{ flex:0 0 18px; min-width:18px; }
+.label{ white-space:nowrap; }
+.bottom{ margin-top:auto; }
+
+/* ===== Collapsed sidebar (desktop) ===== */
+.app.collapsed .brand-name{ display:none; }
+.app.collapsed .meta{ display:none; }
+.app.collapsed .profile{ justify-content:center; }
+.app.collapsed .link{ justify-content:center; }
+.app.collapsed .link .label{ display:none; }
+.app.collapsed .nav h6{ display:none; }
+
+/* ===== Main / Topbar ===== */
+.main{ padding:28px 28px 48px; }
+.topbar{
+  display:flex; justify-content:space-between; align-items:center;
+  margin:-8px 0 10px; gap:12px;
+}
+.breadcrumb{ display:flex; align-items:center; gap:8px; color:var(--muted); font-size:14px; }
+.crumb-home{
+  height:26px; width:26px; border:1px solid var(--border); border-radius:8px;
+  display:grid; place-items:center; background:#fff;
+}
+.bell{
+  height:36px; width:36px; border:1px solid var(--border); border-radius:12px;
+  background:#fff; display:grid; place-items:center; position:relative;
+}
+.bell a{ display:inline-block; color:inherit; text-decoration:none; }
+.bell .badge{
+  position:absolute; inset:-4px -4px auto auto;
+  min-width:14px; height:14px; padding:0 3px;
+  background:#ef4444; color:#fff; font-size:10px; line-height:14px;
+  border-radius:999px; box-shadow:0 0 0 2px #fff;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+
+/* ===== Shared UI bits ===== */
+.card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); }
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 14px; border-radius:12px; border:1px solid var(--border);
+  background:#f8fafc; color:#111; font-weight:600; cursor:pointer;
+  transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+}
+.btn.primary{ background:#1663d6; color:#fff; border-color:#1663d6; }
+.btn:hover{ box-shadow:0 8px 20px rgba(16,24,40,.08); }
+.btn:active{ transform:translateY(1px); }
+.btn[disabled], .btn.disabled{ opacity:.55; cursor:not-allowed; filter:grayscale(.2); }
+.btn.primary:hover{ filter:brightness(1.03); }
+
+/* ===== Accessibility ===== */
+:focus{ outline:none; }
+:focus-visible{
+  outline:2px solid #2563eb;
+  outline-offset:2px;
+}
+.sb-toggle:focus-visible,
+.link:focus-visible,
+.btn:focus-visible,
+.brand-button:focus-visible,
+.bell a:focus-visible{
+  box-shadow:0 0 0 3px rgba(37,99,235,.35);
+  border-color:rgba(37,99,235,.55);
+}
+
+/* Prefer-reduced-motion */
+@media (prefers-reduced-motion: reduce){
+  *{
+    animation-duration:0.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.001ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+/* =========================
+   Mobile responsiveness
+   ========================= */
+@media (max-width: 900px){
+  /* 1-column layout */
+  .app{ grid-template-columns:1fr; }
+
+  /* Sidebar becomes off-canvas — use LEFT so toggle isn’t trapped by transforms */
+  .sidebar{
+    position: fixed;
+    top: 0; bottom: 0;
+    left: -320px;                  /* fully off-screen */
+    width: 280px;
+    z-index: 40;
+    transition: left .28s cubic-bezier(.22,.61,.36,1);
+    will-change: left;
+    height: 100vh;
+  }
+  @supports (height: 100dvh){
+    .sidebar{ height: 100dvh; }
+  }
+  .app.nav-open .sidebar{ left: 0; }
+
+  /* Backdrop via pseudo-element */
+  .app::after{
+    content:"";
+    position:fixed; inset:0; z-index:30;
+    background:rgba(15,23,42,.45);
+    opacity:0; pointer-events:none;
+    transition:opacity .28s cubic-bezier(.22,.61,.36,1);
+  }
+  .app.nav-open::after{ opacity:1; pointer-events:auto; }
+
+  /* Topbar tighter */
+  .main{ padding:18px; }
+  .breadcrumb{ font-size:13px; }
+
+  /* Place toggle directly inside breadcrumb BESIDE the home icon */
+  .topbar .breadcrumb{ position:relative; }
+  .topbar .breadcrumb .sb-toggle{
+    position:relative; top:auto; left:auto;
+    margin-left:8px;
+    height:32px; width:32px; border-radius:8px;
+    background:#fff; color:var(--text); border:1px solid var(--border);
+  }
+  .app.nav-open .topbar .breadcrumb .sb-toggle{
+    background:var(--blue); color:#fff; border-color:transparent;
+  }
+}
+
+/* ===== Scrollbar polish (WebKit/Blink) ===== */
+*::-webkit-scrollbar{ width:10px; height:10px; }
+*::-webkit-scrollbar-thumb{
+  background:#c7d2fe; border-radius:10px; border:2px solid transparent; background-clip:padding-box;
+}
+*::-webkit-scrollbar-track{ background:transparent; }
+
+@media (max-width: 900px){
+  .btn.primary,
+  .btn {
+    padding:20px 18px;   /* larger vertical & horizontal padding */
+    font-size:16px;      /* slightly bigger text */
+  }
+}
+
+/* ===========================
+   Mobile Bottom Nav (≤900px)
+   =========================== */
+   @media (max-width: 900px){
+    .mobile-bottom-nav{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 1000;
+      background: #ffffff;
+      border-top: 1px solid #eeeeee;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 8px 6px 12px;
+    }
+    .mobile-bottom-nav a{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 1;
+      text-decoration: none;
+      color: #6b7280; /* gray-500 */
+    }
+    .mobile-bottom-nav a .icon{
+      width: 26px;
+      height: 26px;
+    }
+    .mobile-bottom-nav a.active{
+      color: #2451FF; /* blue active */
+    }
+    .mobile-bottom-nav a .dot{
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: #2451FF;
+      margin-top: 2px;
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+    .mobile-bottom-nav a.active .dot{
+      opacity: 1;
+    }
+  
+    /* Ensure page content isn’t hidden behind the nav */
+    .main{
+      padding-bottom: 84px; /* adjust if your bottom nav gets taller */
+    }
+  }
+  
+  /* Hide on desktop */
+  @media (min-width: 901px){
+    .mobile-bottom-nav{
+      display: none;
+    }
+  }
+  
+  @media (max-width: 620px){
+    .crumb-home {
+      display: none !important;
+    }
+  }
+
+ /* ===== Toggle visibility rules (updated) ===== */
+.sb-toggle-desktop{ display:none; }       /* default hidden */
+.sb-toggle-mobile{ display:inline-grid; } /* mobile shows topbar toggle */
+
+/* Desktop: show sidebar toggle, hide topbar toggle */
+@media (min-width: 901px){
+  .sb-toggle-desktop{ display:inline-grid; }
+  .topbar .breadcrumb .sb-toggle-mobile{ display:none; }
+
+  /* Brand row: logo far-left, toggle far-right */
+  .sidebar .brand{
+    display:flex; align-items:center; gap:10px;
+  }
+  /* push the toggle to the far right inside the sidebar padding */
+  .sb-toggle-desktop{
+    margin-left:auto;                 /* <<< pushes it to the right */
+    border:1px solid var(--border);
+    height:36px; width:36px; border-radius:10px;
+    background:#fff; color:var(--text);
+    display:grid; place-items:center; cursor:pointer;
+    transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+  }
+  .sb-toggle-desktop:hover{ box-shadow:0 8px 20px rgba(16,24,40,.08); }
+
+  /* When collapsed: stack and place toggle UNDER the logo, centered */
+  .app.collapsed .sidebar .brand{
+    flex-direction:column; align-items:center; gap:8px;
+  }
+  .app.collapsed .sb-toggle-desktop{
+    margin-left:0;                    /* reset auto push */
+    width:36px; height:36px;
+    margin-top:2px;                   /* sits under logo */
+  }
+}
+
+/* Mobile keeps original behavior (drawer) */
+@media (max-width: 900px){
+  .sb-toggle-desktop{ display:none; }
+  .topbar .breadcrumb .sb-toggle-mobile{
+    position:relative; margin-left:8px;
+    height:32px; width:32px; border-radius:8px;
+    background:#fff; color:var(--text); border:1px solid var(--border);
+    display:inline-grid; place-items:center;
+  }
+  .app.nav-open .topbar .breadcrumb .sb-toggle-mobile{
+    background:var(--blue); color:#fff; border-color:transparent;
+  }
+}
+
+@media (min-width:901px){
+  .sb-toggle-desktop{ transform:translateX(0); } /* or add margin-right:-2px if needed */
+}

@@ -26,6 +26,7 @@ from django.http import (
 )
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.templatetags.static import static
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -46,6 +47,82 @@ from .services import confirm_deposit
 
 from django.contrib.auth import update_session_auth_hash
 from .forms import ChangePasswordForm
+from .forms import ProfileUpdateForm
+from django.db.models import Exists, OuterRef, Count
+from django.templatetags.static import static as static_url
+
+from .forms import ProfileUpdateForm, MAX_AVATAR_MB, ALLOWED_IMG_TYPES
+
+
+
+
+#profile settings 
+@login_required
+def profile_settings(request):
+    user = request.user
+
+    if request.method == "POST":
+        # Handle explicit delete of the uploaded file (does not touch avatar_url)
+        if request.POST.get("delete_avatar") == "1":
+            if getattr(user, "avatar", None):
+                try:
+                    user.avatar.delete(save=False)  # remove file from storage
+                except Exception:
+                    pass
+            user.avatar = None
+            user.save(update_fields=["avatar"])
+            messages.success(request, "Profile image removed.")
+            return redirect("profile_settings")
+
+        # Normal update (nickname, avatar_url, optional new avatar file)
+        old_avatar_name = user.avatar.name if getattr(user, "avatar", None) else None
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=user)
+
+        if form.is_valid():
+            # We want to prefer the file if provided, and optionally clear URL.
+            new_file = request.FILES.get("avatar")
+
+            updated_user = form.save(commit=False)
+            if new_file:
+                # Prefer file over URL; clear URL so templates consistently pick the file
+                updated_user.avatar_url = ""
+
+            updated_user.save()
+
+            # If a new file replaced an old one, delete the old file from storage
+            if new_file and old_avatar_name and old_avatar_name != updated_user.avatar.name:
+                try:
+                    user._meta.get_field("avatar").storage.delete(old_avatar_name)
+                except Exception:
+                    pass
+
+            messages.success(request, "Profile updated.")
+            return redirect("profile_settings")
+    else:
+        form = ProfileUpdateForm(instance=user)
+
+    # Build preview source: uploaded file -> URL field -> static placeholder
+    avatar_src = None
+    try:
+        if getattr(user, "avatar", None):
+            avatar_src = user.avatar.url
+    except Exception:
+        avatar_src = None
+    if not avatar_src:
+        avatar_src = getattr(user, "avatar_url", None)
+    if not avatar_src:
+        avatar_src = static("meta_search/images/avatar-placeholder.png")
+
+    context = {
+      "form": form,
+      "avatar_src": avatar_src,
+      "user_id_value": user.id,
+      "phone_value": getattr(user, "phone", "-"),
+      "language_value": (getattr(request, "LANGUAGE_CODE", "en") or "en").upper(),
+      "max_avatar_mb": MAX_AVATAR_MB,
+      "allowed_types": list(ALLOWED_IMG_TYPES),
+      }
+    return render(request, "meta_search/profile_settings.html", context)
 
 
 # -----------------------------
@@ -359,20 +436,17 @@ def support_reset_password(request):
 
     return render(request, "meta_search/support_reset_password.html", {"form": form})
 
+# user_dashboard
 
-# -----------------------------
-# Dashboard
-# -----------------------------
 @login_required
 def user_dashboard(request):
     """
     Render dashboard with three tabs.
-
-    Supported GET params:
-      - location: filters by Hotel.city (case-insensitive exact)
-      - date:     filters by Hotel.available_date (YYYY-MM-DD)
-      - rating:   filters by Hotel.score >= value (only for Rating tab)
-      - tab:      optional, 'recommended' | 'popular' | 'rating' to keep active tab
+    GET params:
+      - location: Hotel.city (iexact)
+      - date:     Hotel.available_date (YYYY-MM-DD)
+      - rating:   Hotel.score >= value
+      - tab:      'recommended' | 'popular' | 'rating'
     """
     user = request.user
 
@@ -381,13 +455,13 @@ def user_dashboard(request):
     location_param = (request.GET.get("location") or "").strip()
     date_param     = (request.GET.get("date") or "").strip()
 
-    # Decide active tab (prefer Rating when rating filter is present)
+    # Active tab (prefer Rating if rating filter present)
     active_tab = request.GET.get("tab") or ("rating" if rating_param else "recommended")
 
-    # Check if favorited (per card)
+    # Favorited subquery
     fav_subq = Favorite.objects.filter(user=user, hotel=OuterRef("pk"))
 
-    # Base queryset (shared by all tabs)
+    # Base queryset
     base = (
         Hotel.objects.filter(is_published=True)
         .select_related("country")
@@ -397,7 +471,7 @@ def user_dashboard(request):
         )
     )
 
-    # Apply Location and Date to ALL tabs
+    # Global filters
     if location_param:
         base = base.filter(city__iexact=location_param)
     if date_param:
@@ -405,7 +479,7 @@ def user_dashboard(request):
         if d:
             base = base.filter(available_date=d)
 
-    # Rating tab extra filter
+    # Rating tab
     rating_qs = base
     if rating_param:
         try:
@@ -414,10 +488,29 @@ def user_dashboard(request):
         except ValueError:
             pass
 
-    # Build tab querysets
+    # Build tabs
     recommended_hotels = base.filter(is_recommended=True).order_by("-created_at", "-score", "name")[:12]
     popular_hotels     = base.order_by("-popularity", "-created_at", "name")[:12]
     rating_hotels      = rating_qs.order_by("-score", "-created_at", "name")[:12]
+
+    # --- Dashboard header helpers ---
+    nickname = (getattr(user, "nickname", "") or "").strip()
+    profile_cta = "View Profile" if nickname else "Complete your profile"
+
+    # Robust avatar resolution (ONLY your CustomUser fields)
+    if getattr(user, "avatar", None):                 # ImageField with a file
+        try:
+            avatar_url = user.avatar.url
+        except Exception:
+            avatar_url = None
+    else:
+        avatar_url = None
+
+    if not avatar_url and getattr(user, "avatar_url", ""):
+        avatar_url = user.avatar_url  # URLField
+
+    if not avatar_url:
+        avatar_url = static("meta_search/images/avatar-placeholder.png")
 
     context = {
         "hotel_tabs": [
@@ -426,6 +519,8 @@ def user_dashboard(request):
             ("rating", rating_hotels),
         ],
         "active_tab": active_tab,
+        "profile_cta": profile_cta,
+        "user_avatar": avatar_url,  # handy for templates that expect it
     }
     return render(request, "meta_search/user_dashboard.html", context)
 
@@ -944,12 +1039,6 @@ def deposit_webhook_confirm(request):
     confirmed_now = confirm_deposit(dep)
     return JsonResponse({"ok": True, "confirmed": confirmed_now, "status": dep.status})
 
-
-def settings_profile(request):
-    return render(request, "meta_search/profile_settings.html", {
-        "active_page": "settings",
-        "current_tab": "profile",
-    })
 
 #language 
 def language_settings(request):

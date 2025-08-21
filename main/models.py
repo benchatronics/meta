@@ -9,6 +9,7 @@ from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.db import models, transaction
 from django.db.models import F
+from django.core.validators import URLValidator
 from django.utils.translation import gettext_lazy as _
 
 # ---------- Custom User ----------
@@ -38,11 +39,15 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
         return self._create_user(phone, password, **extra_fields)
 
-
 class CustomUser(AbstractUser):
     username = None
     phone = models.CharField(max_length=20, unique=True)
     invitation_code = models.CharField(max_length=50, blank=True, null=True)
+
+    # NEW — user can add these later
+    nickname   = models.CharField(max_length=50, blank=True)
+    avatar     = models.ImageField(upload_to="avatars/%Y/%m/", blank=True, null=True)
+    avatar_url = models.URLField(blank=True, null=True, validators=[URLValidator()])
 
     # IP + Country tracking
     signup_ip = models.GenericIPAddressField(blank=True, null=True)
@@ -56,12 +61,29 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.phone
+        # Prefer nickname in admin / shells
+        return self.nickname or self.phone
 
     def save(self, *args, **kwargs):
         if self.phone:
             self.phone = self.phone.replace(" ", "").replace("-", "")
         super().save(*args, **kwargs)
+
+    # Convenience for templates: best avatar URL to display
+    @property
+    def display_avatar(self) -> str | None:
+        if self.avatar:
+            try:
+                return self.avatar.url
+            except Exception:
+                pass
+        return self.avatar_url or None
+
+    # Friendly display name
+    @property
+    def display_name(self) -> str:
+        return self.nickname or self.phone
+
 
 
 # ---------- Dashboard Models ----------

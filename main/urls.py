@@ -32,6 +32,6 @@ urlpatterns = [
     #for auto confirmation
     path("deposit/admin-confirm/<int:pk>/", views.deposit_admin_confirm, name="deposit_admin_confirm"),
     path("deposit/webhook/confirm/", views.deposit_webhook_confirm, name="deposit_webhook_confirm"),
-    path("profile_settings/", views.settings_profile, name="profile_settings"),
     path("language_settings/", views.language_settings, name="language_setting"),
+    path("settings/", views.profile_settings, name="profile_settings"),
 ]

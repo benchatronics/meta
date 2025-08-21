@@ -43,6 +43,75 @@ def _country_from_ip(ip):
     return None
 
 
+class AdminUserCreationForm(UserCreationForm):
+    class Meta:
+        model = CustomUser
+        fields = "__all__"   # or just ("phone",) if you prefer
+
+class AdminUserChangeForm(UserChangeForm):
+    class Meta:
+        model = CustomUser
+        fields = "__all__"   # ensures nickname/avatar fields are available
+
+
+# ---- Upload guardrails ----
+ALLOWED_IMG_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+MAX_AVATAR_MB = 4  # change if you want
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ["nickname", "avatar", "avatar_url"]
+        widgets = {
+            "nickname": forms.TextInput(attrs={
+                "placeholder": "Your nickname",
+                "autocomplete": "nickname",
+            }),
+            "avatar": forms.ClearableFileInput(attrs={
+                "accept": "image/*",
+            }),
+            "avatar_url": forms.URLInput(attrs={
+                "placeholder": "https://example.com/photo.jpg",
+                "inputmode": "url",
+                "autocomplete": "url",
+            }),
+        }
+        help_texts = {
+            "avatar": _("JPG/PNG/WebP/GIF, up to %(mb)s MB.") % {"mb": MAX_AVATAR_MB},
+            "avatar_url": _("Direct image URL (used only if no file is uploaded)."),
+        }
+
+    # Validate uploaded image
+    def clean_avatar(self):
+        f = self.cleaned_data.get("avatar")
+        if not f:
+            return f
+        ctype = getattr(f, "content_type", "") or ""
+        if ctype not in ALLOWED_IMG_TYPES:
+            raise ValidationError(_("Unsupported image type. Use JPG, PNG, WebP, or GIF."))
+        if f.size and f.size > MAX_AVATAR_MB * 1024 * 1024:
+            raise ValidationError(_("Image too large (max %(mb)s MB).") % {"mb": MAX_AVATAR_MB})
+        return f
+
+    # Be strict about URL scheme
+    def clean_avatar_url(self):
+        url = (self.cleaned_data.get("avatar_url") or "").strip()
+        if not url:
+            return ""
+        parts = urlparse(url)
+        if parts.scheme not in ("http", "https"):
+            raise ValidationError(_("Only http/https URLs are allowed."))
+        # No hard extension check (CDNs often use extensionless URLs); let it pass.
+        return url
+
+    # Prefer uploaded file over URL if both provided
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get("avatar") and cleaned.get("avatar_url"):
+            cleaned["avatar_url"] = ""
+        return cleaned
+
+
 class SignupForm(UserCreationForm):
     country_code = forms.ChoiceField(
         choices=[(dial, disp) for dial, disp, _, _ in COUNTRY_CODES],

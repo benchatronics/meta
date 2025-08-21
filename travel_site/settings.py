@@ -2,6 +2,14 @@
 from pathlib import Path
 import os
 from .i18n import LANGUAGES, LANGUAGE_CODE 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://10.115.251.40:8000",
+    "http://127.0.0.1:8000",
+]
+
+
 
 # Optional but convenient:
 try:
@@ -36,7 +44,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-2x^94vgug#2-*q6&-(bfy^s)!an^je)r(m=(*ouk#)g@62-ul0"
 DEBUG = True
 ALLOWED_HOSTS = [
-    "10.104.22.1",
+    "10.115.251.40",
     "scamperlinks.pythonanywhere.com",
     "localhost",
     "127.0.0.1",
@@ -54,6 +62,7 @@ INSTALLED_APPS = [
     # your app
     "main",
     # extras
+    "site_tags",
     "django_countries",
     "phonenumber_field",
     "captcha",
@@ -139,6 +148,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # your local assets
 
 # WhiteNoise recommended setting (serves compressed files)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
 
 # --- Defaults ---
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

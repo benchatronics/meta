@@ -30,12 +30,18 @@
       </div>
 
       <!-- User info (avatar + meta) -->
-      <div class="profile" title="{{ request.user.get_full_name|default:request.user.username }}">
+      {% static 'meta_search/images/avatar-placeholder.png' as avatar_placeholder %}
+      <div class="profile"
+           title="{{ request.user.nickname|default:request.user.get_full_name|default:request.user.username }}">
         <div class="avatar">
-          <img
-            src="{% if user_avatar %}{{ user_avatar }}{% elif request.user.profile.avatar %}{{ request.user.profile.avatar.url }}{% else %}{% static 'meta_search/images/avatar-placeholder.png' %}{% endif %}"
-            alt="User avatar"
-            width="48" height="48" loading="lazy">
+          {# Prefer uploaded file, then URL field, then placeholder #}
+          {% if request.user.avatar %}
+            <img src="{{ request.user.avatar.url }}" alt="User avatar" width="48" height="48" loading="lazy" onerror="this.src='{{ avatar_placeholder }}'">
+          {% elif request.user.avatar_url %}
+            <img src="{{ request.user.avatar_url }}" alt="User avatar" width="48" height="48" loading="lazy" onerror="this.src='{{ avatar_placeholder }}'">
+          {% else %}
+            <img src="{{ avatar_placeholder }}" alt="User avatar" width="48" height="48" loading="lazy">
+          {% endif %}
           <span class="status-dot"></span>
         </div>
         <div class="meta">
@@ -55,7 +61,7 @@
           <span class="label">Task</span>
         </a>
         <a class="link {% if active_page == 'rewards' %}active{% endif %}" href="#" title="Rewards">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 17 3 3 7-7"/><path d="M20 10V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6"/></svg>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 17 3 3 7-7"/><path d="M20 10V7a2 2 0 0 0-2-2H6a2 2 0 0 0 2 2v10a2 2 0 0 0 2 2h6"/></svg>
           <span class="label">Rewards</span>
         </a>
 
@@ -147,7 +153,6 @@
 
     function setCollapsed(collapsed){
       appEl.classList.toggle('collapsed', !!collapsed);
-      // Update desktop chevrons
       if (sbToggleDesktop){
         sbToggleDesktop.textContent = collapsed ? '☰' : '☰';
         sbToggleDesktop.setAttribute('title', collapsed ? 'Expand' : 'Collapse');
@@ -155,27 +160,23 @@
       try { localStorage.setItem('sb_collapsed', collapsed ? '1' : '0'); } catch(e){}
     }
 
-    // Restore last state (desktop only)
     try {
       const saved = localStorage.getItem('sb_collapsed');
       if (saved === '1' && !isMobile()) setCollapsed(true);
     } catch(e){}
 
-    // Desktop toggle: collapse/expand
     sbToggleDesktop?.addEventListener('click', (e) => {
       e.stopPropagation();
       if (isMobile()) return;
       setCollapsed(!appEl.classList.contains('collapsed'));
     });
 
-    // Mobile toggle: open/close drawer
     sbToggleMobile?.addEventListener('click', (e) => {
       e.stopPropagation();
       if (!isMobile()) return;
       appEl.classList.toggle('nav-open');
     });
 
-    // Close mobile menu when clicking outside the sidebar
     document.addEventListener('click', (e) => {
       if (!appEl.classList.contains('nav-open')) return;
       const sidebar = document.getElementById('sidebar');
@@ -183,24 +184,21 @@
       appEl.classList.remove('nav-open');
     });
 
-    // ESC closes mobile menu
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') appEl.classList.remove('nav-open');
     });
 
-    // Auto-close on mobile after a nav link is clicked
     document.querySelectorAll('.nav .link').forEach(a=>{
       a.addEventListener('click', ()=>{
         if (isMobile()) appEl.classList.remove('nav-open');
       });
     });
 
-    // Keep collapsed state only for desktop; reset when entering mobile
     const mq = window.matchMedia('(max-width: 900px)');
     if (mq.addEventListener) {
       mq.addEventListener('change', () => {
         if (mq.matches) {
-          appEl.classList.remove('collapsed');   // use off-canvas in mobile
+          appEl.classList.remove('collapsed');
           if (sbToggleMobile) sbToggleMobile.textContent = '☰';
         } else {
           appEl.classList.remove('nav-open');
@@ -210,7 +208,7 @@
     }
   </script>
     
-  <!-- ======== MOBILE BOTTOM NAV (Home/Tasks/Reward/Wallet) ======== -->
+  <!-- ======== MOBILE BOTTOM NAV ======== -->
   <nav class="mobile-bottom-nav" role="tablist" aria-label="Primary">
     <a class="{% if active_page == 'home' %}active{% endif %}" href="{% url 'user_dashboard' %}" title="Home" role="tab" aria-selected="{% if active_page == 'home' %}true{% else %}false{% endif %}">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

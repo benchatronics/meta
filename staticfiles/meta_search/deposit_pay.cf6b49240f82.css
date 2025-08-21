@@ -1,0 +1,139 @@
+/* Scoped palette (prevents bleeding into sidebar, etc.) */
+.pay-scope{
+    --pay-bg:#f7f8fb;
+    --pay-card:#ffffff;
+    --pay-text:#111827;
+    --pay-muted:#6b7280;
+    --pay-border:#e5e7eb;
+    --pay-blue:#2f57ff;
+    --pay-blue-600:#2446cc;
+    --pay-danger:#d94c49;
+    --pay-shadow:0 10px 30px rgba(31,41,55,.06);
+    --pay-radius:16px;
+    color:var(--pay-text);
+    font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  
+  .pay-scope .shell{max-width:960px;margin-inline:auto;padding:28px clamp(16px,3vw,32px);background:var(--pay-bg)}
+  .pay-scope .crumb{display:flex;align-items:center;gap:8px;color:var(--pay-muted);font-size:14px;margin-bottom:18px}
+  .pay-scope .crumb svg{width:18px;height:18px;opacity:.9}
+  .pay-scope h1.title{font-size:34px;font-weight:800;letter-spacing:-.02em;margin:4px 0 22px}
+  
+  .pay-scope .pay-card{background:var(--pay-card);border:1px solid var(--pay-border);border-radius:var(--pay-radius);box-shadow:var(--pay-shadow);overflow:hidden}
+  .pay-scope .pay-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--pay-border)}
+  .pay-scope .pay-head h2{font-size:20px;margin:0;font-weight:700}
+  .pay-scope .change-method{color:var(--pay-danger);font-weight:600;text-decoration:none}
+  .pay-scope .change-method:hover{opacity:.9}
+  
+  .pay-scope .pay-body{padding:18px 22px}
+  .pay-scope .row-top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .pay-scope .asset{display:flex;align-items:center;gap:10px}
+  .pay-scope .token{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;color:#fff;font-weight:800}
+  .pay-scope .token.usdt{background:#16a34a}
+  .pay-scope .token.eth{background:#111827}
+  .pay-scope .asset-name{font-weight:700;font-size:16px}
+  
+  .pay-scope .amount-wrap{display:flex;align-items:center;gap:8px;color:var(--pay-text);font-weight:700}
+  .pay-scope .copy{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid var(--pay-border);cursor:pointer}
+  .pay-scope .copy:hover{background:#f9fafb}
+  .pay-scope .copy svg{width:16px;height:16px}
+  .pay-scope .divider{height:1px;background:var(--pay-border);margin:18px 0}
+  
+  .pay-scope .grid{display:grid;grid-template-columns:140px 1fr;gap:18px}
+  .pay-scope .qr-box{width:140px;height:140px;border-radius:12px;border:1px solid var(--pay-border);overflow:hidden;background:#fff;display:grid;place-items:center}
+  .pay-scope .qr-box img{display:block;width:100%;height:100%;object-fit:contain}
+  .pay-scope .qr-box #qrcode, .pay-scope .qr-box canvas{width:100%;height:100%}
+  .pay-scope .qr-hint{font-size:12px;color:var(--pay-muted);margin-top:6px}
+  
+  .pay-scope .pair{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-bottom:14px}
+  .pay-scope .label{color:var(--pay-muted);font-weight:600}
+  .pay-scope .value{font-weight:700}
+  .pay-scope .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;word-break:break-all}
+  
+  .pay-scope .pay-btn{
+    width:100%;margin-top:12px;border:none;display:inline-flex;justify-content:center;align-items:center;gap:8px;
+    height:48px;border-radius:10px;background:var(--pay-blue);color:#fff;font-weight:700;font-size:15px;cursor:pointer
+  }
+  .pay-scope .pay-btn:hover{background:var(--pay-blue-600)}
+  .pay-scope .pay-btn[disabled]{opacity:.65;cursor:not-allowed}
+  .pay-scope .eta{margin-top:6px;color:var(--pay-muted);font-size:13px}
+  .pay-scope .quick-hint{margin-top:8px;color:var(--pay-muted);font-size:13px}
+  
+  .pay-scope .alerts{margin:0 0 12px}
+  .pay-scope .alert{padding:10px 12px;border:1px solid var(--pay-border);border-radius:12px;background:#fff;box-shadow:var(--pay-shadow);font-weight:600}
+  .pay-scope .alert.success{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+  .pay-scope .alert.info{background:#eff6ff;border-color:#bfdbfe;color:#1e3a8a}
+  .pay-scope .alert.warning{background:#fffbeb;border-color:#fde68a;color:#7c2d12}
+  .pay-scope .alert.error{background:#fef2f2;border-color:#fecaca;color:#7f1d1d}
+  
+  @media (max-width:640px){
+    .pay-scope .grid{grid-template-columns:1fr}
+    .pay-scope .qr-box{width:130px;height:130px}
+  }
+  
+  /* Toast + spinner */
+  .pay-scope .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) scale(.98);background:#111827;color:#fff;border-radius:999px;padding:10px 14px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s, transform .2s;}
+  .pay-scope .toast.show{opacity:1;transform:translateX(-50%) scale(1)}
+  .pay-scope .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.6);border-top-color:#fff;border-radius:50%;display:inline-block;vertical-align:middle;animation:spin .8s linear infinite;margin-right:8px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  
+  /* ===============================
+   QR centered + mobile expansion
+   Append after your current CSS
+   =============================== */
+
+/* 1) Desktop: keep current layout, ensure QR is neatly centered in its own cell */
+.pay-scope .qr-box{
+  display: grid;                /* already present, re-affirm */
+  place-items: center;
+}
+.pay-scope .qr-box img,
+.pay-scope .qr-box #qrcode,
+.pay-scope .qr-box canvas{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 2) Mobile: make the card feel roomier and center the QR in the card */
+@media (max-width: 640px){
+  /* Let the card breathe edge-to-edge more */
+  .pay-scope .shell{
+    max-width: 100%;
+    padding: 16px 10px;         /* tighter side padding so card can expand */
+  }
+
+  /* Card spans the available width; subtle full-bleed feel */
+  .pay-scope .pay-card{
+    border-radius: 10px;        /* keep some rounding; set 0 for full-bleed */
+    border-left-width: 1px;     /* keep borders tidy */
+    border-right-width: 1px;
+  }
+
+  /* Stack already switches to 1 col; increase spacing a touch */
+  .pay-scope .grid{
+    grid-template-columns: 1fr; /* you already had this; re-affirm */
+    row-gap: 16px;
+  }
+
+  /* Center the QR block in the card and make it larger for easier scanning */
+  .pay-scope .qr-box{
+    margin-inline: auto;                      /* centers within the card */
+    width: clamp(160px, 70vw, 260px);         /* scale with screen */
+    height: clamp(160px, 70vw, 260px);
+  }
+  .pay-scope .qr-hint{
+    text-align: center;                       /* hint under QR centered too */
+  }
+
+  /* Slightly tighter paddings so content fits comfortably */
+  .pay-scope .pay-head{ padding: 14px 16px; }
+  .pay-scope .pay-body{ padding: 14px 16px; }
+
+  /* If long addresses/IDs wrap, ensure they don't overflow */
+  .pay-scope .mono{ word-break: break-word; }
+}
+
+/* Optional: If you want the QR to be centered on ALL sizes (not only mobile),
+   uncomment the next line: */
+/* .pay-scope .qr-box{ margin-inline:auto; } */

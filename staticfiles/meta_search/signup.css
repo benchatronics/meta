@@ -1,242 +1,325 @@
-/* ===== Base / Background ===== */
-* { box-sizing: border-box; }
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  color: #222;
-  background: url("/static/meta_search/signup-bg.jpg") no-repeat center center fixed;
-  background-size: cover;
+/* Base */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif}
+
+/* 50/50 background split */
+.shell{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  height:100vh;
+  overflow:hidden;
 }
 
-/* ===== HERO (image + overlay) ===== */
-.hero{
-  position: relative;
-  min-height: 240px;
-  padding: 24px 20px 64px;
-  background: url("/static/meta_search/signup-hero.jpg") center/cover no-repeat; /* change path if needed */
+/* LEFT panel */
+.left{
+  position:relative;
+  background:url("/static/meta_search/images/siginupimg.png") center/cover no-repeat;
 }
-.hero::after{
-  content:""; position:absolute; inset:0; background: rgba(0,0,0,.30);
-}
-.signup-header, .hero-title{ position: relative; z-index: 1; }
+.left::after{content:"";position:absolute;inset:0;background:rgba(20,32,60,.28);backdrop-filter:blur(2px);pointer-events:none}
+.brand{position:absolute;top:20px;left:20px;z-index:2;display:flex;gap:10px;color:#fff;font-weight:800}
+.brand img{height:28px}
+.left-content{position:absolute;top:50%;left:48px;transform:translateY(-50%);color:#fff;z-index:2}
+.left-content h2{margin:0 0 14px;font-size:48px;font-weight:800}
+.left-content .underline{width:80px;height:4px;border-radius:999px;background:#fff}
+.home-area{position:absolute;left:20px;bottom:20px;z-index:2;display:flex;gap:12px;align-items:center}
 
-/* ===== Top Bar inside hero ===== */
-.signup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background: transparent;            /* transparent over hero */
+/* Rectangular primary back button */
+.back-btn-rect{
+  height:44px;padding:0 14px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  background:#1d5cff;border:none;text-decoration:none
 }
-.back-btn {
-  background-color: #e7edff;
-  color: #1d5cff;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 0.95rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: background-color 0.3s ease;
-}
-.back-btn:hover { background-color: #d4e2ff; }
-.logo { width: 100px; height: auto; }
+.back-btn-rect i{color:#fff;font-size:16px}
+.home-link{color:#fff;font-weight:600;text-decoration:none}
+.home-link:hover{text-decoration:underline}
 
-/* ===== Title: white, underline only under “Sign” ===== */
-h1.hero-title{
-  color:#fff;
-  text-align: left;
-  font-size: 2.75rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin: 12px 6px 0;
+/* RIGHT panel – Option 1 (subtle dim) */
+.right{
+  position:relative;
+  background:
+    radial-gradient(140px 140px at 85% 25%, rgba(255,192,203,.25), transparent 60%),
+    radial-gradient(260px 260px at 90% 70%, rgba(255,192,203,.22), transparent 60%),
+    #f7f2ee;
+  height:100%;
 }
-h1.hero-title .underline{
-  position: relative; display:inline-block;
-}
-h1.hero-title .underline::after{
-  content:""; position:absolute; left:0; right:0; bottom:-10px;
-  height:8px; background:#fff; border-radius:999px;
-  box-shadow: 0 0 0 6px rgba(255,255,255,0.35);
+.right::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.06);
+  backdrop-filter:blur(4px);
+  pointer-events:none;
 }
 
-/* ===== Card ===== */
-.signup-wrapper {
-  padding: 2rem 1.5rem;
-  background-color: #fff;
-  border-radius: 24px;
-  max-width: 560px;
-  margin: -40px auto 2rem;            /* pull up over hero */
-  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
-}
-.intro {
-  color: #2e2e2e;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-size: 1.25rem;
-  line-height: 1.4;
-}
-
-/* ===== Labels ===== */
-.signup-form label {
-  display: block;
-  margin: 1.1rem 0 0.5rem;
-  font-weight: 700;
-  font-size: 1.125rem;
-}
-
-/* ===== Generic field container (used by passwords, invitation) ===== */
-.field{
-  position: relative;
-  display:flex;
-  align-items:center;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
+/* ===== CENTERED CARD (desktop/tablet) ===== */
+.signup-wrapper{
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+  z-index:10;
+  width:min(480px, 90%);
   background:#fff;
-  height: 60px;
-  padding: 0 14px;
-  margin-bottom: 1.25rem;
+  border-radius:24px;
+  padding:36px 28px 28px;
+  box-shadow:
+    0 20px 45px rgba(0,0,0,.08),
+    0 1px 0 rgba(0,0,0,.04) inset;
+  border:1px solid rgba(0,0,0,.06);
 }
-.field input, .field select, .field textarea{
-  width:100%;
-  border:0; outline:0; background:transparent;
-  font-size:1rem;
-  height: 100%;
-  padding: 0 2px;
-}
-.field:focus-within{ box-shadow: 0 0 0 4px rgba(29,92,255,0.10); border-color:#d7defa; }
+.intro{margin:6px 0 20px;font-size:1.15rem;font-weight:700;color:#2f2f2f}
 
-/* ===== Left padlock for password fields ===== */
-.has-left-icon{ padding-left: 46px; }
-.icon-left{
-  position:absolute; left:14px; width:20px; height:20px; fill:#9aa0a6;
-}
+/* Labels */
+.signup-form label{display:block;margin:10px 0 6px;font-weight:700;font-size:1rem}
 
-/* ===== Eye toggle (first password only) ===== */
-.has-right-eye{ padding-right: 46px; }
-.eye-btn{
-  position:absolute; right:10px; width:36px; height:36px;
-  border:1px solid #e5e7eb; border-radius:9999px; background:#f3f6fd;
-  display:grid; place-items:center; cursor:pointer;
+/* Fields */
+.field,.phone_number_field{
+  display:flex;align-items:center;gap:8px;
+  height:46px;border:1px solid #e5e7eb;border-radius:14px;
+  background:#fff;padding:0 12px;margin-bottom:12px
 }
-.eye-btn::before{ content:"👁️"; }
-.eye-btn.showing::before{ content:"🙈"; }
-
-/* ===== Country code + phone input ===== */
-.phone_number_field {
-  display: flex;
-  align-items: center;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  overflow: hidden;
-  margin-bottom: 1.25rem;
-  background: #fff;
-  height: 60px;
+.field input,.field select,
+.phone_number_field input,.phone_number_field select{
+  border:0;outline:0;background:transparent;flex:1;height:100%;font-size:.96rem;
+  min-width:0;
 }
+.field:focus-within{box-shadow:0 0 0 3px rgba(29,92,255,.10);border-color:#d7defa}
 .phone_number_field select{
-  max-width: 110px;
-  flex-shrink: 0;
-  border: none;
-  background-color: #f7f9ff;
-  padding: 0 14px;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #222;
-  outline: none;
-  height: 100%;
-  border-right: 1px solid #e5e7eb;
-}
-.phone_number_field input{
-  flex: 1;
-  border: none;
-  padding: 0 16px;
-  font-size: 1rem;
-  outline: none;
-  height: 100%;
+  max-width:110px;flex-shrink:0;background:#f7f9ff;
+  border-right:1px solid #e5e7eb;padding-right:8px
 }
 
-/* ===== Placeholders ===== */
-.signup-form input::placeholder,
-.signup-form textarea::placeholder {
-  color: #cbd5e1;
+/* Left lock + eye */
+.has-left-ic{padding-left:38px;position:relative}
+.left-ic{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;color:#6b7280;opacity:.75;pointer-events:none
+}
+.eye-btn{
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid #e5e7eb;background:#f3f6fd;cursor:pointer;
+  display:flex;align-items:center;justify-content:center
+}
+.eye-btn::before{content:"👁️";font-size:14px;line-height:1}
+.eye-btn.showing::before{content:"🙈"}
+
+/* Captcha */
+.captcha-field{
+  display:flex;align-items:center;gap:0;
+  border:1px solid #e5e7eb;border-radius:14px;
+  height:46px;background:#fff;overflow:hidden;margin-bottom:12px
+}
+.captcha-field input[type="text"]{
+  flex:1;border:0;outline:0;height:100%;padding:0 12px;font-size:.96rem;min-width:0
+}
+.captcha-field img{height:100%;width:auto;border-left:1px solid #e5e7eb;display:block}
+.captcha-field input[type="hidden"]{display:none !important}
+
+/* Errors */
+ul.errorlist{
+  list-style:none;margin:0 0 10px;padding:8px 10px;background:#fff2f2;color:#b00020;
+  border:1px solid #ffcccc;border-radius:10px;font-size:.86rem
 }
 
-/* ===== Captcha: input + image in one rounded container, image right ===== */
-.captcha-row {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  padding: 0 12px 0 0;
-  background: #fff;
-  height: 60px;
-  overflow: hidden;
-}
-.captcha-row input[type="text"]{
-  flex: 1;
-  border: none !important;
-  outline: none;
-  height: 58px;
-  border-radius: 18px 0 0 18px;
-  padding: 0 14px;
-  font-size: 1rem;
-  margin-bottom: 0;
-}
-.captcha-row img{
-  height: 44px;
-  border-radius: 10px;
-  display: block;
-}
-.captcha-row input[type="hidden"]{ display: none !important; }
-
-/* ===== Errors (Django <ul class="errorlist">) ===== */
-ul.errorlist {
-  list-style: none;
-  margin: 0 0 0.75rem;
-  padding: 0.5rem 0.75rem;
-  background: #fff2f2;
-  color: #b00020;
-  border: 1px solid #ffcccc;
-  border-radius: 12px;
-  font-size: 0.9rem;
-}
-
-/* ===== Submit + Login link ===== */
+/* Button */
 .btn-primary{
-  width: 100%;
-  background-color: #1d5cff;
-  color: #fff;
-  border: none;
-  height: 64px;
-  font-size: 1.125rem;
-  border-radius: 22px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background-color .25s ease, box-shadow .25s ease;
-  box-shadow: 0 6px 16px rgba(29,92,255,0.28);
+  width:100%;height:48px;border:0;border-radius:12px;
+  background:#1d5cff;color:#fff;font-weight:700;font-size:1rem;cursor:pointer;
+  box-shadow:0 8px 20px rgba(29,92,255,.25)
 }
-.btn-primary:hover { background-color: #003de0; }
+.btn-primary:hover{filter:brightness(.96)}
+.login-link{text-align:center;margin-top:10px;font-size:.92rem;color:#555}
+.login-link a{color:#1d5cff;font-weight:700;text-decoration:none}
+.login-link a:hover{text-decoration:underline}
 
-.login-link {
-  text-align: center;
-  margin-top: 1rem;
-  color: #444;
-  font-size: 1.05rem;
-}
-.login-link a {
-  color: #1d5cff;
-  text-decoration: none;
-  font-weight: 700;
-}
-.login-link a:hover { text-decoration: underline; }
+/* ---------- Mobile layout (<= 640px) ---------- */
+@media (max-width:640px){
+  .shell{grid-template-columns:1fr;height:auto}
+  .left{min-height:260px;padding-bottom:60px}
+  .left-content{left:20px;top:56%;transform:translateY(-50%)}
+  .left-content h2{font-size:40px}
+  .brand{left:auto;right:20px;top:16px}
+  .brand img{height:24px}
+  .home-area{top:16px;left:16px;bottom:auto;gap:8px}
+  .back-btn-rect{height:36px;padding:0 12px;border-radius:6px}
+  /*.home-link{display:none}*/
+  .right{display:none}
 
-/* ===== Responsive ===== */
-@media (max-width: 480px) {
-  .signup-wrapper { margin: 1.25rem; }
-  .phone_number_field select { max-width: 100px; }
+  .signup-wrapper{
+    position:static;left:auto;top:auto;transform:none;
+    width:min(420px,92%);
+    margin:-20px auto 24px;
+    padding:32px 24px 24px;
+    border-radius:20px;
+  }
+
+  .field,.phone_number_field,.captcha-field{height:44px}
+  .btn-primary{height:46px}
 }
+
+/* ---------- Ultra-narrow fixes (<= 320px) ---------- */
+@media (max-width:320px){
+  .signup-wrapper{
+    width:94%;
+    margin:-14px auto 20px;
+    padding:28px 18px 20px;
+    border-radius:18px;
+  }
+}
+
+/* ---------- Mobile layout (<= 640px) ---------- */
+@media (max-width:640px){
+  .shell{grid-template-columns:1fr;height:auto}
+  .left{min-height:260px;padding-bottom:60px}
+  .left-content{left:20px;top:56%;transform:translateY(-50%)}
+  .left-content h2{font-size:40px}
+  .brand{left:auto;right:20px;top:16px}
+  .brand img{height:24px}
+  .home-area{top:16px;left:16px;bottom:auto;gap:8px}
+  .back-btn-rect{height:36px;padding:0 12px;border-radius:6px}
+  .home-link{display:none}
+  .right{display:none}
+
+  /* Card raised to overlap into right image area */
+  .signup-wrapper{
+    position:relative;
+    top:-70px; /* adjust overlap height */
+    width:min(420px,92%);
+    margin:0 auto 24px;
+    padding:32px 24px 24px;
+    border-radius:20px;
+    z-index: 5;
+  }
+
+  .field,.phone_number_field,.captcha-field{height:44px}
+  .btn-primary{height:46px}
+}
+
+/* ---------- Ultra-narrow fixes (<= 320px) ---------- */
+@media (max-width:320px){
+  .signup-wrapper{
+    top:-30px; /* slightly less overlap on very narrow */
+    width:94%;
+    margin:0 auto 20px;
+    padding:28px 18px 20px;
+    border-radius:18px;
+  }
+}
+
+/* ---- FIX: keep Home visible and on top (mobile) ---- */
+@media (max-width:640px){
+  .home-area{
+    position: absolute;      /* stays in the left panel */
+    top: 16px;
+    left: 16px;
+    bottom: auto;
+    gap: 8px;
+    z-index: 50;             /* above .signup-wrapper (z=5) */
+  }
+  .home-link{
+    display: inline-flex;    /* make sure it's not hidden */
+    align-items: center;
+  }
+  /* ensure the back button shows too */
+  .back-btn-rect{
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 6px;
+  }
+}
+
+/* Optional: ensure the overlay never blocks clicks */
+.left::after{ pointer-events: none; }
+
+
+/* =========================================================
+   AUTH — Per-page backgrounds + gradient fallback
+
+   ========================================================= */
+
+/* Default/fallback for any auth page without a body class */
+.left{
+  background:
+    url("/static/meta_search/images/siginupimg.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important; /* solid fallback */
+}
+
+/* Signup */
+body.signup-page .left{
+  background:
+    url("/static/meta_search/images/siginupimg.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important;
+}
+
+/* Signin */
+body.signin-page .left{
+  background:
+    url("/static/meta_search/images/signinimg.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important;
+}
+
+/* Reset Password — Step 1 */
+body.reset-step1-page .left{
+  background:
+    url("/static/meta_search/images/reset-step1.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important;
+}
+
+/* Reset Password — Step 2 */
+body.reset-step2-page .left{
+  background:
+    url("/static/meta_search/images/reset-step1.png") center/cover no-repeat,
+    linear-gradient(160deg, #173B88 0%, #0b4da3 100%) !important;
+  background-color:#0b4da3 !important;
+}
+
+/* Ensure the overlay doesn’t block clicks (belt & suspenders) */
+.left::after{ pointer-events: none; }
+
+/* Mobile: always keep Home visible, even if earlier rules hide it */
+@media (max-width:640px){
+  .home-link{ display:inline-flex !important; align-items:center; }
+}
+
+/* ===========================================
+   Raise the form card on mobile/short screens
+   =========================================== */
+
+/* Phones (portrait & most small tablets) */
+@media (max-width:640px){
+  /* Give the hero a bit more height so overlap doesn’t crop */
+  .left{ min-height: 360px; }
+
+  /* Pull the card up so users see it immediately */
+  .signup-wrapper{
+    top: -120px;              /* was -70px */
+    margin: 0 auto 10px;      /* tighter bottom gap */
+  }
+}
+
+/* Very short viewports (landscape phones / small devices) */
+@media (max-height:560px) and (max-width:960px){
+  .left{ min-height: 280px; }   /* still enough room behind the card */
+  .signup-wrapper{
+    top: -140px;                /* pull higher when height is tight */
+    margin: 0 auto 6px;
+  }
+}
+
+/* Ultra-narrow phones */
+@media (max-width:320px){
+  .signup-wrapper{
+    top: -90px;                 /* slightly less aggressive for tiny width */
+  }
+}
+
+/* Tall modern phones: scale the lift with viewport height */
+@media (min-width:360px) and (max-width:640px) and (min-height:720px){
+  .signup-wrapper{
+    top: clamp(-120px, -18vh, -80px);
+  }
+}
+
+

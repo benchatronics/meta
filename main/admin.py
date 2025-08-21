@@ -8,6 +8,11 @@ from django import forms
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin
 from .forms import AdminUserCreationForm, AdminUserChangeForm
+from .services import confirm_deposit
+from django.db import transaction
+from django.utils.html import format_html
+from .models import CustomUser
+from .forms import AdminUserCreationForm, AdminUserChangeForm  # your existing forms
 from .models import (
     CustomUser,
     InfoPage,
@@ -22,22 +27,33 @@ from .models import (
     DepositAddress,
     DepositRequest,
 )
-from .services import confirm_deposit
-
-from django.db import transaction
-from django.utils.html import format_html
 
 
 # ------------------ CUSTOM USER ADMIN ------------------
+
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     add_form = AdminUserCreationForm
     form = AdminUserChangeForm
     model = CustomUser
 
+    # Small circular thumbnail (uses model.display_avatar if present)
+    @admin.display(description="Avatar")
+    def avatar_preview(self, obj: CustomUser):
+        url = getattr(obj, "display_avatar", None)
+        if not url:
+            return "—"
+        return format_html(
+            '<img src="{}" style="width:32px;height:32px;border-radius:50%;'
+            'object-fit:cover;display:block;" alt="avatar" />',
+            url,
+        )
+
     list_display = (
         "id",
+        "avatar_preview",    # NEW: tiny thumbnail
         "phone",
+        "nickname",          # NEW
         "signup_ip",
         "signup_country",
         "last_login_ip",
@@ -47,9 +63,11 @@ class CustomUserAdmin(UserAdmin):
         "is_staff",
         "date_joined",
     )
+    list_display_links = ("id", "phone")
     list_filter = ("is_active", "is_staff", "is_superuser", "groups")
     search_fields = (
         "phone",
+        "nickname",          # NEW
         "invitation_code",
         "signup_ip",
         "signup_country",
@@ -60,6 +78,8 @@ class CustomUserAdmin(UserAdmin):
 
     fieldsets = (
         (None, {"fields": ("phone", "password")}),
+        # NEW: profile fields users edit later
+        ("Profile", {"fields": ("nickname", "avatar", "avatar_url", "avatar_preview")}),
         ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
         ("Extras", {
@@ -73,6 +93,7 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+    # Keep add form minimal (phone + password). Users set nickname/avatar later.
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
@@ -80,8 +101,15 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
-    readonly_fields = ("date_joined", "last_login", "signup_ip", "signup_country", "last_login_ip", "last_login_country")
-
+    readonly_fields = (
+        "date_joined",
+        "last_login",
+        "signup_ip",
+        "signup_country",
+        "last_login_ip",
+        "last_login_country",
+        "avatar_preview",   # NEW: preview should be readonly
+    )
 
 # ------------------ COUNTRY ADMIN ------------------
 @admin.register(Country)
