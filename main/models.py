@@ -10,7 +10,11 @@ from django.utils import timezone
 from django.db import models, transaction
 from django.db.models import F
 from django.core.validators import URLValidator
+from typing import Optional
 from django.utils.translation import gettext_lazy as _
+# models.py (top of file)
+from datetime import timedelta
+from django.contrib.auth.hashers import make_password, check_password
 
 # ---------- Custom User ----------
 class CustomUserManager(BaseUserManager):
@@ -55,12 +59,18 @@ class CustomUser(AbstractUser):
     last_login_ip = models.GenericIPAddressField(blank=True, null=True)
     last_login_country = models.CharField(max_length=100, blank=True, null=True)
 
+    # === Withdrawal password (PIN) ===
+    tx_pin_hash = models.CharField(max_length=128, blank=True)
+    tx_pin_changed_at = models.DateTimeField(blank=True, null=True)
+    tx_pin_attempts = models.PositiveIntegerField(default=0)
+    tx_pin_locked_until = models.DateTimeField(blank=True, null=True)
+
     USERNAME_FIELD = "phone"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
-    def __str__(self):
+    def __str__(self) -> str:
         # Prefer nickname in admin / shells
         return self.nickname or self.phone
 
@@ -71,7 +81,7 @@ class CustomUser(AbstractUser):
 
     # Convenience for templates: best avatar URL to display
     @property
-    def display_avatar(self) -> str | None:
+    def display_avatar(self) -> Optional[str]:
         if self.avatar:
             try:
                 return self.avatar.url
@@ -83,6 +93,48 @@ class CustomUser(AbstractUser):
     @property
     def display_name(self) -> str:
         return self.nickname or self.phone
+
+    # ---------- Withdrawal PIN helpers ----------
+    def has_tx_pin(self) -> bool:
+        return bool(self.tx_pin_hash)
+
+    def set_tx_pin(self, raw: str) -> None:
+        """
+        Set/update the withdrawal password (PIN). Store a secure hash only.
+        Resets attempts & lock.
+        """
+        self.tx_pin_hash = make_password(raw)
+        self.tx_pin_changed_at = timezone.now()
+        self.tx_pin_attempts = 0
+        self.tx_pin_locked_until = None
+        self.save(update_fields=[
+            "tx_pin_hash", "tx_pin_changed_at", "tx_pin_attempts", "tx_pin_locked_until"
+        ])
+
+    def check_tx_pin(self, raw: str) -> bool:
+        return bool(self.tx_pin_hash) and check_password(raw, self.tx_pin_hash)
+
+    def can_try_tx_pin(self) -> bool:
+        """Return True if user is not currently locked out."""
+        return not self.tx_pin_locked_until or timezone.now() >= self.tx_pin_locked_until
+
+    def register_tx_pin_fail(self, max_attempts: int = 5, lock_minutes: int = 10) -> None:
+        """
+        Increment failure counter; after `max_attempts`, lock further attempts
+        for `lock_minutes`.
+        """
+        self.tx_pin_attempts = (self.tx_pin_attempts or 0) + 1
+        if self.tx_pin_attempts >= max_attempts:
+            self.tx_pin_locked_until = timezone.now() + timedelta(minutes=lock_minutes)
+            self.tx_pin_attempts = 0
+        self.save(update_fields=["tx_pin_attempts", "tx_pin_locked_until"])
+
+    def register_tx_pin_success(self) -> None:
+        """Reset counters after a successful PIN check."""
+        if self.tx_pin_attempts or self.tx_pin_locked_until:
+            self.tx_pin_attempts = 0
+            self.tx_pin_locked_until = None
+            self.save(update_fields=["tx_pin_attempts", "tx_pin_locked_until"])
 
 
 

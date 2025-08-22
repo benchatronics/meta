@@ -1,0 +1,171 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}Set Withdrawal Password{% endblock %}
+{% block breadcrumb %}Home / settings / withdrawal password (set){% endblock %}
+
+{% block extra_head %}
+  {# Optional: bring any shared settings styles #}
+  <link rel="stylesheet" href="{% static 'meta_search/settings.css' %}">
+
+  {# Bridge so this page respects base_user's collapsed sidebar #}
+  <style>
+    #app.collapsed > .sidebar { width: 56px !important; }
+    #app.collapsed > .sidebar .label { display: none !important; }
+    #app.collapsed > .main { margin-left: 56px !important; }
+    @media (max-width: 900px){
+      #app.nav-open > .sidebar { transform: translateX(0) !important; }
+    }
+
+    .pin-scope .card{ background:#fff; border:1px solid #e5e7eb; border-radius:14px; }
+    .pin-scope .inner{ padding:16px; }
+    .pin-scope h1{ margin:0 0 12px; font-size:22px; }
+    .pin-scope .grid{ display:grid; gap:14px; max-width:520px; }
+    .pin-scope .label{ font-weight:700; font-size:13px; color:#566; }
+    .pin-scope .field{ position:relative; }
+    .pin-scope .field input{
+      width:100%; height:44px; border:1px solid #e5e7eb; border-radius:10px;
+      padding:10px 40px 10px 12px; font-size:14px; outline:none; background:#fff;
+    }
+    .pin-scope .field input:focus{ border-color:#2451FF; box-shadow:0 0 0 3px rgba(36,81,255,.12); }
+    .pin-scope .eye-btn{
+      position:absolute; right:8px; top:50%; transform:translateY(-50%);
+      width:32px; height:32px; border:0; background:transparent; cursor:pointer;
+    }
+    .pin-scope .errorlist{ margin:6px 0 0; color:#b91c1c; font-size:13px; }
+    .pin-scope .actions{ display:flex; gap:10px; }
+    .pin-scope .btn.primary{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px; border-radius:12px; border:1px solid #2451FF; background:#2451FF; color:#fff; font-weight:600;
+    }
+    .pin-scope .hint{ font-size:12px; color:#6b7280; }
+    .pin-scope .callout{
+      display:flex; gap:10px; align-items:flex-start; background:#eef2ff; color:#1e3a8a;
+      border:1px solid #c7d2fe; padding:10px 12px; border-radius:10px;
+    }
+
+    /* Mobile header with back button (like your other pages) */
+    .page-with-mobile-back .page-header{
+      display:flex; align-items:center; gap:10px; margin:0 0 14px;
+    }
+    .page-with-mobile-back .page-title{ margin:0; font-weight:700; font-size:22px; color:#0f172a; }
+    .page-with-mobile-back .back-link{
+      display:none; align-items:center; justify-content:center; width:36px; height:36px;
+      border-radius:10px; border:1px solid #e5e7eb; background:#fff; color:#2451FF; text-decoration:none;
+    }
+    @media (max-width: 900px){
+      .page-with-mobile-back .back-link{ display:inline-flex; }
+      .page-with-mobile-back .page-title{ font-size:20px; }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- Mobile back header -->
+  <div class="page-with-mobile-back">
+    <div class="page-header">
+      <a class="back-link" href="{% url 'profile_settings' %}" aria-label="Go back"
+         onclick="if (history.length > 1) { history.back(); return false; }">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+      <h1 class="page-title">Set withdrawal password</h1>
+    </div>
+  </div>
+
+  <section class="pin-scope">
+    <div class="card">
+      <div class="inner">
+        {% if messages %}
+          <div class="flash" aria-live="polite" style="margin-bottom:10px;">
+            {% for message in messages %}
+              <div class="alert {{ message.tags|default:'info' }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'set_tx_pin' %}">
+          {% csrf_token %}
+
+          <div class="grid">
+            <div>
+              <div class="label">Account password</div>
+              {{ form.account_password.errors }}
+              <div class="field">
+                {{ form.account_password }}
+                <button type="button" class="eye-btn" data-target="{{ form.account_password.id_for_label }}" aria-label="Show/Hide"></button>
+              </div>
+              <div class="hint">We verify your identity with your account password.</div>
+            </div>
+
+            <div>
+              <div class="label">Withdrawal password (6 digits)</div>
+              {{ form.tx_pin1.errors }}
+              <div class="field">
+                {{ form.tx_pin1 }}
+                <button type="button" class="eye-btn" data-target="{{ form.tx_pin1.id_for_label }}" aria-label="Show/Hide"></button>
+              </div>
+              <div class="hint">Use exactly 6 digits. This will be required for each withdrawal.</div>
+            </div>
+
+            <div>
+              <div class="label">Confirm withdrawal password</div>
+              {{ form.tx_pin2.errors }}
+              <div class="field">
+                {{ form.tx_pin2 }}
+                <button type="button" class="eye-btn" data-target="{{ form.tx_pin2.id_for_label }}" aria-label="Show/Hide"></button>
+              </div>
+            </div>
+
+            <div class="actions" style="margin-top:6px;">
+              <button class="btn primary" type="submit">Set Password</button>
+            </div>
+
+            <div class="callout" role="note">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+              </svg>
+              <div>
+                Already set one? <a href="{% url 'change_tx_pin' %}">Change withdrawal password</a>.
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+  // Eye toggles for password/PIN fields
+  document.querySelectorAll('.eye-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const id = btn.getAttribute('data-target');
+      const input = document.getElementById(id);
+      if (!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
+      btn.classList.toggle('on');
+    });
+  });
+
+  // Optional: keep PIN fields numeric-only (client-side UX; server still validates)
+  (function(){
+    const ids = ['{{ form.tx_pin1.id_for_label }}', '{{ form.tx_pin2.id_for_label }}'];
+    ids.forEach(function(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('input', function(){
+        // strip non-digits & trim to 6
+        const digits = (el.value || '').replace(/\D+/g, '').slice(0, 6);
+        if (el.value !== digits) el.value = digits;
+      }, {passive:true});
+    });
+  })();
+</script>
+{% endblock %}

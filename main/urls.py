@@ -34,4 +34,7 @@ urlpatterns = [
     path("deposit/webhook/confirm/", views.deposit_webhook_confirm, name="deposit_webhook_confirm"),
     path("language_settings/", views.language_settings, name="language_setting"),
     path("settings/", views.profile_settings, name="profile_settings"),
+    #withdrawal password
+    path("settings/tx-pin/set/", views.set_tx_pin, name="set_tx_pin"),
+    path("settings/tx-pin/change/", views.change_tx_pin, name="change_tx_pin"),
 ]

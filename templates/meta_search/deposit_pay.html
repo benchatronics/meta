@@ -12,24 +12,21 @@
 {% endblock %}
 
 {% block content %}
-
-
   <!-- Page header (mobile-only back arrow + title) -->
   <div class="page-with-mobile-back">
     <div class="page-header">
       <a
         class="back-link"
-        href="{% url 'deposit' %}"                 {# fallback route; change if needed #}
+        href="{% url 'deposit' %}"
         aria-label="Go back"
         onclick="if (history.length > 1) { history.back(); return false; }">
-        <!-- Blue back arrow (uses currentColor) -->
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
              aria-hidden="true">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
-      <h1 class="page-title">Payment details</h1>        {# change title per page #}
+      <h1 class="page-title">Payment details</h1>
     </div>
 
     <!-- rest of your page content here... -->
@@ -46,24 +43,20 @@
       margin:0; font-weight:700; font-size:22px;
       color:var(--text, #0f172a);
     }
-
-    /* Back arrow (mobile-only) */
     .page-with-mobile-back .back-link{
-      display:none;                               /* hidden by default (desktop) */
+      display:none;
       align-items:center; justify-content:center;
       width:36px; height:36px;
       border-radius:10px;
       border:1px solid var(--border, #e5e7eb);
       background:#fff;
-      color:var(--primary, #2451FF);              /* BLUE arrow via currentColor */
+      color:var(--primary, #2451FF);
       text-decoration:none;
       box-shadow:0 1px 0 rgba(16,24,40,.02);
     }
     .page-with-mobile-back .back-link:hover{
       box-shadow:0 8px 20px rgba(16,24,40,.08);
     }
-
-    /* Show the back arrow only on mobile/tablet */
     @media (max-width: 900px){
       .page-with-mobile-back .back-link{ display:inline-flex; }
       .page-with-mobile-back .page-title{ font-size:20px; }
@@ -71,155 +64,149 @@
     }
   </style>
 
-
-
-<section class="pay-scope">
-  <div class="shell">
-   
-    {% if messages %}
-      <div class="alerts" role="status" aria-live="polite">
-        {% for message in messages %}
-          <div class="alert {{ message.tags|default:'info' }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    <section class="pay-card">
-      <header class="pay-head">
-        <h2>{# Payment details #}</h2>
-        <div class="center-row">
-          <a
-          class="change-method"
-          href="{% url 'deposit' %}"
-          style="display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;border:1px solid var(--border, #e5e7eb);background:#fff;color:var(--primary, #2451FF);font-weight:600;text-decoration:none;white-space:nowrap;position:relative;left:50%;transform:translateX(-50%);"  >
-          Change payment method
-        </a>        
-        </div>  
-              
-      </header>
-
-      <div class="pay-body">
-        <div class="row-top">
-          <div class="asset">
-            {% if dep.network == "TRC20" %}
-              <span class="token usdt">T</span><span class="asset-name">USDT</span>
-            {% elif dep.network == "ETH" %}
-              <span class="token eth" aria-label="Ethereum">Ξ</span><span class="asset-name">Ethereum</span>
-            {% else %}
-              <span class="token eth">Ξ</span><span class="asset-name">{{ dep.get_network_display }}</span>
-            {% endif %}
-          </div>
-
-          <div class="amount-wrap">
-            <span id="amountText">{{ symbol }} {{ dep.amount|floatformat:2 }}</span>
-            <button class="copy" type="button" data-copy="#amountText" aria-label="Copy amount">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
-          </div>
+  <section class="pay-scope">
+    <div class="shell">
+      {% if messages %}
+        <div class="alerts" role="status" aria-live="polite">
+          {% for message in messages %}
+            <div class="alert {{ message.tags|default:'info' }}">{{ message }}</div>
+          {% endfor %}
         </div>
+      {% endif %}
 
-        <div class="divider"></div>
+      <section class="pay-card">
+        <header class="pay-head">
+          <h2>{# Payment details #}</h2>
+          <div class="center-row">
+            <a
+              class="change-method"
+              href="{% url 'deposit' %}"
+              style="display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;border:1px solid var(--border, #e5e7eb);background:#fff;color:var(--primary, #2451FF);font-weight:600;text-decoration:none;white-space:nowrap;position:relative;left:50%;transform:translateX(-50%);">
+              Change payment method
+            </a>
+          </div>
+        </header>
 
-        <div class="grid">
-          <div>
-            <div class="qr-box">
-              {% if qr_data_uri %}
-                <img src="{{ qr_data_uri }}" alt="QR code">
+        <div class="pay-body">
+          <div class="row-top">
+            <div class="asset">
+              {% if dep.network == "TRC20" %}
+                <span class="token usdt">T</span><span class="asset-name">USDT</span>
+              {% elif dep.network == "ETH" %}
+                <span class="token eth" aria-label="Ethereum">Ξ</span><span class="asset-name">Ethereum</span>
               {% else %}
-                <div id="qrcode"></div>
+                <span class="token eth">Ξ</span><span class="asset-name">{{ dep.get_network_display }}</span>
               {% endif %}
             </div>
-            <!-- Show network name here -->
-            <div class="qr-hint">Scan to pay · {{ dep.get_network_display }}</div>
+
+            <div class="amount-wrap">
+              <span id="amountText">{{ symbol }} {{ dep.amount|floatformat:2 }}</span>
+              <button class="copy" type="button" data-copy="#amountText" aria-label="Copy amount">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+            </div>
           </div>
 
-          <!-- Right details + timing payloads -->
-          <div class="right"
-               data-ttl-sec="{{ telegram_ttl_seconds|default:20 }}"
-               {% if dep.verified_at %}data-verified-at="{{ dep.verified_at|date:'c' }}"{% endif %}
-               data-symbol="{{ symbol }}"
-               data-amount="{{ dep.amount|floatformat:2 }}"
-               data-ref="{{ dep.reference }}"
-               data-network="{{ dep.get_network_display }}"
-               data-tg-url="{{ support_telegram_url }}">
+          <div class="divider"></div>
 
-            <div class="pair"><div class="label">Network</div><div class="value">{{ dep.get_network_display }}</div></div>
-            <div class="pair"><div class="label">Amount</div><div class="value" id="amountText2">{{ symbol }} {{ dep.amount|floatformat:2 }}</div></div>
-
-            <div class="pair" style="align-items:start">
-              <div class="label" style="padding-top:4px">Address</div>
-              <div style="display:flex;gap:8px;align-items:flex-start">
-                <div id="addr" class="mono">{{ dep.pay_to.address }}</div>
-                <button class="copy" type="button" data-copy="#addr" aria-label="Copy address">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
+          <div class="grid">
+            <div>
+              <div class="qr-box">
+                {% if qr_data_uri %}
+                  <img src="{{ qr_data_uri }}" alt="QR code">
+                {% else %}
+                  <div id="qrcode"></div>
+                {% endif %}
               </div>
+              <div class="qr-hint">Scan to pay · {{ dep.get_network_display }}</div>
             </div>
 
-            <!-- Reference with copy -->
-            <div class="pair">
-              <div class="label">Reference</div>
-              <div style="display:flex;gap:8px;align-items:center">
-                <div id="refText" class="value mono">#{{ dep.reference }}</div>
-                <button class="copy" type="button" data-copy="#refText" aria-label="Copy reference">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
-                </button>
+            <div class="right"
+                 data-ttl-sec="{{ telegram_ttl_seconds|default:20 }}"
+                 {% if dep.verified_at %}data-verified-at="{{ dep.verified_at|date:'c' }}"{% endif %}
+                 data-symbol="{{ symbol }}"
+                 data-amount="{{ dep.amount|floatformat:2 }}"
+                 data-ref="{{ dep.reference }}"
+                 data-network="{{ dep.get_network_display }}"
+                 data-tg-url="{{ support_telegram_url }}">
+
+              <div class="pair"><div class="label">Network</div><div class="value">{{ dep.get_network_display }}</div></div>
+              <div class="pair"><div class="label">Amount</div><div class="value" id="amountText2">{{ symbol }} {{ dep.amount|floatformat:2 }}</div></div>
+
+              <div class="pair" style="align-items:start">
+                <div class="label" style="padding-top:4px">Address</div>
+                <div style="display:flex;gap:8px;align-items:flex-start">
+                  <div id="addr" class="mono">{{ dep.pay_to.address }}</div>
+                  <button class="copy" type="button" data-copy="#addr" aria-label="Copy address">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
               </div>
-            </div>
 
-            {% if dep.status == "awaiting_payment" %}
-              <form id="verifyForm" method="post" action="{% url 'deposit_verify' dep.id %}" novalidate>
-                {% csrf_token %}
-                <button class="pay-btn" id="verifyBtn" type="submit">I’ve Paid — Verify</button>
-              </form>
-              <div class="eta">We’ll check the network and update your balance when confirmed.</div>
+              <div class="pair">
+                <div class="label">Reference</div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div id="refText" class="value mono">#{{ dep.reference }}</div>
+                  <button class="copy" type="button" data-copy="#refText" aria-label="Copy reference">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
+              </div>
 
-            {% elif dep.status == "awaiting_review" %}
-              {% if show_telegram_now %}
-                <a id="verifyNowLink"
-                   class="pay-btn"
-                   href="{{ support_telegram_url }}"
-                   target="_blank" rel="noopener noreferrer"
-                   data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me.">Verify now</a>
-                <div class="quick-hint">Need quick approval? Use <strong>Verify now</strong>.</div>
+              {% if dep.status == "awaiting_payment" %}
+                <form id="verifyForm" method="post" action="{% url 'deposit_verify' dep.id %}" novalidate>
+                  {% csrf_token %}
+                  <button class="pay-btn" id="verifyBtn" type="submit">I’ve Paid — Verify</button>
+                </form>
+                <div class="eta">We’ll check the network and update your balance when confirmed.</div>
+
+              {% elif dep.status == "awaiting_review" %}
+                {% if show_telegram_now %}
+                  <a id="verifyNowLink"
+                     class="pay-btn"
+                     href="{{ support_telegram_url }}"
+                     target="_blank" rel="noopener noreferrer"
+                     data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me.">Verify now</a>
+                  <div class="quick-hint">Need quick approval? Use <strong>Verify now</strong>.</div>
+                {% else %}
+                  <button class="pay-btn" type="button" id="verifyingBtn" disabled><span class="spinner" aria-hidden="true"></span>Verifying…</button>
+                  <a id="verifyNowLink"
+                     class="pay-btn"
+                     href="{{ support_telegram_url }}"
+                     target="_blank" rel="noopener noreferrer"
+                     data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me."
+                     style="display:none;">Verify now</a>
+                  <div class="eta" id="eta"></div>
+                  <div class="quick-hint" id="quickHint">Need quick approval? You can use <strong>Verify now</strong>.</div>
+                {% endif %}
+
+              {% elif dep.status == "failed" %}
+                <div class="alert error">Payment failed{% if dep.failure_reason %}: {{ dep.failure_reason }}{% endif %}.</div>
+                <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Try again</a>
+
+              {% elif dep.status == "draft" %}
+                <div class="alert info">This deposit is a draft.</div>
+                <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Continue to deposit</a>
+
+              {% elif dep.status == "completed" or dep.status == "confirmed" or dep.status == "credited" or dep.status == "success" %}
+                <div class="alert success">Thanks! Recieved We’ll verify the payment shortly.</div>
+                <a href="{% url 'wallet' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Go to Wallet</a>
+
               {% else %}
-                <button class="pay-btn" type="button" id="verifyingBtn" disabled><span class="spinner" aria-hidden="true"></span>Verifying…</button>
-                <a id="verifyNowLink"
-                   class="pay-btn"
-                   href="{{ support_telegram_url }}"
-                   target="_blank" rel="noopener noreferrer"
-                   data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me."
-                   style="display:none;">Verify now</a>
-                <div class="eta" id="eta"></div>
-                <div class="quick-hint" id="quickHint">Need quick approval? You can use <strong>Verify now</strong>.</div>
+                <div class="alert info">Status: {{ dep.status }}</div>
               {% endif %}
-
-            {% elif dep.status == "failed" %}
-              <div class="alert error">Payment failed{% if dep.failure_reason %}: {{ dep.failure_reason }}{% endif %}.</div>
-              <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Try again</a>
-
-            {% elif dep.status == "draft" %}
-              <div class="alert info">This deposit is a draft.</div>
-              <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Continue to deposit</a>
-
-            {% elif dep.status == "completed" or dep.status == "confirmed" or dep.status == "credited" or dep.status == "success" %}
-              <div class="alert success">Thanks! Recieved We’ll verify the payment shortly.</div>
-              <a href="{% url 'wallet' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Go to Wallet</a>
-
-            {% else %}
-              <div class="alert info">Status: {{ dep.status }}</div>
-            {% endif %}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
 
-  <div class="toast" id="toast">Copied</div>
-</section>
+    <div class="toast" id="toast">Copied</div>
+  </section>
 {% endblock %}
 
 {% block extra_scripts %}
+{{ block.super }}
 <script>
   // Scope root
   const scope = document.querySelector('.pay-scope');
@@ -273,13 +260,11 @@
     const leftSec = ()=>Math.max(0, ttlSec - Math.floor((Date.now()-sinceMs)/1000));
     const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
 
-    // Countdown text
     if(eta && verifyingBtn){
       const tick=()=>{ const l=leftSec(); eta.textContent = l ? `Verifying… (${fmt(l)} left)` : `You can use “Verify now” for quick help.`; };
       tick(); var etaTimer = setInterval(tick,1000);
     }
 
-    // Poll /status/ every 5s while visible & under TTL
     async function pollStatus(){
       if(document.visibilityState!=='visible') return;
       if(leftSec()<=0) return;
@@ -291,7 +276,6 @@
     }
     if(verifyingBtn){ var pollTimer=setInterval(pollStatus,5000); }
 
-    // Swap to link after TTL
     function maybeSwap(){
       if(!verifyingBtn || !verifyNowLink) return;
       if(verifyNowLink.style.display!=='none') return;
@@ -305,7 +289,6 @@
     }
     if(verifyingBtn){ var swapTimer=setInterval(maybeSwap,500); maybeSwap(); }
 
-    // Prefill message + open support in new tab (deep link then web)
     if(verifyNowLink){
       verifyNowLink.addEventListener('click',function(e){
         e.preventDefault();

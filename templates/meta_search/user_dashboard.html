@@ -10,37 +10,29 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'meta_search/user_dashboard.css' %}">
   <style>
-    /* Small page-only helpers you had inline */
+    /* Small page-only helpers */
     .save-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; }
-    .fav-count {
-      position: absolute; top: -6px; right: -6px; background: #ff4d4f; color: #fff;
-      font-size: 10px; font-weight: 700; border-radius: 50%; padding: 2px 5px; line-height: 1;
-      min-width: 16px; text-align: center;
-    }
+
     .pill-select { position: relative; cursor: pointer; }
     .pill-select select {
       appearance: none; -webkit-appearance: none; -moz-appearance: none;
-      padding-right: 32px;
-      cursor: pointer;
+      padding-right: 32px; cursor: pointer;
     }
     .pill-select .caret {
-      position: absolute;
-      right: 10px; top: 50%; transform: translateY(-50%);
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
       pointer-events: auto; cursor: pointer; z-index: 1;
     }
 
     /* Desktop-only inline styling for the filters row */
     @media (min-width: 901px){
-      /* Force show & put everything in one straight line (beats any previous !important) */
       #ratingForm.filters{
         display: flex !important;
         align-items: center;
         gap: 12px;
         flex-wrap: nowrap;
-        --f-height: 46px;   /* control height */
-        --f-radius: 12px;   /* control radius */
+        --f-height: 46px;
+        --f-radius: 12px;
       }
-      /* Equal widths for Location, Date, Rating */
       #ratingForm .pill,
       #ratingForm .pill-select{
         flex: 1 1 0; min-width: 0;
@@ -76,7 +68,7 @@
       }
     }
 
-    /* Optional: if an aggressive rule hides this form on mobile, keep it hidden */
+    /* If an aggressive rule hides this form on mobile, keep it hidden */
     @media (max-width: 900px){
       #ratingForm.filters{ display: none !important; }
     }
@@ -88,7 +80,7 @@
 
   <!-- CONTENT ONLY (inherits sidebar/topbar from base) -->
   <div class="ud">
-    <!-- Desktop greeting uses nickname (fallback to phone/User) -->
+    <!-- Desktop greeting -->
     <div class="greet">
       <h1>
          {% time_greeting %},
@@ -130,7 +122,6 @@
 
     {# ==== MOBILE-ONLY greeting + avatar + filters ==== #}
     <div class="mxp-mobile-only" aria-label="Mobile header & filters">
-      <!-- Greeting + avatar (links to profile) -->
       <section class="mxp-greeting">
         <a href="{% url 'profile_settings' %}" class="mxp-avatar-link" aria-label="View profile">
           <img
@@ -155,7 +146,6 @@
         </div>
       </section>
 
-      <!-- Filters bar: pill + round search -->
       <section class="mxp-filters-bar">
         <button id="mxpFilterToggle" type="button" class="mxp-filters-pill" aria-expanded="false" aria-controls="mxpTaskFilterForm">
           <span class="left">
@@ -164,13 +154,11 @@
           </span>
           <span class="emoji-caret" aria-hidden="true">▾</span>
         </button>
-        <!-- Round search submits the mobile form below -->
         <button class="mxp-search-btn" type="submit" form="mxpTaskFilterForm" aria-label="Search">
           <span class="emoji-icon" aria-hidden="true">🔍</span>
         </button>
       </section>
 
-      <!-- Collapsible panel with a MOBILE COPY of the form -->
       <form id="mxpTaskFilterForm" class="mxp-filter-panel" method="get" action="">
         <div class="pill">
           <i class="fa-solid fa-location-dot"></i>
@@ -191,7 +179,6 @@
           </select>
           <i class="fa-solid fa-chevron-down caret"></i>
         </div>
-        {# no internal Search button here; the round button above submits this form #}
       </form>
     </div>
     {# ==== /MOBILE-ONLY block ==== #}
@@ -220,7 +207,6 @@
                     data-slug="{{ hotel.slug }}"
                     aria-pressed="{{ hotel.is_favorited|yesno:'true,false' }}">
               <i class="{% if hotel.is_favorited %}fa-solid{% else %}fa-regular{% endif %} fa-bookmark"></i>
-              <span class="fav-count">{{ hotel.favorites_total }}</span>
             </button>
           </div>
         </div>
@@ -268,7 +254,7 @@
   tabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
   showTab('{{ active_tab|default:"recommended" }}');
 
-  // Favorites (AJAX)
+  // Favorites (AJAX) — minimal, no counts
   const isAuth = {{ request.user.is_authenticated|yesno:"true,false" }};
   const signinUrl = "{% url 'signin' %}?next={{ request.path|urlencode }}";
 
@@ -287,6 +273,14 @@
           return;
         }
         const slug = btn.dataset.slug;
+        const icon = btn.querySelector('i');
+        const wasOn = icon.classList.contains('fa-solid');
+
+        // Optimistic UI
+        icon.classList.toggle('fa-solid', !wasOn);
+        icon.classList.toggle('fa-regular', wasOn);
+        btn.setAttribute('aria-pressed', !wasOn ? 'true' : 'false');
+
         try {
           const res = await fetch(`{% url 'toggle_favorite' 'SLUG_PLACEHOLDER' %}`.replace('SLUG_PLACEHOLDER', slug), {
             method: 'POST',
@@ -294,18 +288,22 @@
           });
           const data = await res.json();
           if (data.ok) {
-            const icon = btn.querySelector('i');
-            const countSpan = btn.querySelector('.fav-count');
-            if (data.favorited) {
-              icon.classList.remove('fa-regular'); icon.classList.add('fa-solid');
-              btn.setAttribute('aria-pressed', 'true');
-            } else {
-              icon.classList.remove('fa-solid'); icon.classList.add('fa-regular');
-              btn.setAttribute('aria-pressed', 'false');
-            }
-            if (countSpan) countSpan.textContent = data.count;
+            icon.classList.toggle('fa-solid', !!data.favorited);
+            icon.classList.toggle('fa-regular', !data.favorited);
+            btn.setAttribute('aria-pressed', data.favorited ? 'true' : 'false');
+          } else {
+            // Rollback if server says not ok
+            icon.classList.toggle('fa-solid', wasOn);
+            icon.classList.toggle('fa-regular', !wasOn);
+            btn.setAttribute('aria-pressed', wasOn ? 'true' : 'false');
           }
-        } catch (e) { console.error(e); }
+        } catch (e) {
+          // Rollback on error
+          icon.classList.toggle('fa-solid', wasOn);
+          icon.classList.toggle('fa-regular', !wasOn);
+          btn.setAttribute('aria-pressed', wasOn ? 'true' : 'false');
+          console.error(e);
+        }
       });
     });
   }

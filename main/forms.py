@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnly
 from django.utils.translation import gettext_lazy as _
 from captcha.fields import CaptchaField
 import phonenumbers
+from urllib.parse import urlparse
+from django.core.files.uploadedfile import UploadedFile
 import requests
 from django.contrib.auth.forms import PasswordChangeForm
 from decimal import Decimal
@@ -13,6 +15,84 @@ from .models import CustomUser
 from .country_codes import COUNTRY_CODES  # (dial, display, min_len, max_len)
 from django.core.exceptions import ValidationError
 import re
+
+
+
+
+#withdrawal password scope
+PIN_RE = re.compile(r"^\d{6}$")  # 6 digits
+
+class SetTxPinForm(forms.Form):
+    account_password = forms.CharField(
+        label=_("Account password"),
+        widget=forms.PasswordInput(attrs={"autocomplete":"current-password"})
+    )
+    tx_pin1 = forms.CharField(
+        label=_("Withdrawal password (6 digits)"),
+        widget=forms.PasswordInput(attrs={"inputmode":"numeric","pattern":"\\d{6}","maxlength":"6"})
+    )
+    tx_pin2 = forms.CharField(
+        label=_("Confirm withdrawal password"),
+        widget=forms.PasswordInput(attrs={"inputmode":"numeric","pattern":"\\d{6}","maxlength":"6"})
+    )
+
+    def __init__(self, *args, user=None, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_account_password(self):
+        pwd = self.cleaned_data["account_password"]
+        if not self.user or not self.user.check_password(pwd):
+            raise forms.ValidationError(_("Incorrect account password."))
+        return pwd
+
+    def clean(self):
+        cleaned = super().clean()
+        p1, p2 = cleaned.get("tx_pin1"), cleaned.get("tx_pin2")
+        if p1 and not PIN_RE.match(p1):
+            self.add_error("tx_pin1", _("Enter exactly 6 digits."))
+        if p2 and p1 != p2:
+            self.add_error("tx_pin2", _("Passwords do not match."))
+        return cleaned
+
+
+class ChangeTxPinForm(forms.Form):
+    old_tx_pin = forms.CharField(
+        label=_("Current withdrawal password"),
+        widget=forms.PasswordInput(attrs={"inputmode":"numeric","pattern":"\\d{6}","maxlength":"6"})
+    )
+    new_tx_pin1 = forms.CharField(
+        label=_("New withdrawal password (6 digits)"),
+        widget=forms.PasswordInput(attrs={"inputmode":"numeric","pattern":"\\d{6}","maxlength":"6"})
+    )
+    new_tx_pin2 = forms.CharField(
+        label=_("Confirm new withdrawal password"),
+        widget=forms.PasswordInput(attrs={"inputmode":"numeric","pattern":"\\d{6}","maxlength":"6"})
+    )
+
+    def __init__(self, *args, user=None, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_old_tx_pin(self):
+        pin = self.cleaned_data["old_tx_pin"]
+        if not self.user or not self.user.check_tx_pin(pin):
+            raise forms.ValidationError(_("Incorrect withdrawal password."))
+        return pin
+
+    def clean(self):
+        cleaned = super().clean()
+        p1, p2 = cleaned.get("new_tx_pin1"), cleaned.get("new_tx_pin2")
+        if p1 and not PIN_RE.match(p1):
+            self.add_error("new_tx_pin1", _("Enter exactly 6 digits."))
+        if p2 and p1 != p2:
+            self.add_error("new_tx_pin2", _("Passwords do not match."))
+        return cleaned
+
+
+
+
+
 
 # Helper: map dial -> (display, min_len, max_len)
 _DIAL_RULES = {dial: (disp, lo, hi) for dial, disp, lo, hi in COUNTRY_CODES}
@@ -58,6 +138,7 @@ class AdminUserChangeForm(UserChangeForm):
 ALLOWED_IMG_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 MAX_AVATAR_MB = 4  # change if you want
 
+#profile update
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
@@ -81,19 +162,26 @@ class ProfileUpdateForm(forms.ModelForm):
             "avatar_url": _("Direct image URL (used only if no file is uploaded)."),
         }
 
-    # Validate uploaded image
     def clean_avatar(self):
         f = self.cleaned_data.get("avatar")
+
+        # No new file selected → keep existing value, no validation
         if not f:
             return f
-        ctype = getattr(f, "content_type", "") or ""
+
+        # If it's NOT an UploadedFile, it's the existing FieldFile from the instance.
+        # Skip type/size checks in that case.
+        if not isinstance(f, UploadedFile):
+            return f
+
+        # New upload: validate type and size
+        ctype = (getattr(f, "content_type", "") or "").split(";")[0].strip()
         if ctype not in ALLOWED_IMG_TYPES:
             raise ValidationError(_("Unsupported image type. Use JPG, PNG, WebP, or GIF."))
         if f.size and f.size > MAX_AVATAR_MB * 1024 * 1024:
             raise ValidationError(_("Image too large (max %(mb)s MB).") % {"mb": MAX_AVATAR_MB})
         return f
 
-    # Be strict about URL scheme
     def clean_avatar_url(self):
         url = (self.cleaned_data.get("avatar_url") or "").strip()
         if not url:
@@ -101,13 +189,12 @@ class ProfileUpdateForm(forms.ModelForm):
         parts = urlparse(url)
         if parts.scheme not in ("http", "https"):
             raise ValidationError(_("Only http/https URLs are allowed."))
-        # No hard extension check (CDNs often use extensionless URLs); let it pass.
         return url
 
-    # Prefer uploaded file over URL if both provided
     def clean(self):
         cleaned = super().clean()
-        if cleaned.get("avatar") and cleaned.get("avatar_url"):
+        # If both provided, prefer uploaded file and clear URL
+        if isinstance(cleaned.get("avatar"), UploadedFile) and cleaned.get("avatar_url"):
             cleaned["avatar_url"] = ""
         return cleaned
 

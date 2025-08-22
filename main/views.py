@@ -7,6 +7,9 @@ import json
 from decimal import Decimal
 from io import BytesIO
 from django.db import IntegrityError, transaction
+import secrets
+from django.views.decorators.cache import never_cache
+from django.views.decorators.http import require_http_methods
 import phonenumbers
 from django import forms
 from django.conf import settings
@@ -21,9 +24,9 @@ from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Count, Exists, OuterRef, Value, BooleanField
 from django.http import (
-    JsonResponse,
-    HttpResponse,
-)
+                            JsonResponse,
+                            HttpResponse,
+                        )
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.templatetags.static import static
@@ -32,27 +35,59 @@ from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.dateparse import parse_date
-
 from .country_codes import COUNTRY_CODES
 from .forms import (
     SignupForm, LoginForm, StaffResetPasswordForm,
     WithdrawalForm, AddressForm, DepositForm, CURRENCY_SYMBOL
 )
 from .models import (
-    Wallet, PayoutAddress, WithdrawalRequest, AddressType, Currency,
-    DepositAddress, DepositRequest, Network,
-    Hotel, Favorite, InfoPage, Announcement
-)
+                        Wallet, PayoutAddress, WithdrawalRequest,
+                        AddressType, Currency,
+                        DepositAddress, DepositRequest, Network,
+                        Hotel, Favorite, InfoPage, Announcement
+              )
 from .services import confirm_deposit
-
 from django.contrib.auth import update_session_auth_hash
 from .forms import ChangePasswordForm
 from .forms import ProfileUpdateForm
 from django.db.models import Exists, OuterRef, Count
 from django.templatetags.static import static as static_url
-
+from datetime import timedelta
 from .forms import ProfileUpdateForm, MAX_AVATAR_MB, ALLOWED_IMG_TYPES
+from .forms import SetTxPinForm, ChangeTxPinForm
 
+
+
+
+#witdrawal pin
+@login_required
+def set_tx_pin(request):
+    if request.method == "POST":
+        form = SetTxPinForm(request.POST, user=request.user)
+        if form.is_valid():
+            request.user.set_tx_pin(form.cleaned_data["tx_pin1"])
+            messages.success(request, _("Withdrawal password set."))
+            return redirect("profile_settings")  # or wherever
+    else:
+        form = SetTxPinForm(user=request.user)
+    return render(request, "meta_search/set_tx_pin.html", {"form": form})
+
+#change witdrawal pin 
+@login_required
+def change_tx_pin(request):
+    if not request.user.has_tx_pin():
+        messages.info(request, _("You don’t have a withdrawal password yet. Set one first."))
+        return redirect("set_tx_pin")
+
+    if request.method == "POST":
+        form = ChangeTxPinForm(request.POST, user=request.user)
+        if form.is_valid():
+            request.user.set_tx_pin(form.cleaned_data["new_tx_pin1"])
+            messages.success(request, _("Withdrawal password updated."))
+            return redirect("profile_settings")
+    else:
+        form = ChangeTxPinForm(user=request.user)
+    return render(request, "meta_search/change_tx_pin.html", {"form": form})
 
 
 
@@ -710,18 +745,18 @@ from decimal import Decimal, ROUND_HALF_UP
 def cents(amount) -> int:
     return int((Decimal(str(amount)) * Decimal("100")).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
 
+
+@never_cache
+@require_http_methods(["GET", "POST"])
 @login_required
 def withdrawal(request):
     wallet, _ = Wallet.objects.get_or_create(user=request.user)
     addresses = request.user.payout_addresses.order_by("-created_at")
 
     selected_id = request.GET.get("address")
-    if selected_id:
-        selected = addresses.filter(id=selected_id).first()
-    else:
-        selected = addresses.filter(is_verified=True).first()
+    selected = addresses.filter(id=selected_id).first() if selected_id else addresses.filter(is_verified=True).first()
 
-    # Build fiat currency list (EUR/USD/GBP) for the form and template
+    # Fiat options
     currency_options = [{"value": c.value, "label": c.label} for c in Currency]
     currency_choices = [(o["value"], o["label"]) for o in currency_options]
     DEFAULT_FIAT = "EUR"
@@ -730,16 +765,19 @@ def withdrawal(request):
         form = WithdrawalForm(request.POST)
         form.fields["currency"].choices = currency_choices
 
+        # ---- One-time form token check (prevents back-button re-submit) ----
+        posted_token = request.POST.get("wdw_token")
+        session_token = request.session.pop("wdw_token", None)   # consume exactly once
+        if not posted_token or not session_token or posted_token != session_token:
+            messages.error(request, "This withdrawal form expired or was already submitted. Please start again.")
+            return redirect("withdrawal")
+        # -------------------------------------------------------------------
+
         if form.is_valid():
             amt = form.cleaned_data["amount"]
-
-            # user-chosen fiat currency (EUR/USD/GBP) – may be empty if the user never touched it
             fiat_currency = form.cleaned_data.get("currency") or DEFAULT_FIAT
-
-            # keep your existing method read (unchanged), e.g. 'crypto' / 'usdt_trc20' or 'ETH'/'TRC20'
             method = request.POST.get("method")
 
-            # Your existing hidden selection logic
             addr_id = form.cleaned_data.get("address_id") or (selected.id if selected else None)
             if not addr_id:
                 messages.error(request, "Please add/select a payout address.")
@@ -751,33 +789,66 @@ def withdrawal(request):
                 return redirect("withdrawal")
 
             amount_cents = cents(amt)
-            if amount_cents > wallet.balance_cents:
-                messages.error(request, "Insufficient balance.")
+
+            # ----- Withdrawal PIN checks (already in your flow) -----
+            tx_pin = (request.POST.get("tx_pin") or "").strip()
+            if not request.user.has_tx_pin():
+                messages.error(request, "Set your withdrawal password first.")
+                return redirect("set_tx_pin")
+            if not request.user.can_try_tx_pin():
+                messages.error(request, "Too many incorrect attempts. Please try again later.")
                 return redirect("withdrawal")
+            if not tx_pin or not request.user.check_tx_pin(tx_pin):
+                request.user.register_tx_pin_fail()
+                messages.error(request, "Incorrect withdrawal password.")
+                return redirect("withdrawal")
+            request.user.register_tx_pin_success()
+            # --------------------------------------------------------
 
-            fee = WithdrawalForm.compute_fee(amt)
-
-            # Store the user's fiat selection in WithdrawalRequest.currency.
-            # If for any reason it's missing from the enum, fall back to your resolver.
+            # Resolve final currency value safely
             try:
-                # make sure fiat_currency is a valid enum value
                 _ = [m.value for m in Currency if m.value == fiat_currency][0]
                 currency_value = fiat_currency
             except IndexError:
                 currency_value = resolve_currency(method, selected)
 
-            WithdrawalRequest.objects.create(
+            # ----- Duplicate request guard (same details within 2 minutes) -----
+            recent_window = timezone.now() - timedelta(minutes=2)
+            if WithdrawalRequest.objects.filter(
                 user=request.user,
-                amount_cents=amount_cents,
-                currency=currency_value,   # now EUR/USD/GBP when user chooses it
                 address=address,
-                fee_cents=cents(fee),
-                status="pending",
-            )
+                amount_cents=amount_cents,
+                currency=currency_value,
+                status__in=["pending", "awaiting_review", "processing", "confirmed"],
+                created_at__gte=recent_window,
+            ).exists():
+                messages.info(request, "We already received a similar withdrawal a moment ago.")
+                return redirect("withdrawal_success")
+            # -------------------------------------------------------------------
 
-            wallet.pending_cents += amount_cents
-            wallet.balance_cents -= amount_cents
-            wallet.save()
+            # ----- Atomic wallet update + request creation -----
+            with transaction.atomic():
+                # lock wallet row to avoid race/double spend
+                w = Wallet.objects.select_for_update().get(user=request.user)
+                if amount_cents > w.balance_cents:
+                    messages.error(request, "Insufficient balance.")
+                    return redirect("withdrawal")
+
+                fee = WithdrawalForm.compute_fee(amt)
+
+                WithdrawalRequest.objects.create(
+                    user=request.user,
+                    amount_cents=amount_cents,
+                    currency=currency_value,
+                    address=address,
+                    fee_cents=cents(fee),
+                    status="pending",
+                )
+
+                w.pending_cents += amount_cents
+                w.balance_cents -= amount_cents
+                w.save()
+            # ---------------------------------------------------
 
             messages.success(request, "Withdrawal submitted.")
             return redirect("withdrawal_success")
@@ -787,6 +858,12 @@ def withdrawal(request):
         form = WithdrawalForm(initial={"currency": DEFAULT_FIAT})
         form.fields["currency"].choices = currency_choices
 
+        # ---- Issue a fresh one-time token on every GET ----
+        token = secrets.token_urlsafe(20)
+        request.session["wdw_token"] = token
+        wdw_token = token
+        # ---------------------------------------------------
+
     ctx = {
         "form": form,
         "method_verified": any(a.is_verified for a in addresses),
@@ -795,9 +872,10 @@ def withdrawal(request):
         "wallet": wallet,
         "currency_options": currency_options,
         "fiat_symbol": {"EUR":"€","USD":"$","GBP":"£"}.get(form["currency"].value() or DEFAULT_FIAT, "€"),
+        "has_tx_pin": request.user.has_tx_pin(),
+        "wdw_token": locals().get("wdw_token", ""),  # for the template hidden input
     }
     return render(request, "meta_search/withdrawal.html", ctx)
-
 
 @login_required
 def add_address(request):
@@ -853,7 +931,7 @@ def add_address(request):
 
     return render(request, "meta_search/address_add.html", {"form": form})
 
-
+@never_cache
 @login_required
 def withdrawal_success(request):
     return render(request, "meta_search/withdrawal_success.html")

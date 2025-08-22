@@ -5,7 +5,91 @@
 {% block breadcrumb %}Home / my Wallet / Withdrawal / Success{% endblock %}
 
 {% block extra_head %}
+  {# Your stylesheet (keep if you use it) #}
   <link rel="stylesheet" href="{% static 'css/withdraw.css' %}">
+
+  {# Bridge: respect base_user collapsed sidebar #}
+  <style>
+    #app.collapsed > .sidebar { width: 56px !important; }
+    #app.collapsed > .sidebar .label { display: none !important; }
+    #app.collapsed > .main { margin-left: 56px !important; }
+    @media (max-width: 900px){
+      #app.nav-open > .sidebar { transform: translateX(0) !important; }
+    }
+  </style>
+
+  {# Client no-cache hint (server should still use @never_cache on this view) #}
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <style>
+    /* Page header (mobile back) */
+    .page-with-mobile-back .page-header{
+      display:flex; align-items:center; gap:10px; margin:0 0 14px;
+    }
+    .page-with-mobile-back .page-title{
+      margin:0; font-weight:700; font-size:22px; color:var(--text, #0f172a);
+    }
+    .page-with-mobile-back .back-link{
+      display:none; align-items:center; justify-content:center;
+      width:36px; height:36px; border-radius:10px; border:1px solid #e5e7eb;
+      background:#fff; color:#2451FF; text-decoration:none;
+    }
+    .page-with-mobile-back .back-link:hover{ box-shadow:0 8px 20px rgba(16,24,40,.08); }
+    @media (max-width: 900px){
+      .page-with-mobile-back .back-link{ display:inline-flex; }
+      .page-with-mobile-back .page-title{ font-size:20px; }
+    }
+
+    /* Success card */
+    .succ-scope .card{
+      background:#fff; border:1px solid #e5e7eb; border-radius:14px;
+    }
+    .succ-scope .inner{ padding:18px; }
+    .succ-scope h1{ margin:0 0 10px; font-size:22px; }
+    .succ-scope .lead{
+      display:flex; gap:12px; align-items:flex-start;
+      background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0;
+      padding:12px; border-radius:12px; margin-bottom:14px;
+    }
+    .succ-scope .lead .ic{
+      flex:0 0 28px; width:28px; height:28px; border-radius:50%;
+      display:grid; place-items:center; background:#10b981; color:#fff;
+    }
+
+    .succ-scope .details{
+      display:grid; gap:10px; margin-top:6px;
+    }
+    .succ-scope .pair{ display:flex; gap:10px; }
+    .succ-scope .label{
+      min-width:120px; color:#6b7280; font-weight:700; font-size:13px;
+    }
+    .succ-scope .value{ font-weight:600; }
+
+    .succ-scope .actions{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;
+    }
+    .succ-scope .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px; border-radius:12px; text-decoration:none; font-weight:600;
+    }
+    .succ-scope .btn.primary{ background:#2451FF; color:#fff; border:1px solid #2451FF; }
+    .succ-scope .btn.ghost{ background:#fff; color:#111827; border:1px solid #e5e7eb; }
+
+    .succ-scope .hint{
+      margin-top:10px; font-size:12px; color:#6b7280;
+    }
+
+    .succ-scope .copy{
+      margin-left:6px; border:0; background:#f3f4f6; color:#111827;
+      padding:4px 8px; border-radius:8px; cursor:pointer; font-size:12px;
+    }
+
+    @media (max-width: 480px){
+      .succ-scope .label{ min-width:96px; }
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
@@ -13,81 +97,117 @@
   <!-- Page header (mobile-only back arrow + title) -->
   <div class="page-with-mobile-back">
     <div class="page-header">
-      <a
-        class="back-link"
-        href="{% url 'wallet' %}"                 {# fallback route; change if needed #}
-        aria-label="Go back"
-        onclick="if (history.length > 1) { history.back(); return false; }">
-        <!-- Blue back arrow (uses currentColor) -->
+      <a class="back-link" href="{% url 'wallet' %}" aria-label="Go back"
+         onclick="if (history.length > 1) { history.back(); return false; }">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-             aria-hidden="true">
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
-      <h1 class="page-title">Awaiting Aproval </h1>        {# change title per page #}
+      <h1 class="page-title">Awaiting Approval</h1>
     </div>
-
-    <!-- rest of your page content here... -->
   </div>
 
-  <!-- Scoped, page-only CSS -->
-  <style>
-    /* scope all rules to this page only */
-    .page-with-mobile-back .page-header{
-      display:flex; align-items:center; gap:10px;
-      margin:0 0 14px;
-    }
-    .page-with-mobile-back .page-title{
-      margin:0; font-weight:700; font-size:22px;
-      color:var(--text, #0f172a);
-    }
+  <section class="succ-scope">
+    <div class="shell">
+      <h1>Withdrawal submitted</h1>
 
-    /* Back arrow (mobile-only) */
-    .page-with-mobile-back .back-link{
-      display:none;                               /* hidden by default (desktop) */
-      align-items:center; justify-content:center;
-      width:36px; height:36px;
-      border-radius:10px;
-      border:1px solid var(--border, #e5e7eb);
-      background:#fff;
-      color:var(--primary, #2451FF);              /* BLUE arrow via currentColor */
-      text-decoration:none;
-      box-shadow:0 1px 0 rgba(16,24,40,.02);
-    }
-    .page-with-mobile-back .back-link:hover{
-      box-shadow:0 8px 20px rgba(16,24,40,.08);
-    }
+      <div class="card" aria-live="polite">
+        <div class="inner">
+          <div class="lead">
+            <div class="ic" aria-hidden="true">✓</div>
+            <div>
+              <div style="font-weight:700;">We’ve received your request.</div>
+              <div style="font-size:13px;">You’ll get an update once it’s reviewed.</div>
+            </div>
+          </div>
 
-    /* Show the back arrow only on mobile/tablet */
-    @media (max-width: 900px){
-      .page-with-mobile-back .back-link{ display:inline-flex; }
-      .page-with-mobile-back .page-title{ font-size:20px; }
-      .page-with-mobile-back .back-link svg{ width:18px; height:18px; }
-    }
-  </style>
+          {% if wr %}
+            <div class="details">
+              <div class="pair">
+                <div class="label">Request ID</div>
+                <div class="value">
+                  <span id="reqId">#{{ wr.id }}</span>
+                  <button class="copy" type="button" data-copy="#reqId">Copy</button>
+                </div>
+              </div>
 
+              <div class="pair">
+                <div class="label">Amount</div>
+                <div class="value">
+                  {{ wr.amount|floatformat:2 }} {{ wr.currency }}
+                </div>
+              </div>
 
-<section class="wdw">
-  <div class="shell">
-    <h1>Withdrawal Submitted</h1>
+              <div class="pair">
+                <div class="label">Status</div>
+                <div class="value">{{ wr.status|title }}</div>
+              </div>
 
-    <div class="card">
-      <div class="inner">
-        {% if wr %}
-          <p>Request ID: <strong>#{{ wr.id }}</strong></p>
-          <p>Amount: <strong>{{ wr.amount|floatformat:2 }}</strong> {{ wr.currency }}</p>
-          <p>Status: <strong>{{ wr.status|title }}</strong></p>
-        {% else %}
-          <p>Your withdrawal request has been submitted.</p>
-        {% endif %}
+              {% if wr.created_at %}
+              <div class="pair">
+                <div class="label">Submitted</div>
+                <div class="value">{{ wr.created_at|date:"M j, Y, g:i a" }}</div>
+              </div>
+              {% endif %}
 
-        <a href="{% url 'withdrawal' %}" class="submit" style="display:inline-flex;width:auto;margin-top:10px">
-          Back to Withdraw
-        </a>
+              {% if wr.address %}
+              <div class="pair">
+                <div class="label">To</div>
+                <div class="value">
+                  {{ wr.address.address|default:"—" }}
+                  {% if wr.address.network %} · {{ wr.address.network }}{% endif %}
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          {% else %}
+            <p>Your withdrawal request has been submitted.</p>
+          {% endif %}
+
+          <div class="actions">
+            <a href="{% url 'wallet' %}" class="btn primary">Go to Wallet</a>
+            <a href="{% url 'withdrawal' %}" class="btn ghost">Make another withdrawal</a>
+          </div>
+
+          <div class="hint">
+            Tip: If you navigate back to the withdrawal page, it will load a fresh form so it can’t be submitted twice.
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+{% endblock %}
 
-  </div>
-</section>
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+  // Copy helper
+  (function(){
+    const btns = document.querySelectorAll('.copy');
+    btns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const sel = btn.getAttribute('data-copy');
+        const el = document.querySelector(sel);
+        if (!el) return;
+        const text = (el.textContent || el.innerText || '').trim();
+        navigator.clipboard?.writeText(text).then(()=>{
+          btn.textContent = 'Copied';
+          setTimeout(()=>{ btn.textContent = 'Copy'; }, 1200);
+        }).catch(()=>{ /* ignore */ });
+      });
+    });
+  })();
+
+  // Back/forward cache guard: if user returns via BFCache, refresh to avoid stale UI
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted) {
+      // Hard reload bypassing cache
+      window.location.reload();
+    }
+  });
+
+  // Replace current history entry so reloading won’t re-post anything (extra safety)
+  try { window.history.replaceState({}, document.title, window.location.href); } catch(e){}
+</script>
 {% endblock %}

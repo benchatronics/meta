@@ -1,195 +1,351 @@
 {% extends "base_settings.html" %}
 {% load static greetings form_utils %}
-
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 {% block title %}Settings — Profile{% endblock %}
 {% block breadcrumb %}Home / setting / profile{% endblock %}
 
 {% block settings_content %}
-<h3>Basic Info</h3>
-<div class="sub">Manage your details and personal preference here.</div>
 
-<form method="post"
-      action="{% url 'profile_settings' %}"
-      enctype="multipart/form-data"
-      class="profile-form"
-      data-force-post="1"
-      target="_self">
-  {% csrf_token %}
+<section class="profile-settings">
+  <div class="card">
+    <header class="card__header">
+      <h3>Basic Info</h3>
+      <p class="sub">Manage your details and personal preferences here.</p>
+    </header>
 
-  <!-- Avatar row -->
-  <div class="profile-row">
-    <div class="avatar">
-      <img id="avatarPreview" src="{{ avatar_src }}" alt="Avatar"
-           style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
-    </div>
-    <div>
-      <div class="btn-row">
-        <!-- Mobile-safe: input is inside label and overlayed (not display:none) -->
-        <label class="btn outline file-btn" role="button">
-          Change image
-          <input
-            type="file"
-            name="avatar"
-            id="id_avatar"
-            accept="image/*"
-            data-max-mb="{{ max_avatar_mb|default:4 }}"
-            data-allowed-types="{% if allowed_types %}{{ allowed_types|join:',' }}{% endif %}">
-        </label>
+    <form method="post"
+          action="{% url 'profile_settings' %}"
+          enctype="multipart/form-data"
+          class="profile-form"
+          data-force-post="1"
+          target="_self">
+      {% csrf_token %}
 
-        <!-- Delete should ignore HTML5 validation (e.g., invalid URL field) -->
-        <button class="btn danger" type="submit" name="delete_avatar" value="1" formnovalidate>
-          Delete image
-        </button>
+      <!-- Avatar row -->
+      <div class="profile-row">
+        <div class="avatar">
+          <img id="avatarPreview"
+               class="avatar__img"
+               src="{{ avatar_src }}"
+               alt="Avatar">
+        </div>
+
+        <div class="avatar__controls">
+          <div class="btn-row">
+            <!-- Mobile-safe: input is inside label and overlayed -->
+            <label class="btn outline file-btn" role="button">
+              <span class="btn__text">Change image</span>
+              <input
+                type="file"
+                name="avatar"
+                id="id_avatar"
+                accept="image/*"
+                data-max-mb="{{ max_avatar_mb|default:4 }}"
+                data-allowed-types="{% if allowed_types %}{{ allowed_types|join:',' }}{% endif %}">
+            </label>
+
+            <button class="btn danger ghost" type="submit" name="delete_avatar" value="1" formnovalidate>
+              Remove
+            </button>
+          </div>
+
+          <div class="hint">JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80).</div>
+          {% if form.avatar.errors %}<div class="error">{{ form.avatar.errors.0 }}</div>{% endif %}
+        </div>
       </div>
-      <div class="hint">JPG, PNG, WebP or GIF. We recommend 80×80 to 200×200.</div>
-      {% if form.avatar.errors %}<div class="error">{{ form.avatar.errors.0 }}</div>{% endif %}
-    </div>
+
+      <!-- Info grid (read-only stats) -->
+      <div class="info-grid">
+        <div class="stat">
+          <div class="stat__label">User ID</div>
+          <div class="stat__value">{{ user_id_value }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">Phone Number</div>
+          <div class="stat__value">{{ phone_value }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">Language</div>
+          <div class="stat__value">{{ language_value }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">Level</div>
+          <div class="stat__value">LEVEL 1</div>
+        </div>
+      </div>
+
+      <!-- Editable fields -->
+      <div class="edit-grid">
+        <div class="field">
+          <label class="label" for="id_nickname">Nickname</label>
+          {{ form.nickname }}
+          {% if form.nickname.errors %}<div class="error">{{ form.nickname.errors.0 }}</div>{% endif %}
+        </div>
+
+        <div class="field">
+          <label class="label" for="id_avatar_url">Image URL (optional)</label>
+          {{ form.avatar_url }}
+          {% if form.avatar_url.errors %}<div class="error">{{ form.avatar_url.errors.0 }}</div>{% endif %}
+          <div class="hint">Used only if no uploaded image exists.</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">Save Changes</button>
+      </div>
+    </form>
   </div>
+</section>
 
-  <!-- Info grid (readonly values) -->
-  <div class="info-grid">
-    <div class="field">
-      <div class="label">User ID</div>
-      <div class="value">{{ user_id_value }}</div>
-    </div>
-    <div class="field">
-      <div class="label">Phone Number</div>
-      <div class="value">{{ phone_value }}</div>
-    </div>
-    <div class="field">
-      <div class="label">Language</div>
-      <div class="value">{{ language_value }}</div>
-    </div>
-    <div class="field">
-      <div class="label">Level</div>
-      <div class="value">LEVEL 1</div>
-    </div>
-  </div>
-
-  <!-- Editable fields -->
-  <div class="edit-grid" style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-    <div class="field">
-      <label class="label" for="id_nickname">Nickname</label>
-      {{ form.nickname }}
-      {% if form.nickname.errors %}<div class="error">{{ form.nickname.errors.0 }}</div>{% endif %}
-    </div>
-
-    <div class="field">
-      <label class="label" for="id_avatar_url">Image URL (optional)</label>
-      {{ form.avatar_url }}
-      {% if form.avatar_url.errors %}<div class="error">{{ form.avatar_url.errors.0 }}</div>{% endif %}
-      <div class="hint">If provided, it’s used when no uploaded image exists.</div>
-    </div>
-  </div>
-
-  <div class="actions" style="margin-top:18px;">
-    <button class="btn primary" type="submit">Save Changes</button>
-  </div>
-</form>
-
-<!-- Scoped overrides (append-only; safe on mobile/desktop) -->
 <style>
-  /* Layout */
-  .btn-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-  .profile-row { display:flex; gap:16px; align-items:center; margin:16px 0; }
-  .info-grid { display:grid; grid-template-columns:repeat(4, minmax(140px, 1fr)); gap:12px; margin:14px 0 0; }
-  .field .label { font-weight:700; font-size:13px; color:#566; margin-bottom:6px; }
-  .field .value { font-weight:700; }
-  .error { color:#d94c49; font-size:13px; margin-top:6px; }
-  .hint { font-size:12px; color:#6b7280; margin-top:6px; }
+/* ===== Scoped design system (no bleed) ===== */
+.profile-settings{
+  --brand: #2f57ff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --border: #e5e7eb;
+  --ring: rgba(47,87,255,.18);
+  --danger: #e11d48;
+  --shadow: 0 4px 20px rgba(2,6,23,.06);
+  color: var(--text);
+  font-size: 14px;
+}
+@media (prefers-color-scheme: dark){
+  .profile-settings{
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --bg: #0b1220;
+    --panel: #0f172a;
+    --border: #1f2937;
+    --ring: rgba(59,130,246,.25);
+    --shadow: 0 8px 28px rgba(0,0,0,.35);
+  }
+}
 
-  /* Mobile-safe file input: overlay inside label only */
-  .profile-form .file-btn {
-    position:relative;
-    overflow:hidden;
-    display:inline-flex;
-    align-items:center;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-    z-index:0; /* prevent overlay from spilling over other buttons */
-  }
-  .profile-form .file-btn input[type="file"]{
-    position:absolute;
-    inset:0;
-    opacity:0;
-    cursor:pointer;
-    width:100%;
-    height:100%;
-    -webkit-appearance: none;
-  }
+.profile-settings .card{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+@media (min-width: 768px){
+  .profile-settings .card{ padding: 24px; }
+}
 
-  /* Inputs */
-  .profile-form input[type="text"],
-  .profile-form input[type="url"]{
-    width:100%;
-    height:44px;
-    border:1px solid #e5e7eb;
-    border-radius:12px;
-    padding:10px 12px;
-    font-size:14px;
-    outline:none;
-    background:#fff;
-  }
-  .profile-form input[type="text"]:focus,
-  .profile-form input[type="url"]:focus{
-    border-color:#2f57ff;
-    box-shadow:0 0 0 3px rgba(47,87,255,.10);
-  }
+.card__header h3{
+  margin: 0 0 6px 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.card__header .sub{
+  margin: 0 0 14px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
 
-  /* Responsive */
-  @media (max-width: 800px){
-    .info-grid { grid-template-columns:repeat(2, minmax(140px, 1fr)); }
-    .edit-grid { grid-template-columns:1fr; }
-  }
+/* Avatar */
+.profile-settings .profile-row{
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin: 10px 0 18px;
+}
+@media (max-width: 560px){
+  .profile-settings .profile-row{ grid-template-columns: 96px 1fr; }
+}
+.profile-settings .avatar{ position: relative; }
+.profile-settings .avatar__img{
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255,255,255,.9);
+  box-shadow: 0 6px 22px rgba(2,6,23,.12);
+  background: #f8fafc;
+}
+@media (max-width: 560px){
+  .profile-settings .avatar__img{ width: 96px; height: 96px; }
+}
+.profile-settings .avatar__controls .hint{ margin-top: 6px; }
+
+/* Stats grid */
+.profile-settings .info-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px,1fr));
+  gap: 12px;
+  margin: 8px 0 6px;
+}
+@media (max-width: 900px){
+  .profile-settings .info-grid{ grid-template-columns: repeat(2, minmax(140px,1fr)); }
+}
+.profile-settings .stat{
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: linear-gradient(180deg, rgba(2,6,23,.02), rgba(2,6,23,0));
+}
+.profile-settings .stat__label{
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.profile-settings .stat__value{
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+/* Form fields */
+.profile-settings .edit-grid{
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 900px){
+  .profile-settings .edit-grid{ grid-template-columns: 1fr; }
+}
+.profile-settings .field .label{
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.profile-settings .hint{ font-size: 12px; color: var(--muted); }
+.profile-settings .error{ color: var(--danger); font-size: 12px; margin-top: 6px; }
+
+/* Inputs */
+.profile-settings input[type="text"],
+.profile-settings input[type="url"]{
+  width: 100%;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+  background: var(--bg);
+  color: var(--text);
+  transition: box-shadow .2s, border-color .2s, background .2s;
+}
+.profile-settings input[type="text"]:focus,
+.profile-settings input[type="url"]:focus{
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+/* Buttons */
+.profile-settings .btn-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.profile-settings .actions{ margin-top: 18px; display:flex; justify-content:flex-end; }
+
+.profile-settings .btn{
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .2s, border-color .2s, background .2s, color .2s;
+}
+.profile-settings .btn:active{ transform: translateY(1px); }
+.profile-settings .btn:hover{ box-shadow: 0 6px 18px rgba(2,6,23,.08); }
+.profile-settings .btn.primary{
+  background: var(--brand);
+  color: #fff;
+  border-color: transparent;
+}
+.profile-settings .btn.outline{
+  background: transparent;
+}
+.profile-settings .btn.danger{
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.profile-settings .btn.ghost{
+  background: transparent;
+  border-color: transparent;
+  color: var(--danger);
+}
+.profile-settings .btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+/* Mobile-safe file input overlay */
+.profile-settings .file-btn{
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.profile-settings .file-btn input[type="file"]{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+/* Small helpers */
+.profile-settings .avatar__controls .error{ margin-top: 8px; }
 </style>
 
 <script>
-  // 1) Force a normal POST (block any global AJAX hijackers on this form only)
-  (function(){
-    const form = document.querySelector('.profile-form[data-force-post="1"]');
-    if (!form) return;
-    // Capture phase: stop other listeners from canceling submission
-    form.addEventListener('submit', function(e){
-      // Do NOT preventDefault; just stop other handlers from interfering.
-      e.stopImmediatePropagation();
-      // Ensure action targets same window (some libs retarget)
-      form.removeAttribute('data-remote');
-      form.removeAttribute('data-ajax');
-      form.target = '_self';
-    }, true);
-  })();
+/* Force a normal POST (neutralize any global submit hijackers) */
+(function(){
+  const form = document.querySelector('.profile-form[data-force-post="1"]');
+  if (!form) return;
+  form.addEventListener('submit', function(e){
+    e.stopImmediatePropagation();
+    form.removeAttribute('data-remote');
+    form.removeAttribute('data-ajax');
+    form.target = '_self';
+  }, true);
+})();
 
-  // 2) Lightweight, mobile-safe preview + guards
-  (function(){
-    const fileInput = document.querySelector('.file-btn input[type="file"]');
-    const preview   = document.getElementById('avatarPreview');
-    if (!fileInput || !preview) return;
+/* Lightweight, mobile-safe preview + guards */
+(function(){
+  const fileInput = document.querySelector('.file-btn input[type="file"]');
+  const preview   = document.getElementById('avatarPreview');
+  if (!fileInput || !preview) return;
 
-    const MAX_MB = parseFloat(fileInput.dataset.maxMb || '4');
-    let allowed = (fileInput.dataset.allowedTypes || '').split(',').filter(Boolean);
-    if (!allowed.length) {
-      allowed = ["image/jpeg","image/png","image/webp","image/gif"];
+  const MAX_MB = parseFloat(fileInput.dataset.maxMb || '4');
+  let allowed = (fileInput.dataset.allowedTypes || '').split(',').filter(Boolean);
+  if (!allowed.length) allowed = ["image/jpeg","image/png","image/webp","image/gif"];
+
+  fileInput.addEventListener('change', function(){
+    const file = this.files && this.files[0];
+    if (!file) return;
+
+    if (allowed.length && !allowed.includes(file.type)) {
+      alert('Unsupported image type. Use JPG, PNG, WebP, or GIF.');
+      this.value = '';
+      return;
+    }
+    if (file.size > MAX_MB * 1024 * 1024) {
+      alert(`Image is larger than ${MAX_MB} MB. Please choose a smaller image.`);
+      this.value = '';
+      return;
     }
 
-    fileInput.addEventListener('change', function(){
-      const file = this.files && this.files[0];
-      if (!file) return;
-
-      if (allowed.length && !allowed.includes(file.type)) {
-        alert('Unsupported image type. Use JPG, PNG, WebP, or GIF.');
-        this.value = '';
-        return;
-      }
-      if (file.size > MAX_MB * 1024 * 1024) {
-        alert(`Image is larger than ${MAX_MB} MB. Please choose a smaller image.`);
-        this.value = '';
-        return;
-      }
-
-      const url = URL.createObjectURL(file);
-      preview.src = url;
-      preview.onload = () => URL.revokeObjectURL(url);
-    }, { passive: true });
-  })();
+    const url = URL.createObjectURL(file);
+    preview.src = url;
+    preview.onload = () => URL.revokeObjectURL(url);
+  }, { passive: true });
+})();
 </script>
+
 {% endblock %}
