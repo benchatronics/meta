@@ -1,3 +1,4 @@
+{# meta_search/base_user_layout.css #}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +56,7 @@
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9"/></svg>
           <span class="label">Home</span>
         </a>
-        <a class="link {% if active_page == 'task' %}active{% endif %}" href="#" title="Task">
+        <a class="link {% if active_page == 'task' %}active{% endif %}" href="{% url 'task_dashboard' %}" title="Task">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8h10M7 12h6"/></svg>
           <span class="label">Task</span>
         </a>
@@ -216,8 +217,7 @@
       <span>Home</span>
       <span class="dot" aria-hidden="true"></span>
     </a>
-
-    <a class="{% if active_page == 'task' %}active{% endif %}" href="#" title="Tasks" role="tab" aria-selected="{% if active_page == 'task' %}true{% else %}false{% endif %}">
+    <a class="{% if active_page == 'task' %}active{% endif %}" href="{% url 'task_dashboard' %}" title="Tasks" role="tab" aria-selected="{% if active_page == 'task' %}true{% else %}false{% endif %}">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8h10M7 12h6"/>
       </svg>

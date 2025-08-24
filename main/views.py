@@ -1,62 +1,93 @@
 # main/views.py
-import random
+from __future__ import annotations
+
+# -------- Standard library --------
 import base64
-import hmac
 import hashlib
+import hmac
 import json
+import random
+import secrets
+import time
+from datetime import timedelta
 from decimal import Decimal
 from io import BytesIO
-from django.db import IntegrityError, transaction
-import secrets
-from django.views.decorators.cache import never_cache
-from django.views.decorators.http import require_http_methods
+
+
+#next url
+
+from urllib.parse import urlencode
+from django.utils.http import url_has_allowed_host_and_scheme
+
+# -------- Third-party --------
 import phonenumbers
+
+# -------- Django --------
 from django import forms
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.models import LogEntry, CHANGE
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth import authenticate, login, logout, get_user_model
+#from django.contrib.admin.views.decorators import staff_member_member_required as staff_member_required  # if you had this variant
+from django.contrib.admin.views.decorators import staff_member_required  # keep this one if used
+from django.contrib.auth import (
+    authenticate, get_user_model, login, logout, update_session_auth_hash
+)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
-from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.db.models import Count, Exists, OuterRef, Value, BooleanField
-from django.http import (
-                            JsonResponse,
-                            HttpResponse,
-                        )
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
 from django.templatetags.static import static
+from django.urls import reverse
 from django.utils import timezone
-from django.utils.translation import gettext as _
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.views.decorators.http import require_POST
 from django.utils.dateparse import parse_date
+from django.utils.translation import gettext as _
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.views.decorators.http import require_http_methods, require_POST
+
+# Provide both names if some code uses `static_url`
+static_url = static
+
+# -------- Local (project) --------
 from .country_codes import COUNTRY_CODES
 from .forms import (
     SignupForm, LoginForm, StaffResetPasswordForm,
-    WithdrawalForm, AddressForm, DepositForm, CURRENCY_SYMBOL
+    WithdrawalForm, AddressForm, DepositForm, CURRENCY_SYMBOL,
+    ChangePasswordForm, ProfileUpdateForm,
+    MAX_AVATAR_MB, ALLOWED_IMG_TYPES,
+    SetTxPinForm, ChangeTxPinForm,
 )
 from .models import (
-                        Wallet, PayoutAddress, WithdrawalRequest,
-                        AddressType, Currency,
-                        DepositAddress, DepositRequest, Network,
-                        Hotel, Favorite, InfoPage, Announcement
-              )
+    Wallet, PayoutAddress, WithdrawalRequest,
+    AddressType, Currency,
+    DepositAddress, DepositRequest, Network,
+    Hotel, Favorite, InfoPage, Announcement,
+    Task, TaskPhase, TaskStatus, SystemSettings, TaskTemplate,
+)
 from .services import confirm_deposit
-from django.contrib.auth import update_session_auth_hash
-from .forms import ChangePasswordForm
-from .forms import ProfileUpdateForm
-from django.db.models import Exists, OuterRef, Count
-from django.templatetags.static import static as static_url
-from datetime import timedelta
-from .forms import ProfileUpdateForm, MAX_AVATAR_MB, ALLOWED_IMG_TYPES
-from .forms import SetTxPinForm, ChangeTxPinForm
+
+# Task helpers (standardize on .task, not .tasks)
+from .task import (
+    account_snapshot, do_next_task, count_approved,
+    detect_phase, pick_template_for_phase, latest_vip_task,
+    complete_trial_task, complete_normal_task,
+    vip_deposit_shortfall_cents,
+)
 
 
+
+def _get_next_url(request, default_name="task_take"):
+    nxt = request.GET.get("next") or request.POST.get("next")
+    if nxt and url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}):
+        return nxt
+    return reverse(default_name)
+
+def _qs_next(request):
+    nxt = request.GET.get("next") or request.POST.get("next")
+    return f"?{urlencode({'next': nxt})}" if nxt else ""
 
 
 #witdrawal pin
@@ -217,9 +248,12 @@ class PasswordResetOTPForm(forms.Form):
         return cleaned
 
 
+from twilio.base.exceptions import TwilioRestException
+from .twilio_sms import send_sms as _twilio_send_sms
+
 def _send_sms(phone_e164: str, message: str) -> None:
-    # TODO: integrate real SMS provider
-    print(f"[SMS to {phone_e164}] {message}")  # dev placeholder
+    _twilio_send_sms(phone_e164, message)
+
 
 
 def _generate_otp() -> str:
@@ -228,7 +262,7 @@ def _generate_otp() -> str:
 
 User = get_user_model()
 
-
+from twilio.base.exceptions import TwilioRestException
 @csrf_protect
 def password_reset_start(request):
     """
@@ -244,10 +278,27 @@ def password_reset_start(request):
                 messages.error(request, _("No account found for that phone."))
                 return render(request, 'meta_search/password_reset_phone.html', {'form': form})
 
+            # --- generate + cache OTP (10 minutes) ---
             otp = _generate_otp()
-            cache.set(f"pr_otp:{phone}", otp, timeout=600)  # 10 minutes
-            _send_sms(phone, _("Your reset code is: %(otp)s. It expires in 10 minutes.") % {"otp": otp})
+            cache_key = f"pr_otp:{phone}"
+            cache.set(cache_key, otp, timeout=600)
 
+            # --- attempt to send via Twilio ---
+            try:
+                _send_sms(
+                    phone,
+                    _("Your reset code is: %(otp)s. It expires in 10 minutes.") % {"otp": otp}
+                )
+            except TwilioRestException:
+                cache.delete(cache_key)  # rollback so user can request again cleanly
+                messages.error(request, _("We couldn’t send the code. Please try again in a moment."))
+                return render(request, 'meta_search/password_reset_phone.html', {'form': form})
+            except Exception:
+                cache.delete(cache_key)
+                messages.error(request, _("Unexpected error sending code. Try again later."))
+                return render(request, 'meta_search/password_reset_phone.html', {'form': form})
+
+            # --- success path ---
             request.session['pr_phone'] = phone
             messages.success(request, _("We sent a verification code to your phone."))
             return redirect('password_reset_verify')
@@ -257,6 +308,7 @@ def password_reset_start(request):
         form = PasswordResetPhoneForm()
 
     return render(request, 'meta_search/password_reset_phone.html', {'form': form})
+
 
 
 @csrf_protect
@@ -1214,3 +1266,209 @@ def info_page(request, key: str):
         "active_page": "info",   # highlights 'Info' in base_user sidebar (if you use it)
         "current_info": current_info,
     })
+
+
+#task view
+@login_required
+@require_POST
+def do_next_task_view(request):
+    """
+    Legacy one-click path that auto-completes Trial/Normal.
+    If user is in VIP phase, we do NOT auto-complete; redirect to task_take.
+    """
+    phase_now = detect_phase(request.user)
+
+    if phase_now == TaskPhase.VIP:
+        messages.info(request, "VIP phase active. Open your VIP task to deposit & submit.")
+        return redirect("task_take")
+
+    try:
+        phase, task, _ = do_next_task(request.user)  # Trial/Normal handled inside
+        if task:
+            messages.success(request, f"Task completed in {phase.capitalize()} phase (ID {task.id}).")
+        else:
+            messages.info(request, "Nothing to do right now.")
+    except Exception as e:
+        messages.error(request, str(e) or "Unable to complete task.")
+
+    return redirect("task_dashboard")
+
+
+@login_required
+@require_http_methods(["GET"])
+def task_dashboard(request):
+    snap = account_snapshot(request.user)
+    s = SystemSettings.current()
+
+    trial_done   = count_approved(request.user, TaskPhase.TRIAL)
+    normal_done  = count_approved(request.user, TaskPhase.NORMAL)
+    normal_limit = s.normal_task_limit
+    normal_left  = max(normal_limit - normal_done, 0)
+
+    tasks = (
+        Task.objects
+        .filter(user=request.user)
+        .select_related("template")
+        .order_by("-created_at")[:100]
+    )
+
+    # Bell badge
+    if snap["phase"] == TaskPhase.TRIAL:
+        badge = max(25 - trial_done, 0)
+    elif snap["phase"] == TaskPhase.NORMAL:
+        badge = normal_left
+    else:
+        badge = 0
+
+    # KPI cards (computed server-side)
+    kpis = [
+        {"label": "Total Asset", "icon": "💼", "value": snap["total_assets_eur"]},
+        {"label": "Asset",       "icon": "🪙", "value": snap["asset_eur"]},
+        {"label": "Dividends",   "icon": "💸", "value": snap["dividends_eur"]},
+        {"label": "Processing",  "icon": "⚙️", "value": snap["processing_eur"]},
+    ]
+
+    ctx = {
+        "snapshot": snap,
+        "phase": snap["phase"],
+        "trial_done": trial_done,
+        "trial_total": 25,
+        "normal_done": normal_done,
+        "normal_limit": normal_limit,
+        "normal_left": normal_left,
+        "tasks": tasks,
+        "badge": badge,
+        "kpis": kpis,
+        "active_page": "task",
+    }
+    return render(request, "meta_search/task_dashboard.html", ctx)
+
+
+@login_required
+@require_http_methods(["GET"])
+def task_take(request):
+    """
+    Show a single task the user can do now.
+    TRIAL/NORMAL: show a random published template (exclude recently used).
+    VIP: show latest assigned VIP task; if deposit shortfall > 0, show deposit CTA.
+    """
+    user = request.user
+    s = SystemSettings.current()
+    phase = detect_phase(user)
+
+    ctx = {"phase": phase, "awaiting_vip": False}
+
+    if phase == TaskPhase.TRIAL:
+        tpl = pick_template_for_phase(TaskPhase.TRIAL, user=user)   # <-- pass user for randomness
+        ctx.update({
+            "tpl": tpl,
+            "title": (tpl.name if tpl else "Trial Task"),
+            "subtext": (f"{(tpl.city+', ') if (tpl and tpl.city) else ''}{tpl.country}" if tpl else "Complete this trial task to learn the flow"),
+            "image": (tpl.cover_src if tpl else "/static/img/placeholder.png"),
+            "rating": (tpl.score if tpl else 4.7),
+            "label": (tpl.get_label_display() if tpl else "Perfect"),
+            "order_code": (tpl.order_code if tpl else "TRIAL-AUTO"),
+            "order_date": (tpl.order_date or timezone.now().date()) if tpl else timezone.now().date(),
+            "country": (tpl.country if tpl else "—"),
+            "worth_cents": 0,
+            "commission_cents": s.trial_commission_cents,
+            "deposit_shortfall_cents": 0,
+            "open_deposit_modal": False,
+        })
+
+    elif phase == TaskPhase.NORMAL:
+        tpl = pick_template_for_phase(TaskPhase.NORMAL, user=user)  # <-- pass user
+        worth = s.normal_worth_cents or (tpl.worth_cents if tpl else 0)
+        ctx.update({
+            "tpl": tpl,
+            "title": (tpl.name if tpl else "Normal Task"),
+            "subtext": (f"{(tpl.city+', ') if (tpl and tpl.city) else ''}{tpl.country}" if tpl else "Complete a normal task"),
+            "image": (tpl.cover_src if tpl else "/static/img/placeholder.png"),
+            "rating": (tpl.score if tpl else 4.6),
+            "label": (tpl.get_label_display() if tpl else "Good"),
+            "order_code": (tpl.order_code if tpl else "NORM-AUTO"),
+            "order_date": (tpl.order_date or timezone.now().date()) if tpl else timezone.now().date(),
+            "country": (tpl.country if tpl else "—"),
+            "worth_cents": worth,
+            "commission_cents": s.normal_commission_cents,
+            "deposit_shortfall_cents": 0,
+            "open_deposit_modal": False,
+        })
+
+    else:  # VIP
+        vip = latest_vip_task(user)
+        if vip and vip.status in (TaskStatus.PENDING, TaskStatus.IN_PROGRESS):
+            tpl = vip.template
+            shortfall = vip_deposit_shortfall_cents(user)
+
+            ctx.update({
+                "tpl": tpl,
+                "title": (tpl.name if tpl else "VIP Task"),
+                "subtext": (f"{(tpl.city+', ') if (tpl and tpl.city) else ''}{tpl.country}" if tpl else "Complete your VIP task"),
+                "image": (tpl.cover_src if tpl else "/static/img/placeholder.png"),
+                "rating": (tpl.score if tpl else 4.9),
+                "label": (tpl.get_label_display() if tpl else "Perfect"),
+                "order_code": (tpl.order_code if (tpl and tpl.order_code) else f"VIP-{vip.id}"),
+                "order_date": (tpl.order_date or vip.created_at.date()) if tpl else vip.created_at.date(),
+                "country": (tpl.country if tpl else "—"),
+                "worth_cents": vip.worth_cents,
+                "commission_cents": vip.commission_cents,
+                "vip_task": vip,
+
+                # deposit UI flags
+                "deposit_shortfall_cents": shortfall,
+                "open_deposit_modal": (shortfall > 0),
+            })
+        else:
+            ctx["awaiting_vip"] = True
+
+    return render(request, "meta_search/task_take.html", ctx)
+
+
+@login_required
+@require_POST
+def task_submit(request):
+    """
+    Handle the Submit button:
+      - TRIAL → create+approve trial task
+      - NORMAL → create+approve normal task
+      - VIP → if deposit shortfall > 0: block & send to deposit; else mark SUBMITTED
+    """
+    user = request.user
+    phase = detect_phase(user)
+    idem = f"{phase.lower()}-{user.id}-{int(time.time()*1000)}"
+
+    try:
+        if phase == TaskPhase.TRIAL:
+            complete_trial_task(user, idempotency_key=idem)
+            messages.success(request, "Trial task completed.")
+
+        elif phase == TaskPhase.NORMAL:
+            complete_normal_task(user, idempotency_key=idem)
+            messages.success(request, "Normal task completed.")
+
+        else:
+            vip = latest_vip_task(user)
+            if not vip or vip.status not in (TaskStatus.PENDING, TaskStatus.IN_PROGRESS):
+                messages.info(request, "No active VIP task assigned yet.")
+                return redirect("task_take")
+
+            # HARD GUARD: require deposit before allowing submit
+            shortfall = vip_deposit_shortfall_cents(user)
+            if shortfall > 0:
+                messages.error(
+                    request,
+                    "You must deposit the required amount before submitting this VIP task."
+                )
+                return redirect("deposit")  # your deposit landing route
+
+            # OK to submit
+            vip.status = TaskStatus.SUBMITTED
+            vip.submitted_at = timezone.now()
+            vip.save(update_fields=["status", "submitted_at"])
+            messages.success(request, "VIP task submitted. Await admin approval.")
+
+    except Exception as e:
+        messages.error(request, str(e) or "Unable to submit task.")
+
+    return redirect("task_dashboard")

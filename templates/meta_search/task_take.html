@@ -1,0 +1,271 @@
+{% load static %}
+{% load currency %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Task</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+<div class="task-page">
+  <!-- ====== TOP BAR ====== -->
+  <header class="topbar">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span>Home</span>
+      <span class="crumb-sep">›</span>
+      <span>setting</span>
+      <span class="crumb-sep">›</span>
+      <span class="active">Task</span>
+    </nav>
+    <a class="bell" aria-label="Back to dashboard" href="{% url 'task_dashboard' %}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8a6 6 0 00-12 0c0 7-3 7-3 7h18s-3 0-3-7"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+      <span class="badge">!</span>
+    </a>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">Task</h1>
+
+    {% if awaiting_vip %}
+      <div class="card" style="padding:16px">
+        <p style="margin:0">VIP phase is active, but no VIP task is assigned yet. Please check back later.</p>
+      </div>
+    {% else %}
+      <!-- ====== TASK DETAIL CARD ====== -->
+      <section class="task-detail card">
+        <div class="td-media">
+          <img alt="Task image" src="{{ image|default:'/static/img/placeholder.png' }}" class="td-img" />
+        </div>
+
+        <div class="td-info">
+          <div class="td-head">
+            <h2 class="td-title">{{ title }}</h2>
+            <p class="td-sub">{{ subtext }}</p>
+            <span class="td-badge"><span class="dot"></span> {{ rating }} <b>{{ label }}</b></span>
+          </div>
+
+          <div class="td-meta">
+            <div class="row"><span class="key">Order ID</span><span class="val">{{ order_code }}</span></div>
+            <div class="row"><span class="key">Date</span><span class="val">{{ order_date|date:"d/m/Y" }}</span></div>
+          </div>
+
+          <div class="td-key card">
+            <h4>Key Information</h4>
+            <ul class="klist">
+              <li>
+                <span class="kico" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="ktext">{{ country }}</span>
+              </li>
+              <li>
+                <span class="kico" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7H15a3.5 3.5 0 010 7H6"/></svg>
+                </span>
+                <span class="ktext">{{ worth_cents|eur }}</span>
+              </li>
+              <li>
+                <span class="kico" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7H15a3.5 3.5 0 010 7H6"/></svg>
+                </span>
+                <span class="ktext">{{ commission_cents|eur }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="td-actions">
+            <span class="x1">X1 Commission</span>
+            <form action="{% url 'task_submit' %}" method="post">
+              {% csrf_token %}
+              {% if tpl %}<input type="hidden" name="tpl_id" value="{{ tpl.id }}">{% endif %}
+
+              {# VIP submit is disabled until deposit shortfall is zero #}
+              {% if phase == 'VIP' and deposit_shortfall_cents|default:0 > 0 %}
+                <button type="button" class="btn-primary" onclick="openDepositModal()">Deposit required ({{ deposit_shortfall_cents|eur }})</button>
+              {% else %}
+                <button type="submit" class="btn-primary">Submit</button>
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+  </main>
+
+  {# ===== Deposit Modal (VIP only) ===== #}
+  {% if phase == 'VIP' and deposit_shortfall_cents|default:0 > 0 %}
+    <div id="deposit-modal" class="modal{% if open_deposit_modal %} show{% endif %}">
+      <div class="modal-card">
+        <h3>Deposit required</h3>
+        <p>You need to deposit <strong>{{ deposit_shortfall_cents|eur }}</strong> to start this VIP task.</p>
+        <div class="modal-actions">
+          <a class="btn-primary" href="{% url 'deposit' %}?next={% url 'task_take' %}&target={{ deposit_shortfall_cents }}">Deposit now</a>
+          <button class="btn-secondary" type="button" onclick="closeDepositModal()">Not now</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      function openDepositModal(){ document.getElementById('deposit-modal').classList.add('show'); }
+      function closeDepositModal(){ document.getElementById('deposit-modal').classList.remove('show'); }
+      {% if open_deposit_modal %} openDepositModal(); {% endif %}
+    </script>
+  {% endif %}
+
+  <!-- ===== CSS (design + modal styles) ===== -->
+  <style>
+/* Tokens */
+:root{--bg:#F5F7FB;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--brand:#1555C0;--brand-600:#1560D6;--brand-700:#0f4eae;--card:#ffffff;--shadow-sm:0 8px 24px rgba(16,24,40,.06);--radius-lg:16px;--radius-xl:20px}
+
+/* Page */
+.task-page{min-height:100vh;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+.content{max-width:1120px;margin:0 auto;padding:24px 16px 48px}
+.page-title{font-size:24px;font-weight:600;margin:8px 0 16px}
+
+/* Topbar */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
+.topbar>.breadcrumb,.topbar>.bell{display:inline-flex;align-items:center}
+.topbar{display:flex;justify-content:space-between;gap:12px;max-width:1120px;margin:0 auto;padding:12px 16px}
+.breadcrumb{font-size:14px;color:#6b7280;gap:8px}
+.breadcrumb .active{color:#334155;font-weight:600}
+.crumb-sep{opacity:.6}
+.bell{position:relative;justify-content:center;height:36px;width:36px;border:1px solid var(--line);background:#fff;border-radius:999px;box-shadow:var(--shadow-sm);color:#374151}
+.bell .badge{position:absolute;right:-4px;top:-4px;height:16px;width:16px;border-radius:999px;background:#2563eb;color:#fff;font-size:10px;display:grid;place-items:center}
+
+/* Card base */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)}
+
+/***** Task Detail *****/
+.task-detail{display:grid;grid-template-columns:1fr;gap:16px;padding:16px}
+@media(min-width:900px){.task-detail{grid-template-columns:1.2fr 1fr;padding:18px}}
+.td-media{border-radius:14px;overflow:hidden}
+.td-img{width:100%;height:340px;object-fit:cover;display:block}
+@media(min-width:900px){.td-img{height:420px}}
+.td-info{display:flex;flex-direction:column;gap:16px;padding:4px}
+.td-head .td-title{margin:2px 0 4px;font-size:22px;font-weight:800;color:#1f2937}
+.td-sub{margin:0;color:#6b7280;font-size:14px}
+.td-badge{margin-top:8px;display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#ecfdf5;color:#059669;font-weight:600;font-size:12px;border:1px solid #d1fae5}
+.td-badge .dot{display:inline-block;height:8px;width:8px;background:#10b981;border-radius:999px}
+
+.td-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.td-meta .row{display:flex;align-items:center;justify-content:space-between;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;background:#fff}
+.td-meta .key{color:#6b7280;font-size:13px}
+.td-meta .val{font-weight:700;color:#1f2937}
+
+.td-key{padding:14px}
+.td-key h4{margin:0 0 10px;font-size:14px;color:#1f2937}
+.klist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.klist li{display:flex;align-items:center;gap:10px}
+.kico{display:inline-grid;place-items:center;height:28px;width:28px;border-radius:8px;background:#f1f5f9;color:#0f172a}
+.ktext{color:#334155;font-weight:600}
+
+.td-actions{margin-top:auto;display:flex;align-items:center;gap:12px}
+.x1{color:#475569;font-weight:700}
+.btn-primary{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 18px;border:0;border-radius:10px;background:var(--brand-600);color:#fff;font-weight:700;box-shadow:var(--shadow-sm);transition:background .2s,transform .15s}
+.btn-primary:hover{background:var(--brand-700)}
+.btn-primary:active{transform:translateY(1px)}
+
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.show{display:flex}
+.modal-card{background:#fff;border-radius:16px;box-shadow:var(--shadow-sm);padding:20px;max-width:420px;width:100%}
+.modal-card h3{margin:0 0 8px}
+.modal-card p{margin:0 0 16px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0 16px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#1f2937}
+  </style>
+</div>
+{# ================= VIP SUCCESS POPUP — ALWAYS SHOW WHILE VIP TASK EXISTS ================ #}
+{% if phase == 'VIP' and vip_task %}
+  <div id="vip-overlay" class="vip-overlay show"></div>
+
+  <section id="vip-modal" class="vip-modal show" role="dialog" aria-modal="true" aria-labelledby="vip-modal-title">
+    <button class="vip-close" type="button" aria-label="Close" onclick="closeVipModal()">×</button>
+
+    <!-- Green header with check -->
+    <div class="vip-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" fill="none"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- White body -->
+    <div class="vip-body">
+      <h3 id="vip-modal-title">Congratulations!</h3>
+      <p>You have received a platinum package. For more information, please contact customer care.</p>
+      <a href="/customer-care/" class="vip-btn">Customer care</a>
+    </div>
+  </section>
+
+  <script>
+    // No storage checks — will show on every page load while a VIP task exists
+    function closeVipModal() {
+      var o = document.getElementById('vip-overlay');
+      var m = document.getElementById('vip-modal');
+      if (o) o.classList.remove('show');
+      if (m) m.classList.remove('show');
+    }
+    // Close by clicking the overlay
+    document.getElementById('vip-overlay')?.addEventListener('click', closeVipModal);
+  </script>
+
+  <style>
+    /* Overlay */
+    .vip-overlay{
+      position:fixed; inset:0; background:rgba(5,13,31,.35); backdrop-filter:blur(2px);
+      opacity:0; pointer-events:none; transition:opacity .25s; z-index:9998;
+    }
+    .vip-overlay.show{ opacity:1; pointer-events:auto; }
+
+    /* Modal */
+    .vip-modal{
+      position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.98);
+      width:min(92vw,420px); background:transparent; border-radius:16px;
+      box-shadow:0 18px 46px rgba(2,8,23,.25);
+      opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:9999;
+    }
+    .vip-modal.show{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
+
+    /* Green header with check */
+    .vip-header{
+      height:120px; background:#2E7D32; border-radius:16px 16px 0 0;
+      display:grid; place-items:center;
+    }
+    .vip-header svg{ width:44px; height:44px; color:#fff; }
+
+    /* White body */
+    .vip-body{
+      background:#fff; padding:18px 20px 20px; border-radius:0 0 16px 16px; text-align:center;
+    }
+    .vip-body h3{ margin:8px 0 6px; font-size:20px; font-weight:800; color:#0f172a; }
+    .vip-body p{ margin:0 0 14px; color:#475569; line-height:1.45; }
+
+    /* CTA */
+    .vip-btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      height:40px; padding:0 18px; border-radius:8px; background:#2E7D32; color:#fff;
+      font-weight:700; text-decoration:none; box-shadow:0 10px 18px rgba(46,125,50,.25);
+      transition:transform .1s, filter .2s;
+    }
+    .vip-btn:hover{ filter:brightness(.96); }
+    .vip-btn:active{ transform:translateY(1px); }
+
+    /* Close pill */
+    .vip-close{
+      position:absolute; top:-12px; right:-12px; height:28px; width:28px;
+      border-radius:50%; background:#fff; color:#111827; border:1px solid #e2e8f0;
+      display:grid; place-items:center; font-size:16px; line-height:0;
+      box-shadow:0 8px 16px rgba(2,8,23,.15);
+    }
+    .vip-close:hover{ filter:brightness(.97); }
+  </style>
+{% endif %}
+
+</body>
+</html>

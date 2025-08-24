@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-11 09:54+0000\n"
+"POT-Creation-Date: 2025-08-22 16:12+0000\n"
 "PO-Revision-Date: 2025-08-09 18:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
@@ -17,51 +17,146 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: main/forms.py:45 main/forms.py:210
+#: main/admin.py:44
+msgid "Clear withdrawal PIN"
+msgstr ""
+
+#: main/admin.py:46
+msgid ""
+"Tick to remove any existing withdrawal PIN so the user must set a new one."
+msgstr ""
+
+#: main/admin.py:49
+msgid "Set new withdrawal PIN"
+msgstr ""
+
+#: main/admin.py:57
+msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
+msgstr ""
+
+#: main/admin.py:70
+msgid "PIN must be exactly 6 digits."
+msgstr ""
+
+#: main/admin.py:136
+msgid "Withdrawal security"
+msgstr ""
+
+#: main/forms.py:27
+#, fuzzy
+#| msgid "New password"
+msgid "Account password"
+msgstr "Nueva contraseña"
+
+#: main/forms.py:31
+msgid "Withdrawal password (6 digits)"
+msgstr ""
+
+#: main/forms.py:35
+#, fuzzy
+#| msgid "Confirm new password"
+msgid "Confirm withdrawal password"
+msgstr "Confirmar nueva contraseña"
+
+#: main/forms.py:46
+#, fuzzy
+#| msgid "Enter your password"
+msgid "Incorrect account password."
+msgstr "Ingrese su contraseña"
+
+#: main/forms.py:53 main/forms.py:87
+msgid "Enter exactly 6 digits."
+msgstr ""
+
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+msgid "Passwords do not match."
+msgstr "Las contraseñas no coinciden."
+
+#: main/forms.py:61
+msgid "Current withdrawal password"
+msgstr ""
+
+#: main/forms.py:65
+msgid "New withdrawal password (6 digits)"
+msgstr ""
+
+#: main/forms.py:69
+#, fuzzy
+#| msgid "Confirm new password"
+msgid "Confirm new withdrawal password"
+msgstr "Confirmar nueva contraseña"
+
+#: main/forms.py:80
+msgid "Incorrect withdrawal password."
+msgstr ""
+
+#: main/forms.py:161
+#, python-format
+msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
+msgstr ""
+
+#: main/forms.py:162
+msgid "Direct image URL (used only if no file is uploaded)."
+msgstr ""
+
+#: main/forms.py:180
+msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
+msgstr ""
+
+#: main/forms.py:182
+#, python-format
+msgid "Image too large (max %(mb)s MB)."
+msgstr ""
+
+#: main/forms.py:191
+msgid "Only http/https URLs are allowed."
+msgstr ""
+
+#: main/forms.py:206 main/forms.py:371 main/forms.py:581
 msgid "Country code"
 msgstr "Código de país"
 
-#: main/forms.py:50 main/forms.py:215
+#: main/forms.py:211 main/forms.py:376 main/forms.py:586
 msgid "Enter your phone number"
 msgstr "Ingrese su número de teléfono"
 
-#: main/forms.py:54 main/forms.py:219
+#: main/forms.py:215 main/forms.py:380 main/forms.py:590
 msgid "Phone number"
 msgstr "Número de teléfono"
 
-#: main/forms.py:59
+#: main/forms.py:220
 msgid "Enter your invitation code"
 msgstr "Ingrese su código de invitación"
 
-#: main/forms.py:62
+#: main/forms.py:223
 msgid "Invitation code"
 msgstr "Código de invitación"
 
-#: main/forms.py:64
+#: main/forms.py:225 main/forms.py:592
 msgid "I am not a robot"
 msgstr "No soy un robot"
 
-#: main/forms.py:75 main/forms.py:224
+#: main/forms.py:236 main/forms.py:385 main/forms.py:615
 msgid "Enter your password"
 msgstr "Ingrese su contraseña"
 
-#: main/forms.py:79
+#: main/forms.py:240
 msgid "Re-enter your password"
 msgstr "Vuelva a ingresar su contraseña"
 
-#: main/forms.py:100 main/forms.py:249 main/views.py:47
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
 msgid "Invalid phone number format."
 msgstr "Formato de número de teléfono inválido."
 
-#: main/forms.py:103 main/forms.py:252 main/views.py:49
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
 msgid "This phone number is not possible for the selected country."
 msgstr "Este número de teléfono no es posible para el país seleccionado."
 
-#: main/forms.py:105 main/forms.py:254 main/views.py:51
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
 msgid "This phone number is not valid for the selected country."
 msgstr "Este número de teléfono no es válido para el país seleccionado."
 
-#: main/forms.py:120 main/forms.py:268
+#: main/forms.py:281 main/forms.py:429 main/forms.py:657
 #, python-format
 msgid ""
 "Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
@@ -69,15 +164,15 @@ msgstr ""
 "La longitud del número de teléfono debe estar entre %(lo)d y %(hi)d dígitos "
 "para %(country)s."
 
-#: main/forms.py:132
+#: main/forms.py:293
 msgid "An account with this phone already exists."
 msgstr "Ya existe una cuenta con este número de teléfono."
 
-#: main/forms.py:162 main/forms.py:228 templates/meta_search/signin.html:75
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
 msgid "Password"
 msgstr "Contraseña"
 
-#: main/forms.py:164
+#: main/forms.py:325
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user’s "
 "password, but you can change the password using the “Change password” form."
@@ -86,102 +181,172 @@ msgstr ""
 "ver la contraseña de este usuario, pero puede cambiarla usando el formulario "
 "“Cambiar contraseña”."
 
-#: main/forms.py:191
+#: main/forms.py:352
 msgid "User phone (E.164 or local NG)"
 msgstr "Teléfono del usuario (E.164 o formato local NG)"
 
-#: main/forms.py:192
+#: main/forms.py:353
 msgid "+2348012345678 or 080..."
 msgstr "+2348012345678 o 080..."
 
-#: main/forms.py:194 main/views.py:76
+#: main/forms.py:355 main/views.py:210
+#: templates/meta_search/settings_change_password.html:83
 msgid "New password"
 msgstr "Nueva contraseña"
 
-#: main/forms.py:195 main/views.py:77
+#: main/forms.py:356 main/views.py:211
 msgid "Confirm new password"
 msgstr "Confirmar nueva contraseña"
 
-#: main/forms.py:201 main/views.py:82
-msgid "Passwords do not match."
-msgstr "Las contraseñas no coinciden."
+#: main/forms.py:670
+msgid "Phone does not match your account."
+msgstr ""
 
-#: main/views.py:75
+#: main/models.py:578 templates/base_info.html:22
+#: templates/meta_search/info_index.html:27
+msgid "About us"
+msgstr ""
+
+#: main/models.py:579 templates/base_info.html:26
+#: templates/meta_search/info_index.html:31
+msgid "Contact us"
+msgstr ""
+
+#: main/models.py:580 templates/base_info.html:30
+#: templates/meta_search/info_index.html:35
+msgid "Help"
+msgstr ""
+
+#: main/models.py:581 templates/base_info.html:34
+#: templates/meta_search/info_index.html:39
+msgid "Level"
+msgstr ""
+
+#: main/models.py:582 templates/base_info.html:38
+#: templates/meta_search/info_index.html:43
+msgid "Sign-in reward"
+msgstr ""
+
+#: main/views.py:69
+msgid "Withdrawal password set."
+msgstr ""
+
+#: main/views.py:79
+msgid "You don’t have a withdrawal password yet. Set one first."
+msgstr ""
+
+#: main/views.py:86
+msgid "Withdrawal password updated."
+msgstr ""
+
+#: main/views.py:209
 msgid "Verification code"
 msgstr "Código de verificación"
 
-#: main/views.py:110
+#: main/views.py:247
 msgid "No account found for that phone."
 msgstr "No se encontró ninguna cuenta para ese número de teléfono."
 
-#: main/views.py:115
+#: main/views.py:259
 #, python-format
 msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
 msgstr "Su código de restablecimiento es: %(otp)s. Expira en 10 minutos."
 
-#: main/views.py:118
+#: main/views.py:263
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr ""
+
+#: main/views.py:267
+msgid "Unexpected error sending code. Try again later."
+msgstr ""
+
+#: main/views.py:272
 msgid "We sent a verification code to your phone."
 msgstr "Hemos enviado un código de verificación a su teléfono."
 
-#: main/views.py:121 main/views.py:167 main/views.py:218 main/views.py:244
+#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
+#: main/views.py:1169
 msgid "Please correct the errors below."
 msgstr "Por favor, corrija los errores a continuación."
 
-#: main/views.py:135
+#: main/views.py:290
 msgid "Start by entering your phone number."
 msgstr "Comience ingresando su número de teléfono."
 
-#: main/views.py:143
+#: main/views.py:298
 msgid "Invalid or expired code."
 msgstr "Código inválido o expirado."
 
-#: main/views.py:149
+#: main/views.py:304
 msgid "Account not found. Please start over."
 msgstr "Cuenta no encontrada. Por favor, comience de nuevo."
 
-#: main/views.py:160
+#: main/views.py:315
 msgid "Your password has been reset. You can now sign in."
 msgstr "Su contraseña ha sido restablecida. Ahora puede iniciar sesión."
 
-#: main/views.py:213
+#: main/views.py:341 main/views.py:392
+msgid "You're already signed in."
+msgstr ""
+
+#: main/views.py:375
 msgid "Welcome back!"
 msgstr "¡Bienvenido de nuevo!"
 
-#: main/views.py:216
+#: main/views.py:378
 msgid "Invalid phone or password."
 msgstr "Teléfono o contraseña inválidos."
 
-#: main/views.py:241
+#: main/views.py:405
 msgid "Account created!"
 msgstr "¡Cuenta creada!"
 
-#: main/views.py:257
+#: main/views.py:421
 msgid "You have been logged out."
 msgstr "Ha cerrado sesión."
 
-#: main/views.py:303
+#: main/views.py:468
 msgid "Invalid phone format. Please enter a valid number."
 msgstr "Formato de teléfono inválido. Por favor, ingrese un número válido."
 
-#: main/views.py:309
+#: main/views.py:474
 #, python-format
 msgid "No user found with phone %(phone)s."
 msgstr "No se encontró ningún usuario con el teléfono %(phone)s."
 
-#: main/views.py:325
+#: main/views.py:490
 #, python-format
 msgid "Password reset for %(phone)s."
 msgstr "Contraseña restablecida para %(phone)s."
 
-#: templates/meta_search/includes/_header.html:60
-msgid "Get started"
-msgstr "Comenzar"
+#: main/views.py:1167
+#, fuzzy
+#| msgid "Passwords do not match."
+msgid "Password updated."
+msgstr "Las contraseñas no coinciden."
 
-#: templates/meta_search/index.html:24
+#: templates/base_info.html:4
+msgid "info"
+msgstr ""
+
+#: templates/meta_search/announcements.html:5
+#: templates/meta_search/announcements.html:13
+msgid "Announcements"
+msgstr ""
+
+#: templates/meta_search/announcements.html:26
+msgid "No announcements at the moment."
+msgstr ""
+
+#: templates/meta_search/ide.html:18
+msgid "Seaside resort at dusk"
+msgstr ""
+
+#: templates/meta_search/ide.html:24
 msgid "Experience The Magic Of Relaxation"
 msgstr "Experimenta la magia de la relajación"
 
-#: templates/meta_search/index.html:25
+#: templates/meta_search/ide.html:25
 msgid ""
 "Indulge in the epitome of coastal living as you discover the breathtaking "
 "beauty and tranquility of luxury."
@@ -189,67 +354,119 @@ msgstr ""
 "Sumérgete en lo mejor de la vida costera mientras descubres la impresionante "
 "belleza y tranquilidad del lujo."
 
-#: templates/meta_search/index.html:34
+#: templates/meta_search/ide.html:30
+msgid "Customer avatar 1"
+msgstr ""
+
+#: templates/meta_search/ide.html:31
+msgid "Customer avatar 2"
+msgstr ""
+
+#: templates/meta_search/ide.html:32
+msgid "Customer avatar 3"
+msgstr ""
+
+#: templates/meta_search/ide.html:34
 msgid "Trusted by over 25k+ people"
 msgstr "Con la confianza de más de 25,000 personas"
 
-#: templates/meta_search/index.html:35 templates/meta_search/index.html:71
+#: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
 msgid "Explore Now"
 msgstr "Explorar ahora"
 
-#: templates/meta_search/index.html:55
+#: templates/meta_search/ide.html:40
+#, fuzzy
+#| msgid "Rate Apartments"
+msgid "Travel partners"
+msgstr "Calificar apartamentos"
+
+#: templates/meta_search/ide.html:58
 msgid "Premium Facilities"
 msgstr "Instalaciones premium"
 
-#: templates/meta_search/index.html:57
+#: templates/meta_search/ide.html:61
 msgid "Exclusive Sunset View"
 msgstr "Vista exclusiva al atardecer"
 
-#: templates/meta_search/index.html:57
+#: templates/meta_search/ide.html:62
 msgid "You witness the beauty of the world from your room"
 msgstr "Disfruta de la belleza del mundo desde tu habitación"
 
-#: templates/meta_search/index.html:58
+#: templates/meta_search/ide.html:65
 msgid "Integrated Tourist Area"
 msgstr "Área turística integrada"
 
-#: templates/meta_search/index.html:58
+#: templates/meta_search/ide.html:66
 msgid "Enhancing your travel experience"
 msgstr "Mejorando tu experiencia de viaje"
 
-#: templates/meta_search/index.html:59
+#: templates/meta_search/ide.html:69
 msgid "Nature-Inspired Pool"
 msgstr "Piscina inspirada en la naturaleza"
 
-#: templates/meta_search/index.html:59
+#: templates/meta_search/ide.html:70
 msgid "Serene swimming pool with a touch of paradise"
 msgstr "Piscina serena con un toque de paraíso"
 
-#: templates/meta_search/index.html:67
-msgid "Rate Apartments"
-msgstr "Calificar apartamentos"
-
-#: templates/meta_search/index.html:68
-msgid "Get to randomly rate apartments based on view and aesthetic"
-msgstr "Califica aleatoriamente apartamentos según la vista y la estética"
-
-#: templates/meta_search/index.html:69
+#: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
 msgid "Get Rewarded"
 msgstr "Obtén recompensas"
 
-#: templates/meta_search/index.html:70
-msgid "Earn rewards instantly"
-msgstr "Gana recompensas al instante"
+#: templates/meta_search/ide.html:85
+msgid "Rate Apartments"
+msgstr "Calificar apartamentos"
 
-#: templates/meta_search/index.html:81
+#: templates/meta_search/ide.html:86
+#, fuzzy
+#| msgid "Get to randomly rate apartments based on view and aesthetic"
+msgid "Give random objective ratings based on view and aesthetics."
+msgstr "Califica aleatoriamente apartamentos según la vista y la estética"
+
+#: templates/meta_search/ide.html:94
+msgid "Earn instant rewards from the apartments you rate."
+msgstr ""
+
+#: templates/meta_search/ide.html:102
+#, fuzzy
+#| msgid "Rate Apartments"
+msgid "Featured apartments carousel"
+msgstr "Calificar apartamentos"
+
+#: templates/meta_search/ide.html:103
+msgid "Previous slide"
+msgstr ""
+
+#: templates/meta_search/ide.html:104
+msgid "Next slide"
+msgstr ""
+
+#: templates/meta_search/ide.html:108
+msgid "Modern apartment interior"
+msgstr ""
+
+#: templates/meta_search/ide.html:111
+msgid "Resort pool at sunset"
+msgstr ""
+
+#: templates/meta_search/ide.html:114
+msgid "Scenic valley view"
+msgstr ""
+
+#: templates/meta_search/ide.html:129
 msgid "Clients Review"
 msgstr "Opiniones de clientes"
 
-#: templates/meta_search/index.html:82
+#: templates/meta_search/ide.html:130
 msgid "See some honest reviews from our users on the platform"
 msgstr "Vea algunas opiniones sinceras de nuestros usuarios en la plataforma"
 
-#: templates/meta_search/index.html:89
+#: templates/meta_search/ide.html:135
+#, fuzzy
+#| msgid "Clients Review"
+msgid "Client"
+msgstr "Opiniones de clientes"
+
+#: templates/meta_search/ide.html:137
 msgid ""
 "Had a great experience using this for solid bookings. Customer service was "
 "top-notch."
@@ -257,68 +474,207 @@ msgstr ""
 "Tuve una gran experiencia usando esto para reservas seguras. El servicio al "
 "cliente fue excelente."
 
-#: templates/meta_search/index.html:99
+#: templates/meta_search/ide.html:147
 msgid "Get your inspiration of luxury and get rewarded"
 msgstr "Inspírate con el lujo y obtén recompensas"
 
-#: templates/meta_search/index.html:100
+#: templates/meta_search/ide.html:148
 msgid "Earn new rewards at every step you take under true luxury."
 msgstr "Gana nuevas recompensas en cada paso que des bajo el verdadero lujo."
 
-#: templates/meta_search/index.html:101
+#: templates/meta_search/ide.html:149
 msgid "See More"
 msgstr "Ver más"
 
-#: templates/meta_search/signin.html:6
-msgid "Sign In - Expedia"
+#: templates/meta_search/ide.html:152
+msgid "Luxury inspiration"
 msgstr ""
 
-#: templates/meta_search/signin.html:18 templates/meta_search/signin.html:19
-msgid "Expedia"
+#: templates/meta_search/includes/_header.html:60
+msgid "Get started"
+msgstr "Comenzar"
+
+#: templates/meta_search/info_index.html:6
+msgid "Info Center"
 msgstr ""
 
-#: templates/meta_search/signin.html:23 templates/meta_search/signin.html:94
-msgid "Sign In"
+#: templates/meta_search/info_index.html:7
+msgid "Pick a section on the left, or use the quick links below."
 msgstr ""
 
-#: templates/meta_search/signin.html:28
+#: templates/meta_search/info_index.html:19
+#: templates/meta_search/info_page.html:17
+msgid "View all announcements"
+msgstr ""
+
+#: templates/meta_search/language.html:8
+msgid "Language"
+msgstr ""
+
+#: templates/meta_search/language.html:9
+msgid "Select your language."
+msgstr ""
+
+#: templates/meta_search/password_reset_phone.html:4
+msgid "Reset Password – Step 1"
+msgstr ""
+
+#: templates/meta_search/password_reset_phone.html:6
+#: templates/meta_search/password_reset_verify.html:6
+#: templates/meta_search/password_reset_verify.html:79
 #, fuzzy
-#| msgid "Welcome back!"
-msgid "Go back"
-msgstr "¡Bienvenido de nuevo!"
+#| msgid "Password"
+msgid "Reset Password"
+msgstr "Contraseña"
 
-#: templates/meta_search/signin.html:31
-msgid "Home"
-msgstr ""
+#: templates/meta_search/password_reset_phone.html:21
+#, fuzzy
+#| msgid "Enter your invitation code"
+msgid "Enter your phone number to get a verification code."
+msgstr "Ingrese su código de invitación"
 
-#: templates/meta_search/signin.html:41
-msgid "Welcome back, please sign in"
-msgstr ""
-
-#: templates/meta_search/signin.html:62
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:45
 msgid "Phone"
 msgstr ""
 
-#: templates/meta_search/signin.html:82
+#: templates/meta_search/password_reset_phone.html:59
+msgid "Send Code"
+msgstr ""
+
+#: templates/meta_search/password_reset_phone.html:64
+#, fuzzy
+#| msgid "Re-enter your password"
+msgid "Remembered your password?"
+msgstr "Vuelva a ingresar su contraseña"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Sign in"
+msgstr ""
+
+#: templates/meta_search/password_reset_verify.html:4
+msgid "Reset Password – Step 2"
+msgstr ""
+
+#: templates/meta_search/password_reset_verify.html:21
+msgid "Enter the code sent to your phone, then choose a new password."
+msgstr ""
+
+#: templates/meta_search/password_reset_verify.html:43
+#, fuzzy
+#| msgid "Verification code"
+msgid "Verification Code"
+msgstr "Código de verificación"
+
+#: templates/meta_search/password_reset_verify.html:52
+#, fuzzy
+#| msgid "New password"
+msgid "New Password"
+msgstr "Nueva contraseña"
+
+#: templates/meta_search/password_reset_verify.html:61
+#: templates/meta_search/password_reset_verify.html:74
+#: templates/meta_search/settings_change_password.html:76
+#: templates/meta_search/settings_change_password.html:93
+#: templates/meta_search/settings_change_password.html:112
+#: templates/meta_search/signin.html:68
 #, fuzzy
 #| msgid "New password"
 msgid "Show/Hide password"
 msgstr "Nueva contraseña"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/password_reset_verify.html:65
+#, fuzzy
+#| msgid "Confirm new password"
+msgid "Confirm Password"
+msgstr "Confirmar nueva contraseña"
+
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr ""
+
+#: templates/meta_search/password_reset_verify.html:86
+msgid "Home"
+msgstr ""
+
+#: templates/meta_search/settings_change_password.html:4
+msgid "Settings — Change password"
+msgstr ""
+
+#: templates/meta_search/settings_change_password.html:20
+#, fuzzy
+#| msgid "New password"
+msgid "Change password"
+msgstr "Nueva contraseña"
+
+#: templates/meta_search/settings_change_password.html:22
+msgid ""
+"For security, confirm your phone, pass the captcha, then set a strong "
+"password."
+msgstr ""
+
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:73
 msgid "Captcha"
 msgstr ""
 
-#: templates/meta_search/signin.html:97
+#: templates/meta_search/settings_change_password.html:66
+#, fuzzy
+#| msgid "New password"
+msgid "Old password"
+msgstr "Nueva contraseña"
+
+#: templates/meta_search/settings_change_password.html:79
+#, fuzzy
+#| msgid "New password"
+msgid "Forgot current password?"
+msgstr "Nueva contraseña"
+
+#: templates/meta_search/settings_change_password.html:95
+msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
+msgstr ""
+
+#: templates/meta_search/settings_change_password.html:102
+#, fuzzy
+#| msgid "Confirm new password"
+msgid "Confirm password"
+msgstr "Confirmar nueva contraseña"
+
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr ""
+
+#: templates/meta_search/signin.html:4
+msgid "Sign In - Expedia"
+msgstr ""
+
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+msgid "Sign In"
+msgstr ""
+
+#: templates/meta_search/signin.html:21
+msgid "Welcome back, please sign in"
+msgstr ""
+
+#: templates/meta_search/signin.html:87
 msgid "Don’t have an account?"
 msgstr ""
 
-#: templates/meta_search/signin.html:97
+#: templates/meta_search/signin.html:87
 msgid "Create one"
 msgstr ""
 
-#: templates/meta_search/signin.html:99
+#: templates/meta_search/signin.html:89
 #, fuzzy
 #| msgid "New password"
 msgid "Forgotten password?"
 msgstr "Nueva contraseña"
+
+#~ msgid "Earn rewards instantly"
+#~ msgstr "Gana recompensas al instante"
+
+#, fuzzy
+#~| msgid "Welcome back!"
+#~ msgid "Go back"
+#~ msgstr "¡Bienvenido de nuevo!"

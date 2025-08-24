@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 from .views import support_reset_password
 
-
 urlpatterns = [
     path('', views.index, name='index'),
     path('accounts/login/', views.signin, name='signin'),
@@ -37,4 +36,9 @@ urlpatterns = [
     #withdrawal password
     path("settings/tx-pin/set/", views.set_tx_pin, name="set_tx_pin"),
     path("settings/tx-pin/change/", views.change_tx_pin, name="change_tx_pin"),
+    #task
+    path("task/", views.task_dashboard, name="task_dashboard"),
+    path("task/do/", views.do_next_task_view, name="do_next_task"),
+    path("task/take/", views.task_take, name="task_take"),       
+    path("task/submit/", views.task_submit, name="task_submit"),
 ]

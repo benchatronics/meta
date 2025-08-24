@@ -621,3 +621,276 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
+
+# for task settings
+class SystemSettings(models.Model):
+    """
+    Admin-configurable policy. Only the 'trial_max_tasks' business rule is
+    fixed in logic (25), even if this field is changed manually.
+    """
+    # ---- Trial ----
+    trial_task_cost_cents = models.PositiveIntegerField(default=1200)  # €12.00
+    trial_commission_cents = models.PositiveIntegerField(default=145)  # €1.45
+    trial_max_tasks = models.PositiveIntegerField(default=25)          # business rule: enforce as 25
+
+    # ---- Normal ----
+    normal_task_limit = models.PositiveIntegerField(default=3)         # tasks before VIP
+    normal_commission_cents = models.PositiveIntegerField(default=200) # e.g., €2.00
+    normal_worth_cents = models.PositiveIntegerField(default=0)        # default 0 (can enable later)
+
+    # ---- VIP defaults (optional) ----
+    vip_default_commission_cents = models.PositiveIntegerField(default=300)  # e.g., €3.00
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "System Settings"
+        verbose_name_plural = "System Settings"
+
+    def __str__(self):
+        return "System Settings"
+
+    @classmethod
+    def current(cls) -> "SystemSettings":
+        obj, _ = cls.objects.get_or_create(pk=1)
+        # Enforce fixed business rule regardless of DB value
+        if obj.trial_max_tasks != 25:
+            obj.trial_max_tasks = 25
+            obj.save(update_fields=["trial_max_tasks"])
+        return obj
+
+#task phase
+
+class TaskPhase(models.TextChoices):
+    TRIAL = "TRIAL", "Trial"
+    NORMAL = "NORMAL", "Normal"
+    VIP = "VIP", "VIP"
+
+class TaskStatus(models.TextChoices):
+    PENDING = "PENDING", "Pending"          # created/assigned
+    IN_PROGRESS = "IN_PROGRESS", "In Progress"
+    SUBMITTED = "SUBMITTED", "Submitted"    # user says it's done
+    APPROVED = "APPROVED", "Approved"       # admin/system verifies
+    REJECTED = "REJECTED", "Rejected"
+    CANCELED = "CANCELED", "Canceled"
+
+class Task(models.Model):
+    """
+    Canonical record for any user task across phases.
+    Monetary values are in cents for precision; no ledger is used.
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="tasks"
+    )
+    phase = models.CharField(max_length=10, choices=TaskPhase.choices, db_index=True)
+
+    # Sequential number within the phase (1..25 for Trial; 1..normal_limit for Normal; 1.. for VIP)
+    index_in_phase = models.PositiveIntegerField()
+
+    # Money (all in cents)
+    cost_cents = models.IntegerField(default=0)        # e.g., Trial cost: 1200; Normal default 0
+    commission_cents = models.IntegerField(default=0)  # reward for this task
+    worth_cents = models.IntegerField(default=0)       # VIP worth; Normal default 0
+
+    # VIP inputs (optional)
+    deposit_required_cents = models.PositiveIntegerField(default=0)
+
+    #for template
+    template = models.ForeignKey("TaskTemplate", null=True, blank=True,
+                             on_delete=models.SET_NULL, related_name="tasks")
+    # Lifecycle & audit
+    status = models.CharField(max_length=20, choices=TaskStatus.choices, default=TaskStatus.PENDING, db_index=True)
+    assigned_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="assigned_tasks"
+    )
+    idempotency_key = models.CharField(max_length=50, unique=True, help_text="Prevents double-processing")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    submitted_at = models.DateTimeField(null=True, blank=True)
+    approved_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+        unique_together = [("user", "phase", "index_in_phase")]
+        indexes = [models.Index(fields=["user", "phase", "status"])]
+
+    def __str__(self):
+        return f"{self.user} • {self.phase} #{self.index_in_phase} • {self.status}"
+
+    # Convenience
+    @property
+    def is_trial(self): return self.phase == TaskPhase.TRIAL
+    @property
+    def is_normal(self): return self.phase == TaskPhase.NORMAL
+    @property
+    def is_vip(self): return self.phase == TaskPhase.VIP
+
+
+
+
+
+
+class TaskTemplate(models.Model):
+    # Which phase this template is for
+    phase = models.CharField(
+        max_length=10,
+        choices=TaskPhase.choices,   # same enum as Task
+        db_index=True,
+        default=TaskPhase.TRIAL,
+    )
+
+    # Core fields
+    name = models.CharField(max_length=140)
+    slug = models.SlugField(max_length=160, unique=True, blank=True)
+
+    # Location as simple text (no FK)
+    country = models.CharField(max_length=160, db_index=True)
+    city = models.CharField(max_length=80, blank=True)
+
+    # Image (file or URL fallback)
+    cover_image = models.ImageField(upload_to="tasks/covers/%Y/%m/", blank=True, null=True)
+    cover_image_url = models.URLField(blank=True)
+
+    # Order info
+    order_code = models.CharField("Order ID", max_length=64, unique=True, db_index=True)
+    order_date = models.DateField(blank=True, null=True)
+
+    # Money in cents
+    worth_cents = models.PositiveIntegerField(default=0, help_text="€ in cents, e.g. 15000 = €150.00")
+    commission_cents = models.PositiveIntegerField(default=0, help_text="€ in cents, e.g. 350 = €3.50")
+
+    # Rating badge (numeric)
+    score = models.DecimalField(
+        max_digits=3, decimal_places=1,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        help_text="0.0 – 5.0 (one decimal)"
+    )
+
+    # Chip label
+    class Label(models.TextChoices):
+        PERFECT = "perfect", "Perfect"
+        GOOD = "good", "Good"
+        MEDIUM = "medium", "Medium"
+
+    label = models.CharField(
+        max_length=10,
+        choices=Label.choices,
+        default=Label.GOOD,
+        help_text="Chip on card (color-coded)"
+    )
+
+    # Publishing flags
+    is_published = models.BooleanField(default=True)
+    is_recommended = models.BooleanField(default=False)
+    popularity = models.PositiveIntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at", "-score", "name"]
+        indexes = [
+            models.Index(fields=["phase", "is_published"]),
+            models.Index(fields=["-created_at"]),
+            models.Index(fields=["-score"]),
+            models.Index(fields=["-popularity"]),
+            models.Index(fields=["country"]),
+        ]
+
+    def __str__(self):
+        return f"[{self.phase}] {self.name}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
+
+    @property
+    def cover_src(self):
+        if self.cover_image:
+            try:
+                return self.cover_image.url
+            except ValueError:
+                pass
+        if self.cover_image_url:
+            return self.cover_image_url
+        return "/static/img/placeholder.png"
+
+    @property
+    def worth_eur(self) -> str:
+        return f"€{self.worth_cents/100:,.2f}"
+
+    @property
+    def commission_eur(self) -> str:
+        return f"€{self.commission_cents/100:,.2f}"
+
+
+# models.py (append)
+from django.db import models
+from django.conf import settings
+from django.utils import timezone
+
+class AccountDisplayMode(models.TextChoices):
+    AUTO = "AUTO", "Auto (computed)"
+    MANUAL = "MANUAL", "Manual (admin override)"
+
+class AccountDisplay(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="account_display"
+    )
+    # Which source to use for display
+    mode = models.CharField(
+        max_length=10,
+        choices=AccountDisplayMode.choices,
+        default=AccountDisplayMode.AUTO,
+        db_index=True,
+    )
+
+    # Stored amounts in cents (editable in admin)
+    total_assets_cents = models.BigIntegerField(default=0)
+    asset_cents        = models.BigIntegerField(default=0)
+    dividends_cents    = models.BigIntegerField(default=0)
+    processing_cents   = models.BigIntegerField(default=0)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["mode"]),
+        ]
+        verbose_name = "Account Display"
+        verbose_name_plural = "Account Displays"
+
+    def __str__(self):
+        return f"AccountDisplay({self.user}) — {self.mode}"
+
+    # Convenience formatters
+    @property
+    def total_assets_eur(self): return f"€{self.total_assets_cents/100:,.2f}"
+    @property
+    def asset_eur(self):        return f"€{self.asset_cents/100:,.2f}"
+    @property
+    def dividends_eur(self):    return f"€{self.dividends_cents/100:,.2f}"
+    @property
+    def processing_eur(self):   return f"€{self.processing_cents/100:,.2f}"
+
+
+
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.conf import settings
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def ensure_account_display(sender, instance, created, **kwargs):
+    """
+    Make sure every user has an AccountDisplay row.
+    Safe to call repeatedly; get_or_create prevents duplicates.
+    """
+    from .models import AccountDisplay  # local import avoids circulars during app registry
+    if not created:
+        # If you only want to create on first signup, you can return here.
+        # But get_or_create is cheap; leaving it makes it robust.
+        pass
+    AccountDisplay.objects.get_or_create(user=instance)

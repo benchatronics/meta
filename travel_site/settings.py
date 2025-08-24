@@ -1,24 +1,31 @@
-# travel_site/settings.py
 from pathlib import Path
 import os
 from .i18n import LANGUAGES, LANGUAGE_CODE 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://10.115.251.40:8000",
-    "http://127.0.0.1:8000",
-]
+from pathlib import Path
+import os
 
+# Base dir of project (folder that contains manage.py)
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+# --- .env loader (python-dotenv) ---
+# pip install python-dotenv
+from dotenv import load_dotenv
 
-# Optional but convenient:
-try:
-    from dotenv import load_dotenv  # pip install python-dotenv
-    load_dotenv()  # loads <project-root>/.env automatically
-except Exception:
-    pass
+ENV_PATH = BASE_DIR / ".env"
 
+# Prefer explicit path; override=True so local .env wins in dev
+if ENV_PATH.exists():
+    load_dotenv(dotenv_path=ENV_PATH, override=True)
+else:
+    # Fallback: load from CWD if someone runs from a different folder
+    load_dotenv(override=True)
 
+# twillio , Now read values
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID", "")
+TWILIO_AUTH_TOKEN  = os.getenv("TWILIO_AUTH_TOKEN", "")
+TWILIO_FROM_SMS    = os.getenv("TWILIO_FROM_SMS", "")
+TWILIO_REGION      = os.getenv("TWILIO_REGION", "")
 
 DEPOSIT_WEBHOOK_SECRET = os.getenv(
     "DEPOSIT_WEBHOOK_SECRET",
@@ -36,15 +43,11 @@ TRIAL_BONUS_ENABLED = True
 TRIAL_BONUS_EUR = 300    # easy to change later (e.g., 0 to disable without removing the feature)
 
 
-
-# Base paths
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 # --- Core ---
 SECRET_KEY = "django-insecure-2x^94vgug#2-*q6&-(bfy^s)!an^je)r(m=(*ouk#)g@62-ul0"
 DEBUG = True
 ALLOWED_HOSTS = [
-    "10.115.251.40",
+    "10.203.123.101",
     "scamperlinks.pythonanywhere.com",
     "localhost",
     "127.0.0.1",
