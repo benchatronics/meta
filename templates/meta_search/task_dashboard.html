@@ -5,57 +5,57 @@
 {% block breadcrumb %}Home / setting / Task{% endblock %}
 {% block app_classes %}page-task{% endblock %}
 
+{% block extra_head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'meta_search/task_dashboard.css' %}">
+{% endblock %}
+
 {% block content %}
   <h1 class="page-title">Task</h1>
 
   {% if messages %}
-    <ul style="margin:6px 0 16px;padding:0;list-style:none">
+    <ul class="flash-list">
       {% for m in messages %}
-        <li style="padding:8px 12px;border-radius:8px;margin-bottom:6px;
-                   {% if m.tags == 'error' %}background:#fee2e2;color:#991b1b
-                   {% elif m.tags == 'success' %}background:#dcfce7;color:#166534
-                   {% else %}background:#e0f2fe;color:#075985{% endif %}">
-          {{ m }}
-        </li>
+        <li class="flash flash-{{ m.tags|default:'info' }}">{{ m }}</li>
       {% endfor %}
     </ul>
   {% endif %}
 
-  <!-- ====== KPI CARDS ====== -->
-  <section class="kpis" role="region" aria-label="Balances">
+  {# ===== Stats / KPIs ===== #}
+  <section class="stats-grid" role="region" aria-label="Balances">
     {% for c in kpis %}
-      <div class="kpi-card">
-        <div class="kpi-top">
-          <span class="kpi-ico" aria-hidden>{{ c.icon }}</span>
-          <span class="kpi-cur">EUR</span>
+      <article class="stat-card">
+        <div class="stat-row">
+          <span class="stat-ico" aria-hidden>{{ c.icon }}</span>
+          <span class="stat-label">{{ c.label }}</span>
         </div>
-        <div class="kpi-label">{{ c.label }}</div>
-        <div class="kpi-val">{{ c.value }}</div>
-      </div>
+        <div class="stat-val">{{ c.value }}</div>
+      </article>
     {% endfor %}
   </section>
 
-  {# ====== PROMO BANNER (centered image, lower text, bottom order line) ====== #}
-  <section class="promo" role="region" aria-label="Tasks Promo">
-    <!-- Hero image stays centered and only in template -->
-    <img
-      class="promo-img"
-      src="{% static 'meta_search/logos/task_reward.png' %}"
-      alt="Gift box"
-      decoding="async"
-      fetchpriority="high"
-    />
+  {# ===== Banner ===== #}
+  <section class="reward-banner" role="region" aria-label="Tasks Promo">
+    <div class="rb-orn orb-a"></div>
+    <div class="rb-orn orb-b"></div>
 
-    <!-- Headline split into two lines, positioned lower -->
-    <div class="promo-copy">
-      <h2 class="promo-title">
-        <span>Complete Tasks</span>
-        <span>and get rewarded</span>
-      </h2>
+    <div class="reward-grid">
+      <div class="reward-copy">
+        <h2 class="reward-title">
+          <span>Complete Tasks</span>
+          <span>and get rewarded</span>
+        </h2>
+      </div>
+      <div class="reward-art">
+        <img
+          src="{% static 'meta_search/logos/task_reward.png' %}"
+          alt="Reward"
+          decoding="async"
+          fetchpriority="high">
+      </div>
     </div>
 
-    <!-- Order line stuck to the base of the card -->
-    <p class="promo-sub">
+    <p class="reward-today">
       {% if phase == 'TRIAL' %}
         Order received today: <strong>{{ trial_done }}/{{ trial_total }}</strong>
       {% elif phase == 'NORMAL' %}
@@ -64,24 +64,138 @@
         VIP phase active
       {% endif %}
     </p>
+
+    <a class="task-cta" href="{% url 'task_take' %}">Click to get your task</a>
   </section>
 
-  <!-- ====== CTA STRIP ====== -->
-  <a class="cta-strip" href="{% url 'task_take' %}">Click to get your task</a>
+  {# ===== MOBILE FILTER TABS ===== #}
+  <div class="tabs" role="tablist" aria-label="Filter tasks">
+    <button class="tab is-active" data-filter="all">All</button>
+    <button class="tab" data-filter="Completed">Completed</button>
+    <button class="tab" data-filter="Processing">Processing</button>
+  </div>
+  <div class="tabs-line"><div class="bar"></div></div>
 
-  <!-- ====== TASK HISTORY TABLE ====== -->
-  <section class="card table-card" role="region" aria-label="Task History">
-    <div class="table-head">
-      <h3>Task History</h3>
-      <a class="filter" href="{% url 'task_dashboard' %}">Refresh
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/></svg>
-      </a>
+  {# ===== Task History ===== #}
+  <section class="history-block" role="region" aria-label="Task History">
+    {# Desktop header with dropdown (no refresh) #}
+    <div class="desk-head">
+      <div class="table-title">Task History</div>
+      <div class="desk-filter">
+        <span>Status</span>
+        <select id="deskStatus">
+          <option value="all">All</option>
+          <option value="Completed">Completed</option>
+          <option value="Processing">Processing</option>
+        </select>
+      </div>
     </div>
 
+    <h3 class="mobile-title">Task History</h3>
+
+    {# ----- Mobile card list ----- #}
+    <div class="tx-list" id="mobileList">
+      {% if tasks %}
+        {% for t in tasks %}
+          
+          {% if t.get_status_display == 'Approved' %}
+            {% with mapped_status='Completed' tone='ok' %}
+              <article class="tx-card" data-status="{{ mapped_status }}">
+                <div class="tx-top">
+                  <div class="tx-id">{{ t.template.order_code|default:t.id }}</div>
+                  <div class="tx-date">{{ t.approved_at|default_if_none:t.created_at|date:"M j, Y H:i" }}</div>
+                  <a class="tx-view" href="{#% url 'task_detail' t.id %#}">View</a>
+                </div>
+
+                <div class="tx-row">
+                  <span class="tx-label">Product</span>
+                  <span class="tx-value">
+                    {% if t.template and t.template.name %}{{ t.template.name }}{% else %}—{% endif %}
+                  </span>
+                </div>
+                <div class="tx-row">
+                  <span class="tx-label">Price</span>
+                  <span class="tx-value tx-strong">{{ t.worth_cents|eur }}</span>
+                </div>
+                <div class="tx-row">
+                  <span class="tx-label">Status</span>
+                  <span class="tx-value tx-status {{ tone }}"><i class="dot"></i>{{ mapped_status }}</span>
+                </div>
+                <div class="tx-row">
+                  <span class="tx-label">Comm</span>
+                  <span class="tx-value tx-green">+{{ t.commission_cents|eur }}</span>
+                </div>
+              </article>
+            {% endwith %}
+
+          {% elif t.get_status_display == 'Submitted' or t.get_status_display == 'In Progress' %}
+            {% with mapped_status='Processing' tone='warn' %}
+              <article class="tx-card" data-status="{{ mapped_status }}">
+                <div class="tx-top">
+                  <div class="tx-id">{{ t.template.order_code|default:t.id }}</div>
+                  <div class="tx-date">{{ t.approved_at|default_if_none:t.created_at|date:"M j, Y H:i" }}</div>
+                  <a class="tx-view" href="{#% url 'task_detail' t.id %#}">View</a>
+                </div>
+
+                <div class="tx-row">
+                  <span class="tx-label">Product</span>
+                  <span class="tx-value">
+                    {% if t.template and t.template.name %}{{ t.template.name }}{% else %}—{% endif %}
+                  </span>
+                </div>
+                <div class="tx-row">
+                  <span class="tx-label">Price</span>
+                  <span class="tx-value tx-strong">{{ t.worth_cents|eur }}</span>
+                </div>
+                <div class="tx-row">
+                  <span class="tx-label">Status</span>
+                  <span class="tx-value tx-status {{ tone }}"><i class="dot"></i>{{ mapped_status }}</span>
+                </div>
+                <div class="tx-row">
+                  <span class="tx-label">Comm</span>
+                  <span class="tx-value tx-amber">+{{ t.commission_cents|eur }}</span>
+                </div>
+              </article>
+            {% endwith %}
+
+          {% else %}
+            {# Any other statuses render as-is and will be visible under All #}
+            <article class="tx-card" data-status="{{ t.get_status_display }}">
+              <div class="tx-top">
+                <div class="tx-id">{{ t.template.order_code|default:t.id }}</div>
+                <div class="tx-date">{{ t.approved_at|default_if_none:t.created_at|date:"M j, Y H:i" }}</div>
+                <a class="tx-view" href="{#% url 'task_detail' t.id %#}">View</a>
+              </div>
+
+              <div class="tx-row">
+                <span class="tx-label">Product</span>
+                <span class="tx-value">
+                  {% if t.template and t.template.name %}{{ t.template.name }}{% else %}—{% endif %}
+                </span>
+              </div>
+              <div class="tx-row">
+                <span class="tx-label">Price</span>
+                <span class="tx-value tx-strong">{{ t.worth_cents|eur }}</span>
+              </div>
+              <div class="tx-row">
+                <span class="tx-label">Status</span>
+                <span class="tx-value tx-status dim"><i class="dot"></i>{{ t.get_status_display }}</span>
+              </div>
+              <div class="tx-row">
+                <span class="tx-label">Comm</span>
+                <span class="tx-value">+{{ t.commission_cents|eur }}</span>
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="empty">No Task History</div>
+      {% endif %}
+    </div>
+
+    {# ----- Desktop table with dropdown filter ----- #}
     <div class="table-wrap">
-      <table class="table">
+      <table class="table" id="deskTable">
         <thead>
           <tr>
             <th>Product Name</th>
@@ -90,40 +204,61 @@
             <th>Price</th>
             <th>Comm</th>
             <th>Status</th>
+            <th class="text-right">Action</th>
           </tr>
         </thead>
         <tbody>
         {% if tasks %}
           {% for t in tasks %}
-            <tr>
-              <td>
-                {% if t.template and t.template.name %}
-                  {{ t.template.name }}
-                {% else %}
-                  Task #{{ t.id }}
-                {% endif %}
-              </td>
-              <td>{{ t.template.order_code|default:t.id }}</td>
-              <td>{{ t.approved_at|default_if_none:t.created_at|date:"M j, Y H:i" }}</td>
-              <td>{{ t.worth_cents|eur }}</td>
-              <td>{{ t.commission_cents|eur }}</td>
-              <td>{{ t.get_status_display }}</td>
-            </tr>
+            {% if t.get_status_display == 'Approved' %}
+              {% with mapped_status='Completed' pill='is-ok' %}
+                <tr data-status="{{ mapped_status }}">
+                  <td>{% if t.template and t.template.name %}{{ t.template.name }}{% else %}Task #{{ t.id }}{% endif %}</td>
+                  <td>{{ t.template.order_code|default:t.id }}</td>
+                  <td>{{ t.approved_at|default_if_none:t.created_at|date:"M j, Y H:i" }}</td>
+                  <td>{{ t.worth_cents|eur }}</td>
+                  <td class="comm">+{{ t.commission_cents|eur }}</td>
+                  <td><span class="status-pill {{ pill }}"><i class="dot"></i>{{ mapped_status }}</span></td>
+                  <td class="text-right"><a href="{#% url 'task_detail' t.id %#}" class="btn-view">View</a></td>
+                </tr>
+              {% endwith %}
+
+            {% elif t.get_status_display == 'Submitted' or t.get_status_display == 'In Progress' %}
+              {% with mapped_status='Processing' pill='is-warn' %}
+                <tr data-status="{{ mapped_status }}">
+                  <td>{% if t.template and t.template.name %}{{ t.template.name }}{% else %}Task #{{ t.id }}{% endif %}</td>
+                  <td>{{ t.template.order_code|default:t.id }}</td>
+                  <td>{{ t.approved_at|default_if_none:t.created_at|date:"M j, Y H:i" }}</td>
+                  <td>{{ t.worth_cents|eur }}</td>
+                  <td class="comm">+{{ t.commission_cents|eur }}</td>
+                  <td><span class="status-pill {{ pill }}"><i class="dot"></i>{{ mapped_status }}</span></td>
+                  <td class="text-right"><a href="{#% url 'task_detail' t.id %#}" class="btn-view">View</a></td>
+                </tr>
+              {% endwith %}
+
+            {% else %}
+              <tr data-status="{{ t.get_status_display }}">
+                <td>{% if t.template and t.template.name %}{{ t.template.name }}{% else %}Task #{{ t.id }}{% endif %}</td>
+                <td>{{ t.template.order_code|default:t.id }}</td>
+                <td>{{ t.approved_at|default_if_none:t.created_at|date:"M j, Y H:i" }}</td>
+                <td>{{ t.worth_cents|eur }}</td>
+                <td class="comm">+{{ t.commission_cents|eur }}</td>
+                <td><span class="status-pill is-dim"><i class="dot"></i>{{ t.get_status_display }}</span></td>
+                <td class="text-right"><a href="{#% url 'task_detail' t.id %#}" class="btn-view">View</a></td>
+              </tr>
+            {% endif %}
           {% endfor %}
         {% else %}
-          <tr class="empty">
-            <td colspan="6">No Task History</td>
-          </tr>
+          <tr class="empty"><td colspan="7">No Task History</td></tr>
         {% endif %}
         </tbody>
       </table>
     </div>
   </section>
 
-  {# ===== Trial finished modal ===== #}
+  {# ===== Trial-limit modal (unchanged) ===== #}
   {% if trial_done|default:0 >= trial_total|default:25 %}
     <div id="trial-overlay" class="modal-overlay"></div>
-
     <section id="trial-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="trial-modal-title">
       <button class="modal-close" type="button" aria-label="Close" onclick="closeTrialModal()">×</button>
       <div class="modal-top"></div>
@@ -142,135 +277,55 @@
   {% endif %}
 {% endblock %}
 
-{% block extra_head %}
-  {{ block.super }}
-  <style>
-  .page-title{font-size:24px;font-weight:600;margin:8px 0 16px}
-  .mobile-bottom-nav{ z-index:60; }
-
-  /* ===== KPI Cards ===== */
-  .kpis{display:grid;gap:16px;margin:0 0 24px}
-  @media(min-width:640px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  @media(min-width:1024px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
-  .kpi-card{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:16px;box-shadow:0 8px 24px rgba(16,24,40,.06)}
-  .kpi-top{display:flex;align-items:center;justify-content:space-between}
-  .kpi-ico{display:inline-grid;place-items:center;height:38px;width:38px;border-radius:12px;background:#eff6ff;color:#1d4ed8;font-size:16px}
-  .kpi-cur{font-size:12px;color:#94a3b8}
-  .kpi-label{margin-top:10px;color:#6b7280;font-size:14px}
-  .kpi-val{font-size:24px;font-weight:700;letter-spacing:-.01em}
-
-  /* ===== Promo (hero) ===== */
-  .promo{
-    position:relative;
-    border-radius:20px;
-    overflow:hidden;
-    margin:0 0 12px;
-    background:linear-gradient(90deg,#0B4ACB 0%, #115EE2 100%);
-    min-height:240px;
-    color:#fff;
-  }
-  .promo::before{
-    content:"";
-    position:absolute; inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.35) 1.2px, transparent 1.2px);
-    background-size:28px 28px;
-    opacity:.18; pointer-events:none;
-  }
-
-  /* Centered hero image */
-  .promo-img{
-    position:absolute;
-    left:50%; top:50%;
-    transform:translate(-50%,-50%);
-    width:min(460px, 62vw);
-    max-height:92%;
-    object-fit:contain;
-    pointer-events:none; user-select:none;
-    filter: drop-shadow(0 14px 28px rgba(2,8,23,.18));
-  }
-
-  /* Copy sits LOWER on the card */
-  .promo-copy{
-    position:absolute;
-    left:24px;
-    bottom:64px;      /* pushes the title down */
-    z-index:1;
-  }
-  .promo-title{
-    margin:0;
-    font-weight:800;
-    letter-spacing:.2px;
-    font-size:clamp(20px, 2.4vw, 28px);
-    line-height:1.15;
-    color:#fff;
-  }
-  .promo-title span{ display:block; }
-
-  /* Order line is stuck to the BASE of the card */
-  .promo-sub{
-    position:absolute;
-    left:24px;
-    right:24px;
-    bottom:14px;     /* base of the card */
-    margin:0;
-    z-index:1;
-    color:rgba(255,255,255,.98);
-    font-size:14px;
-  }
-
-  /* Decorative bottom shimmer */
-  .promo::after{
-    content:""; position:absolute; left:0; right:0; bottom:0;
-    height:8px;
-    background:linear-gradient(90deg,rgba(255,255,255,.15),rgba(255,255,255,.35),rgba(255,255,255,.15));
-    opacity:.75;
-  }
-
-  @media (max-width: 720px){
-    .promo{ min-height:220px; }
-    .promo-img{ width:min(360px, 78vw); }
-    .promo-copy{ left:16px; bottom:58px; }
-    .promo-sub{ left:16px; right:16px; bottom:12px; }
-  }
-
-  /* ===== CTA Strip ===== */
-  .cta-strip{width:100%;display:block;border:0;border-radius:12px;background:#1560D6;color:#fff;font-weight:600;padding:12px 16px;box-shadow:0 8px 24px rgba(16,24,40,.06);transition:background .2s,transform .15s;margin:0 0 28px;text-align:center;text-decoration:none}
-  .cta-strip:hover{background:#0f4eae}
-  .cta-strip:active{transform:translateY(1px)}
-
-  /* ===== Card / Table ===== */
-  .card{background:#fff;border:1px solid #e5e7eb;border-radius:20px;box-shadow:0 8px 24px rgba(16,24,40,.06)}
-  .table-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f1f5f9}
-  .table-head h3{margin:0;font-size:16px;font-weight:700;color:#1f2937}
-  .filter{display:inline-flex;align-items:center;gap:6px;border:1px solid #e5e7eb;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 8px 24px rgba(16,24,40,.06);font-size:14px;color:#334155;text-decoration:none}
-  .table-wrap{overflow:auto}
-  .table{width:100%;border-collapse:separate;border-spacing:0}
-  .table thead th{background:#f8fafc;color:#64748b;font-weight:600;text-align:left;padding:12px 18px;font-size:14px}
-  .table tbody td{padding:16px 18px;border-top:1px solid #f1f5f9;color:#475569}
-  .table tr.empty td{padding:56px 18px;text-align:center;color:#94a3b8}
-
-  /* ===== Modal (Trial finished) ===== */
-  .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s;z-index:49}
-  .modal-overlay.show{opacity:1;pointer-events:auto}
-  .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.98);width:min(92vw,520px);background:#fff;border-radius:18px;box-shadow:0 30px 70px rgba(2,8,23,.35);text-align:center;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50}
-  .modal.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
-  .modal-close{position:absolute;right:10px;top:10px;height:28px;width:28px;border:0;border-radius:999px;background:#0f172a0d;color:#0f172a;font-size:18px;line-height:1;display:grid;place-items:center}
-  .modal-close:hover{background:#0f172a14}
-  .modal-top{height:84px;background:#D32C2C;border-radius:18px 18px 0 0}
-  .modal-icon{position:relative;margin-top:-42px;margin-bottom:8px}
-  .icon-ring{display:inline-grid;place-items:center;height:84px;width:84px;border:3px solid #fff;border-radius:999px;background:#D32C2C;color:#fff;box-shadow:0 8px 24px rgba(211,44,44,.35)}
-  .modal-title{margin:10px 0 6px;font-size:22px;font-weight:800;color:#0f172a}
-  .modal-text{margin:0 auto 14px;max-width:380px;color:#6b7280}
-  .modal-btn{display:inline-flex;align-items:center;justify-content:center;width:210px;height:40px;border:0;border-radius:8px;background:#E43B3B;color:#fff;font-weight:700;box-shadow:0 10px 18px rgba(228,59,59,.25);transition:transform .1s,filter .2s;text-decoration:none}
-  .modal-btn:hover{filter:brightness(.98)}
-  .modal-btn:active{transform:translateY(1px)}
-  </style>
-{% endblock %}
-
 {% block extra_scripts %}
   {{ block.super }}
-  {% if trial_done|default:0 >= trial_total|default:25 %}
+
   <script>
+    // Desktop dropdown filtering (uses normalized data-status)
+    (function(){
+      const sel = document.getElementById('deskStatus');
+      const rows = document.querySelectorAll('#deskTable tbody tr');
+      function applyFilter(){
+        const v = sel?.value || 'all';
+        rows.forEach(r=>{
+          const status = r.getAttribute('data-status');
+          r.style.display = (v === 'all' || v === status) ? '' : 'none';
+        });
+      }
+      sel?.addEventListener('change', applyFilter);
+      applyFilter();
+    })();
+
+    // Mobile tabs: underline + filter cards (uses normalized data-status)
+    (function(){
+      const tabs = document.querySelectorAll('.tabs .tab');
+      const bar  = document.querySelector('.tabs-line .bar');
+      const cards = document.querySelectorAll('#mobileList .tx-card');
+
+      function setBar(){
+        const idx = [...tabs].findIndex(t=>t.classList.contains('is-active')) || 0;
+        if (bar) bar.style.left = (idx * 33.333) + '%';
+      }
+      function filterMobile(){
+        const active = document.querySelector('.tabs .tab.is-active')?.dataset.filter || 'all';
+        cards.forEach(c=>{
+          const st = c.getAttribute('data-status');
+          c.style.display = (active === 'all' || active === st) ? '' : 'none';
+        });
+      }
+      tabs.forEach(t=>{
+        t.addEventListener('click', ()=>{
+          tabs.forEach(b=>b.classList.remove('is-active'));
+          t.classList.add('is-active');
+          setBar();
+          filterMobile();
+        });
+      });
+      setBar(); filterMobile();
+    })();
+
+    // Trial modal visibility
+    {% if trial_done|default:0 >= trial_total|default:25 %}
     (function () {
       const key = "trialDoneShown-{{ request.user.id|default:'anon' }}";
       if (!localStorage.getItem(key)) {
@@ -283,6 +338,6 @@
         document.getElementById('trial-modal')?.classList.remove('show');
       };
     })();
+    {% endif %}
   </script>
-  {% endif %}
 {% endblock %}

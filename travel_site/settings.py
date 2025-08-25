@@ -47,7 +47,7 @@ TRIAL_BONUS_EUR = 300    # easy to change later (e.g., 0 to disable without remo
 SECRET_KEY = "django-insecure-2x^94vgug#2-*q6&-(bfy^s)!an^je)r(m=(*ouk#)g@62-ul0"
 DEBUG = True
 ALLOWED_HOSTS = [
-    "10.203.123.101",
+    "10.50.83.196",
     "scamperlinks.pythonanywhere.com",
     "localhost",
     "127.0.0.1",

@@ -1,4 +1,5 @@
 # models.py
+from __future__ import annotations
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -42,6 +43,7 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
         return self._create_user(phone, password, **extra_fields)
+    
 
 class CustomUser(AbstractUser):
     username = None
@@ -69,7 +71,6 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
-
     def __str__(self) -> str:
         # Prefer nickname in admin / shells
         return self.nickname or self.phone

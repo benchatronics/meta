@@ -1,4 +1,8 @@
-
+from __future__ import annotations
+from decimal import Decimal, ROUND_HALF_UP
+from django import forms
+from django.contrib import admin
+from .models import AccountDisplay, AccountDisplayMode
 from django.conf import settings
 from django.db.models import F
 from django.utils import timezone
@@ -716,16 +720,12 @@ class AccountDisplayAdmin(admin.ModelAdmin):
 
 """
 
-# admin.py (append)
-from decimal import Decimal, ROUND_HALF_UP
-from django import forms
-from django.contrib import admin
-from .models import AccountDisplay, AccountDisplayMode
 
 def _eur_to_cents(value: Decimal | None) -> int:
     if value is None:
         return 0
     return int((value * Decimal("100")).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
 
 def _cents_to_eur(cents: int | None) -> Decimal:
     cents = cents or 0
