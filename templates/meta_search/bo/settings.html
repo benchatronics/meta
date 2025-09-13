@@ -1,0 +1,159 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Settings{% endblock %}
+{% block page_title %}System Settings{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* -------------------- Admin · Settings (page-scoped) -------------------- */
+
+  /* Messages */
+  .messages{ list-style:none; padding:0; margin:0 0 12px; display:grid; gap:8px; }
+  .messages li{
+    padding:10px 12px; border-radius:12px; border:1px solid var(--border);
+    background:#ffffff; font-weight:600; font-size:14px;
+  }
+  .messages li.success{ border-color:#bbf7d0; background:#f0fdf4; color:#166534; }
+  .messages li.warning{ border-color:#fde68a; background:#fffbeb; color:#92400e; }
+  .messages li.error{ border-color:#fecaca; background:#fef2f2; color:#7f1d1d; }
+  .messages li.info{ border-color:#bfdbfe; background:#eff6ff; color:#1e3a8a; }
+
+  /* Card form */
+  .settings-card.card{
+    padding:16px;
+    display:grid; gap:16px;
+  }
+
+  .form-section{
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:#fff;
+    padding:14px;
+  }
+  .form-section h3{
+    margin:0 0 8px; font-size:16px; font-weight:700; color:#0f172a;
+  }
+  .form-section .hint{
+    margin:0 0 12px; color:#64748b; font-size:12px;
+  }
+
+  .form-grid{
+    display:grid; gap:12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .form-grid.full{ grid-template-columns: 1fr; }
+
+  .field{
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .field.inline{
+    flex-direction:row; align-items:center; gap:10px;
+  }
+  .field label{ font-weight:600; font-size:13px; color:#111827; }
+  .field .help{ color:#64748b; font-size:12px; }
+
+  /* Inputs */
+  .input, .textarea{
+    width:100%;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:12px;
+    padding:10px 12px;
+    font:inherit;
+  }
+  .textarea{ min-height:96px; resize:vertical; }
+
+  input[type="checkbox"]{
+    width:18px; height:18px; accent-color:#0e63ff;
+  }
+
+  /* Actions */
+  .actions{
+    display:flex; align-items:center; justify-content:flex-end; gap:10px;
+    margin-top:4px;
+  }
+  .btn.primary{ font-weight:700; }
+
+  /* Mobile */
+  @media (max-width: 900px){
+    .form-grid{ grid-template-columns: 1fr; }
+    .actions .btn{ width:100%; justify-content:center; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
+<form method="post" class="settings-card card">{% csrf_token %}
+
+  <!-- Task & Cycle Limits -->
+  <section class="form-section">
+    <h3>Task & Cycle Limits</h3>
+    <p class="hint">Control how many tasks users can complete per cycle and withdrawal frequency.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="task_limit_per_cycle">Task limit per cycle</label>
+        <input class="input" type="number" id="task_limit_per_cycle" name="task_limit_per_cycle"
+               value="{{ s.task_limit_per_cycle }}" min="0" step="1">
+        <div class="help">0 means unlimited.</div>
+      </div>
+
+      <div class="field">
+        <label for="cycles_between_withdrawals">Cycles between withdrawals</label>
+        <input class="input" type="number" id="cycles_between_withdrawals" name="cycles_between_withdrawals"
+               value="{{ s.cycles_between_withdrawals }}" min="0" step="1">
+        <div class="help">Minimum number of completed cycles before next withdrawal.</div>
+      </div>
+
+      <div class="field inline">
+        <input type="checkbox" id="block_on_reaching_limit" name="block_on_reaching_limit"
+               {% if s.block_on_reaching_limit %}checked{% endif %}>
+        <label for="block_on_reaching_limit">Block on reaching limit</label>
+      </div>
+
+      <div class="field inline">
+        <input type="checkbox" id="clear_trial_bonus_at_limit" name="clear_trial_bonus_at_limit"
+               {% if s.clear_trial_bonus_at_limit %}checked{% endif %}>
+        <label for="clear_trial_bonus_at_limit">Clear trial bonus when limit is reached</label>
+      </div>
+    </div>
+
+    <div class="form-grid full" style="margin-top:8px;">
+      <div class="field">
+        <label for="block_message">Block message</label>
+        <textarea class="textarea" id="block_message" name="block_message"
+                  placeholder="Message shown when a user is blocked">{{ s.block_message }}</textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="form-section">
+    <h3>Pricing</h3>
+    <p class="hint">Per-task rate and commission values. Use decimals (e.g., 1.25).</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="task_price">Task price</label>
+        <input class="input" type="text" id="task_price" name="task_price" inputmode="decimal"
+               value="{{ s.task_price }}">
+        <div class="help">Amount credited per completed task.</div>
+      </div>
+
+      <div class="field">
+        <label for="task_commission">Task commission</label>
+        <input class="input" type="text" id="task_commission" name="task_commission" inputmode="decimal"
+               value="{{ s.task_commission }}">
+        <div class="help">Commission deducted per task (if applicable).</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="actions">
+    <button class="btn primary" type="submit">Save Settings</button>
+  </div>
+</form>
+{% endblock %}

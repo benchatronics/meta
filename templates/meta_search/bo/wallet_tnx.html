@@ -1,0 +1,53 @@
+{% extends "meta_search/base_admin.html" %}
+{% block title %}Admin · Wallet Txns · {{ obj }}{% endblock %}
+{% block page_title %}Wallet Transactions — {{ obj }}{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ============== Admin · Wallet Transactions (page styles) ============== */
+
+  .table-card{ padding:0; }
+  .table-responsive{ overflow-x:auto; }
+
+  .tbl{ width:100%; border-collapse:collapse; }
+  .tbl thead th{
+    text-align:left; padding:12px; font-size:13px; font-weight:700; color:#111827;
+    background:#f8fafc; border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:1;
+    white-space:nowrap;
+  }
+  .tbl td{
+    padding:12px; border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+
+  .mono{
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  }
+  .memo{ word-break: break-word; }
+
+  /* Mobile: table -> stacked cards */
+  @media (max-width: 760px){
+    .table-responsive{ overflow:visible; }
+    .tbl thead{ display:none; }
+    .tbl tbody tr{
+      display:grid; gap:8px; padding:12px;
+      border-top:1px solid var(--border);
+      background:#fff;
+    }
+    .tbl tbody tr:first-child{ border-top:none; }
+    .tbl td{
+      border:none; padding:0;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .tbl td::before{
+      content: attr(data-label);
+      flex: 0 0 120px;
+      font-weight:600; color:#6b7280;
+    }
+    .tbl td[data-label="#"]::before{ flex-basis: 40px; }
+  }
+
+  /* Small button option (if you add actions later) */

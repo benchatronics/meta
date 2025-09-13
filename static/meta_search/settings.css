@@ -167,6 +167,7 @@
 /* Optional: style the “(English name)” tail if not inline-styled */
 .lang-pill .altname{ color:var(--muted); margin-left:6px; font-weight:500; }
 
+
 /* =========================================================
    CHANGE PASSWORD / AUTH-LIKE CONTROLS (mobile-first)
    ========================================================= */
@@ -284,6 +285,8 @@
   box-shadow:inset 0 0 0 2px #1f2937; background:#111827;
 }
 .captcha-field .captcha-refresh{ position:absolute; right:12px; top:calc(50% + 24px); font-size:12px; color:var(--muted); text-decoration:none; }
+
+
 
 /* =========================================================
    INFO THEME (mobile-first, mirrors settings)
@@ -528,6 +531,71 @@
     top: calc(50% + 20px);
     font-size: 11px;
   }
+}
+
+/* ===== MOBILE OVERFLOW PATCH (add at the end) ===== */
+
+/* 1) Make sure sizing includes padding/borders */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* 2) Hard-stop any horizontal bleed on small screens */
+@media (max-width: 480px){
+  html, body { overflow-x: hidden; }
+
+  /* Keep all these blocks within the viewport width */
+  .info-shell,
+  .info-layout,
+  .info-card,
+  .info-body,
+  .info-article,
+  .info-announcements,
+  .info-announcement,
+  .info-quick-links,
+  .info-bodytext {
+    max-width: 100%;
+  }
+
+  /* 3) Wrap long content (URLs, long words) */
+  .info-bodytext,
+  .info-annc-body {
+    overflow-wrap: anywhere;   /* modern, better than break-word */
+    word-break: break-word;    /* fallback for older devices */
+  }
+
+  /* 4) Ensure images scale down, never overflow */
+  .info-bodytext img,
+  .info-annc-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;            /* avoids baseline gaps */
+  }
+
+  /* 5) Prevent code/pre from forcing horizontal scroll */
+  .info-bodytext pre,
+  .info-bodytext code,
+  .info-annc-body pre,
+  .info-annc-body code {
+    white-space: pre-wrap;     /* wrap long lines */
+    word-wrap: break-word;
+  }
+
+  /* 6) Tables: allow horizontal scroll inside, not page-wide overflow */
+  .info-bodytext table,
+  .info-annc-body table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  /* 7) Captcha field: keep right-aligned children from nudging container wider */
+  .captcha-field {
+    overflow: hidden;
+  }
+}
+
+/* Optional: if any third-party icon/button has fixed min-widths, relax them on phones */
+@media (max-width: 480px){
+  .info-btn { min-width: 0; }
 }
 
 

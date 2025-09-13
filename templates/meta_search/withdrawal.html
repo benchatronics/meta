@@ -2,13 +2,17 @@
 {% load static %}
 
 {% block title %}Withdraw{% endblock %}
+{% block page_title %}Withdrawal{% endblock %}
+
 {% block breadcrumb %}Home / my Wallet / Withdrawal{% endblock %}
 
 {% block extra_head %}
+  <meta name="viewport"
+     content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="{% static 'meta_search/withdrawal.css' %}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  {# --- BRIDGE: force this page to respect base_user collapse --- #}
+  <!-- Respect base_user collapse -->
   <style>
     #app.collapsed > .sidebar { width: 56px !important; }
     #app.collapsed > .sidebar .label { display: none !important; }
@@ -18,70 +22,60 @@
     }
   </style>
 
+  <!-- Page-local styles -->
   <style>
-    /* currency button dropdown (right of amount) */
     .wdw .currency-wrap{position:relative}
     .wdw .currency-menu{
       position:absolute; right:0; top:110%;
-      background:#fff; border:1px solid var(--line); border-radius:10px;
+      background:#fff; border:1px solid var(--line, #e5e7eb); border-radius:10px;
       box-shadow:0 12px 28px rgba(0,0,0,.12);
       padding:6px; min-width:140px; display:none; z-index:30;
     }
-    .wdw .currency-menu .choice{
-      display:flex; align-items:center; gap:8px;
-      font-size:13px; padding:8px 10px; border-radius:8px; cursor:pointer;
-      position:relative;
-    }
+    .wdw .currency-menu .choice{display:flex; align-items:center; gap:8px; font-size:13px; padding:8px 10px; border-radius:8px; cursor:pointer; position:relative;}
     .wdw .currency-menu .choice:hover{ background:#f8fafc }
     .wdw .currency-menu input{ accent-color:#111827 }
     .wdw .currency-wrap.open .currency-menu{ display:block }
     .wdw .currency-menu .choice.selected::after{
-      content:"\f00c";
-      font-family:"Font Awesome 6 Free"; font-weight:900;
-      color:#10b981; font-size:14px; margin-left:auto;
+      content:"\f00c"; font-family:"Font Awesome 6 Free"; font-weight:900; color:#10b981; font-size:14px; margin-left:auto;
     }
-    /* PIN modal */
+
     .tx-modal::backdrop{ background: rgba(0,0,0,.45); }
     .tx-modal{ border:0; padding:0; border-radius:14px; max-width:420px; width:calc(100vw - 32px); }
     .tx-modal-card{ background:#fff; border-radius:14px; padding:16px; display:grid; gap:12px; }
     .tx-modal-card h3{ margin:0 0 2px; font-size:18px; }
-    .tx-input{
-      width:100%; height:44px; border:1px solid #e5e7eb; border-radius:10px;
-      padding:10px 12px; font-size:14px; outline:none;
-    }
+    .tx-input{ width:100%; height:44px; border:1px solid #e5e7eb; border-radius:10px; padding:10px 12px; font-size:14px; outline:none; }
     .tx-input:focus{ border-color:#2451FF; box-shadow:0 0 0 3px rgba(36,81,255,.12); }
     .tx-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:6px; }
     .tx-hint{ font-size:12px; color:#6b7280; }
-    .tx-callout{
-      display:flex; gap:10px; align-items:flex-start;
-      background:#eef2ff; color:#1e3a8a; border:1px solid #c7d2fe;
-      padding:10px 12px; border-radius:10px; margin: 12px 0 0;
-    }
+    .tx-callout{ display:flex; gap:10px; align-items:flex-start; background:#eef2ff; color:#1e3a8a; border:1px solid #c7d2fe; padding:10px 12px; border-radius:10px; margin: 12px 0 0; }
     .tx-callout a{ color:#2451FF; font-weight:600; text-decoration:none; }
-  </style>
-{% endblock %}
 
-{% block content %}
-  <!-- Page header (mobile-only back arrow + title) -->
-  <div class="page-with-mobile-back">
-    <div class="page-header">
-      <a
-        class="back-link"
-        href="{% url 'wallet' %}"
-        aria-label="Go back"
-        onclick="if (history.length > 1) { history.back(); return false; }">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-      <h1 class="page-title">Withdraw</h1>
-    </div>
-  </div>
+    /* Policy dialog (popup, not standby banner) */
+    #policyDialog::backdrop{ background: rgba(0,0,0,.45); }
+    #policyDialog{
+      border:0; padding:0; border-radius:14px; max-width:480px; width:calc(100vw - 32px);
+    }
+    .policy-card{
+      background:#fff7ed; color:#7c2d12; border:1px solid #fed7aa;
+      border-radius:14px; padding:16px; box-shadow:0 8px 28px rgba(0,0,0,.12);
+    }
+    .policy-head{ display:flex; gap:10px; align-items:center; margin-bottom:8px; }
+    .policy-head .ic{ width:32px; height:32px; display:grid; place-items:center; border-radius:10px; background:#ffedd5; color:#9a3412; }
+    .policy-head h3{ margin:0; font-size:18px; }
+    .policy-body{ font-size:14px; line-height:1.5; }
+    .policy-chip{
+      display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px;
+      font-size:12px; font-weight:700; background:#fee2e2; color:#991b1b; border:1px solid #fecaca; margin-left:6px;
+    }
+    .policy-actions{ display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+    .btn{ appearance:none; border:0; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer; }
+    .btn.primary{ background:#0a63ff; color:#fff; }
+    .btn.ghost{ background:#fff; color:#7c2d12; border:1px solid #fed7aa; }
+    .btn:hover{ filter:brightness(.98); }
 
-  <style>
+    /* Simple page header */
     .page-with-mobile-back .page-header{ display:flex; align-items:center; gap:10px; margin:0 0 14px; }
-    .page-with-mobile-back .page-title{ margin:0; font-weight:700; font-size:22px; color:var(--text, #0f172a); }
+    .page-with-mobile-back .page-title{ margin:0; font-weight:700; font-size:22px; color:#0f172a; }
     .page-with-mobile-back .back-link{
       display:none; align-items:center; justify-content:center;
       width:36px; height:36px; border-radius:10px; border:1px solid var(--border, #e5e7eb);
@@ -93,7 +87,75 @@
       .page-with-mobile-back .page-title{ font-size:20px; }
       .page-with-mobile-back .back-link svg{ width:18px; height:18px; }
     }
+
+    /* ===== NEW SPACING (breathing room for all fields) ===== */
+    .wdw .shell{ padding: 4px 14px; }
+    .wdw .card{ padding: 10px; }
+    .wdw .inner.grid{ display:grid; gap:18px; }
+    .wdw .group{ display:grid; gap:10px; margin:14px 0 18px; }
+    .wdw .section-title{ font-weight:800; color:#0f172a; }
+
+    /* Amount control w/ extra padding & no eye icon */
+    .wdw .amount-wrap{ margin-top:4px; }
+    .wdw .ctrl{
+      display:flex; align-items:center; gap:10px;
+      border:1px solid #e5e7eb; border-radius:12px; padding:10px 12px; background:#fff;
+    }
+    .wdw .ctrl .prefix{ font-weight:800; color:#0f172a; }
+    .wdw .ctrl input{
+      flex:1 1 auto; min-width:0;
+      border:0; outline:0; font-size:16px; padding:6px 0;
+    }
+    .wdw .ctrl .btns{ display:flex; align-items:center; gap:8px; margin-left:auto; }
+
+    /* Hide the old eye button if any slips through */
+    .wdw [data-eye]{ display:none !important; }
+
+    /* Address row spacing */
+    .wdw .addr{ display:flex; gap:10px; margin-top:8px; }
+    .wdw .addr input{
+      flex:1 1 auto; min-width:0; height:44px; border:1px solid #e5e7eb; border-radius:10px; padding:10px 12px;
+    }
+    .wdw .update-link, .wdw .bind-link{
+      flex:0 0 auto; white-space:nowrap; align-self:center;
+      padding:10px 12px; border-radius:10px; border:1px solid #e5e7eb; text-decoration:none; color:#0f172a;
+      background:#fff;
+    }
+
+    /* Method options spacing */
+    .wdw .method{ display:flex; flex-wrap:wrap; gap:12px; margin-top:4px; }
+    .wdw .opt{
+      display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px;
+      border:1px solid #e5e7eb; cursor:pointer; background:#fff;
+    }
+    .wdw .opt.active{ outline:3px solid rgba(36,81,255,.12); border-color:#2451FF22; }
+
+    /* Submit spacing */
+    .wdw .submit{ width:100%; height:48px; border-radius:12px; margin-top:6px; }
+
+
+  /* ...your existing styles... */
+
+  /* Hide the visible Min/Max line on the withdrawal page */
+  .wdw #minMax { display: none !important; }
+
+
   </style>
+{% endblock %}
+
+{% block content %}
+  <div class="page-with-mobile-back">
+    <div class="page-header">
+      <a class="back-link" href="{% url 'wallet' %}" aria-label="Go back"
+         onclick="if (history.length > 1) { history.back(); return false; }">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+      <h1 class="page-title">Withdraw</h1>
+    </div>
+  </div>
 
   <section class="wdw">
     <div class="shell">
@@ -104,8 +166,6 @@
           Your withdrawal method is verified.
         </div>
       {% endif %}
-
-      <h1>{# withdrawwal #}</h1>
 
       {% if messages %}
         <div class="flash" aria-live="polite">
@@ -128,11 +188,9 @@
 
       <div class="card">
         <div class="inner grid">
-          <form method="post" action="{% url 'withdrawal' %}" class="wdw-form">
+          <form method="post" action="{% url 'withdrawal' %}" class="wdw-form" id="wdwForm">
             {% csrf_token %}
-            {# One-time anti-resubmit token from the view #}
             <input type="hidden" name="wdw_token" value="{{ wdw_token }}">
-
             <input type="hidden" name="address_id" value="{{ selected.id|default:'' }}">
 
             <!-- Amount -->
@@ -148,14 +206,10 @@
                     name="amount"
                     id="amountInput"
                     value="{{ form.amount.value|default:'' }}"
-                    min="0"
-                    step="0.01"
-                    placeholder="0.00"
-                    required>
+                    min="0" step="0.01" placeholder="0.00" required
+                    {% if withdraw_locked %}disabled{% endif %}>
                   <div class="btns">
-                    <button type="button" class="iconbtn" data-eye title="Show/Hide"><i class="fa-regular fa-eye"></i></button>
-
-                    <!-- Currency button + inline menu -->
+                    {# REMOVED eye toggle button here #}
                     <div class="currency-wrap">
                       <button type="button" class="iconbtn" id="currencyBtn" aria-haspopup="true" aria-expanded="false" title="Currency">
                         <i id="currencyIcon" class="fa-solid {% if form.currency.value == 'USD' %}fa-dollar-sign{% elif form.currency.value == 'GBP' %}fa-sterling-sign{% else %}fa-euro-sign{% endif %}"></i>
@@ -163,18 +217,18 @@
                       <div class="currency-menu" id="currencyMenu" role="menu" aria-hidden="true">
                         <label class="choice {% if form.currency.value == 'EUR' or not form.currency.value %}selected{% endif %}" data-symbol="€" data-code="EUR">
                           <input type="radio" name="currency" value="EUR"
-                                 {% if form.currency.value == "EUR" or not form.currency.value %}checked{% endif %}>
-                          EUR (Euro)
+                                 {% if form.currency.value == "EUR" or not form.currency.value %}checked{% endif %}
+                                 {% if withdraw_locked %}disabled{% endif %}> EUR (Euro)
                         </label>
                         <label class="choice {% if form.currency.value == 'USD' %}selected{% endif %}" data-symbol="$" data-code="USD">
                           <input type="radio" name="currency" value="USD"
-                                 {% if form.currency.value == "USD" %}checked{% endif %}>
-                          USD (US Dollar)
+                                 {% if form.currency.value == "USD" %}checked{% endif %}
+                                 {% if withdraw_locked %}disabled{% endif %}> USD (US Dollar)
                         </label>
                         <label class="choice {% if form.currency.value == 'GBP' %}selected{% endif %}" data-symbol="£" data-code="GBP">
                           <input type="radio" name="currency" value="GBP"
-                                 {% if form.currency.value == "GBP" %}checked{% endif %}>
-                          GBP (Pound)
+                                 {% if form.currency.value == "GBP" %}checked{% endif %}
+                                 {% if withdraw_locked %}disabled{% endif %}> GBP (Pound)
                         </label>
                       </div>
                     </div>
@@ -182,21 +236,13 @@
                 </div>
               </div>
 
-              <div class="muted" id="minMax" style="margin-top:8px">
-                Min €10 • Max €5,000 per request
-              </div>
+              <div class="muted" id="minMax" style="margin-top:8px">Min €10 • Max €5,000 per request</div>
 
               {% if form.non_field_errors %}
-                <div class="err-row" style="margin-top:8px">
-                  <i class="fa-solid fa-circle-exclamation"></i>
-                  {{ form.non_field_errors|striptags }}
-                </div>
+                <div class="err-row" style="margin-top:8px"><i class="fa-solid fa-circle-exclamation"></i>{{ form.non_field_errors|striptags }}</div>
               {% endif %}
               {% if form.amount.errors %}
-                <div class="err-row" style="margin-top:6px">
-                  <i class="fa-solid fa-circle-exclamation"></i>
-                  {{ form.amount.errors|first }}
-                </div>
+                <div class="err-row" style="margin-top:6px"><i class="fa-solid fa-circle-exclamation"></i>{{ form.amount.errors|first }}</div>
               {% endif %}
             </div>
 
@@ -209,30 +255,37 @@
                   <input type="text" value="{{ selected.address }}" readonly aria-label="Bound wallet address">
                   <a href="{% url 'withdraw_add_address' %}" class="update-link">Update address</a>
                 </div>
-                <div class="muted" style="margin-top:4px">
-                  Network: {{ selected.network|default:"TRC20" }}
-                </div>
+
+                {# === FIX: show accurate network using selected.address_type (no default to TRC20) === #}
+                {% with net_raw=selected.address_type|default_if_none:"" %}
+                  {% with net_up=net_raw|upper %}
+                    <div class="muted" style="margin-top:4px">
+                      Network:
+                      {% if net_up == "ETH" %}
+                        ERC20
+                      {% elif net_up == "TRC20" %}
+                        TRC20
+                      {% else %}
+                        {{ net_raw }}
+                      {% endif %}
+                    </div>
+                  {% endwith %}
+                {% endwith %}
+
               {% else %}
                 <div class="addr {% if address_error %}error{% endif %}">
                   <input type="text" name="address" value="" placeholder="Bind your wallet address first" disabled>
                   <a href="{% url 'withdraw_add_address' %}" class="bind-link">Bind Wallet Address</a>
                 </div>
-
                 <div class="addr-actions">
-                  <a
-                     class="bind-help tooltip"
-                     tabindex="0"
+                  <a class="bind-help tooltip" tabindex="0"
                      data-tip="You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste your wallet address → verify (email/SMS) → the address will be saved and auto-filled here.">
                     <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
                     Bind wallet address?
                   </a>
                 </div>
-
                 {% if address_error %}
-                  <div class="err-row">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    {{ address_error }}
-                  </div>
+                  <div class="err-row"><i class="fa-solid fa-circle-exclamation"></i>{{ address_error }}</div>
                 {% endif %}
               {% endif %}
             </div>
@@ -242,13 +295,17 @@
               <div class="section-title">Withdrawal Method</div>
               <div class="method">
                 <label class="opt {% if method == 'crypto' %}active{% endif %}">
-                  <input type="radio" name="method" value="crypto" class="sr-only" {% if method == 'crypto' or not method %}checked{% endif %}>
+                  <input type="radio" name="method" value="crypto" class="sr-only"
+                         {% if method == 'crypto' or not method %}checked{% endif %}
+                         {% if withdraw_locked %}disabled{% endif %}>
                   <span class="bullet eth"><i class="fa-brands fa-ethereum" aria-hidden="true"></i></span>
                   <span>ETHEREUM</span>
                 </label>
 
                 <label class="opt usdt {% if method == 'usdt_trc20' %}active{% endif %}">
-                  <input type="radio" name="method" value="usdt_trc20" class="sr-only" {% if method == 'usdt_trc20' %}checked{% endif %}>
+                  <input type="radio" name="method" value="usdt_trc20" class="sr-only"
+                         {% if method == 'usdt_trc20' %}checked{% endif %}
+                         {% if withdraw_locked %}disabled{% endif %}>
                   <span class="bullet tether" aria-hidden="true">
                     <svg viewBox="0 0 32 32" role="img" focusable="false" aria-hidden="true">
                       <circle cx="16" cy="16" r="16" fill="#26a17b"></circle>
@@ -262,13 +319,15 @@
 
             <!-- Submit -->
             <div class="group">
-              {# If no withdrawal PIN set, clicking will take user to set_tx_pin #}
               <button
                 class="submit"
                 type="button"
                 id="openTxDialog"
                 data-need-pin="{% if has_tx_pin %}0{% else %}1{% endif %}"
-                data-set-pin-url="{% url 'set_tx_pin' %}">
+                data-set-pin-url="{% url 'set_tx_pin' %}"
+                data-locked="{% if withdraw_locked %}1{% else %}0{% endif %}"
+                data-locked-msg="{{ withdraw_reason|default:'The withdrawal requirement has yet to be fulfilled.' }}">
+                {% if withdraw_locked %}<i class="fa-solid fa-lock" aria-hidden="true"></i> {% endif %}
                 WITHDRAW
               </button>
 
@@ -283,30 +342,42 @@
               {% endif %}
             </div>
 
-            <!-- Withdrawal password (PIN) modal -->
+            <!-- PIN modal -->
             <dialog id="txDialog" class="tx-modal" aria-labelledby="txDialogTitle" aria-modal="true">
               <div class="tx-modal-card">
                 <h3 id="txDialogTitle">Confirm withdrawal</h3>
                 <label for="tx_pin">Withdrawal password (6 digits)</label>
-                <input
-                  type="password"
-                  name="tx_pin"
-                  id="tx_pin"
-                  required
-                  inputmode="numeric"
-                  pattern="\d{6}"
-                  maxlength="6"
-                  autocomplete="one-time-code"
-                  class="tx-input"
-                  placeholder="••••••" />
+                <input type="password" name="tx_pin" id="tx_pin" required inputmode="numeric"
+                       pattern="\d{6}" maxlength="6" autocomplete="one-time-code"
+                       class="tx-input" placeholder="••••••" />
                 <div class="tx-hint">Enter your 6-digit withdrawal password to continue.</div>
                 <div class="tx-actions">
-                  <button type="button" class="btn outline" data-close>Cancel</button>
+                  <button type="button" class="btn ghost" data-close>Cancel</button>
                   <button type="submit" class="btn primary">Confirm & Withdraw</button>
                 </div>
               </div>
             </dialog>
             <!-- /PIN modal -->
+
+            <!-- Policy dialog -->
+            <dialog id="policyDialog" aria-labelledby="policyTitle" aria-modal="true">
+              <div class="policy-card">
+                <div class="policy-head">
+                  <div class="ic"><i class="fa-solid fa-flag-checkered" aria-hidden="true"></i></div>
+                  <h3 id="policyTitle">Withdrawal policy</h3>
+                </div>
+                <div class="policy-body">
+                  "The withdrawal requirement has yet to be fulfilled" <strong> COMPLETE MORE TASKS </strong> before the next withdrawal.
+                  {% if withdraw_cycles_remaining %}
+                    <span class="policy-chip"><i class="fa-solid fa-lock"></i> Locked:The withdrawal requirement has yet to be fulfilled {{ withdraw_cycles_remaining }} </span>
+                  {% endif %}
+                </div>
+                <div class="policy-actions">
+                  <button type="button" class="btn primary" data-close-policy>Got it</button>
+                </div>
+              </div>
+            </dialog>
+            <!-- /Policy dialog -->
 
           </form>
         </div>
@@ -387,25 +458,20 @@
     });
   });
 
-  const eyeBtn = document.querySelector('.wdw [data-eye]');
-  if (eyeBtn){
-    eyeBtn.addEventListener('click', ()=>{
-      const el = document.querySelector('.wdw input[name="amount"]');
-      if (!el) return;
-      if (el.type === 'password') { el.type = 'number'; eyeBtn.innerHTML = '<i class="fa-regular fa-eye"></i>'; }
-      else { el.type = 'password'; eyeBtn.innerHTML = '<i class="fa-regular fa-eye-slash"></i>'; }
-    });
-  }
+  /* REMOVED eye toggle JS block */
 
-  // ===== Withdrawal PIN modal logic =====
+  // PIN modal + lock guard
   (function(){
     const openBtn = document.getElementById('openTxDialog');
     const dlg = document.getElementById('txDialog');
     const pin = document.getElementById('tx_pin');
     const needPin = openBtn?.getAttribute('data-need-pin') === '1';
     const setPinUrl = openBtn?.getAttribute('data-set-pin-url') || '#';
+    const locked = openBtn?.getAttribute('data-locked') === '1';
+    const lockedMsg = openBtn?.getAttribute('data-locked-msg') || 'The withdrawal requirement has yet to be fulfilled.';
 
     function openModal(){
+      if (locked) { alert(lockedMsg); return; }
       if (needPin) { window.location.href = setPinUrl; return; }
       if (!dlg) return;
       if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
@@ -421,19 +487,30 @@
     document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') closeModal(); }, {passive:true});
   })();
 
-  // ===== One-time submit guard (prevents double clicks) =====
+  // One-time submit guard
   (function(){
-    const form = document.querySelector('.wdw-form');
+    const form = document.getElementById('wdwForm');
     if (!form) return;
     form.addEventListener('submit', function(){
       form.querySelectorAll('button[type="submit"], button.submit').forEach(btn=>{
         btn.disabled = true;
         btn.setAttribute('aria-busy','true');
-        // Optional: change label for UX
         if (!btn.dataset.originalText) btn.dataset.originalText = btn.textContent;
         btn.textContent = 'Processing…';
       });
     }, {once:true});
+  })();
+
+  // One-time policy popup
+  (function(){
+    const shouldShow = {{ show_withdraw_policy_popup|yesno:"true,false" }};
+    const dlg = document.getElementById('policyDialog');
+    if (shouldShow && dlg){
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
+      dlg.querySelector('[data-close-policy]')?.addEventListener('click', ()=>{
+        if (dlg.close) dlg.close(); else dlg.removeAttribute('open');
+      });
+    }
   })();
 </script>
 {% endblock %}

@@ -1,0 +1,156 @@
+{% extends "base_user.html" %}
+{% load static %}
+
+{% block title %}Rewards{% endblock %}
+{% block page_title %} 🎁 Rewards{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* (same scoped styles as before) */
+  .rw-scope{--rw-blue:#0a63ff;--rw-ink:#0f172a;--rw-muted:#6b7280;--rw-border:#e5e7eb}
+  .rw-scope *, .rw-scope *::before, .rw-scope *::after{box-sizing:border-box}
+  .rw-scope .rw-wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+  .rw-scope .rw-card{margin-top:12px;border:1px solid var(--rw-border);border-radius:22px;background:linear-gradient(180deg,#fbfdff,#eef2f7);box-shadow:0 8px 28px rgba(15,23,42,.06);overflow:hidden}
+  .rw-scope .rw-grid{display:grid;grid-template-columns:6fr 6fr;gap:0;align-items:center;padding:28px}
+  .rw-scope .rw-imgWrap{padding-right:20px}
+  .rw-scope .rw-imgBox{position:relative;width:100%;max-width:560px;aspect-ratio:4/3;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(2,6,23,.08)}
+  .rw-scope .rw-imgBox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .rw-scope .rw-text{padding-left:20px}
+  .rw-scope .rw-title{margin:0;font-size:26px;font-weight:800;color:var(--rw-blue)}
+  .rw-scope .rw-sub{margin:6px 0 0 0;color:var(--rw-muted);font-size:14px}
+  .rw-scope .rw-list{list-style:none;margin:16px 0 0 0;padding:0}
+  .rw-scope .rw-list li{display:flex;gap:12px;align-items:baseline;margin:10px 0;font-size:15px;color:#334155}
+  .rw-scope .rw-num{width:22px;color:#94a3b8;flex:none;text-align:right}
+  .rw-scope .rw-get{color:#64748b}
+  .rw-scope .rw-blue{color:var(--rw-blue);font-weight:600}
+  .rw-scope .rw-fine{color:#64748b;font-size:14px;margin-top:14px}
+  .rw-scope .rw-controls{display:flex;align-items:center;justify-content:space-between;padding:0 28px 24px 28px}
+  .rw-scope .rw-nav{display:flex;gap:10px}
+  .rw-scope .rw-btn{width:44px;height:44px;border-radius:999px;border:1px solid #d1d5db;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .rw-scope .rw-bars{display:flex;gap:10px;align-items:center}
+  .rw-scope .rw-bar{height:6px;width:56px;background:#cbd5e1;border-radius:999px;transition:width .2s ease, background .2s ease;cursor:pointer}
+  .rw-scope .rw-bar.rw-active{background:var(--rw-blue);width:96px}
+  @media (max-width:1023px){
+    .rw-scope .rw-grid{grid-template-columns:1fr;padding:20px}
+    .rw-scope .rw-imgWrap{padding-right:0}
+    .rw-scope .rw-text{padding-left:0;margin-top:16px}
+    .rw-scope .rw-title{font-size:24px}
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="rw-scope" id="rwRewards">
+  <section class="rw-wrap">
+    <div class="rw-card">
+      <div class="rw-grid">
+        <div class="rw-imgWrap">
+          <div class="rw-imgBox">
+            <img id="rw-slide-image" src="" alt="Reward slide image">
+          </div>
+        </div>
+        <div class="rw-text">
+          <h2 class="rw-title" id="rw-slide-title"></h2>
+          <p class="rw-sub" id="rw-slide-sub"></p>
+          <ol class="rw-list" id="rw-slide-list"></ol>
+          <div class="rw-fine" id="rw-slide-fine"></div>
+        </div>
+      </div>
+      <div class="rw-controls">
+        <div class="rw-nav">
+          <button class="rw-btn" type="button" data-rw-dir="-1" aria-label="Previous">◀</button>
+          <button class="rw-btn" type="button" data-rw-dir="1"  aria-label="Next">▶</button>
+        </div>
+        <div class="rw-bars" id="rw-bars"></div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+(function(){
+  const root = document.getElementById('rwRewards');
+  if (!root) return;
+
+  const slides = [
+    { src: "{% static 'meta_search/img/rewards_1.jpg' %}", title: "Deposit Bonus",  sub: "Reset Amount Reward",
+      list: [["300 EUR","Get","50 EUR"],["500 EUR","Get","120 EUR"],["1000 EUR","Get","250 EUR"],["1500 EUR","Get","350 EUR"]],
+      fine: ["Please contact customer service for reward","You can only collect once a day, reset the reward"] },
+    { src: "{% static 'meta_search/img/rewards_2.jpg' %}", title: "Cashback Weekend", sub: "Extra 5% on deposits (Sat–Sun)",
+      list: [["Min 100 EUR","Get","5% back"]], fine: ["Promo auto-applies. Terms apply."] },
+    { src: "{% static 'meta_search/img/rewards_3.jpg' %}", title: "Loyalty Boost", sub: "Level up faster this week",
+      list: [["Tasks","Count x","2"],["Referrals","Earn","x1.5"]], fine: ["Boost resets Monday 00:00."] },
+    { src: "{% static 'meta_search/img/rewards_4.jpg' %}", title: "VIP Tier Trial", sub: "Try VIP tasks for a day",
+      list: [["VIP Tasks","Worth","Varies"],["Commission","Up to","€??"]], fine: ["Contact support to enable trial."] },
+    { src: "{% static 'meta_search/img/rewards_5.jpg' %}", title: "Streak Rewards", sub: "Complete tasks daily",
+      list: [["3-day","Bonus","€10"],["7-day","Bonus","€30"]], fine: ["Missed a day? Streak resets."] },
+    { src: "{% static 'meta_search/img/rewards_6.jpg' %}", title: "Referral Bonus", sub: "Invite and earn",
+      list: [["Each friend","Gives","€??"],["Cap","Per month","€??"]], fine: ["Applies after friend’s first task."] },
+  ];
+
+  const imgEl   = root.querySelector('#rw-slide-image');
+  const titleEl = root.querySelector('#rw-slide-title');
+  const subEl   = root.querySelector('#rw-slide-sub');
+  const listEl  = root.querySelector('#rw-slide-list');
+  const fineEl  = root.querySelector('#rw-slide-fine');
+  const barsEl  = root.querySelector('#rw-bars');
+  const btns    = root.querySelectorAll('.rw-btn');
+
+  slides.forEach((_, i) => {
+    const b = document.createElement('div');
+    b.className = 'rw-bar' + (i===0 ? ' rw-active' : '');
+    b.dataset.rwIndex = i;
+    b.addEventListener('click', () => { idx = i; render(idx); });
+    barsEl.appendChild(b);
+  });
+
+  let idx = 0;
+  function render(i){
+    const s = slides[i] || {};
+    imgEl.src = s.src || '';
+    titleEl.textContent = s.title || '';
+    subEl.textContent   = s.sub || '';
+    listEl.innerHTML = '';
+    (s.list||[]).forEach((row,n)=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="rw-num">${n+1}.</span>
+                      <span style="flex:1">${row[0]||''}</span>
+                      <span class="rw-get">${row[1]||''}</span>
+                      <span class="rw-blue">${row[2]||''}</span>`;
+      listEl.appendChild(li);
+    });
+    fineEl.innerHTML = (s.fine||[]).map(t=>`<div>${t}</div>`).join('');
+    barsEl.querySelectorAll('.rw-bar').forEach((el,k)=> el.classList.toggle('rw-active', k===i));
+  }
+
+  btns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const dir = parseInt(btn.getAttribute('data-rw-dir'),10) || 0;
+      const total = slides.length;
+      idx = (idx + dir + total) % total;
+      render(idx);
+    });
+  });
+
+  // Touch swipe inside the card
+  const card = root.querySelector('.rw-card');
+  let downX = null;
+  card.addEventListener('touchstart', e=>{ downX = e.touches[0].clientX; }, {passive:true});
+  card.addEventListener('touchend', e=>{
+    if(downX === null) return;
+    const dx = e.changedTouches[0].clientX - downX;
+    if(Math.abs(dx) > 40){
+      const total = slides.length;
+      idx = (idx + (dx < 0 ? 1 : -1) + total) % total;
+      render(idx);
+    }
+    downX = null;
+  });
+
+  render(0);
+})();
+</script>
+{% endblock %}

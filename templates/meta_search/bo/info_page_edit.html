@@ -1,0 +1,120 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Edit Info Page{% endblock %}
+{% block page_title %}Edit Info Page{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* -------------------- Admin · Edit Info Page (page-scoped) -------------------- */
+
+  /* Flash messages */
+  .messages{ list-style:none; padding:0; margin:0 0 12px; display:grid; gap:8px; }
+  .messages li{
+    padding:10px 12px; border-radius:12px; border:1px solid var(--border);
+    background:#ffffff; font-weight:600; font-size:14px;
+  }
+  .messages li.success{ border-color:#bbf7d0; background:#f0fdf4; color:#166534; }
+  .messages li.warning{ border-color:#fde68a; background:#fffbeb; color:#92400e; }
+  .messages li.error{ border-color:#fecaca; background:#fef2f2; color:#7f1d1d; }
+  .messages li.info{ border-color:#bfdbfe; background:#eff6ff; color:#1e3a8a; }
+
+  /* Card container */
+  .info-edit.card{
+    padding:16px;
+  }
+
+  /* Two-column layout: content + side panel (desktop), single column (mobile) */
+  .info-edit .form-grid{
+    display:grid; gap:16px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    align-items:start;
+  }
+  @media (max-width: 1000px){
+    .info-edit .form-grid{ grid-template-columns: 1fr; }
+  }
+
+  /* Left column */
+  .info-edit .main{
+    display:grid; gap:14px;
+  }
+
+  /* Right column (meta) */
+  .info-edit .side{ display:grid; gap:12px; }
+  .info-edit .panel{
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:12px;
+    padding:12px;
+    position:sticky; top:12px;
+  }
+
+  /* Fields */
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field.inline{ flex-direction:row; align-items:center; gap:10px; }
+  .field label{ font-weight:600; font-size:13px; color:#111827; }
+  .help{ color:#64748b; font-size:12px; }
+
+  /* Inputs */
+  .input, .textarea{
+    width:100%;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:12px;
+    padding:10px 12px;
+    font:inherit;
+  }
+  .textarea{ min-height:240px; resize:vertical; }
+  .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+  input[type="checkbox"]{
+    width:18px; height:18px; accent-color:#0e63ff;
+  }
+
+  /* Actions */
+  .actions{ display:flex; gap:10px; justify-content:flex-end; }
+  @media (max-width: 1000px){
+    .actions{ justify-content:stretch; }
+    .actions .btn{ width:100%; justify-content:center; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
+<form method="post" class="info-edit card">{% csrf_token %}
+  <div class="form-grid">
+    <!-- Main editor -->
+    <div class="main">
+      <div class="field">
+        <label for="title">Title</label>
+        <input class="input" id="title" type="text" name="title" value="{{ page.title }}" required>
+      </div>
+
+      <div class="field">
+        <label for="body">Body</label>
+        <textarea class="textarea mono" id="body" name="body" rows="14" placeholder="Write page content…">{{ page.body }}</textarea>
+        <p class="help">Plain text is fine. If you store HTML here, it will render where this page is displayed.</p>
+      </div>
+    </div>
+
+    <!-- Meta / actions -->
+    <aside class="side">
+      <div class="panel">
+        <div class="field inline">
+          <input type="checkbox" id="is_published" name="is_published" {% if page.is_published %}checked{% endif %}>
+          <label for="is_published">Published</label>
+        </div>
+        <p class="help">Uncheck to keep this page hidden from users.</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">Save</button>
+      </div>
+    </aside>
+  </div>
+</form>
+{% endblock %}

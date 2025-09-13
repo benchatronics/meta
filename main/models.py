@@ -1,5 +1,10 @@
 # models.py
 from __future__ import annotations
+from decimal import Decimal
+import uuid
+import random
+from django.db.models import Q
+from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -14,6 +19,7 @@ from django.core.validators import URLValidator
 from typing import Optional
 from django.utils.translation import gettext_lazy as _
 # models.py (top of file)
+from .task_currency import to_cents
 from datetime import timedelta
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -43,7 +49,7 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
         return self._create_user(phone, password, **extra_fields)
-    
+
 
 class CustomUser(AbstractUser):
     username = None
@@ -66,6 +72,7 @@ class CustomUser(AbstractUser):
     tx_pin_changed_at = models.DateTimeField(blank=True, null=True)
     tx_pin_attempts = models.PositiveIntegerField(default=0)
     tx_pin_locked_until = models.DateTimeField(blank=True, null=True)
+
 
     USERNAME_FIELD = "phone"
     REQUIRED_FIELDS = []
@@ -286,8 +293,8 @@ class AddressType(models.TextChoices):
 class Network(models.TextChoices):
     ETH   = "ETH", "Ethereum (ERC20)"
     TRC20 = "TRC20", "USDT (TRC20)"
-    
-#wallet balance and bonus 
+
+#wallet balance and bonus
 
 class Wallet(models.Model):
     user = models.OneToOneField(
@@ -326,11 +333,77 @@ class Wallet(models.Model):
     def __str__(self):
         return f"Wallet({self.user})"
 
-    # --- Atomic balance mutations with ledger rows ---
+    # -----------------------
+    # Idempotent new helpers
+    # -----------------------
+    def credit_once(self, amount_cents, *, bucket="CASH", kind="ADJUST", memo="", external_ref=None, created_by=None) -> bool:
+        """
+        Idempotent credit:
+          - If external_ref is provided and already exists for this wallet, do nothing (return False).
+          - Else increment balance and insert a ledger row (return True).
+        """
+        if amount_cents <= 0:
+            raise ValueError("credit_once() requires positive amount_cents")
+        if bucket not in ("CASH", "BONUS"):
+            raise ValueError("bucket must be 'CASH' or 'BONUS'")
+
+        with transaction.atomic():
+            if external_ref and WalletTxn.objects.filter(wallet=self, external_ref=external_ref).exists():
+                return False
+
+            if bucket == "CASH":
+                Wallet.objects.filter(pk=self.pk).update(balance_cents=F("balance_cents") + amount_cents)
+            else:
+                Wallet.objects.filter(pk=self.pk).update(bonus_cents=F("bonus_cents") + amount_cents)
+
+            WalletTxn.objects.create(
+                wallet=self,
+                amount_cents=amount_cents,
+                kind=kind,
+                bucket=bucket,
+                memo=memo,
+                external_ref=external_ref or "",
+                created_by=created_by,
+            )
+            return True
+
+    def debit_once(self, amount_cents, *, bucket="CASH", kind="ADJUST", memo="", external_ref=None, created_by=None) -> bool:
+        """
+        Idempotent debit (stored as negative in ledger):
+          - If external_ref exists for this wallet, do nothing (return False).
+          - Else decrement balance and insert a ledger row (return True).
+        """
+        if amount_cents <= 0:
+            raise ValueError("debit_once() requires positive amount_cents")
+        if bucket not in ("CASH", "BONUS"):
+            raise ValueError("bucket must be 'CASH' or 'BONUS'")
+
+        with transaction.atomic():
+            if external_ref and WalletTxn.objects.filter(wallet=self, external_ref=external_ref).exists():
+                return False
+
+            if bucket == "CASH":
+                Wallet.objects.filter(pk=self.pk).update(balance_cents=F("balance_cents") - amount_cents)
+            else:
+                Wallet.objects.filter(pk=self.pk).update(bonus_cents=F("bonus_cents") - amount_cents)
+
+            WalletTxn.objects.create(
+                wallet=self,
+                amount_cents=-amount_cents,
+                kind=kind,
+                bucket=bucket,
+                memo=memo,
+                external_ref=external_ref or "",
+                created_by=created_by,
+            )
+            return True
+
+    # -----------------------------
+    # Your original, unchanged APIs
+    # -----------------------------
     def credit(self, amount_cents: int, *, bucket: str = "CASH", kind: str = "ADJUST", memo: str = "", created_by=None):
         """
-        Increase a balance bucket (CASH or BONUS) and write a WalletTxn.
-        amount_cents must be positive.
+        Non-idempotent credit (kept exactly as before). Prefer credit_once() for payouts/deposits you must not duplicate.
         """
         if amount_cents <= 0:
             raise ValueError("credit() requires positive amount_cents")
@@ -349,13 +422,13 @@ class Wallet(models.Model):
                 kind=kind,
                 bucket=bucket,
                 memo=memo,
+                external_ref="",   # legacy
                 created_by=created_by,
             )
 
     def debit(self, amount_cents: int, *, bucket: str = "CASH", kind: str = "ADJUST", memo: str = "", created_by=None):
         """
-        Decrease a balance bucket (CASH or BONUS) and write a WalletTxn.
-        amount_cents must be positive; it is stored as negative in the ledger.
+        Non-idempotent debit (kept exactly as before). Prefer debit_once() for debits you must not duplicate.
         """
         if amount_cents <= 0:
             raise ValueError("debit() requires positive amount_cents")
@@ -374,6 +447,7 @@ class Wallet(models.Model):
                 kind=kind,
                 bucket=bucket,
                 memo=memo,
+                external_ref="",   # legacy
                 created_by=created_by,
             )
 
@@ -395,10 +469,14 @@ class WalletTxn(models.Model):
     ]
 
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name="txns")
-    amount_cents = models.BigIntegerField(default=0)  # no nulls; defaults to 0
+    amount_cents = models.BigIntegerField(default=0)  # positive for credits, negative for debits
     kind = models.CharField(max_length=20, choices=KIND_CHOICES)
-    bucket = models.CharField(max_length=10, choices=BUCKET_CHOICES, default="CASH")  # which balance was touched
+    bucket = models.CharField(max_length=10, choices=BUCKET_CHOICES, default="CASH")
     memo = models.CharField(max_length=255, blank=True)
+
+    # NEW: idempotency key (blank allowed for legacy). Use per wallet + business event.
+    external_ref = models.CharField(max_length=64, blank=True, default="", db_index=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
@@ -408,6 +486,15 @@ class WalletTxn(models.Model):
         ordering = ("-created_at",)
         indexes = [
             models.Index(fields=["wallet", "-created_at"]),
+            models.Index(fields=["wallet", "external_ref"]),
+        ]
+        constraints = [
+            # Enforce uniqueness for non-blank external_ref per wallet (allows many blank legacy rows)
+            models.UniqueConstraint(
+                fields=["wallet", "external_ref"],
+                name="uniq_wallet_external_ref",
+                condition=~models.Q(external_ref="")
+            )
         ]
 
     @property
@@ -418,7 +505,6 @@ class WalletTxn(models.Model):
     def __str__(self):
         sign = "+" if self.amount_cents >= 0 else "-"
         return f"{self.wallet.user} {self.kind}/{self.bucket} {sign}€{abs(self.amount_cents)/100:.2f}"
-
 
 
 
@@ -475,23 +561,6 @@ class PayoutAddress(models.Model):
 
 
 
-"""
-# Withdrawal requests
-class WithdrawalRequest(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="withdrawals")
-    amount_cents = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.EUR)
-    address = models.ForeignKey(PayoutAddress, on_delete=models.PROTECT)
-    fee_cents = models.PositiveIntegerField(default=0)
-    status = models.CharField(max_length=20, default="pending")  # pending/success/failed
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    @property
-    def amount(self): return self.amount_cents / 100
-    @property
-    def fee(self): return self.fee_cents / 100
-"""
-
 class WithdrawalStatus(models.TextChoices):
     PENDING = "pending", "Pending"
     CONFIRMED = "confirmed", "Confirmed"
@@ -530,13 +599,29 @@ class WithdrawalRequest(models.Model):
         return self.fee_cents / 100
 
     def mark_as_confirmed(self):
-        """Mark withdrawal as confirmed and set the confirmation timestamp."""
+        """
+        Mark withdrawal as confirmed and notify task progress so Asset logic
+        stays consistent after withdrawals.
+        """
+        # 1) Persist confirmation
         self.status = WithdrawalStatus.CONFIRMED
         self.confirmed_at = timezone.now()
-        self.save()
+        self.save(update_fields=["status", "confirmed_at"])
+
+        # 2) Tell UserTaskProgress a withdrawal was completed so it can:
+        #    - advance dividends_paid_cents by the withdrawn amount
+        #    - pin the withdraw cycle (via mark_withdraw_done inside)
+        # This is safe to import here to avoid circular imports.
+        from .models import ensure_task_progress
+
+        prog = ensure_task_progress(self.user)
+        amt = int(self.amount_cents or 0)
+        if amt > 0 and hasattr(prog, "on_withdraw_confirmed"):
+            prog.on_withdraw_confirmed(amt)
 
     def __str__(self):
         return f"{self.user} - {self.amount} {self.currency} ({self.status})"
+
 
 # Admin-managed receiving address for deposits
 class DepositAddress(models.Model):
@@ -623,275 +708,1116 @@ class Announcement(models.Model):
     def __str__(self):
         return self.title
 
-# for task settings
-class SystemSettings(models.Model):
+
+#Task settings
+
+# ---- Singleton base so we always have exactly one row (pk=1) ----
+class _SingletonModel(models.Model):
+    class Meta:
+        abstract = True
+
+    cycles_between_withdrawals = models.PositiveIntegerField(
+    default=2, validators=[MinValueValidator(1)],
+    help_text="How many full cycles must be completed between withdrawals."
+    )
+
+    def save(self, *args, **kwargs):
+        # enforce single row at pk=1
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+
+class tasksettngs(_SingletonModel):
     """
-    Admin-configurable policy. Only the 'trial_max_tasks' business rule is
-    fixed in logic (25), even if this field is changed manually.
+    Global knobs for your task engine (single row).
+    Includes a toggle to remove the user's trial bonus at the cycle limit.
     """
-    # ---- Trial ----
-    trial_task_cost_cents = models.PositiveIntegerField(default=1200)  # €12.00
-    trial_commission_cents = models.PositiveIntegerField(default=145)  # €1.45
-    trial_max_tasks = models.PositiveIntegerField(default=25)          # business rule: enforce as 25
 
-    # ---- Normal ----
-    normal_task_limit = models.PositiveIntegerField(default=3)         # tasks before VIP
-    normal_commission_cents = models.PositiveIntegerField(default=200) # e.g., €2.00
-    normal_worth_cents = models.PositiveIntegerField(default=0)        # default 0 (can enable later)
+    # --- Task cycle controls ---
+    task_limit_per_cycle = models.PositiveIntegerField(
+        default=25,
+        validators=[MinValueValidator(1)],
+        help_text="Number of tasks allowed in a cycle before the user is blocked."
+    )
+    block_on_reaching_limit = models.BooleanField(
+        default=True,
+        help_text="If enabled, the user becomes blocked immediately upon reaching the cycle limit."
+    )
+    block_message = models.CharField(
+        max_length=255,
+        default="Trial limit reached. Please contact customer care to continue.",
+        help_text="Shown to the user when blocked."
+    )
 
-    # ---- VIP defaults (optional) ----
-    vip_default_commission_cents = models.PositiveIntegerField(default=300)  # e.g., €3.00
+    # --- Per-task amounts ---
+    task_price = models.DecimalField(
+        max_digits=12, decimal_places=2, default=Decimal('12.00'),
+        validators=[MinValueValidator(Decimal('0.00'))],
+        help_text="Optional per-task charge (set 0.00 if not used)."
+    )
+    task_commission = models.DecimalField(
+        max_digits=12, decimal_places=2, default=Decimal('1.45'),
+        validators=[MinValueValidator(Decimal('0.00'))],
+        help_text="Commission paid to the user per completed task."
+    )
 
+    # --- Trial bonus behavior at limit (NEW) ---
+    clear_trial_bonus_at_limit = models.BooleanField(
+        default=True,
+        help_text="If enabled, the user's trial bonus will be cleared when they hit the cycle limit."
+    )
+
+    # --- housekeeping ---
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "System Settings"
-        verbose_name_plural = "System Settings"
+        verbose_name = "Task Settings"
+        verbose_name_plural = "Task Settings"
 
     def __str__(self):
-        return "System Settings"
+        return "Task Settings"
 
-    @classmethod
-    def current(cls) -> "SystemSettings":
-        obj, _ = cls.objects.get_or_create(pk=1)
-        # Enforce fixed business rule regardless of DB value
-        if obj.trial_max_tasks != 25:
-            obj.trial_max_tasks = 25
-            obj.save(update_fields=["trial_max_tasks"])
-        return obj
 
-#task phase
+# =======================
+# Per-user task instances
+# =======================
+# ====== helpers (idempotent wallet ops) ======
+def _wallet_credit_idem(wallet, amount_cents: int, *, memo: str, bucket="CASH", kind="ADJUST", external_ref: str = ""):
+    if amount_cents <= 0:
+        return False
+    if hasattr(wallet, "credit_once"):
+        return wallet.credit_once(
+            amount_cents,
+            bucket=bucket,
+            kind=kind,
+            memo=memo,
+            external_ref=external_ref or "",
+        )
+    wallet.credit(amount_cents, bucket=bucket, kind=kind, memo=memo)
+    return True
 
-class TaskPhase(models.TextChoices):
-    TRIAL = "TRIAL", "Trial"
-    NORMAL = "NORMAL", "Normal"
-    VIP = "VIP", "VIP"
+def _wallet_debit_idem(wallet, amount_cents: int, *, memo: str, bucket="CASH", kind="ADJUST", external_ref: str = ""):
+    if amount_cents <= 0:
+        return False
+    if hasattr(wallet, "debit_once"):
+        return wallet.debit_once(
+            amount_cents,
+            bucket=bucket,
+            kind=kind,
+            memo=memo,
+            external_ref=external_ref or "",
+        )
+    wallet.debit(amount_cents, bucket=bucket, kind=kind, memo=memo)
+    return True
 
-class TaskStatus(models.TextChoices):
-    PENDING = "PENDING", "Pending"          # created/assigned
-    IN_PROGRESS = "IN_PROGRESS", "In Progress"
-    SUBMITTED = "SUBMITTED", "Submitted"    # user says it's done
-    APPROVED = "APPROVED", "Approved"       # admin/system verifies
-    REJECTED = "REJECTED", "Rejected"
-    CANCELED = "CANCELED", "Canceled"
 
-class Task(models.Model):
-    """
-    Canonical record for any user task across phases.
-    Monetary values are in cents for precision; no ledger is used.
-    """
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="tasks"
+
+class UserTask(models.Model):
+    class Status(models.TextChoices):
+        PENDING     = "PENDING", "Pending"
+        IN_PROGRESS = "IN_PROGRESS", "In progress"
+        SUBMITTED   = "SUBMITTED", "Submitted"
+        APPROVED    = "APPROVED", "Approved"
+        REJECTED    = "REJECTED", "Rejected"
+        CANCELED    = "CANCELED", "Canceled"
+
+    class Kind(models.TextChoices):
+        REGULAR = "REGULAR", "Regular"
+        ADMIN   = "ADMIN", "Admin (requires solvency)"
+
+    # Links
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_tasks")
+    template = models.ForeignKey('UserTaskTemplate', on_delete=models.PROTECT, related_name="instances")
+
+    # Cycle/order context
+    cycle_number = models.PositiveIntegerField(default=0)
+    order_shown  = models.PositiveIntegerField(help_text="1-based order shown to the user within the cycle.")
+
+    # State
+    status = models.CharField(max_length=12, choices=Status.choices, default=Status.IN_PROGRESS)
+
+    # Economics snapshot (EUR)
+    from django.core.validators import MinValueValidator
+    price_used = models.DecimalField(
+        max_digits=12, decimal_places=2, default=Decimal("0.00"),
+        validators=[MinValueValidator(Decimal("0.00"))]
     )
-    phase = models.CharField(max_length=10, choices=TaskPhase.choices, db_index=True)
-
-    # Sequential number within the phase (1..25 for Trial; 1..normal_limit for Normal; 1.. for VIP)
-    index_in_phase = models.PositiveIntegerField()
-
-    # Money (all in cents)
-    cost_cents = models.IntegerField(default=0)        # e.g., Trial cost: 1200; Normal default 0
-    commission_cents = models.IntegerField(default=0)  # reward for this task
-    worth_cents = models.IntegerField(default=0)       # VIP worth; Normal default 0
-
-    # VIP inputs (optional)
-    deposit_required_cents = models.PositiveIntegerField(default=0)
-
-    #for template
-    template = models.ForeignKey("TaskTemplate", null=True, blank=True,
-                             on_delete=models.SET_NULL, related_name="tasks")
-    # Lifecycle & audit
-    status = models.CharField(max_length=20, choices=TaskStatus.choices, default=TaskStatus.PENDING, db_index=True)
-    assigned_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="assigned_tasks"
+    commission_used = models.DecimalField(
+        max_digits=12, decimal_places=2, default=Decimal("0.00"),
+        validators=[MinValueValidator(Decimal("0.00"))]
     )
-    idempotency_key = models.CharField(max_length=50, unique=True, help_text="Prevents double-processing")
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    # Kind snapshot
+    task_kind = models.CharField(max_length=12, choices=Kind.choices, default=Kind.REGULAR)
+
+    # ADMIN snapshots
+    assignment_total_display_cents = models.BigIntegerField(default=0)  # user's Total Asset (display) when assigned
+    required_cash_cents            = models.BigIntegerField(default=0)  # max(0, price - old total_display)
+
+    # Optional proof payload (not shown in UI)
+    proof_text = models.TextField(blank=True, default="")
+    proof_link = models.URLField(blank=True, default="")
+
+    # Optional finance hold reference
+    hold_ref = models.CharField(max_length=64, blank=True, default="")
+
+    # Timestamps
+    updated_at   = models.DateTimeField(auto_now=True)
+    created_at   = models.DateTimeField(auto_now_add=True)
+    started_at   = models.DateTimeField(null=True, blank=True)
     submitted_at = models.DateTimeField(null=True, blank=True)
-    approved_at = models.DateTimeField(null=True, blank=True)
+    decided_at   = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        ordering = ("-created_at",)
-        unique_together = [("user", "phase", "index_in_phase")]
-        indexes = [models.Index(fields=["user", "phase", "status"])]
+        indexes = [
+            models.Index(fields=["user", "cycle_number"]),
+            models.Index(fields=["status"]),
+            models.Index(fields=["task_kind"]),
+        ]
+        ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.user} • {self.phase} #{self.index_in_phase} • {self.status}"
+        return f"UserTask#{self.pk} u={self.user} ord={self.order_shown} ({self.status})"
 
-    # Convenience
-    @property
-    def is_trial(self): return self.phase == TaskPhase.TRIAL
-    @property
-    def is_normal(self): return self.phase == TaskPhase.NORMAL
-    @property
-    def is_vip(self): return self.phase == TaskPhase.VIP
+    # ---------- Actions ----------
+
+    def submit(self, *, proof_text: str = "", proof_link: str = ""):
+        """
+        Submit this task.
+        REGULAR/TRIAL: auto-approve immediately.
+        ADMIN: auto-approve only if wallet CASH >= PRICE (strict solvency). We DO NOT debit the price.
+        """
+        if self.status != self.Status.IN_PROGRESS:
+            raise ValidationError("Task cannot be submitted in its current state.")
+
+        self.proof_text = proof_text or ""
+        self.proof_link = proof_link or ""
+
+        if self.task_kind == self.Kind.ADMIN:
+            price_cents = to_cents(self.price_used)
+
+            # Strict solvency on CASH (bonus doesn’t count here)
+            wallet = self.user.wallet
+            if (wallet.balance_cents or 0) < price_cents:
+                raise ValidationError("Insufficient funds — please deposit the task price and try again.")
+
+            # Auto-approve inline (idempotent + locked). We do NOT debit price.
+            self._auto_approve_admin_inline()
+            return
+
+        # Regular / trial → immediate path
+        self._auto_approve_regular()
+
+    def _auto_approve_regular(self):
+        """
+        Finalize a regular/trial task:
+          - Add commission to dividends
+          - Credit wallet with THIS commission now (idempotent)
+          - Mark this commission as 'paid' so admin approvals won't re-pay it
+          - Dashboard: normal
+          - Task -> APPROVED, then advance
+        """
+        from .models import ensure_task_progress  # local import to avoid circulars
+        prog = ensure_task_progress(self.user)
+        commission_cents = to_cents(self.commission_used)
+        wallet = self.user.wallet
+
+        with transaction.atomic():
+            prog.add_commission(commission_cents)
+
+            if commission_cents > 0:
+                _wallet_credit_idem(
+                    wallet,
+                    int(commission_cents),
+                    memo=f"REGULAR_TASK_PAYOUT #{self.pk}",
+                    external_ref=f"REGULAR_TASK_PAYOUT#{self.pk}",
+                )
+                # mark paid (clamped)
+                prev_paid = int(getattr(prog, "dividends_paid_cents", 0) or 0)
+                new_paid  = prev_paid + int(commission_cents)
+                max_pay   = int(prog.dividends_cents or 0)
+                prog.dividends_paid_cents = max(0, min(new_paid, max_pay))
+                prog.save(update_fields=["dividends_paid_cents", "updated_at"])
+
+            prog.set_state_normal()
+
+            now = timezone.now()
+            self.status = self.Status.APPROVED
+            self.submitted_at = now
+            self.decided_at = now
+            self.save(update_fields=["proof_text", "proof_link", "status", "submitted_at", "decided_at", "updated_at"])
+
+            prog.advance()
+
+    def _auto_approve_admin_inline(self):
+        """
+        Auto-approve ADMIN after strict solvency:
+          - Lock to prevent double-run; exit if already APPROVED.
+          - DO NOT debit price (wallet remains whole).
+          - Credit wallet: unpaid_old_dividends + THIS admin commission (idempotent).
+          - Add THIS admin commission to dividends; mark all dividends PAID.
+          - Dashboard: set settled; approve task; advance.
+        """
+        from .models import ensure_task_progress  # local import to avoid circulars
+        price_cents = to_cents(self.price_used)
+        admin_commission_cents = to_cents(self.commission_used)
+        wallet = self.user.wallet
+        prog = ensure_task_progress(self.user)
+
+        with transaction.atomic():
+            # Lock & re-check status to avoid duplicate approvals
+            locked = (type(self).objects
+                      .select_for_update()
+                      .only("id", "status")
+                      .get(pk=self.pk))
+            if locked.status == self.Status.APPROVED:
+                return
+
+            # 1) Unpaid old dividends BEFORE adding this admin commission (clamped)
+            div_cents  = int(prog.dividends_cents or 0)
+            paid_cents = int(getattr(prog, "dividends_paid_cents", 0) or 0)
+            paid_cents = max(0, min(paid_cents, div_cents))
+            unpaid_old = div_cents - paid_cents
+
+            # 2) Credit payout = unpaid_old + admin_commission (NEVER price)
+            payout_cents = int(unpaid_old) + int(admin_commission_cents)
+            if payout_cents > 0:
+                _wallet_credit_idem(
+                    wallet,
+                    payout_cents,
+                    memo=f"ADMIN_TASK_PAYOUT #{self.pk}",
+                    external_ref=f"ADMIN_TASK_PAYOUT#{self.pk}",
+                )
+
+            # 3) Dividends → add this admin commission & mark ALL dividends paid
+            prog.add_commission(admin_commission_cents)
+            prog.dividends_paid_cents = int(prog.dividends_cents or 0)
+            prog.save(update_fields=["dividends_paid_cents", "updated_at"])
+
+            # 4) Dashboard cache (legacy; final display uses display_totals rules)
+            prog.set_state_admin_approved(price_cents=price_cents)
+
+            # 5) Approve + advance
+            now = timezone.now()
+            self.status = self.Status.APPROVED
+            self.submitted_at = now
+            self.decided_at = now
+            self.save(update_fields=["status", "submitted_at", "decided_at", "updated_at"])
+
+            prog.advance()
+
+    def mark_admin_assigned_effects(self):
+        """
+        Call ONCE when this ADMIN task is assigned.
+
+        Pre-approval dashboard:
+          - asset = -REQUIRED (negative; what the user must deposit)
+          - processing = price + new_admin_commission
+          - total mirrors asset during assignment (handled when processing > 0)
+          - Snapshot 'old_total_display' (equals wallet) and 'required' here; do NOT recompute later.
+        """
+        if self.task_kind != self.Kind.ADMIN:
+            return
+
+        from .models import ensure_task_progress  # local import to avoid circulars
+        prog = ensure_task_progress(self.user)
+        price_cents = to_cents(self.price_used)
+        admin_commission_cents = to_cents(self.commission_used)
+
+        totals = prog.display_totals
+        old_total_display = int(totals.get("total_asset_cents", 0))  # equals wallet in settled state
+        required = max(0, price_cents - old_total_display)
+
+        self.assignment_total_display_cents = old_total_display
+        self.required_cash_cents = required
+        self.save(update_fields=["assignment_total_display_cents", "required_cash_cents", "updated_at"])
+
+        prog.set_state_admin_assigned(
+            price_cents=price_cents,
+            admin_commission_cents=admin_commission_cents,
+            required_cents=required,
+        )
+
+    def approve_admin(self, *, approved_by=None):
+        """Manual path if SUBMITTED — finalize inline using the same rules (no price debit)."""
+        if self.task_kind != self.Kind.ADMIN:
+            raise ValidationError("Not an admin-priced task.")
+        if self.status == self.Status.APPROVED:
+            raise ValidationError("Task already approved.")
+        if self.status != self.Status.SUBMITTED:
+            raise ValidationError("Only submitted admin tasks can be approved manually.")
+        self._auto_approve_admin_inline()
+
+    def approve_regular(self, *, approved_by=None):
+        """Regular/trial tasks auto-complete on submit; no manual approval needed."""
+        raise ValidationError("Regular/trial tasks auto-complete on submit; no manual approval needed.")
 
 
 
+# ======================================================
+# Admin forcing multiple tasks per cycle (queued rules)
+# ======================================================
+class ForcedTaskDirective(models.Model):
+    class Status(models.TextChoices):
+        PENDING  = "PENDING", "Pending"
+        CONSUMED = "CONSUMED", "Consumed"
+        CANCELED = "CANCELED", "Canceled"
+        EXPIRED  = "EXPIRED", "Expired"
+        SKIPPED  = "SKIPPED", "Skipped (behind current order)"
 
+    # use custom user model
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="forced_task_directives")
+    applies_on_cycle = models.PositiveIntegerField(db_index=True, help_text="Cycle number this applies to.")
+    target_order = models.PositiveIntegerField(help_text="1-based order to show when eligible.")
 
-
-class TaskTemplate(models.Model):
-    # Which phase this template is for
-    phase = models.CharField(
-        max_length=10,
-        choices=TaskPhase.choices,   # same enum as Task
-        db_index=True,
-        default=TaskPhase.TRIAL,
+    # optional fixed template to serve at this order
+    template = models.ForeignKey(
+        'UserTaskTemplate', null=True, blank=True, on_delete=models.SET_NULL,
+        help_text="Optional fixed template to serve for this order."
     )
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING, db_index=True)
 
-    # Core fields
-    name = models.CharField(max_length=140)
-    slug = models.SlugField(max_length=160, unique=True, blank=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    batch_id = models.CharField(max_length=64, blank=True, default="")
+    reason = models.CharField(max_length=255, blank=True, default="")
 
-    # Location as simple text (no FK)
-    country = models.CharField(max_length=160, db_index=True)
-    city = models.CharField(max_length=80, blank=True)
-
-    # Image (file or URL fallback)
-    cover_image = models.ImageField(upload_to="tasks/covers/%Y/%m/", blank=True, null=True)
-    cover_image_url = models.URLField(blank=True)
-
-    # Order info
-    order_code = models.CharField("Order ID", max_length=64, unique=True, db_index=True)
-    order_date = models.DateField(blank=True, null=True)
-
-    # Money in cents
-    worth_cents = models.PositiveIntegerField(default=0, help_text="€ in cents, e.g. 15000 = €150.00")
-    commission_cents = models.PositiveIntegerField(default=0, help_text="€ in cents, e.g. 350 = €3.50")
-
-    # Rating badge (numeric)
-    score = models.DecimalField(
-        max_digits=3, decimal_places=1,
-        validators=[MinValueValidator(0), MaxValueValidator(5)],
-        help_text="0.0 – 5.0 (one decimal)"
+    # who created the directive (also custom user)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="created_forced_task_directives"
     )
-
-    # Chip label
-    class Label(models.TextChoices):
-        PERFECT = "perfect", "Perfect"
-        GOOD = "good", "Good"
-        MEDIUM = "medium", "Medium"
-
-    label = models.CharField(
-        max_length=10,
-        choices=Label.choices,
-        default=Label.GOOD,
-        help_text="Chip on card (color-coded)"
-    )
-
-    # Publishing flags
-    is_published = models.BooleanField(default=True)
-    is_recommended = models.BooleanField(default=False)
-    popularity = models.PositiveIntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    consumed_at = models.DateTimeField(null=True, blank=True)
+    canceled_at = models.DateTimeField(null=True, blank=True)
+    expired_at = models.DateTimeField(null=True, blank=True)
+    skipped_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        ordering = ["-created_at", "-score", "name"]
         indexes = [
-            models.Index(fields=["phase", "is_published"]),
-            models.Index(fields=["-created_at"]),
-            models.Index(fields=["-score"]),
-            models.Index(fields=["-popularity"]),
-            models.Index(fields=["country"]),
+            models.Index(fields=["user", "applies_on_cycle", "status"]),
+            models.Index(fields=["applies_on_cycle", "target_order"]),
+            models.Index(fields=["expires_at"]),
+            models.Index(fields=["created_at"]),
         ]
+        ordering = ["target_order", "created_at"]
 
     def __str__(self):
-        return f"[{self.phase}] {self.name}"
+        return f"Force u={self.user} cyc={self.applies_on_cycle} → {self.target_order} [{self.status}]"
+
+#UserTaskTemplate
+def _gen_task_id():
+    """Short, unique, URL-safe id for reference."""
+    return uuid.uuid4().hex[:12].upper()
+
+def _unique_slug(base: str, qs, max_len: int = 180):
+    """Create a unique slug within qs from base."""
+    base = (slugify(base) or "task")[:max_len]
+    slug = base
+    i = 2
+    while qs.filter(slug=slug).exists():
+        suffix = f"-{i}"
+        slug = f"{base[:max_len - len(suffix)]}{suffix}"
+        i += 1
+    return slug
+
+#user tasK template
+class UserTaskTemplate(models.Model):
+    # ---- Labels / rating ----
+    class Label(models.TextChoices):
+        PERFECT = "PERFECT", "Perfect"
+        GOOD    = "GOOD",    "Good"
+        MEDIUM  = "MEDIUM",  "Medium"
+
+    # ---- Publish state + admin flag ----
+    class Status(models.TextChoices):
+        DRAFT    = "DRAFT", "Draft"
+        ACTIVE   = "ACTIVE", "Active"
+        PAUSED   = "PAUSED", "Paused"
+        ARCHIVED = "ARCHIVED", "Archived"
+
+    # ---- Fields ----
+    hotel_name = models.CharField(max_length=160)
+    slug = models.SlugField(max_length=180, unique=True)
+
+    country = models.CharField(max_length=64)
+    city = models.CharField(max_length=64)
+
+    cover_image_url = models.URLField(blank=True, default="")
+    cover_image = models.ImageField(upload_to="tasks/covers/", null=True, blank=True)
+
+    task_id = models.CharField(max_length=24, unique=True, default=_gen_task_id, editable=False)
+    task_date = models.DateField(null=True, blank=True)
+
+    task_price = models.DecimalField(
+        max_digits=12, decimal_places=2, null=True, blank=True,
+        validators=[MinValueValidator(Decimal("0.00"))],
+        help_text="If empty, falls back to tasksettngs.task_price."
+    )
+    task_commission = models.DecimalField(
+        max_digits=12, decimal_places=2, null=True, blank=True,
+        validators=[MinValueValidator(Decimal("0.00"))],
+        help_text="If empty, falls back to tasksettngs.task_commission."
+    )
+
+    task_score = models.DecimalField(
+        max_digits=3, decimal_places=2, null=True, blank=True,
+        validators=[MinValueValidator(Decimal("0.00")), MaxValueValidator(Decimal("5.00"))],
+        help_text="0.00 – 5.00"
+    )
+    task_label = models.CharField(max_length=12, choices=Label.choices, blank=True, default="")
+
+    is_admin_task = models.BooleanField(
+        default=False,
+        help_text="If True, user must have wallet ≥ price to complete this task."
+    )
+    status = models.CharField(
+        max_length=10, choices=Status.choices, default=Status.DRAFT,
+        help_text="Set to ACTIVE to include in random selection."
+    )
+
+    # Audit
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="created_task_templates"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["status"]),
+            models.Index(fields=["country", "city"]),
+            models.Index(fields=["task_date"]),
+        ]
+        ordering = ["-updated_at", "-created_at"]
+
+    def __str__(self):
+        return f"{self.hotel_name} ({self.city}, {self.country})"
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = unique_slugify(self, self.name)
+        if not self.slug and self.hotel_name:
+            self.slug = _unique_slug(self.hotel_name, self.__class__.objects.all(), max_len=180)
         super().save(*args, **kwargs)
 
-    @property
-    def cover_src(self):
-        if self.cover_image:
-            try:
-                return self.cover_image.url
-            except ValueError:
-                pass
-        if self.cover_image_url:
-            return self.cover_image_url
-        return "/static/img/placeholder.png"
+    # ---- Helpers ----
+    def effective_price(self) -> Decimal:
+        if self.task_price is not None:
+            return self.task_price
+        from .models import tasksettngs
+        return tasksettngs.load().task_price
 
-    @property
-    def worth_eur(self) -> str:
-        return f"€{self.worth_cents/100:,.2f}"
+    def effective_commission(self) -> Decimal:
+        if self.task_commission is not None:
+            return self.task_commission
+        from .models import tasksettngs
+        return tasksettngs.load().task_commission
 
-    @property
-    def commission_eur(self) -> str:
-        return f"€{self.commission_cents/100:,.2f}"
+    def is_active_now(self) -> bool:
+        return self.status == self.Status.ACTIVE
 
+# =======================
+# User task progress
+# =======================
 
-# models.py (append)
-from django.db import models
-from django.conf import settings
-from django.utils import timezone
-
-class AccountDisplayMode(models.TextChoices):
-    AUTO = "AUTO", "Auto (computed)"
-    MANUAL = "MANUAL", "Manual (admin override)"
-
-class AccountDisplay(models.Model):
+class UserTaskProgress(models.Model):
+    """
+    Tracks per-user progress within the current cycle and snapshots
+    the per-cycle economics from tasksettngs at cycle start.
+    """
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="account_display"
-    )
-    # Which source to use for display
-    mode = models.CharField(
-        max_length=10,
-        choices=AccountDisplayMode.choices,
-        default=AccountDisplayMode.AUTO,
-        db_index=True,
+        related_name="task_progress",
     )
 
-    # Stored amounts in cents (editable in admin)
-    total_assets_cents = models.BigIntegerField(default=0)
-    asset_cents        = models.BigIntegerField(default=0)
-    dividends_cents    = models.BigIntegerField(default=0)
-    processing_cents   = models.BigIntegerField(default=0)
+    # cycle/progress
+    cycles_completed = models.PositiveIntegerField(default=0)
+    current_task_index = models.PositiveIntegerField(
+        default=0, help_text="0-based; next visible = index + 1"
+    )
+    is_blocked = models.BooleanField(default=False, db_index=True)
 
-    updated_at = models.DateTimeField(auto_now=True)
+    # snapshots copied from tasksettngs when a new cycle starts
+    limit_snapshot = models.PositiveIntegerField(default=25)
+    price_snapshot = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("12.00"))
+    commission_snapshot = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("1.45"))
+
+    # Dashboard counters (all in cents)
+    dividends_cents       = models.BigIntegerField(default=0)  # all commissions: trial + regular + admin
+    dividends_paid_cents  = models.BigIntegerField(default=0)  # how much of dividends has been cashed out
+    asset_cents           = models.BigIntegerField(default=0)  # cache used during assignment (negative required) / legacy
+    processing_cents      = models.BigIntegerField(default=0)  # temporary while an admin task is assigned
+
+    # remember which cycle the last withdrawal happened
+    last_withdraw_cycle   = models.PositiveIntegerField(default=0)
+
+    last_reset_at = models.DateTimeField(null=True, blank=True)
+    updated_at    = models.DateTimeField(auto_now=True)
+    created_at    = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         indexes = [
-            models.Index(fields=["mode"]),
+            models.Index(fields=["user"]),
+            models.Index(fields=["is_blocked"]),
         ]
-        verbose_name = "Account Display"
-        verbose_name_plural = "Account Displays"
 
     def __str__(self):
-        return f"AccountDisplay({self.user}) — {self.mode}"
+        return f"{self.user} | {self.current_task_index}/{self.limit_snapshot} blocked={self.is_blocked}"
 
-    # Convenience formatters
     @property
-    def total_assets_eur(self): return f"€{self.total_assets_cents/100:,.2f}"
+    def natural_next_order(self) -> int:
+        return self.current_task_index + 1
+
+    # ---------- Dashboard states ----------
+
+    def set_state_normal(self, *, preserve_settled: bool = True):
+        """
+        Trial/regular settled:
+          Asset = Dividends; Processing = 0.
+        Do not overwrite settled admin-approved cache (asset > dividends and processing == 0).
+        """
+        if preserve_settled and (self.processing_cents or 0) == 0:
+            if (self.asset_cents or 0) > (self.dividends_cents or 0):
+                return
+        self.asset_cents = self.dividends_cents or 0
+        self.processing_cents = 0
+        self.save(update_fields=["asset_cents", "processing_cents", "updated_at"])
+
+    def set_state_admin_assigned(self, *, price_cents: int, admin_commission_cents: int, required_cents: int):
+        """
+        PRE-APPROVAL (assigned):
+          - Do NOT change dividends
+          - Asset = -REQUIRED CASH
+          - Processing = price + new admin commission
+          - Total (display) mirrors Asset during this phase (see display_totals)
+        """
+        with transaction.atomic():
+            self.asset_cents = -int(required_cents)
+            self.processing_cents = int(price_cents) + int(admin_commission_cents)
+            self.save(update_fields=["asset_cents", "processing_cents", "updated_at"])
+
+    def set_state_admin_approved(self, *, price_cents: int):
+        """
+        AFTER admin approval:
+          Cache asset = price for legacy; final display computes fresh every time.
+        """
+        self.asset_cents = int(price_cents)
+        self.processing_cents = 0
+        self.save(update_fields=["asset_cents", "processing_cents", "updated_at"])
+
+    # ---------- Display helper for UI ----------
     @property
-    def asset_eur(self):        return f"€{self.asset_cents/100:,.2f}"
-    @property
-    def dividends_eur(self):    return f"€{self.dividends_cents/100:,.2f}"
-    @property
-    def processing_eur(self):   return f"€{self.processing_cents/100:,.2f}"
+    def display_totals(self) -> dict:
+        """
+        DISPLAY RULES (cents):
+
+        • Admin assigned (processing > 0):
+             Asset   = -required
+             Total   = Asset (mirror while processing)
+             Proc    = price + new admin commission
+             Div     = min(paid_dividends, wallet_total)
+
+        • Settled (processing == 0):
+             TOTAL ASSET (display) = WALLET (cash + bonus)  ← ALWAYS equal
+             If ANY approved ADMIN exists:
+                 Asset     = Σ(required_cash_cents) across ALL approved ADMIN tasks (ever)
+                              (capped to Total so it never exceeds wallet)
+                 Dividends = full (unchanged)
+             Else:
+                 Asset     = Total - min(paid_dividends, Total)
+                 Dividends = min(paid_dividends, Total)
+        """
+        w = getattr(self.user, "wallet", None)
+
+        base_proc  = int(self.processing_cents or 0)
+        base_div   = int(self.dividends_cents or 0)
+        paid_div   = int(getattr(self, "dividends_paid_cents", 0) or 0)
+        paid_div   = max(0, min(paid_div, base_div))
+
+        # Wallet (withdrawable) — single source of truth for TOTAL when settled
+        wallet_cash = wallet_bonus = 0
+        if w is not None:
+            try:
+                wallet_cash  = int(getattr(w, "balance_cents", 0) or 0)
+                wallet_bonus = int(getattr(w, "bonus_cents", 0) or 0)
+            except Exception:
+                wallet_cash = wallet_bonus = 0
+        raw_wallet_total = wallet_cash + wallet_bonus
+
+        # --- 1) Admin assigned (in-flight) ---
+        if base_proc > 0:
+            asset_display     = int(self.asset_cents or 0)  # negative REQUIRED
+            total_display     = asset_display               # mirror Asset while processing>0
+            dividends_display = min(paid_div, max(0, raw_wallet_total))
+            return {
+                "total_asset_cents": total_display,
+                "asset_cents": asset_display,
+                "dividends_cents": dividends_display,
+                "processing_cents": base_proc,
+            }
+
+        # --- 2) Settled: TOTAL MUST EQUAL WALLET ---
+        total_display = raw_wallet_total
+
+        # If any approved ADMIN exists → Asset = Σ(required) (money user 'paid')
+        has_any_admin = False
+        try:
+            UserTask = apps.get_model(self._meta.app_label, "UserTask")
+            approved_admins_all = (
+                UserTask.objects
+                .filter(user=self.user, task_kind=UserTask.Kind.ADMIN, status=UserTask.Status.APPROVED)
+            )
+            has_any_admin = approved_admins_all.exists()
+        except Exception:
+            approved_admins_all = []
+
+        if has_any_admin:
+            paid_sum_all = 0
+            try:
+                for ut in approved_admins_all.only("required_cash_cents"):
+                    paid_sum_all += max(0, int(getattr(ut, "required_cash_cents", 0) or 0))
+            except Exception:
+                pass
+
+            # Asset shows money the user paid (capped to wallet/total)
+            asset_display     = min(max(0, paid_sum_all), total_display)
+            dividends_display = base_div  # untouched
+
+            return {
+                "total_asset_cents": total_display,  # == wallet (cash + bonus)
+                "asset_cents": asset_display,        # cumulative paid money
+                "dividends_cents": dividends_display,
+                "processing_cents": 0,
+            }
+
+        # No approved admin → normal/trial behavior
+        dividends_display = min(paid_div, total_display)
+        asset_display     = max(0, total_display - dividends_display)
+
+        return {
+            "total_asset_cents": total_display,   # == wallet (cash + bonus)
+            "asset_cents": asset_display,
+            "dividends_cents": dividends_display,
+            "processing_cents": 0,
+        }
+
+    # ---------- Counters & progress ----------
+    def add_commission(self, commission_cents: int):
+        """Increase dividends (used for regular/trial submit and admin approval)."""
+        self.dividends_cents = (self.dividends_cents or 0) + int(commission_cents)
+        self.save(update_fields=["dividends_cents", "updated_at"])
+
+    def advance(self):
+        """
+        Increment index and, if configured:
+          - block at limit
+          - clear trial bonus at limit (optional)
+        """
+        s = tasksettngs.load()
+        with transaction.atomic():
+            self.current_task_index = (self.current_task_index or 0) + 1
+
+            if s.block_on_reaching_limit and self.current_task_index >= (self.limit_snapshot or 0):
+                # count cycle + block
+                self.cycles_completed = (self.cycles_completed or 0) + 1
+                self.is_blocked = True
+
+                # Clear trial bonus if enabled
+                if s.clear_trial_bonus_at_limit:
+                    w = getattr(self.user, "wallet", None)
+                    if w and (w.bonus_cents or 0) > 0:
+                        cleared = int(w.bonus_cents or 0)
+                        # zero the bonus and write a ledger row
+                        Wallet.objects.filter(pk=w.pk).update(bonus_cents=0)
+                        WalletTxn.objects.create(
+                            wallet=w,
+                            amount_cents=-cleared,     # negative entry (bonus removed)
+                            kind="BONUS",
+                            bucket="BONUS",
+                            memo="Trial bonus cleared at cycle limit",
+                            created_by=None,
+                        )
+
+            self.save(update_fields=[
+                "current_task_index", "cycles_completed", "is_blocked", "updated_at"
+            ])
+
+    def unblock(self):
+        """
+        Admin unblocks → new run: reset index & refresh snapshots.
+        (Dividends/Asset/Processing are retained.)
+        """
+        self._refresh_snapshots_from_settings()
+        self.current_task_index = 0
+        self.is_blocked = False
+        self.last_reset_at = timezone.now()
+        self.save(update_fields=[
+            "current_task_index", "is_blocked",
+            "limit_snapshot", "price_snapshot", "commission_snapshot",
+            "last_reset_at", "updated_at"
+        ])
+
+    # ---------- Withdrawal gating ----------
+    def can_withdraw(self) -> tuple[bool, str]:
+        """
+        Rule:
+          - User may withdraw once after completing their FIRST cycle (cycles_completed >= 1).
+          - After any withdrawal, the NEXT withdrawal is only allowed once TWO MORE cycles
+            have been completed since that withdrawal.
+        """
+        try:
+            s = tasksettngs.load()
+            gap = int(getattr(s, "cycles_between_withdrawals", 2) or 2)
+        except Exception:
+            gap = 2
+
+        if (self.cycles_completed or 0) < 1:
+            return False, "Withdrawals unlock after completing your first cycle."
+
+        if (self.last_withdraw_cycle or 0) == 0:
+            return True, ""
+
+        needed = (self.last_withdraw_cycle or 0) + gap
+        if (self.cycles_completed or 0) >= needed:
+            return True, ""
+
+        remaining = max(0, needed - (self.cycles_completed or 0))
+        return False, f"Withdrawals unlock after {remaining} more cycle(s)."
+
+    def mark_withdraw_done(self):
+        """
+        Call this AFTER a successful withdrawal payout/transfer is executed.
+        Pins the current cycles_completed as the baseline for the next window.
+        """
+        self.last_withdraw_cycle = int(self.cycles_completed or 0)
+        self.save(update_fields=["last_withdraw_cycle", "updated_at"])
+
+    # ===== NEW: keep Asset rules consistent AFTER withdrawal =====
+    def register_withdraw(self, amount_cents: int) -> None:
+        """
+        Advance dividends_paid_cents by the amount actually withdrawn, so that
+        future renders continue to treat commissions as 'dividends', not Asset.
+
+        This prevents the 'commissions leaking into Asset after withdrawal' bug.
+        """
+        if not amount_cents or amount_cents <= 0:
+            return
+        with transaction.atomic():
+            # Reload just in case
+            prog = type(self).objects.select_for_update().only(
+                "id", "dividends_cents", "dividends_paid_cents"
+            ).get(pk=self.pk)
+
+            base_div = int(prog.dividends_cents or 0)
+            paid_div = int(prog.dividends_paid_cents or 0)
+
+            # Increase paid by the withdrawn amount, but never over total dividends
+            new_paid = min(base_div, paid_div + int(amount_cents))
+            if new_paid != paid_div:
+                prog.dividends_paid_cents = new_paid
+                prog.save(update_fields=["dividends_paid_cents", "updated_at"])
+
+    def on_withdraw_confirmed(self, amount_cents: int) -> None:
+        """
+        Convenience hook to use in your withdrawal-confirmation flow:
+          - bumps dividends_paid_cents appropriately
+          - records the cycle baseline for the next withdrawal window
+        """
+        self.register_withdraw(int(amount_cents or 0))
+        self.mark_withdraw_done()
+
+    # ---------- helpers ----------
+    def _refresh_snapshots_from_settings(self):
+        s = tasksettngs.load()
+        self.limit_snapshot = s.task_limit_per_cycle
+        self.price_snapshot = s.task_price
+        self.commission_snapshot = s.task_commission
+
+    def start_new_cycle(self, *, refresh_snapshots: bool = True, commit: bool = True):
+        if refresh_snapshots:
+            self._refresh_snapshots_from_settings()
+        self.current_task_index = 0
+        self.is_blocked = False
+        self.last_reset_at = timezone.now()
+        if commit:
+            self.save(update_fields=[
+                "current_task_index", "is_blocked",
+                "limit_snapshot", "price_snapshot", "commission_snapshot",
+                "last_reset_at", "updated_at",
+            ])
+
+    # ---------- core auto-logic ----------
+    def save(self, *args, **kwargs):
+        """
+        Keep auto-changes even on partial updates.
+        """
+        old = None
+        if self.pk:
+            old = type(self).objects.filter(pk=self.pk).only(
+                "current_task_index", "limit_snapshot", "is_blocked", "cycles_completed"
+            ).first()
+
+        changed = set()
+
+        # (1) Reached limit -> count cycle + block (only if not already blocked)
+        if self.current_task_index >= (self.limit_snapshot or 0) and not self.is_blocked:
+            if (old is None) or (old.is_blocked is False):
+                self.cycles_completed = (self.cycles_completed or 0) + 1
+                self.is_blocked = True
+                changed.update({"cycles_completed", "is_blocked"})
+
+        # (2) Admin unblocked after limit -> auto-roll to fresh cycle + refresh snapshots
+        if old and old.is_blocked and (self.is_blocked is False):
+            if old.current_task_index >= (old.limit_snapshot or 0):
+                self._refresh_snapshots_from_settings()
+                self.current_task_index = 0
+                self.last_reset_at = timezone.now()
+                changed.update({
+                    "current_task_index",
+                    "limit_snapshot", "price_snapshot", "commission_snapshot",
+                    "last_reset_at",
+                })
+
+        if "update_fields" in kwargs and kwargs["update_fields"] is not None:
+            uf = set(kwargs["update_fields"])
+            uf.update(changed)
+            uf.add("updated_at")
+            kwargs["update_fields"] = list(uf)
+
+        super().save(*args, **kwargs)
 
 
 
+#spawn code
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.conf import settings
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def ensure_account_display(sender, instance, created, **kwargs):
+def spawn_next_task_for_user(user) -> "UserTask":
     """
-    Make sure every user has an AccountDisplay row.
-    Safe to call repeatedly; get_or_create prevents duplicates.
+    Start (or return) the user's next task.
+
+    Priority:
+      0) If the user already has an ADMIN task in IN_PROGRESS/SUBMITTED → return it (unskippable).
+      1) Exact ForcedTaskDirective match for THIS user at (cycle, next_order): PENDING & not expired.
+      2) Fallback ForcedTaskDirective for THIS user with SAME order, PENDING, not expired, and
+         applies_on_cycle <= current cycle (i.e., overdue admin directive). Pick the oldest applicable.
+      3) Else spawn a random ACTIVE REGULAR task (never admin at random).
+
+    Side effects:
+      • When spawning from a directive → mark directive CONSUMED immediately.
+      • When spawning an ADMIN task → apply dashboard “assigned” math immediately.
+      • Ensures UserTaskProgress exists (brand new users / deleted rows).
     """
-    from .models import AccountDisplay  # local import avoids circulars during app registry
-    if not created:
-        # If you only want to create on first signup, you can return here.
-        # But get_or_create is cheap; leaving it makes it robust.
-        pass
-    AccountDisplay.objects.get_or_create(user=instance)
+    from .models import (
+        UserTask, UserTaskTemplate, ForcedTaskDirective,
+    )
+    # make sure progress row exists
+    prog = ensure_task_progress(user)
+    if prog.is_blocked:
+        raise ValidationError("User is blocked. Contact support to continue.")
+
+    # 0) Existing unskippable ADMIN
+    existing_admin = (
+        UserTask.objects
+        .filter(
+            user=user,
+            task_kind=UserTask.Kind.ADMIN,
+            status__in=[UserTask.Status.IN_PROGRESS, UserTask.Status.SUBMITTED],
+        )
+        .order_by("-created_at")
+        .first()
+    )
+    if existing_admin:
+        if existing_admin.status == UserTask.Status.IN_PROGRESS:
+            existing_admin.mark_admin_assigned_effects()
+        return existing_admin
+
+    # Compute the user's "slot"
+    next_order = prog.natural_next_order  # 1-based
+    cycle = prog.cycles_completed
+    now = timezone.now()
+
+    # 1) Strict directive match (this cycle & this position)
+    strict = (
+        ForcedTaskDirective.objects
+        .filter(
+            user=user,
+            applies_on_cycle=cycle,
+            target_order=next_order,
+            status=ForcedTaskDirective.Status.PENDING,
+        )
+        .filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now))
+        .select_related("template")
+        .order_by("created_at")
+        .first()
+    )
+
+    directive = strict
+
+    # 2) Fallback: same order, overdue (applies_on_cycle <= current cycle), still pending & not expired
+    if not directive:
+        directive = (
+            ForcedTaskDirective.objects
+            .filter(
+                user=user,
+                target_order=next_order,
+                status=ForcedTaskDirective.Status.PENDING,
+            )
+            .filter(Q(applies_on_cycle__lte=cycle))
+            .filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now))
+            .select_related("template")
+            .order_by("applies_on_cycle", "created_at")  # oldest applicable first
+            .first()
+        )
+
+    if directive:
+        if not directive.template:
+            raise ValidationError("Admin directive is missing its template.")
+        tpl = directive.template
+        price = tpl.effective_price()
+        commission = tpl.effective_commission()
+
+        # Always ADMIN when a directive is used
+        with transaction.atomic():
+            task = UserTask.objects.create(
+                user=user,
+                template=tpl,
+                cycle_number=cycle,
+                order_shown=next_order,
+                status=UserTask.Status.IN_PROGRESS,
+                price_used=price,
+                commission_used=commission,
+                task_kind=UserTask.Kind.ADMIN,
+                started_at=timezone.now(),
+            )
+            directive.status = ForcedTaskDirective.Status.CONSUMED
+            directive.consumed_at = timezone.now()
+            directive.save(update_fields=["status", "consumed_at", "updated_at"])
+
+        task.mark_admin_assigned_effects()
+        return task
+
+    # 3) No directive: random ACTIVE REGULAR task (NEVER admin randomly)
+    tpl_qs = UserTaskTemplate.objects.filter(
+        status=UserTaskTemplate.Status.ACTIVE,
+        is_admin_task=False,
+    )
+    count = tpl_qs.count()
+    if count == 0:
+        raise ValidationError("No active regular task templates available.")
+    tpl = tpl_qs[random.randrange(count)]
+
+    price = tpl.effective_price()
+    commission = tpl.effective_commission()
+
+    task = UserTask.objects.create(
+        user=user,
+        template=tpl,
+        cycle_number=cycle,
+        order_shown=next_order,
+        status=UserTask.Status.IN_PROGRESS,
+        price_used=price,
+        commission_used=commission,
+        task_kind=UserTask.Kind.REGULAR,
+        started_at=timezone.now(),
+    )
+
+    # keep dashboard in normal state for regular/trial
+    prog.set_state_normal()
+    return task
+
+
+
+#force durectuve task
+def _first_pending_directive_for(user, cycle: int, next_order: int) -> "ForcedTaskDirective | None":
+    """
+    Find a PENDING, not-expired directive for this user and next order.
+    Preference:
+      1) exact match on (cycle, order)
+      2) fallback: same order, applies_on_cycle <= current cycle (old backlog), earliest first
+    Auto-expire any outdated directives it touches.
+    """
+    from .models import ForcedTaskDirective
+    now = timezone.now()
+
+    # exact match first
+    qs = (ForcedTaskDirective.objects
+          .filter(user=user,
+                  applies_on_cycle=cycle,
+                  target_order=next_order,
+                  status=ForcedTaskDirective.Status.PENDING)
+          .select_related("template")
+          .order_by("created_at"))
+
+    # expire any that have passed expires_at
+    expired = qs.filter(expires_at__lte=now)
+    if expired.exists():
+        expired.update(status=ForcedTaskDirective.Status.EXPIRED, expired_at=now, updated_at=now)
+
+    directive = qs.filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now)).first()
+    if directive:
+        return directive
+
+    # relaxed fallback: same order, earlier-or-equal cycle, oldest first
+    qs2 = (ForcedTaskDirective.objects
+           .filter(user=user,
+                   target_order=next_order,
+                   status=ForcedTaskDirective.Status.PENDING)
+           .filter(Q(applies_on_cycle=cycle) | Q(applies_on_cycle__lt=cycle))
+           .select_related("template")
+           .order_by("applies_on_cycle", "created_at"))
+
+    expired2 = qs2.filter(expires_at__lte=now)
+    if expired2.exists():
+        expired2.update(status=ForcedTaskDirective.Status.EXPIRED, expired_at=now, updated_at=now)
+
+    return qs2.filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now)).first()
+
+#ensure tasj progress
+def ensure_task_progress(user) -> "UserTaskProgress":
+    """
+    Get or create a UserTaskProgress for the user.
+    If created, snapshot current TaskSettings.
+    If it already exists but snapshots look missing, patch them.
+    """
+    from django.utils import timezone
+    s = tasksettngs.load()
+
+    prog, created = UserTaskProgress.objects.get_or_create(
+        user=user,
+        defaults={
+            "limit_snapshot": s.task_limit_per_cycle,
+            "price_snapshot": s.task_price,
+            "commission_snapshot": s.task_commission,
+            "current_task_index": 0,
+            "is_blocked": False,
+            "last_reset_at": timezone.now(),
+        },
+    )
+
+    # Defensive patch for legacy/empty snapshots
+    if not created and (
+        prog.limit_snapshot is None
+        or prog.price_snapshot is None
+        or prog.commission_snapshot is None
+    ):
+        if prog.limit_snapshot is None:
+            prog.limit_snapshot = s.task_limit_per_cycle
+        if prog.price_snapshot is None:
+            prog.price_snapshot = s.task_price
+        if prog.commission_snapshot is None:
+            prog.commission_snapshot = s.task_commission
+        prog.save(update_fields=["limit_snapshot", "price_snapshot", "commission_snapshot", "updated_at"])
+
+    return prog
+
+
+
+
+

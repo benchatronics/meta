@@ -4,7 +4,7 @@
 
 /* ===== Design tokens ===== */
 :root{
-  --blue:#0b4da3;         /* sidebar */
+  --blue:#0b4da3;         /* sidebar + topbar */
   --text:#111;
   --muted:#6b7280;        /* gray-500 */
   --border:#e5e7eb;       /* gray-200 */
@@ -13,6 +13,23 @@
   --radius:14px;
 
   --topbar-h: 56px;       /* visual topbar height for mobile alignments */
+  --page-pad: 28px;       /* padding for main container */
+
+  /* NEW: mobile bottom nav height so we can avoid overlap */
+  --mbnav-h: 84px;
+}
+@media (max-width: 900px){
+  :root{ --page-pad: 18px; }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html, body, .app, .main {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* ===== Base reset ===== */
@@ -39,11 +56,20 @@ body{
   color:#fff;
   padding:22px 16px;
   position:sticky; top:0;
-  height:100vh;
-  overflow:hidden;
+
+  /* make it a scrollable column */
+  display:flex; flex-direction:column;
+  height:100vh;                 /* fallback */
+  overflow-y:auto;              /* <— scrolls */
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+
+  /* small bottom padding for desktop so last link (Logout) has breathing room */
+  padding-bottom: 16px;
 }
 @supports (height: 100dvh){
-  .sidebar{ height: 100dvh; } /* smoother on iOS */
+  .sidebar{ height: 100dvh; }
 }
 
 .brand{ display:flex; align-items:center; gap:10px; margin-bottom:22px; }
@@ -53,7 +79,7 @@ body{
 }
 .brand-name{ font-weight:700; }
 
-/* NOTE: The toggle now lives in the TOPBAR breadcrumb (not inside .brand) */
+/* NOTE: Toggles */
 .sb-toggle{
   border:1px solid var(--border);
   height:36px; width:36px; border-radius:10px;
@@ -96,6 +122,8 @@ body{
 .link.active{ background:rgba(255,255,255,.22); }
 .link svg{ flex:0 0 18px; min-width:18px; }
 .label{ white-space:nowrap; }
+
+/* keep Logout pinned last but still reachable via scroll */
 .bottom{ margin-top:auto; }
 
 /* ===== Collapsed sidebar (desktop) ===== */
@@ -107,27 +135,80 @@ body{
 .app.collapsed .nav h6{ display:none; }
 
 /* ===== Main / Topbar ===== */
-.main{ padding:28px 28px 48px; }
+.main{
+  padding: var(--page-pad) var(--page-pad) 48px;
+}
+
+/* Topbar: full-width rectangle, gradient */
 .topbar{
-  display:flex; justify-content:space-between; align-items:center;
-  margin:-8px 0 10px; gap:12px;
+  margin: calc(var(--page-pad) * -1) calc(var(--page-pad) * -1) 20px;
+  padding: 16px var(--page-pad);
+
+  min-height: 100px;
+  background: linear-gradient(96deg, #0b4da3 0%, #0e63ff 100%);
+  color:#fff;
+
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* left toggle | centered title | bell */
+  align-items: center;
+  gap: 12px;
 }
-.breadcrumb{ display:flex; align-items:center; gap:8px; color:var(--muted); font-size:14px; }
-.crumb-home{
-  height:26px; width:26px; border:1px solid var(--border); border-radius:8px;
-  display:grid; place-items:center; background:#fff;
+
+/* Breadcrumb left */
+.breadcrumb{
+  display:flex; align-items:center; gap:10px;
+  color:#fff;
 }
+.breadcrumb a{ color:#fff; text-decoration:none; }
+.breadcrumb svg{ stroke:#fff; }
+
+/* Remove extra logo & home crumb */
+.dreadcrumb{ display:none !important; }
+.crumb-home{ display:none; }
+
+/* Title centered — emoji/icon friendly */
+.title-center{
+  grid-column: 2;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color:#fff;
+  line-height:1.2;
+
+  display:flex;
+  align-items:center; justify-content:center; gap:8px;
+
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* Bell on right */
 .bell{
-  height:36px; width:36px; border:1px solid var(--border); border-radius:12px;
-  background:#fff; display:grid; place-items:center; position:relative;
+  height:36px; width:36px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:8px;
+  background:rgba(255,255,255,.08);
+  display:grid; place-items:center;
+  position:relative;
+  color:#fff;
 }
-.bell a{ display:inline-block; color:inherit; text-decoration:none; }
+.bell a{ color:inherit; text-decoration:none; }
 .bell .badge{
   position:absolute; inset:-4px -4px auto auto;
   min-width:14px; height:14px; padding:0 3px;
   background:#ef4444; color:#fff; font-size:10px; line-height:14px;
-  border-radius:999px; box-shadow:0 0 0 2px #fff;
-  display:inline-flex; align-items:center; justify-content:center;
+  border-radius:999px;
+  box-shadow:0 0 0 2px #0b4da3;
+}
+
+/* Toggle buttons visible on blue */
+.topbar .breadcrumb .sb-toggle,
+.topbar .breadcrumb .sb-toggle-mobile{
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.35);
+  color:#fff;
+}
+.app.nav-open .topbar .breadcrumb .sb-toggle-mobile{
+  background:#fff; color:#0b4da3; border-color:#fff;
 }
 
 /* ===== Shared UI bits ===== */
@@ -147,7 +228,7 @@ body{
 /* ===== Accessibility ===== */
 :focus{ outline:none; }
 :focus-visible{
-  outline:2px solid #2563eb;
+  outline:2px solid #ffffff;
   outline-offset:2px;
 }
 .sb-toggle:focus-visible,
@@ -155,8 +236,8 @@ body{
 .btn:focus-visible,
 .brand-button:focus-visible,
 .bell a:focus-visible{
-  box-shadow:0 0 0 3px rgba(37,99,235,.35);
-  border-color:rgba(37,99,235,.55);
+  box-shadow:0 0 0 3px rgba(255,255,255,.45);
+  border-color:rgba(255,255,255,.75);
 }
 
 /* Prefer-reduced-motion */
@@ -173,26 +254,28 @@ body{
    Mobile responsiveness
    ========================= */
 @media (max-width: 900px){
-  /* 1-column layout */
   .app{ grid-template-columns:1fr; }
 
-  /* Sidebar becomes off-canvas — use LEFT so toggle isn’t trapped by transforms */
   .sidebar{
     position: fixed;
     top: 0; bottom: 0;
-    left: -320px;                  /* fully off-screen */
+    left: -320px;
     width: 280px;
     z-index: 40;
     transition: left .28s cubic-bezier(.22,.61,.36,1);
     will-change: left;
-    height: 100vh;
+
+    /* keep it scrollable in drawer mode */
+    overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
+
+    height: 100vh;                         /* fallback */
+    padding-bottom: calc(var(--mbnav-h) + 16px); /* NEW: ensure Logout clears the bottom nav */
   }
   @supports (height: 100dvh){
     .sidebar{ height: 100dvh; }
   }
   .app.nav-open .sidebar{ left: 0; }
 
-  /* Backdrop via pseudo-element */
   .app::after{
     content:"";
     position:fixed; inset:0; z-index:30;
@@ -202,24 +285,17 @@ body{
   }
   .app.nav-open::after{ opacity:1; pointer-events:auto; }
 
-  /* Topbar tighter */
-  .main{ padding:18px; }
-  .breadcrumb{ font-size:13px; }
+  .main{ padding: var(--page-pad); }
+  .title-center{ font-size:20px; gap:8px; }
 
-  /* Place toggle directly inside breadcrumb BESIDE the home icon */
-  .topbar .breadcrumb{ position:relative; }
+  .topbar{ min-height:80px; padding:14px var(--page-pad); }
   .topbar .breadcrumb .sb-toggle{
-    position:relative; top:auto; left:auto;
-    margin-left:8px;
+    position:relative; margin-left:8px;
     height:32px; width:32px; border-radius:8px;
-    background:#fff; color:var(--text); border:1px solid var(--border);
-  }
-  .app.nav-open .topbar .breadcrumb .sb-toggle{
-    background:var(--blue); color:#fff; border-color:transparent;
   }
 }
 
-/* ===== Scrollbar polish (WebKit/Blink) ===== */
+/* ===== Scrollbar polish ===== */
 *::-webkit-scrollbar{ width:10px; height:10px; }
 *::-webkit-scrollbar-thumb{
   background:#c7d2fe; border-radius:10px; border:2px solid transparent; background-clip:padding-box;
@@ -229,125 +305,91 @@ body{
 @media (max-width: 900px){
   .btn.primary,
   .btn {
-    padding:20px 18px;   /* larger vertical & horizontal padding */
-    font-size:16px;      /* slightly bigger text */
+    padding:20px 18px;
+    font-size:16px;
   }
 }
 
 /* ===========================
    Mobile Bottom Nav (≤900px)
    =========================== */
-   @media (max-width: 900px){
-    .mobile-bottom-nav{
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      z-index: 1000;
-      background: #ffffff;
-      border-top: 1px solid #eeeeee;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      padding: 8px 6px 12px;
-    }
-    .mobile-bottom-nav a{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      font-weight: 500;
-      font-size: 12px;
-      line-height: 1;
-      text-decoration: none;
-      color: #6b7280; /* gray-500 */
-    }
-    .mobile-bottom-nav a .icon{
-      width: 26px;
-      height: 26px;
-    }
-    .mobile-bottom-nav a.active{
-      color: #2451FF; /* blue active */
-    }
-    .mobile-bottom-nav a .dot{
-      width: 6px;
-      height: 6px;
-      border-radius: 9999px;
-      background: #2451FF;
-      margin-top: 2px;
-      opacity: 0;
-      transition: opacity .2s ease;
-    }
-    .mobile-bottom-nav a.active .dot{
-      opacity: 1;
-    }
-  
-    /* Ensure page content isn’t hidden behind the nav */
-    .main{
-      padding-bottom: 84px; /* adjust if your bottom nav gets taller */
-    }
+@media (max-width: 900px){
+  .mobile-bottom-nav{
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 1000;
+    background: #ffffff;
+    border-top: 1px solid #eeeeee;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 8px 6px 12px;
+    min-height: var(--mbnav-h);
   }
-  
-  /* Hide on desktop */
-  @media (min-width: 901px){
-    .mobile-bottom-nav{
-      display: none;
-    }
+  .mobile-bottom-nav a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1;
+    text-decoration: none;
+    color: #6b7280;
   }
-  
-  @media (max-width: 620px){
-    .crumb-home {
-      display: none !important;
-    }
+  .mobile-bottom-nav a .icon{
+    width: 26px;
+    height: 26px;
   }
+  .mobile-bottom-nav a.active{ color: #2451FF; }
+  .mobile-bottom-nav a .dot{
+    width: 6px; height: 6px; border-radius: 9999px;
+    background: #2451FF;
+    margin-top: 2px;
+    opacity: 0; transition: opacity .2s ease;
+  }
+  .mobile-bottom-nav a.active .dot{ opacity: 1; }
 
- /* ===== Toggle visibility rules (updated) ===== */
-.sb-toggle-desktop{ display:none; }       /* default hidden */
-.sb-toggle-mobile{ display:inline-grid; } /* mobile shows topbar toggle */
+  /* content padding already present; keep it in sync with var */
+  .main{ padding-bottom: var(--mbnav-h); }
+}
+@media (min-width: 901px){
+  .mobile-bottom-nav{ display: none; }
+}
 
-/* Desktop: show sidebar toggle, hide topbar toggle */
+/* ===== Toggle visibility rules ===== */
+.sb-toggle-desktop{ display:none; }
+.sb-toggle-mobile{ display:inline-grid; }
+
 @media (min-width: 901px){
   .sb-toggle-desktop{ display:inline-grid; }
   .topbar .breadcrumb .sb-toggle-mobile{ display:none; }
-
-  /* Brand row: logo far-left, toggle far-right */
-  .sidebar .brand{
-    display:flex; align-items:center; gap:10px;
-  }
-  /* push the toggle to the far right inside the sidebar padding */
+  .sidebar .brand{ display:flex; align-items:center; gap:10px; }
   .sb-toggle-desktop{
-    margin-left:auto;                 /* <<< pushes it to the right */
+    margin-left:auto;
     border:1px solid var(--border);
     height:36px; width:36px; border-radius:10px;
-    background:#fff; color:var(--text);
+    background:#fff; color:#var(--text);
     display:grid; place-items:center; cursor:pointer;
     transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
   }
   .sb-toggle-desktop:hover{ box-shadow:0 8px 20px rgba(16,24,40,.08); }
-
-  /* When collapsed: stack and place toggle UNDER the logo, centered */
-  .app.collapsed .sidebar .brand{
-    flex-direction:column; align-items:center; gap:8px;
-  }
+  .app.collapsed .sidebar .brand{ flex-direction:column; align-items:center; gap:8px; }
   .app.collapsed .sb-toggle-desktop{
-    margin-left:0;                    /* reset auto push */
-    width:36px; height:36px;
-    margin-top:2px;                   /* sits under logo */
+    margin-left:0; width:36px; height:36px; margin-top:2px;
   }
 }
-
-/* Mobile keeps original behavior (drawer) */
 @media (max-width: 900px){
   .sb-toggle-desktop{ display:none; }
   .topbar .breadcrumb .sb-toggle-mobile{
     position:relative; margin-left:8px;
     height:32px; width:32px; border-radius:8px;
-    background:#fff; color:var(--text); border:1px solid var(--border);
     display:inline-grid; place-items:center;
   }
   .app.nav-open .topbar .breadcrumb .sb-toggle-mobile{
-    background:var(--blue); color:#fff; border-color:transparent;
+    background:#fff; color:#0b4da3; border-color:#fff;
   }
 }
-
 @media (min-width:901px){
-  .sb-toggle-desktop{ transform:translateX(0); } /* or add margin-right:-2px if needed */
+  .sb-toggle-desktop{ transform:translateX(0); }
 }

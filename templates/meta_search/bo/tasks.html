@@ -1,0 +1,201 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Tasks{% endblock %}
+{% block page_title %}User Tasks{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ---------- Page-scoped styles (Admin · Tasks) ---------- */
+  .filter-card{
+    padding:14px;
+    display:grid;
+    gap:12px;
+  }
+  .filter-grid{
+    display:grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap:12px;
+  }
+  .filter-grid .field{
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .filter-grid .field label{
+    font-size:12px; font-weight:600; color:#334155;
+  }
+  .filter-grid .field input{
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 12px;
+    font:inherit;
+    background:#fff;
+  }
+  .filter-actions{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-start;
+  }
+
+  /* Table/Card */
+  .table-card{ padding:0; overflow:hidden; }
+  .table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+  }
+  .table thead th{
+    text-align:left;
+    font-size:12px;
+    letter-spacing:.02em;
+    color:#475569;
+    padding:12px;
+    border-bottom:1px solid var(--border);
+    background:#f8fafc;
+  }
+  .table tbody td{
+    padding:12px;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  .table tbody tr:hover{
+    background:#f9fbff;
+  }
+
+  /* Chips & small bits */
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:999px; font-weight:600; font-size:12px;
+    border:1px solid transparent;
+  }
+  .chip.status-in_progress{ background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
+  .chip.status-submitted{ background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
+  .chip.status-approved{ background:#ecfdf5; color:#047857; border-color:#a7f3d0; }
+  .chip.status-approved_admin{ background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+  .chip.status-rejected{ background:#fef2f2; color:#b91c1c; border-color:#fecaca; }
+
+  .muted{ color:#64748b; font-size:12px; }
+
+  /* Actions */
+  .actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .btn.danger{ background:#ef4444; color:#fff; border-color:#ef4444; }
+  .btn.danger:hover{ filter:brightness(1.02); }
+
+  /* --------- Mobile: transform table rows into cards --------- */
+  @media (max-width: 900px){
+    .filter-grid{
+      grid-template-columns: 1fr;
+    }
+
+    .table thead{ display:none; }
+    .table tbody, .table tr, .table td{ display:block; width:100%; }
+    .table tbody tr{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:12px;
+      margin:12px var(--page-pad) 0; /* breathing room edge-to-edge */
+      background:#fff;
+    }
+    .table tbody tr:hover{ background:#fff; }
+    .table tbody td{
+      border-bottom:0;
+      padding:6px 0;
+    }
+    .table tbody td[data-label]{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:10px;
+    }
+    .table tbody td[data-label]::before{
+      content: attr(data-label);
+      font-weight:600;
+      color:#334155;
+      font-size:12px;
+    }
+    .actions{ margin-top:6px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<form method="get" class="card filter-card" role="search" aria-label="Filter tasks">
+  <div class="filter-grid">
+    <div class="field">
+      <label for="f-status">Status</label>
+      <input id="f-status" type="text" name="status" value="{{ status }}" placeholder="e.g. SUBMITTED / APPROVED">
+    </div>
+    <div class="field">
+      <label for="f-kind">Kind</label>
+      <input id="f-kind" type="text" name="kind" value="{{ kind }}" placeholder="e.g. STANDARD">
+    </div>
+    <div class="field" style="grid-column: span 2;">
+      <label for="f-q">Search</label>
+      <input id="f-q" type="text" name="q" value="{{ q }}" placeholder="Phone, nickname, email, hotel…">
+    </div>
+  </div>
+  <div class="filter-actions">
+    <button class="btn primary" type="submit">Filter</button>
+    <a class="btn" href="{% url 'bo_tasks' %}">Reset</a>
+  </div>
+</form>
+
+<div class="card table-card">
+  <div class="table-responsive" style="overflow-x:auto;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Template</th>
+          <th>Kind</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th style="min-width:220px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in page_obj %}
+          <tr>
+            <td data-label="#">
+              {{ t.id }}
+            </td>
+            <td data-label="User">
+              <a href="{% url 'bo_user_detail' t.user_id %}" class="btn" style="padding:6px 10px; font-weight:600;">
+                {{ t.user.display_name|default:t.user }}
+              </a>
+              <div class="muted">{{ t.user.phone|default:t.user.email }}</div>
+            </td>
+            <td data-label="Template">
+              {{ t.template|default:"—" }}
+            </td>
+            <td data-label="Kind">
+              <span class="chip">{{ t.task_kind|default:"—" }}</span>
+            </td>
+            <td data-label="Status">
+              <span class="chip status-{{ t.status|lower|slugify }}">{{ t.status }}</span>
+            </td>
+            <td data-label="Created">
+              {{ t.created_at|date:"Y-m-d H:i" }}
+              <div class="muted">{{ t.created_at|timesince }} ago</div>
+            </td>
+            <td data-label="Actions">
+              <div class="actions">
+                <form method="post" action="{% url 'bo_task_approve_admin' t.id %}">{% csrf_token %}
+                  <button class="btn" type="submit" title="Approve as admin">Approve (Admin)</button>
+                </form>
+                <form method="post" action="{% url 'bo_task_reject' t.id %}">{% csrf_token %}
+                  <button class="btn danger" type="submit" title="Reject task">Reject</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td data-label="Info" colspan="7">
+              <div class="muted">No tasks.</div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "meta_search/bo/_pagination.html" with page_obj=page_obj %}
+{% endblock %}

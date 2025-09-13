@@ -1,0 +1,168 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Payout Addresses · {{ obj }}{% endblock %}
+{% block page_title %}Payout Addresses — {{ obj }}{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ---------- Page-scoped styles (Admin · Payout Addresses) ---------- */
+  .page-meta{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; margin-bottom:12px;
+  }
+  .page-meta .who{
+    display:flex; align-items:center; gap:12px;
+  }
+  .who .avatar-sm{
+    width:36px; height:36px; border-radius:999px; overflow:hidden; background:#ffe6b3;
+    display:grid; place-items:center; font-weight:800; color:#7c5a00;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+  }
+  .who .names{ display:flex; flex-direction:column; line-height:1.15; }
+  .who .names .name{ font-weight:700; }
+  .who .names .meta{ color:#64748b; font-size:12px; }
+
+  .count-chip{
+    padding:6px 10px; border-radius:999px;
+    background:#eef2ff; color:#3730a3; font-weight:700; font-size:12px;
+    border:1px solid #c7d2fe; white-space:nowrap;
+  }
+
+  .card.table-card{ padding:0; overflow:hidden; }
+  .table-wrap{ overflow-x:auto; }
+  .table{ width:100%; border-collapse:separate; border-spacing:0; }
+  .table thead th{
+    text-align:left; font-size:12px; letter-spacing:.02em; color:#475569;
+    padding:12px; border-bottom:1px solid var(--border); background:#f8fafc;
+  }
+  .table tbody td{
+    padding:12px; border-bottom:1px solid var(--border); vertical-align:top;
+  }
+  .table tbody tr:hover{ background:#f9fbff; }
+
+  .addr{ word-break:break-word; }
+  .mono{
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  }
+
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:999px; font-weight:700; font-size:12px;
+    border:1px solid transparent; background:#f1f5f9; color:#0f172a;
+  }
+  .chip.net{ background:#ecfeff; color:#155e75; border-color:#a5f3fc; }
+
+  .row-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .btn.sm{ padding:8px 12px; font-size:13px; border-radius:10px; }
+
+  /* --------- Mobile: turn rows into cards --------- */
+  @media (max-width: 900px){
+    .page-meta{
+      flex-direction:column; align-items:flex-start; gap:8px;
+    }
+    .table thead{ display:none; }
+    .table tbody, .table tr, .table td{ display:block; width:100%; }
+    .table tbody tr{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:12px;
+      margin:12px var(--page-pad) 0;
+      background:#fff;
+    }
+    .table tbody tr:hover{ background:#fff; }
+    .table tbody td{ border-bottom:0; padding:8px 0; }
+    .table tbody td[data-label]{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:10px;
+    }
+    .table tbody td[data-label]::before{
+      content: attr(data-label);
+      font-weight:700; color:#334155; font-size:12px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Page meta (user + count) -->
+<div class="page-meta">
+  <div class="who">
+    <div class="avatar-sm">
+      {% if obj.avatar %}
+        <img src="{{ obj.avatar.url }}" alt="" style="width:100%;height:100%;object-fit:cover;">
+      {% else %}
+        {{ obj|slice:":1"|upper }}
+      {% endif %}
+    </div>
+    <div class="names">
+      <div class="name">{{ obj }}</div>
+      <div class="meta">User ID: {{ obj.id }}</div>
+    </div>
+  </div>
+  <span class="count-chip">{{ addresses|length }} address{{ addresses|length|pluralize }}</span>
+</div>
+
+<!-- Table -->
+<div class="card table-card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Label</th>
+          <th>Network</th>
+          <th>Address</th>
+          <th>Added</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in addresses %}
+          <tr>
+            <td data-label="#" class="mono">{{ a.id }}</td>
+            <td data-label="Label">{{ a.label|default:"—" }}</td>
+            <td data-label="Network">
+              <span class="chip net">{{ a.network|upper }}</span>
+            </td>
+            <td data-label="Address" class="addr mono">
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span>{{ a.address }}</span>
+                <button class="btn sm copy-btn" type="button" data-copy="{{ a.address }}">Copy</button>
+              </div>
+            </td>
+            <td data-label="Added">
+              {{ a.created_at|date:"Y-m-d H:i" }}
+              <div class="meta" style="color:#64748b; font-size:12px;">{{ a.created_at|timesince }} ago</div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td data-label="Info" colspan="5" style="padding:14px;">
+              <span style="color:#64748b;">No addresses.</span>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Simple copy-to-clipboard for addresses
+  document.querySelectorAll('.copy-btn').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText(btn.dataset.copy || "");
+        btn.textContent = "Copied";
+        setTimeout(()=>btn.textContent = "Copy", 1200);
+      }catch(e){
+        btn.textContent = "Failed";
+        setTimeout(()=>btn.textContent = "Copy", 1200);
+      }
+    });
+  });
+</script>
+{% endblock %}

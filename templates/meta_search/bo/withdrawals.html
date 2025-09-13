@@ -1,0 +1,197 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Withdrawals{% endblock %}
+{% block page_title %}Withdrawals{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ---------- Page-scoped styles (Admin · Withdrawals) ---------- */
+  .messages{ list-style:none; padding:0; margin:0 0 12px; display:grid; gap:8px; }
+  .messages li{
+    padding:10px 12px; border-radius:12px; font-weight:600;
+    border:1px solid var(--border); background:#fff;
+  }
+  .messages li.success{ border-color:#bbf7d0; background:#ecfdf5; color:#065f46; }
+  .messages li.warning{ border-color:#fde68a; background:#fffbeb; color:#92400e; }
+  .messages li.error{ border-color:#fecaca; background:#fef2f2; color:#991b1b; }
+  .messages li.info{ border-color:#bfdbfe; background:#eff6ff; color:#1e40af; }
+
+  .filters.card{
+    padding:14px;
+    display:grid; gap:12px; margin-bottom:12px;
+  }
+  .filters .grid{
+    display:grid; gap:10px;
+    grid-template-columns: 1fr;
+  }
+  .filters label{
+    display:grid; gap:6px; font-weight:600; font-size:13px; color:#334155;
+  }
+  .filters input[type="text"],
+  .filters select{
+    border:1px solid var(--border); border-radius:10px; padding:10px 12px; background:#fff;
+    font:inherit;
+  }
+  .filters .actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .btn.sm{ padding:8px 12px; font-size:13px; border-radius:10px; }
+  .btn.approve{ background:#16a34a; border-color:#16a34a; color:#fff; }
+  .btn.fail{ background:#ef4444; border-color:#ef4444; color:#fff; }
+
+  .table-card{ padding:0; overflow:hidden; }
+  .table{ width:100%; border-collapse:separate; border-spacing:0; }
+  .table thead th{
+    text-align:left; font-size:12px; letter-spacing:.02em; color:#475569;
+    padding:12px; border-bottom:1px solid var(--border); background:#f8fafc;
+  }
+  .table tbody td{
+    padding:12px; border-bottom:1px solid var(--border); vertical-align:top;
+  }
+  .table tbody tr:hover{ background:#f9fbff; }
+
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:999px; font-weight:700; font-size:12px;
+    border:1px solid transparent; background:#f1f5f9; color:#0f172a;
+  }
+  .st-pending{ background:#fffbeb; color:#b45309; border-color:#fde68a; }
+  .st-confirmed{ background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+  .st-failed{ background:#fef2f2; color:#b91c1c; border-color:#fecaca; }
+
+  .mono{ font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  .muted{ color:#64748b; font-size:12px; }
+
+  .row-actions{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+
+  /* --------- Mobile: turn rows into cards --------- */
+  @media (max-width: 900px){
+    .filters .grid{ grid-template-columns: 1fr; }
+    .table thead{ display:none; }
+    .table tbody, .table tr, .table td{ display:block; width:100%; }
+    .table tbody tr{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:12px;
+      margin:12px var(--page-pad) 0;
+      background:#fff;
+    }
+    .table tbody tr:hover{ background:#fff; }
+    .table tbody td{ border-bottom:0; padding:8px 0; }
+    .table tbody td[data-label]{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:10px;
+    }
+    .table tbody td[data-label]::before{
+      content: attr(data-label);
+      font-weight:700; color:#334155; font-size:12px;
+    }
+    .row-actions{ padding-top:4px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  <ul class="messages">
+    {% for m in messages %}
+      <li class="{{ m.tags }}">{{ m }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<form method="get" class="card filters">
+  <div class="grid">
+    <label>Status
+      <select name="status">
+        <option value="pending"   {% if status == 'pending' %}selected{% endif %}>Pending</option>
+        <option value="confirmed" {% if status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+        <option value="failed"    {% if status == 'failed' %}selected{% endif %}>Failed</option>
+        <option value="all"       {% if status == 'all' %}selected{% endif %}>All</option>
+      </select>
+    </label>
+    <label>Search
+      <input type="text" name="q" value="{{ q }}" placeholder="user phone / nickname / email or ID">
+    </label>
+  </div>
+  <div class="actions">
+    <button class="btn primary sm" type="submit">Filter</button>
+  </div>
+</form>
+
+<div class="card table-card">
+  <div class="table-responsive" style="overflow-x:auto;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Amount</th>
+          <th>Fee</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for w in page_obj %}
+          {% with s=w.status|lower %}
+          <tr>
+            <td data-label="#">{{ w.id }}</td>
+
+            <td data-label="User">
+              {{ w.user }}
+              <div class="muted">ID: {{ w.user_id }}</div>
+            </td>
+
+            <td data-label="Amount">
+              <span class="mono">€{{ w.amount_cents|floatformat:-2 }}</span>
+            </td>
+
+            <td data-label="Fee">
+              <span class="mono">€{{ w.fee_cents|floatformat:-2 }}</span>
+            </td>
+
+            <td data-label="Status">
+              <span class="chip
+                {% if s == 'pending' %}st-pending{% elif s == 'confirmed' %}st-confirmed{% elif s == 'failed' %}st-failed{% endif %}">
+                {{ w.get_status_display|default:w.status }}
+              </span>
+            </td>
+
+            <td data-label="Created">
+              {{ w.created_at|date:"Y-m-d H:i" }}
+              <div class="muted">{{ w.created_at|timesince }} ago</div>
+            </td>
+
+            <td data-label="Actions">
+              <div class="row-actions">
+                {% if s == 'pending' %}
+                  <form method="post" action="{% url 'bo_withdrawal_approve' w.id %}">{% csrf_token %}
+                    <button class="btn approve sm" type="submit">Approve</button>
+                  </form>
+                  <form method="post" action="{% url 'bo_withdrawal_fail' w.id %}">{% csrf_token %}
+                    <button class="btn fail sm" type="submit">Fail</button>
+                  </form>
+                {% else %}
+                  <span class="muted">—</span>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endwith %}
+        {% empty %}
+          <tr>
+            <td data-label="Info" colspan="7">
+              <div class="muted">No results.</div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "meta_search/bo/_pagination.html" with page_obj=page_obj %}
+{% endblock %}

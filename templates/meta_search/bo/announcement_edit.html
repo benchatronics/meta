@@ -1,0 +1,15 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Edit Announcement{% endblock %}
+{% block page_title %}Edit Announcement{% endblock %}
+
+{% block content %}
+{% if messages %}<ul class="messages">{% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}</ul>{% endif %}
+
+<form method="post" class="card" style="padding:12px; display:grid; gap:8px;">{% csrf_token %}
+  <label>Title <input type="text" name="title" value="{{ obj.title }}"></label>
+  <label>Body <textarea name="body" rows="8">{{ obj.body }}</textarea></label>
+  <label><input type="checkbox" name="pinned" {% if obj.pinned %}checked{% endif %}> Pinned</label>
+  <label><input type="checkbox" name="is_published" {% if obj.is_published %}checked{% endif %}> Published</label>
+  <button class="btn primary">Save</button>
+</form>
+{% endblock %}

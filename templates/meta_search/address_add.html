@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block title %}Add Payout Address{% endblock %}
+{% block page_title %}Wallet Address{% endblock %}
+
 {% block breadcrumb %}Home / my Wallet / Add Address{% endblock %}
 
 {% block extra_head %}
@@ -160,7 +162,7 @@
               </div>
             {% endif %}
           </div>
-          
+
 
           <!-- Label -->
           <div class="group">
@@ -314,7 +316,7 @@
     const form = document.querySelector('.wdw form');
     const btn  = form ? form.querySelector('button[type="submit"]') : null;
     if (!form || !btn) return;
-  
+
     form.addEventListener('submit', function(){
       // Disable to stop double posts that can trigger constraint races
       btn.disabled = true;
@@ -325,5 +327,5 @@
     });
   })();
   </script>
-  
+
 {% endblock %}

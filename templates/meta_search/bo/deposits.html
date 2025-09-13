@@ -1,0 +1,168 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Deposits{% endblock %}
+{% block page_title %}Deposits{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ===================== Admin · Deposits (page styles) ===================== */
+
+  /* Filters */
+  .filters-form{
+    padding:12px; display:grid; gap:10px; margin-bottom:12px;
+  }
+  .filters-form label{
+    display:grid; gap:6px; font-weight:600; font-size:14px; color:#374151;
+  }
+  .filters-form input[type="text"],
+  .filters-form select{
+    height:40px; padding:0 12px; border:1px solid var(--border); border-radius:10px;
+    background:#fff; font-size:14px;
+  }
+
+  /* Table */
+  .table-card{ padding:0; }
+  .table-responsive{ overflow-x:auto; }
+  .tbl{ width:100%; border-collapse:collapse; }
+  .tbl thead th{
+    text-align:left; padding:12px; font-size:13px; font-weight:700; color:#111827;
+    background:#f8fafc; border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:1; white-space:nowrap;
+  }
+  .tbl td{ padding:12px; border-top:1px solid var(--border); vertical-align:top; }
+
+  .mono{
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+  }
+
+  /* Status pill */
+  .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 10px; border-radius:999px; font-size:12px; font-weight:600;
+    border:1px solid transparent; white-space:nowrap;
+  }
+  .pill.ok{ background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }          /* green */
+  .pill.bad{ background:#fef2f2; color:#991b1b; border-color:#fecaca; }         /* red */
+  .pill.warn{ background:#fffbeb; color:#92400e; border-color:#fde68a; }        /* amber */
+  .pill.info{ background:#eff6ff; color:#1e40af; border-color:#bfdbfe; }        /* blue */
+  .pill.muted{ background:#f3f4f6; color:#374151; border-color:#e5e7eb; }       /* gray */
+
+  /* Actions */
+  .actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .btn.sm{ padding:8px 12px; font-size:12px; border-radius:10px; }
+
+  /* Mobile: transform table rows into stacked cards */
+  @media (max-width: 760px){
+    .table-responsive{ overflow:visible; }
+    .tbl thead{ display:none; }
+    .tbl tbody tr{
+      display:grid; gap:10px; padding:12px;
+      border-top:1px solid var(--border); background:#fff;
+    }
+    .tbl tbody tr:first-child{ border-top:none; }
+    .tbl td{
+      border:none; padding:0; display:flex; gap:10px; align-items:flex-start;
+    }
+    .tbl td::before{
+      content: attr(data-label);
+      flex: 0 0 130px;
+      font-weight:600; color:#6b7280;
+    }
+    .tbl td[data-label="Actions"]{ padding-top:6px; }
+    .actions{ width:100%; }
+    .actions form{ flex:1 1 auto; }
+    .actions .btn{ width:100%; justify-content:center; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
+<form method="get" class="card filters-form">
+  <label>Status
+    <select name="status">
+      <option value="draft"             {% if status == 'draft' %}selected{% endif %}>Draft</option>
+      <option value="awaiting_payment"  {% if status == 'awaiting_payment' %}selected{% endif %}>Awaiting Payment</option>
+      <option value="awaiting_review"   {% if status == 'awaiting_review' %}selected{% endif %}>Awaiting Review</option>
+      <option value="confirmed"         {% if status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+      <option value="failed"            {% if status == 'failed' %}selected{% endif %}>Failed</option>
+      <option value="all"               {% if status == 'all' %}selected{% endif %}>All</option>
+    </select>
+  </label>
+
+  <label>Search
+    <input type="text" name="q" value="{{ q }}" placeholder="user / reference / txid">
+  </label>
+
+  <button class="btn primary" type="submit">Filter</button>
+</form>
+
+<div class="card table-card">
+  <div class="table-responsive">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Amount</th>
+          <th>Reference</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in page_obj %}
+          <tr>
+            <td data-label="#">{{ d.id }}</td>
+            <td data-label="User">{{ d.user }}</td>
+            <td data-label="Amount" class="mono">€{{ d.amount_cents|floatformat:-2 }}</td>
+            <td data-label="Reference">{{ d.reference }}</td>
+            <td data-label="Status">
+              <span class="pill
+                {% if d.status == 'confirmed' or d.status == 'CONFIRMED' %}ok
+                {% elif d.status == 'failed' or d.status == 'FAILED' %}bad
+                {% elif d.status == 'awaiting_review' or d.status == 'AWAITING_REVIEW' %}warn
+                {% elif d.status == 'awaiting_payment' or d.status == 'AWAITING_PAYMENT' %}info
+                {% elif d.status == 'draft' or d.status == 'DRAFT' %}muted
+                {% endif %}
+              ">{{ d.get_status_display|default:d.status }}</span>
+            </td>
+            <td data-label="Created">{{ d.created_at }}</td>
+            <td data-label="Actions">
+              <div class="actions">
+                {% if d.status == 'draft' or d.status == 'awaiting_payment' or d.status == 'DRAFT' or d.status == 'AWAITING_PAYMENT' %}
+                  <form method="post" action="{% url 'bo_deposit_move_to_review' d.id %}">{% csrf_token %}
+                    <button class="btn sm">Move to Review</button>
+                  </form>
+                {% endif %}
+
+                {% if d.status != 'confirmed' and d.status != 'failed' and d.status != 'CONFIRMED' and d.status != 'FAILED' %}
+                  <form method="post" action="{% url 'bo_deposit_confirm' d.id %}">{% csrf_token %}
+                    <button class="btn sm">Confirm</button>
+                  </form>
+                  <form method="post" action="{% url 'bo_deposit_fail' d.id %}">{% csrf_token %}
+                    <button class="btn sm">Fail</button>
+                  </form>
+                {% else %}
+                  <span class="muted">—</span>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7" style="padding:12px;">No results.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "meta_search/bo/_pagination.html" with page_obj=page_obj %}
+{% endblock %}

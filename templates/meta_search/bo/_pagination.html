@@ -1,0 +1,11 @@
+{% if page_obj and page_obj.paginator.num_pages > 1 %}
+<nav class="card" style="margin-top:12px; padding:10px; display:flex; gap:8px; justify-content:center; align-items:center;">
+  {% if page_obj.has_previous %}
+    <a class="btn" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.kind %}&kind={{ request.GET.kind }}{% endif %}">&laquo; Prev</a>
+  {% endif %}
+  <span>Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+    <a class="btn" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.kind %}&kind={{ request.GET.kind }}{% endif %}">Next &raquo;</a>
+  {% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,199 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · User #{{ obj.id }}{% endblock %}
+{% block page_title %}User: {{ obj }}{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ================= Admin · User Detail (page-scoped) ================ */
+
+  /* Messages */
+  .messages{ list-style:none; padding:0; margin:0 0 12px; display:grid; gap:8px; }
+  .messages li{
+    padding:10px 12px; border-radius:12px; border:1px solid var(--border);
+    background:#fff; font-weight:600; font-size:14px;
+  }
+  .messages li.success{ border-color:#bbf7d0; background:#f0fdf4; color:#166534; }
+  .messages li.warning{ border-color:#fde68a; background:#fffbeb; color:#92400e; }
+  .messages li.error{ border-color:#fecaca; background:#fef2f2; color:#7f1d1d; }
+  .messages li.info{ border-color:#bfdbfe; background:#eff6ff; color:#1e3a8a; }
+
+  /* Page grid */
+  .user-grid{
+    display:grid; gap:14px;
+    grid-template-columns: 1.4fr 1fr;  /* main | side */
+    align-items:start;
+  }
+  @media (max-width: 1100px){
+    .user-grid{ grid-template-columns: 1fr; }
+  }
+
+  /* Card bodies */
+  .card.pad{ padding:16px; }
+
+  /* Profile block */
+  .profile-head{
+    display:flex; align-items:center; gap:14px; margin-bottom:10px;
+  }
+  .profile-avatar{
+    width:56px; height:56px; border-radius:50%; overflow:hidden; background:#ffe6b3;
+    box-shadow:0 6px 16px rgba(0,0,0,.12);
+  }
+  .profile-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .profile-name{ font-size:18px; font-weight:700; }
+
+  /* Key/Value grid */
+  .kv{ display:grid; grid-template-columns: 160px 1fr; row-gap:8px; column-gap:14px; }
+  .kv dt{ font-weight:600; color:#111827; }
+  .kv dd{ margin:0; color:#111; }
+  @media (max-width: 520px){
+    .kv{ grid-template-columns: 1fr; }
+    .kv dt{ color:#6b7280; }
+  }
+
+  /* Quick links row */
+  .quick-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+
+  /* Forms */
+  .form-grid{ display:grid; gap:10px; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-weight:600; font-size:13px; color:#111827; }
+  .input, .textarea{
+    width:100%; border:1px solid var(--border); background:#fff; border-radius:12px;
+    padding:10px 12px; font:inherit;
+  }
+  .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  .actions .btn{ min-width:120px; }
+
+  /* Two cards side-by-side for wallet actions (desktop) */
+  .wallet-grid{ display:grid; gap:14px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 820px){ .wallet-grid{ grid-template-columns: 1fr; } }
+
+  /* Lists */
+  .list{ margin:0; padding:0; list-style:none; display:grid; gap:8px; }
+  .list li{ padding:10px 12px; border:1px solid var(--border); border-radius:12px; background:#fff; }
+
+  /* Section title */
+  .h3{ margin:4px 0 10px; font-size:16px; font-weight:700; }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+  <ul class="messages">{% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}</ul>
+{% endif %}
+
+<div class="user-grid">
+
+  <!-- ===== Main column ===== -->
+  <section class="card pad">
+    <div class="profile-head">
+      <div class="profile-avatar">
+        {% static 'meta_search/images/avatar-placeholder.png' as avatar_placeholder %}
+        {% if obj.avatar %}
+          <img src="{{ obj.avatar.url }}" alt="Avatar" onerror="this.src='{{ avatar_placeholder }}'">
+        {% elif obj.avatar_url %}
+          <img src="{{ obj.avatar_url }}" alt="Avatar" onerror="this.src='{{ avatar_placeholder }}'">
+        {% else %}
+          <img src="{{ avatar_placeholder }}" alt="Avatar">
+        {% endif %}
+      </div>
+      <div>
+        <div class="profile-name">{{ obj }}</div>
+        <div style="color:#6b7280; font-size:13px;">User ID: {{ obj.id }}</div>
+      </div>
+    </div>
+
+    <dl class="kv">
+      <dt>Phone</dt><dd>{{ obj.phone|default:"—" }}</dd>
+      <dt>Email</dt><dd>{{ obj.email|default:"—" }}</dd>
+      <dt>Joined</dt><dd>{{ obj.date_joined }}</dd>
+    </dl>
+
+    <div class="quick-actions">
+      <a class="btn" href="{% url 'bo_wallet_txns' obj.id %}">Wallet Txns</a>
+      <a class="btn" href="{% url 'bo_payout_addresses' obj.id %}">Payout Addresses</a>
+    </div>
+  </section>
+
+  <!-- ===== Side column ===== -->
+  <aside class="card pad">
+    <div class="h3">Safety</div>
+    <div class="actions">
+      <form method="post" action="{% url 'bo_user_unblock' obj.id %}">{% csrf_token %}
+        <button class="btn">Unblock</button>
+      </form>
+      <form method="post" action="{% url 'bo_user_clear_txpin' obj.id %}">{% csrf_token %}
+        <button class="btn">Clear Withdraw PIN</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- ===== Wallet actions ===== -->
+  <section class="wallet-grid">
+    <div class="card pad">
+      <div class="h3">Wallet — Credit</div>
+      <form method="post" action="{% url 'bo_user_wallet_credit' obj.id %}" class="form-grid">{% csrf_token %}
+        <div class="field">
+          <label for="credit_amount">Amount (cents)</label>
+          <input id="credit_amount" class="input" type="number" name="amount_cents" min="1" required>
+        </div>
+        <div class="field">
+          <label for="credit_memo">Memo</label>
+          <input id="credit_memo" class="input" type="text" name="memo" placeholder="Manual credit">
+        </div>
+        <div class="field">
+          <label for="credit_ext">External Ref</label>
+          <input id="credit_ext" class="input" type="text" name="external_ref" placeholder="">
+        </div>
+        <div class="actions">
+          <button class="btn">Credit</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card pad">
+      <div class="h3">Wallet — Debit</div>
+      <form method="post" action="{% url 'bo_user_wallet_debit' obj.id %}" class="form-grid">{% csrf_token %}
+        <div class="field">
+          <label for="debit_amount">Amount (cents)</label>
+          <input id="debit_amount" class="input" type="number" name="amount_cents" min="1" required>
+        </div>
+        <div class="field">
+          <label for="debit_memo">Memo</label>
+          <input id="debit_memo" class="input" type="text" name="memo" placeholder="Manual debit">
+        </div>
+        <div class="field">
+          <label for="debit_ext">External Ref</label>
+          <input id="debit_ext" class="input" type="text" name="external_ref" placeholder="">
+        </div>
+        <div class="actions">
+          <button class="btn">Debit</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  {% if pending_withdrawals %}
+    <section class="card pad">
+      <div class="h3">Pending Withdrawals</div>
+      <ul class="list">
+        {% for w in pending_withdrawals %}
+          <li>#{{ w.id }} · €{{ w.amount_cents|floatformat:-2 }} · {{ w.created_at }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  {% if deposits_recent %}
+    <section class="card pad">
+      <div class="h3">Recent Deposits</div>
+      <ul class="list">
+        {% for d in deposits_recent %}
+          <li>#{{ d.id }} · €{{ d.amount_cents|floatformat:-2 }} · {{ d.status }} · {{ d.created_at }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+</div>
+{% endblock %}

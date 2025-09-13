@@ -12,8 +12,7 @@ import time
 from datetime import timedelta
 from decimal import Decimal
 from io import BytesIO
-
-
+import uuid
 #next url
 
 from urllib.parse import urlencode
@@ -65,18 +64,21 @@ from .models import (
     AddressType, Currency,
     DepositAddress, DepositRequest, Network,
     Hotel, Favorite, InfoPage, Announcement,
-    Task, TaskPhase, TaskStatus, SystemSettings, TaskTemplate,
 )
 from .services import confirm_deposit
 
 # Task helpers (standardize on .task, not .tasks)
-from .task import (
-    account_snapshot, do_next_task, count_approved,
-    detect_phase, pick_template_for_phase, latest_vip_task,
-    complete_trial_task, complete_normal_task,
-    vip_deposit_shortfall_cents,
-)
+#from .task import (
+   # account_snapshot,
 
+    #count_approved,
+    #detect_phase,
+    #pick_template_for_phase,
+    #latest_vip_task,
+    #complete_trial_task,
+   # complete_normal_task,
+    #vip_deposit_shortfall_cents,
+#)
 
 
 def _get_next_url(request, default_name="task_take"):
@@ -90,6 +92,15 @@ def _qs_next(request):
     return f"?{urlencode({'next': nxt})}" if nxt else ""
 
 
+
+def rewards(request):
+
+    ctx = {
+        "active_page": "rewards",
+    }
+    return render(request, "meta_search/rewards.html", ctx)
+
+
 #witdrawal pin
 @login_required
 def set_tx_pin(request):
@@ -98,12 +109,12 @@ def set_tx_pin(request):
         if form.is_valid():
             request.user.set_tx_pin(form.cleaned_data["tx_pin1"])
             messages.success(request, _("Withdrawal password set."))
-            return redirect("profile_settings")  # or wherever
+            return redirect("withdrawal")  # or wherever you fit go
     else:
         form = SetTxPinForm(user=request.user)
     return render(request, "meta_search/set_tx_pin.html", {"form": form})
 
-#change witdrawal pin 
+#change witdrawal pin
 @login_required
 def change_tx_pin(request):
     if not request.user.has_tx_pin():
@@ -115,14 +126,14 @@ def change_tx_pin(request):
         if form.is_valid():
             request.user.set_tx_pin(form.cleaned_data["new_tx_pin1"])
             messages.success(request, _("Withdrawal password updated."))
-            return redirect("profile_settings")
+            return redirect("withdrawal")
     else:
         form = ChangeTxPinForm(user=request.user)
     return render(request, "meta_search/change_tx_pin.html", {"form": form})
 
 
 
-#profile settings 
+#profile settings
 @login_required
 def profile_settings(request):
     user = request.user
@@ -609,7 +620,7 @@ def user_dashboard(request):
         "profile_cta": profile_cta,
         "user_avatar": avatar_url,  # handy for templates that expect it
     }
-    return render(request, "meta_search/user_dashboard.html", context)
+    return render(request, "meta_search/user_dashboard.html", {**context, "active_page":  "home"})
 
 
 # -----------------------------
@@ -643,8 +654,136 @@ def toggle_favorite(request, slug):
 # -----------------------------
 # Wallet / Withdrawal
 # -----------------------------
+from .models import WithdrawalRequest, WithdrawalStatus, WalletTxn
+
+WITHDRAW_KINDS = ["WITHDRAW", "PAYOUT", "CASH_OUT"]  # cover all your withdrawal kinds
+
+from datetime import timedelta
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import WalletTxn, WithdrawalRequest, WithdrawalStatus  # adjust if needed
+
+@login_required
 def wallet_view(request):
-    return render(request, "meta_search/wallet.html", {"active_page": "wallet"})
+    w = request.user.wallet
+
+    # --- Base txns (DB) - defensive newest-first ordering ---
+    txns_all = w.txns.order_by('-created_at', '-id')
+
+    ctx = {
+        "txns": txns_all,                                   # used by tabs
+        "txns_all": txns_all,
+        "txns_deposit": txns_all.filter(kind__iexact="DEPOSIT"),
+        # include both ADJUST & COMMISSION (template treats both as commission)
+        "txns_commission": txns_all.filter(kind__in=["ADJUST", "COMMISSION"]),
+    }
+
+    # --------- WITHDRAWALS: combine ledger + requests, no duplicates ---------
+    # 1) Ledger withdrawals (already negative cents)
+    ledger_qs = (
+        txns_all
+        .filter(kind__in=WITHDRAW_KINDS)
+        .values("created_at", "amount_cents", "bucket", "id", "external_ref")
+    )
+
+    ledger_rows = []
+    ledger_refs = set()  # for external_ref-based de-dup
+
+    for r in ledger_qs:
+        ledger_rows.append({
+            "id": r["id"],                                  # <-- for modal
+            "source": "ledger",
+            "created_at": r["created_at"],
+            "amount_cents": int(r["amount_cents"]),         # negative debits
+            "status": "confirmed",
+            "bucket": (r["bucket"] or "CASH"),
+            "seq": ("L", r["id"]),                          # tiebreaker for stable sort
+        })
+        if r["external_ref"]:
+            ledger_refs.add(r["external_ref"])
+
+    # 2) Requests: include pending/failed always; confirmed only if no matching ledger
+    req_rows = []
+    for r in WithdrawalRequest.objects.filter(user=request.user).values(
+        "id", "created_at", "amount_cents", "status"
+    ):
+        status = r["status"]
+        amount_cents_pos = int(r["amount_cents"])
+        amount_cents_as_debit = -amount_cents_pos
+        created_at = r["created_at"]
+
+        include = True
+        if status == WithdrawalStatus.CONFIRMED:
+            # A) external_ref match (preferred if you set external_ref=f"wd:{wr.id}" on the ledger)
+            if f"wd:{r['id']}" in ledger_refs:
+                include = False
+            else:
+                # B) amount+time window match (±10 min) to avoid dup if external_ref wasn't set
+                lo = created_at - timedelta(minutes=10)
+                hi = created_at + timedelta(minutes=10)
+                exists_close = WalletTxn.objects.filter(
+                    wallet=w,
+                    amount_cents=amount_cents_as_debit,
+                    created_at__range=(lo, hi),
+                    kind__in=WITHDRAW_KINDS,
+                ).exists()
+                if exists_close:
+                    include = False
+
+        if include:
+            req_rows.append({
+                "id": r["id"],                               # <-- for modal
+                "source": "request",
+                "created_at": created_at,
+                "amount_cents": amount_cents_as_debit,      # show as debit
+                "status": status,                            # pending/confirmed/failed
+                "bucket": "CASH",
+                "seq": ("R", r["id"]),                       # tiebreaker
+            })
+
+    # Combined withdrawals (newest-first; stable by seq)
+    withdrawals_combined = ledger_rows + req_rows
+    withdrawals_combined.sort(key=lambda x: (x["created_at"], x["seq"]), reverse=True)
+    ctx["withdrawals_combined"] = withdrawals_combined
+    # -----------------------------------------------------------------------
+
+    # === ONE merged stream for the "ALL" tab (newest-first across everything) ===
+    all_rows = []
+
+    # Normalize DB txns (they already include ledger withdrawals)
+    for t in txns_all:
+        kind_lc = (t.kind or "").lower()
+        all_rows.append({
+            "obj_id": t.id,                                  # <-- for modal
+            "source": "txn",
+            "kind_lc": kind_lc,
+            "bucket": (t.bucket or "cash").lower(),
+            "created_at": t.created_at,
+            "amount_cents": int(t.amount_cents),
+            "status": "confirmed",
+            "seq": ("T", t.id),                              # tiebreaker
+        })
+
+    # Add request withdrawals (only requests to avoid duplicating ledger)
+    for r in withdrawals_combined:
+        if r["source"] == "request":
+            all_rows.append({
+                "obj_id": r["id"],                           # WithdrawalRequest id
+                "source": "request",
+                "kind_lc": "withdraw",
+                "bucket": (r.get("bucket") or "cash").lower(),
+                "created_at": r["created_at"],
+                "amount_cents": int(r["amount_cents"]),
+                "status": r.get("status"),
+                "seq": r["seq"],                             # keep same tiebreaker
+            })
+
+    # Final newest-first sort (stable by seq)
+    all_rows.sort(key=lambda x: (x["created_at"], x["seq"]), reverse=True)
+    ctx["all_rows"] = all_rows
+    # =======================================================================
+
+    return render(request, "meta_search/wallet.html", {**ctx, "active_page": "wallet"})
 
 
 def cents(d: Decimal) -> int:
@@ -665,11 +804,11 @@ def cents(amount) -> int:
 
 #for fixed currency
 def resolve_currency(method: str, selected_addr) -> str:
-    
+
     #Pick a valid Currency value that actually exists on your Currency TextChoices.
     #Tries multiple common aliases and falls back safely.
     #Returns the *value* to store (e.g. 'ETH', 'USDT_TRC20', etc.).
-    
+
     # Build a set of valid values and attribute names present on Currency
     # For Django TextChoices: members like Currency.ETH exist and their .value is the DB value.
     valid_attr_names = {m.name for m in Currency}           # e.g. {'EUR','ETH','USDT_TRC20'}
@@ -798,6 +937,15 @@ def cents(amount) -> int:
     return int((Decimal(str(amount)) * Decimal("100")).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
 
 
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+
+# your existing imports …
+# from .forms import WithdrawalForm
+# from .models import Wallet, WithdrawalRequest, PayoutAddress, Currency, cents
+# ADD THIS:
+from .models import ensure_task_progress  # STEP 2/3 need this
+
 @never_cache
 @require_http_methods(["GET", "POST"])
 @login_required
@@ -806,7 +954,10 @@ def withdrawal(request):
     addresses = request.user.payout_addresses.order_by("-created_at")
 
     selected_id = request.GET.get("address")
-    selected = addresses.filter(id=selected_id).first() if selected_id else addresses.filter(is_verified=True).first()
+    selected = (
+        addresses.filter(id=selected_id).first()
+        if selected_id else addresses.filter(is_verified=True).first()
+    )
 
     # Fiat options
     currency_options = [{"value": c.value, "label": c.label} for c in Currency]
@@ -819,7 +970,7 @@ def withdrawal(request):
 
         # ---- One-time form token check (prevents back-button re-submit) ----
         posted_token = request.POST.get("wdw_token")
-        session_token = request.session.pop("wdw_token", None)   # consume exactly once
+        session_token = request.session.pop("wdw_token", None)  # consume exactly once
         if not posted_token or not session_token or posted_token != session_token:
             messages.error(request, "This withdrawal form expired or was already submitted. Please start again.")
             return redirect("withdrawal")
@@ -828,7 +979,7 @@ def withdrawal(request):
         if form.is_valid():
             amt = form.cleaned_data["amount"]
             fiat_currency = form.cleaned_data.get("currency") or DEFAULT_FIAT
-            method = request.POST.get("method")
+            method = request.POST.get("method") or "crypto"
 
             addr_id = form.cleaned_data.get("address_id") or (selected.id if selected else None)
             if not addr_id:
@@ -842,7 +993,7 @@ def withdrawal(request):
 
             amount_cents = cents(amt)
 
-            # ----- Withdrawal PIN checks (already in your flow) -----
+            # ----- Withdrawal PIN checks -----
             tx_pin = (request.POST.get("tx_pin") or "").strip()
             if not request.user.has_tx_pin():
                 messages.error(request, "Set your withdrawal password first.")
@@ -855,7 +1006,7 @@ def withdrawal(request):
                 messages.error(request, "Incorrect withdrawal password.")
                 return redirect("withdrawal")
             request.user.register_tx_pin_success()
-            # --------------------------------------------------------
+            # ---------------------------------
 
             # Resolve final currency value safely
             try:
@@ -877,6 +1028,14 @@ def withdrawal(request):
                 messages.info(request, "We already received a similar withdrawal a moment ago.")
                 return redirect("withdrawal_success")
             # -------------------------------------------------------------------
+
+            # ======================= STEP 2: gate by cycles =======================
+            prog = ensure_task_progress(request.user)
+            ok, why_not = prog.can_withdraw()
+            if not ok:
+                messages.error(request, why_not or "Withdrawals are not available yet.")
+                return redirect("withdrawal")
+            # =====================================================================
 
             # ----- Atomic wallet update + request creation -----
             with transaction.atomic():
@@ -900,12 +1059,18 @@ def withdrawal(request):
                 w.pending_cents += amount_cents
                 w.balance_cents -= amount_cents
                 w.save()
-            # ---------------------------------------------------
+
+                # ===================== STEP 3: record the cycle =====================
+                # If you prefer to mark only on *confirmed* payout, move this line to
+                # whatever handler flips status to "confirmed".
+                prog.mark_withdraw_done()
+                # ====================================================================
 
             messages.success(request, "Withdrawal submitted.")
             return redirect("withdrawal_success")
         else:
             messages.error(request, "Please correct the errors below.")
+
     else:
         form = WithdrawalForm(initial={"currency": DEFAULT_FIAT})
         form.fields["currency"].choices = currency_choices
@@ -916,6 +1081,7 @@ def withdrawal(request):
         wdw_token = token
         # ---------------------------------------------------
 
+    # Build context ONCE (no duplicates)
     ctx = {
         "form": form,
         "method_verified": any(a.is_verified for a in addresses),
@@ -923,11 +1089,38 @@ def withdrawal(request):
         "selected": selected,
         "wallet": wallet,
         "currency_options": currency_options,
-        "fiat_symbol": {"EUR":"€","USD":"$","GBP":"£"}.get(form["currency"].value() or DEFAULT_FIAT, "€"),
+        "fiat_symbol": {"EUR": "€", "USD": "$", "GBP": "£"}.get(form["currency"].value() or DEFAULT_FIAT, "€"),
         "has_tx_pin": request.user.has_tx_pin(),
         "wdw_token": locals().get("wdw_token", ""),  # for the template hidden input
+        # optional: keep the chosen method sticky in the UI
+        "method": request.POST.get("method") if request.method == "POST" else "crypto",
     }
+
+    # Add the policy flags for the template
+    prog = ensure_task_progress(request.user)
+    ok, why_not = prog.can_withdraw()
+
+    # Has the user ever withdrawn? Prefer progress field set by prog.mark_withdraw_done()
+    has_withdrawn_before = bool(getattr(prog, "last_withdraw_cycle", 0))
+
+    # Fallback to history lookup if you need it (uncomment if desired and you have the import):
+    # if not has_withdrawn_before:
+    #     has_withdrawn_before = WithdrawalRequest.objects.filter(
+    #         user=request.user,
+    #         status__in=["pending", "awaiting_review", "processing", "confirmed"]
+    #     ).exists()
+
+    ctx.update({
+        "withdraw_locked": not ok,
+        "withdraw_reason": why_not or "",
+        "withdraw_cycles_remaining": getattr(prog, "cycles_left_after_last_withdraw", None),
+        # 👇 show the one-time policy popup ONLY if they have withdrawn before and are currently locked
+        "show_withdraw_policy_popup": has_withdrawn_before and (not ok),
+    })
+
     return render(request, "meta_search/withdrawal.html", ctx)
+
+
 
 @login_required
 def add_address(request):
@@ -1170,7 +1363,7 @@ def deposit_webhook_confirm(request):
     return JsonResponse({"ok": True, "confirmed": confirmed_now, "status": dep.status})
 
 
-#language 
+#language
 def language_settings(request):
     return render(request, "meta_search/language.html", {
         "active_page": "settings",
@@ -1221,7 +1414,7 @@ def info_page(request, key):
     })
 """
 
-    
+
 def announcements_list(request):
     items = Announcement.objects.active()
     return render(request, "meta_search/announcements.html", {
@@ -1268,207 +1461,4 @@ def info_page(request, key: str):
     })
 
 
-#task view
-@login_required
-@require_POST
-def do_next_task_view(request):
-    """
-    Legacy one-click path that auto-completes Trial/Normal.
-    If user is in VIP phase, we do NOT auto-complete; redirect to task_take.
-    """
-    phase_now = detect_phase(request.user)
 
-    if phase_now == TaskPhase.VIP:
-        messages.info(request, "VIP phase active. Open your VIP task to deposit & submit.")
-        return redirect("task_take")
-
-    try:
-        phase, task, _ = do_next_task(request.user)  # Trial/Normal handled inside
-        if task:
-            messages.success(request, f"Task completed in {phase.capitalize()} phase (ID {task.id}).")
-        else:
-            messages.info(request, "Nothing to do right now.")
-    except Exception as e:
-        messages.error(request, str(e) or "Unable to complete task.")
-
-    return redirect("task_dashboard")
-
-
-@login_required
-@require_http_methods(["GET"])
-def task_dashboard(request):
-    snap = account_snapshot(request.user)
-    s = SystemSettings.current()
-
-    trial_done   = count_approved(request.user, TaskPhase.TRIAL)
-    normal_done  = count_approved(request.user, TaskPhase.NORMAL)
-    normal_limit = s.normal_task_limit
-    normal_left  = max(normal_limit - normal_done, 0)
-
-    tasks = (
-        Task.objects
-        .filter(user=request.user)
-        .select_related("template")
-        .order_by("-created_at")[:100]
-    )
-
-    # Bell badge
-    if snap["phase"] == TaskPhase.TRIAL:
-        badge = max(25 - trial_done, 0)
-    elif snap["phase"] == TaskPhase.NORMAL:
-        badge = normal_left
-    else:
-        badge = 0
-
-    # KPI cards (computed server-side)
-    kpis = [
-        {"label": "Total Asset", "icon": "💼", "value": snap["total_assets_eur"]},
-        {"label": "Asset",       "icon": "🪙", "value": snap["asset_eur"]},
-        {"label": "Dividends",   "icon": "💸", "value": snap["dividends_eur"]},
-        {"label": "Processing",  "icon": "⚙️", "value": snap["processing_eur"]},
-    ]
-
-    ctx = {
-        "snapshot": snap,
-        "phase": snap["phase"],
-        "trial_done": trial_done,
-        "trial_total": 25,
-        "normal_done": normal_done,
-        "normal_limit": normal_limit,
-        "normal_left": normal_left,
-        "tasks": tasks,
-        "badge": badge,
-        "kpis": kpis,
-        "active_page": "task",
-    }
-    return render(request, "meta_search/task_dashboard.html", ctx)
-
-
-@login_required
-@require_http_methods(["GET"])
-def task_take(request):
-    """
-    Show a single task the user can do now.
-    TRIAL/NORMAL: show a random published template (exclude recently used).
-    VIP: show latest assigned VIP task; if deposit shortfall > 0, show deposit CTA.
-    """
-    user = request.user
-    s = SystemSettings.current()
-    phase = detect_phase(user)
-
-    ctx = {"phase": phase, "awaiting_vip": False}
-
-    if phase == TaskPhase.TRIAL:
-        tpl = pick_template_for_phase(TaskPhase.TRIAL, user=user)   # <-- pass user for randomness
-        ctx.update({
-            "tpl": tpl,
-            "title": (tpl.name if tpl else "Trial Task"),
-            "subtext": (f"{(tpl.city+', ') if (tpl and tpl.city) else ''}{tpl.country}" if tpl else "Complete this trial task to learn the flow"),
-            "image": (tpl.cover_src if tpl else "/static/img/placeholder.png"),
-            "rating": (tpl.score if tpl else 4.7),
-            "label": (tpl.get_label_display() if tpl else "Perfect"),
-            "order_code": (tpl.order_code if tpl else "TRIAL-AUTO"),
-            "order_date": (tpl.order_date or timezone.now().date()) if tpl else timezone.now().date(),
-            "country": (tpl.country if tpl else "—"),
-            "worth_cents": 0,
-            "commission_cents": s.trial_commission_cents,
-            "deposit_shortfall_cents": 0,
-            "open_deposit_modal": False,
-        })
-
-    elif phase == TaskPhase.NORMAL:
-        tpl = pick_template_for_phase(TaskPhase.NORMAL, user=user)  # <-- pass user
-        worth = s.normal_worth_cents or (tpl.worth_cents if tpl else 0)
-        ctx.update({
-            "tpl": tpl,
-            "title": (tpl.name if tpl else "Normal Task"),
-            "subtext": (f"{(tpl.city+', ') if (tpl and tpl.city) else ''}{tpl.country}" if tpl else "Complete a normal task"),
-            "image": (tpl.cover_src if tpl else "/static/img/placeholder.png"),
-            "rating": (tpl.score if tpl else 4.6),
-            "label": (tpl.get_label_display() if tpl else "Good"),
-            "order_code": (tpl.order_code if tpl else "NORM-AUTO"),
-            "order_date": (tpl.order_date or timezone.now().date()) if tpl else timezone.now().date(),
-            "country": (tpl.country if tpl else "—"),
-            "worth_cents": worth,
-            "commission_cents": s.normal_commission_cents,
-            "deposit_shortfall_cents": 0,
-            "open_deposit_modal": False,
-        })
-
-    else:  # VIP
-        vip = latest_vip_task(user)
-        if vip and vip.status in (TaskStatus.PENDING, TaskStatus.IN_PROGRESS):
-            tpl = vip.template
-            shortfall = vip_deposit_shortfall_cents(user)
-
-            ctx.update({
-                "tpl": tpl,
-                "title": (tpl.name if tpl else "VIP Task"),
-                "subtext": (f"{(tpl.city+', ') if (tpl and tpl.city) else ''}{tpl.country}" if tpl else "Complete your VIP task"),
-                "image": (tpl.cover_src if tpl else "/static/img/placeholder.png"),
-                "rating": (tpl.score if tpl else 4.9),
-                "label": (tpl.get_label_display() if tpl else "Perfect"),
-                "order_code": (tpl.order_code if (tpl and tpl.order_code) else f"VIP-{vip.id}"),
-                "order_date": (tpl.order_date or vip.created_at.date()) if tpl else vip.created_at.date(),
-                "country": (tpl.country if tpl else "—"),
-                "worth_cents": vip.worth_cents,
-                "commission_cents": vip.commission_cents,
-                "vip_task": vip,
-
-                # deposit UI flags
-                "deposit_shortfall_cents": shortfall,
-                "open_deposit_modal": (shortfall > 0),
-            })
-        else:
-            ctx["awaiting_vip"] = True
-
-    return render(request, "meta_search/task_take.html", ctx)
-
-
-@login_required
-@require_POST
-def task_submit(request):
-    """
-    Handle the Submit button:
-      - TRIAL → create+approve trial task
-      - NORMAL → create+approve normal task
-      - VIP → if deposit shortfall > 0: block & send to deposit; else mark SUBMITTED
-    """
-    user = request.user
-    phase = detect_phase(user)
-    idem = f"{phase.lower()}-{user.id}-{int(time.time()*1000)}"
-
-    try:
-        if phase == TaskPhase.TRIAL:
-            complete_trial_task(user, idempotency_key=idem)
-            messages.success(request, "Trial task completed.")
-
-        elif phase == TaskPhase.NORMAL:
-            complete_normal_task(user, idempotency_key=idem)
-            messages.success(request, "Normal task completed.")
-
-        else:
-            vip = latest_vip_task(user)
-            if not vip or vip.status not in (TaskStatus.PENDING, TaskStatus.IN_PROGRESS):
-                messages.info(request, "No active VIP task assigned yet.")
-                return redirect("task_take")
-
-            # HARD GUARD: require deposit before allowing submit
-            shortfall = vip_deposit_shortfall_cents(user)
-            if shortfall > 0:
-                messages.error(
-                    request,
-                    "You must deposit the required amount before submitting this VIP task."
-                )
-                return redirect("deposit")  # your deposit landing route
-
-            # OK to submit
-            vip.status = TaskStatus.SUBMITTED
-            vip.submitted_at = timezone.now()
-            vip.save(update_fields=["status", "submitted_at"])
-            messages.success(request, "VIP task submitted. Await admin approval.")
-
-    except Exception as e:
-        messages.error(request, str(e) or "Unable to submit task.")
-
-    return redirect("task_dashboard")

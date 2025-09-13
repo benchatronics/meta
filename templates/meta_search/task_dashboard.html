@@ -56,16 +56,33 @@
     </div>
 
     <p class="reward-today">
-      {% if phase == 'TRIAL' %}
-        Order received today: <strong>{{ trial_done }}/{{ trial_total }}</strong>
-      {% elif phase == 'NORMAL' %}
-        Normal tasks left: <strong>{{ normal_left }}</strong>
+      {% if snapshot.is_blocked %}
+        <strong>Locked:</strong> {{ block_reason|default:"You have completed your trial. Please contact customer care." }}
       {% else %}
-        VIP phase active
+        {% if badge and badge|add:0 > 0 %}
+          Tasks available: <strong>{{ badge }}</strong>
+        {% else %}
+          You’re up to date. Click below to get your next task.
+        {% endif %}
       {% endif %}
     </p>
 
-    <a class="task-cta" href="{% url 'task_take' %}">Click to get your task</a>
+    {# CTA: POST to do_next_task, disabled if blocked #}
+    <form method="post" action="{% url 'do_next_task' %}" class="task-cta-wrap">
+      {% csrf_token %}
+      <button class="task-cta"
+              type="submit"
+              {% if cta_disabled %}disabled title="{{ block_reason }}"{% endif %}>
+        {% if cta_disabled %}
+          Locked — contact support
+        {% else %}
+          Click to get your task
+        {% endif %}
+        {% if badge and not cta_disabled %}
+          <span class="cta-badge">{{ badge }}</span>
+        {% endif %}
+      </button>
+    </form>
   </section>
 
   {# ===== MOBILE FILTER TABS ===== #}
@@ -97,7 +114,6 @@
     <div class="tx-list" id="mobileList">
       {% if tasks %}
         {% for t in tasks %}
-          
           {% if t.get_status_display == 'Approved' %}
             {% with mapped_status='Completed' tone='ok' %}
               <article class="tx-card" data-status="{{ mapped_status }}">
@@ -128,7 +144,7 @@
               </article>
             {% endwith %}
 
-          {% elif t.get_status_display == 'Submitted' or t.get_status_display == 'In Progress' %}
+          {% elif t.get_status_display == 'Submitted' or t.get_status_display == 'In Progress' or t.get_status_display == 'Pending' %}
             {% with mapped_status='Processing' tone='warn' %}
               <article class="tx-card" data-status="{{ mapped_status }}">
                 <div class="tx-top">
@@ -223,7 +239,7 @@
                 </tr>
               {% endwith %}
 
-            {% elif t.get_status_display == 'Submitted' or t.get_status_display == 'In Progress' %}
+            {% elif t.get_status_display == 'Submitted' or t.get_status_display == 'In Progress' or t.get_status_display == 'Pending' %}
               {% with mapped_status='Processing' pill='is-warn' %}
                 <tr data-status="{{ mapped_status }}">
                   <td>{% if t.template and t.template.name %}{{ t.template.name }}{% else %}Task #{{ t.id }}{% endif %}</td>
@@ -256,8 +272,8 @@
     </div>
   </section>
 
-  {# ===== Trial-limit modal (unchanged) ===== #}
-  {% if trial_done|default:0 >= trial_total|default:25 %}
+  {# ===== Trial-limit modal (only when blocked after finishing trial) ===== #}
+  {% if show_congrats %}
     <div id="trial-overlay" class="modal-overlay"></div>
     <section id="trial-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="trial-modal-title">
       <button class="modal-close" type="button" aria-label="Close" onclick="closeTrialModal()">×</button>
@@ -270,8 +286,8 @@
           </svg>
         </span>
       </div>
-      <h3 id="trial-modal-title" class="modal-title">Oh No!</h3>
-      <p class="modal-text">You have completed 25 orders. Please contact customer service for assistance.</p>
+      <h3 id="trial-modal-title" class="modal-title">Trial Complete</h3>
+      <p class="modal-text">You’ve completed all trial tasks. Please contact customer care to continue.</p>
       <a class="modal-btn" href="/customer-care/">Customer care</a>
     </section>
   {% endif %}
@@ -324,8 +340,8 @@
       setBar(); filterMobile();
     })();
 
-    // Trial modal visibility
-    {% if trial_done|default:0 >= trial_total|default:25 %}
+    // Trial modal visibility (only when show_congrats true)
+    {% if show_congrats %}
     (function () {
       const key = "trialDoneShown-{{ request.user.id|default:'anon' }}";
       if (!localStorage.getItem(key)) {

@@ -24,14 +24,25 @@ html,body{height:100%;margin:0;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans
 .left-content .underline{width:80px;height:4px;border-radius:999px;background:#fff}
 .home-area{position:absolute;left:20px;bottom:20px;z-index:2;display:flex;gap:12px;align-items:center}
 
-/* Rectangular primary back button */
+/* ---------- ICON HELPERS (SVG) ---------- */
+.ic{display:inline-block;width:1em;height:1em;color:inherit}
+.ic-18{width:18px;height:18px}
+/* Mirror any right-arrow/exit icon to act as "Back" */
+.ic-back{transform:scaleX(-1)}
+
+/* Rectangular primary back button (SVG-based) */
 .back-btn-rect{
   height:44px;padding:0 14px;border-radius:6px;
   display:flex;align-items:center;justify-content:center;
-  background:#1d5cff;border:none;text-decoration:none
+  background:#1d5cff;border:none;text-decoration:none;color:#fff;
 }
-.back-btn-rect i{color:#fff;font-size:16px}
-.home-link{color:#fff;font-weight:600;text-decoration:none}
+.back-btn-rect svg{width:18px;height:18px;display:block}
+
+/* Home link shows icon + text inline */
+.home-link{
+  color:#fff;font-weight:600;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
+}
 .home-link:hover{text-decoration:underline}
 
 /* RIGHT panel – Option 1 (subtle dim) */
@@ -87,25 +98,34 @@ html,body{height:100%;margin:0;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans
   border-right:1px solid #e5e7eb;padding-right:8px
 }
 
-/* Left lock + eye */
+/* Left lock + eye (SVG-based) */
 .has-left-ic{padding-left:38px;position:relative}
 .left-ic{
   position:absolute;left:12px;top:50%;transform:translateY(-50%);
-  width:18px;height:18px;color:#6b7280;opacity:.75;pointer-events:none
+  width:18px;height:18px;color:#6b7280;opacity:.85;pointer-events:none
 }
+
+/* Eye toggle button uses two SVGs (eye / eye-off). No emoji. */
 .eye-btn{
   width:28px;height:28px;border-radius:50%;
   border:1px solid #e5e7eb;background:#f3f6fd;cursor:pointer;
-  display:flex;align-items:center;justify-content:center
+  display:flex;align-items:center;justify-content:center;padding:0;
 }
-.eye-btn::before{content:"👁️";font-size:14px;line-height:1}
-.eye-btn.showing::before{content:"🙈"}
+.eye-btn .alt{display:none}
+.eye-btn.on .alt{display:inline}
+.eye-btn.on .ic:not(.alt){display:none}
 
-/* Captcha */
+/* Captcha (add left icon support) */
 .captcha-field{
+  position:relative;
   display:flex;align-items:center;gap:0;
   border:1px solid #e5e7eb;border-radius:14px;
-  height:46px;background:#fff;overflow:hidden;margin-bottom:12px
+  height:46px;background:#fff;overflow:hidden;margin-bottom:12px;
+  padding-left:40px; /* room for .left-ic */
+}
+.captcha-field .left-ic{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;color:#6b7280;opacity:.85;pointer-events:none
 }
 .captcha-field input[type="text"]{
   flex:1;border:0;outline:0;height:100%;padding:0 12px;font-size:.96rem;min-width:0
@@ -321,5 +341,3 @@ body.reset-step2-page .left{
     top: clamp(-120px, -18vh, -80px);
   }
 }
-
-

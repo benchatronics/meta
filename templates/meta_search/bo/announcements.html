@@ -1,0 +1,46 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Announcements{% endblock %}
+{% block page_title %}Announcements{% endblock %}
+
+{% block content %}
+<form method="get" class="card" style="padding:12px; display:grid; gap:8px; margin-bottom:12px;">
+  <label>Search <input type="text" name="q" value="{{ q }}"></label>
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <button class="btn primary" type="submit">Filter</button>
+    <a class="btn" href="{% url 'bo_announcement_new' %}">New Announcement</a>
+  </div>
+</form>
+
+<div class="card" style="padding:0;">
+  <div class="table-responsive" style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="padding:10px; text-align:left;">#</th>
+          <th style="padding:10px; text-align:left;">Title</th>
+          <th style="padding:10px; text-align:left;">Pinned</th>
+          <th style="padding:10px; text-align:left;">Published</th>
+          <th style="padding:10px; text-align:left;">Created</th>
+          <th style="padding:10px; text-align:left;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in page_obj %}
+          <tr>
+            <td style="padding:10px;">{{ a.id }}</td>
+            <td style="padding:10px;">{{ a.title }}</td>
+            <td style="padding:10px;">{{ a.pinned }}</td>
+            <td style="padding:10px;">{{ a.is_published }}</td>
+            <td style="padding:10px;">{{ a.created_at }}</td>
+            <td style="padding:10px;"><a class="btn" href="{% url 'bo_announcement_edit' a.id %}">Edit</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" style="padding:12px;">No announcements.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "meta_search/bo/_pagination.html" with page_obj=page_obj %}
+{% endblock %}

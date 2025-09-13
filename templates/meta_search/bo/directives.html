@@ -1,0 +1,232 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin · Forced Tasks{% endblock %}
+{% block page_title %}Forced Task{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ---------- Page-scoped styles (Admin · Forced Tasks) ---------- */
+  .messages{ list-style:none; padding:0; margin:0 0 12px; display:grid; gap:8px; }
+  .messages li{
+    padding:10px 12px; border-radius:12px; font-weight:600;
+    border:1px solid var(--border); background:#fff;
+  }
+  .messages li.success{ border-color:#bbf7d0; background:#ecfdf5; color:#065f46; }
+  .messages li.warning{ border-color:#fde68a; background:#fffbeb; color:#92400e; }
+  .messages li.error{ border-color:#fecaca; background:#fef2f2; color:#991b1b; }
+  .messages li.info{ border-color:#bfdbfe; background:#eff6ff; color:#1e40af; }
+
+  .filters.card{ padding:14px; display:grid; gap:12px; margin-bottom:12px; }
+  .filters .grid{ display:grid; gap:10px; grid-template-columns: 1fr 1fr; }
+  .filters label{ display:grid; gap:6px; font-weight:600; font-size:13px; color:#334155; }
+  .filters input[type="text"],
+  .filters select{
+    border:1px solid var(--border); border-radius:10px; padding:10px 12px; background:#fff; font:inherit;
+  }
+  .filters .actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .btn.sm{ padding:8px 12px; font-size:13px; border-radius:10px; }
+
+  .create.card{ padding:14px; margin-bottom:12px; }
+  .create h3{ margin:4px 0 12px; font-size:16px; }
+  .create form{ display:grid; gap:12px; }
+  .create .grid{
+    display:grid; gap:10px;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+  .create label{ display:grid; gap:6px; font-weight:600; font-size:13px; color:#334155; }
+  .create input[type="number"],
+  .create input[type="text"]{
+    border:1px solid var(--border); border-radius:10px; padding:10px 12px; background:#fff; font:inherit;
+  }
+  .create .actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+  .table-card{ padding:0; overflow:hidden; }
+  .table-wrap{ overflow-x:auto; }
+  .table{ width:100%; border-collapse:separate; border-spacing:0; }
+  .table thead th{
+    text-align:left; font-size:12px; letter-spacing:.02em; color:#475569;
+    padding:12px; border-bottom:1px solid var(--border); background:#f8fafc;
+  }
+  .table tbody td{
+    padding:12px; border-bottom:1px solid var(--border); vertical-align:top;
+  }
+  .table tbody tr:hover{ background:#f9fbff; }
+
+  .row-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .btn.cancel{ background:#ef4444; border-color:#ef4444; color:#fff; }
+  .btn.primary.sm{ padding:8px 12px; }
+
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:999px; font-weight:700; font-size:12px;
+    border:1px solid transparent; background:#f1f5f9; color:#0f172a;
+  }
+  .st-pending{ background:#fffbeb; color:#b45309; border-color:#fde68a; }
+  .st-canceled{ background:#fef2f2; color:#b91c1c; border-color:#fecaca; }
+  .st-other{ background:#eef2ff; color:#3730a3; border-color:#c7d2fe; }
+
+  .mono{ font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  .muted{ color:#64748b; font-size:12px; }
+
+  /* --------- Mobile: stack forms & table rows --------- */
+  @media (max-width: 900px){
+    .filters .grid{ grid-template-columns: 1fr; }
+    .create .grid{ grid-template-columns: 1fr; }
+
+    .table thead{ display:none; }
+    .table tbody, .table tr, .table td{ display:block; width:100%; }
+    .table tbody tr{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:12px;
+      margin:12px var(--page-pad) 0;
+      background:#fff;
+    }
+    .table tbody tr:hover{ background:#fff; }
+    .table tbody td{ border-bottom:0; padding:8px 0; }
+    .table tbody td[data-label]{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:10px;
+    }
+    .table tbody td[data-label]::before{
+      content: attr(data-label);
+      font-weight:700; color:#334155; font-size:12px;
+    }
+    .row-actions{ padding-top:6px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  <ul class="messages">
+    {% for m in messages %}
+      <li class="{{ m.tags }}">{{ m }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<!-- Filters -->
+<form method="get" class="card filters">
+  <div class="grid">
+    <label>Search user
+      <input type="text" name="q" value="{{ q }}" placeholder="phone / nickname">
+    </label>
+    <label>Status
+      <select name="status">
+        <option value="" {% if not status %}selected{% endif %}>All</option>
+        <option value="PENDING"  {% if status == 'PENDING' %}selected{% endif %}>Pending</option>
+        <option value="CANCELED" {% if status == 'CANCELED' %}selected{% endif %}>Canceled</option>
+      </select>
+    </label>
+  </div>
+  <div class="actions">
+    <button class="btn primary sm" type="submit">Filter</button>
+  </div>
+</form>
+
+<!-- Create Directive -->
+<div class="card create">
+  <h3>Create Directive</h3>
+  <form method="post" action="{% url 'bo_directive_create' %}">
+    {% csrf_token %}
+    <div class="grid">
+      <label>User ID
+        <input type="number" name="user_id" required>
+      </label>
+      <label>Template ID (optional)
+        <input type="number" name="template_id">
+      </label>
+      <label>Applies on cycle
+        <input type="number" name="applies_on_cycle" value="1" required>
+      </label>
+      <label>Target order
+        <input type="number" name="target_order" value="1" required>
+      </label>
+      <label class="full">Reason
+        <input type="text" name="reason" placeholder="Why?">
+      </label>
+    </div>
+    <div class="actions">
+      <button class="btn primary sm" type="submit">Create</button>
+    </div>
+  </form>
+</div>
+
+<!-- Table -->
+<div class="card table-card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Template</th>
+          <th>Cycle</th>
+          <th>Order</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in page_obj %}
+          {% with s=d.status|lower %}
+          <tr>
+            <td data-label="#">{{ d.id }}</td>
+
+            <td data-label="User">
+              {{ d.user }}
+              <div class="muted">ID: {{ d.user_id }}</div>
+            </td>
+
+            <td data-label="Template">
+              {{ d.template|default:"—" }}
+            </td>
+
+            <td data-label="Cycle" class="mono">{{ d.applies_on_cycle }}</td>
+            <td data-label="Order" class="mono">{{ d.target_order }}</td>
+
+            <td data-label="Status">
+              <span class="chip
+                {% if s == 'pending' %}st-pending
+                {% elif s == 'canceled' %}st-canceled
+                {% else %}st-other{% endif %}">
+                {{ d.status }}
+              </span>
+            </td>
+
+            <td data-label="Created">
+              {{ d.created_at|date:"Y-m-d H:i" }}
+              <div class="muted">{{ d.created_at|timesince }} ago</div>
+            </td>
+
+            <td data-label="Actions">
+              <div class="row-actions">
+                {% if d.status == 'PENDING' %}
+                  <form method="post" action="{% url 'bo_directive_cancel' d.id %}">
+                    {% csrf_token %}
+                    <button class="btn cancel sm" type="submit">Cancel</button>
+                  </form>
+                {% else %}
+                  <span class="muted">—</span>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endwith %}
+        {% empty %}
+          <tr>
+            <td data-label="Info" colspan="8">
+              <div class="muted">No directives.</div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "meta_search/bo/_pagination.html" with page_obj=page_obj %}
+{% endblock %}

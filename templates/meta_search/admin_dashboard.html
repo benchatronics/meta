@@ -1,0 +1,158 @@
+{# templates/meta_search/admin_dashboard.html #}
+{% extends "base_admin.html" %}
+{% load static %}
+
+{% block title %} Admin Office  {% endblock %}
+{% block page_title %} Admin {% endblock %}
+
+{% block extra_head %}
+<style>
+/* Mobile-first, light styles specific to this dashboard */
+.dash-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:640px){.dash-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.dash-grid{grid-template-columns:repeat(3,1fr)}}
+.card.pane{padding:16px}
+.card .muted{color:var(--muted)}
+.card .stat{font-size:28px;font-weight:700}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.item:last-child{border-bottom:none}
+.badge{font-weight:600;border-radius:9999px;padding:2px 8px;background:#eef2ff}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:#f8fafc;color:#111;text-decoration:none;font-weight:600}
+.btn:hover{box-shadow:0 8px 20px rgba(16,24,40,.08)}
+.btn.primary{background:#1663d6;border-color:#1663d6;color:#fff}
+.section-title{margin:0}
+@media(max-width:900px){
+  .card.pane{padding:12px}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dash-grid">
+  <!-- Users -->
+  <div class="card pane">
+    <div class="muted">Users</div>
+    <div class="stat">{{ users_total|default:0 }}</div>
+    <div class="list" style="margin-top:8px">
+      <a class="btn" href="{% url 'bo_users' %}">Browse users</a>
+      <a class="btn" href="{% url 'bo_users' %}?blocked=1">Blocked users</a>
+    </div>
+  </div>
+
+  <!-- Withdrawals -->
+  <div class="card pane">
+    <div class="muted">Withdrawals</div>
+    <div class="list" style="margin-top:8px">
+      <a class="item" href="{% url 'bo_withdrawals' %}?status=pending">
+        <span>Pending</span><span class="badge">{{ w_pending|default:0 }}</span>
+      </a>
+      <a class="item" href="{% url 'bo_withdrawals' %}?status=confirmed">
+        <span>Confirmed</span><span class="badge">{{ w_confirmed|default:0 }}</span>
+      </a>
+      <a class="item" href="{% url 'bo_withdrawals' %}?status=failed">
+        <span>Failed</span><span class="badge">{{ w_failed|default:0 }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Deposits -->
+  <div class="card pane">
+    <div class="muted">Deposits</div>
+    <div class="list" style="margin-top:8px">
+      <a class="item" href="{% url 'bo_deposits' %}?status=awaiting_payment">
+        <span>Awaiting Payment</span><span class="badge">{{ d_pending|default:0 }}</span>
+      </a>
+      <a class="item" href="{% url 'bo_deposits' %}?status=awaiting_review">
+        <span>Awaiting Review</span><span class="badge">{{ d_review|default:0 }}</span>
+      </a>
+      <a class="item" href="{% url 'bo_deposits' %}?status=confirmed">
+        <span>Confirmed</span><span class="badge">{{ d_confirmed|default:0 }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="card pane">
+    <div class="muted">Content</div>
+    <div class="list" style="margin-top:8px">
+      <a class="btn" href="{% url 'bo_announcements' %}">Announcements</a>
+      <a class="btn" href="{% url 'bo_info_pages' %}">Info pages</a>
+    </div>
+  </div>
+
+  <!-- Tasks -->
+  <div class="card pane">
+    <div class="muted">Tasks</div>
+    <div class="list" style="margin-top:8px">
+      <a class="btn" href="{% url 'bo_tasks' %}">User tasks</a>
+      <a class="btn" href="{% url 'bo_templates' %}">Task templates</a>
+      <a class="btn" href="{% url 'bo_directives' %}">Forced directives</a>
+    </div>
+  </div>
+
+  <!-- System -->
+  <div class="card pane">
+    <div class="muted">System</div>
+    <div class="list" style="margin-top:8px">
+      <a class="btn" href="{% url 'bo_settings' %}">Settings</a>
+    </div>
+  </div>
+</div>
+
+<div style="height:16px"></div>
+
+<!-- Pending withdrawals preview -->
+<div class="card pane">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+    <h3 class="section-title">Pending withdrawals (latest 10)</h3>
+    <a class="btn" href="{% url 'bo_withdrawals' %}?status=pending">View all</a>
+  </div>
+  <div class="list" style="margin-top:10px">
+    {% if withdrawals %}
+      {% for w in withdrawals %}
+        <div class="item">
+          <div style="display:flex;flex-direction:column">
+            <strong>#{{ w.id }}</strong>
+            <span class="muted">
+              {{ w.user.phone|default:w.user.email }} · {{ w.created_at|date:"Y-m-d H:i" }}
+            </span>
+          </div>
+          <div>
+            <a class="btn" href="{% url 'bo_withdrawals' %}?q={{ w.id }}">Open</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="muted">No pending withdrawals.</div>
+    {% endif %}
+  </div>
+</div>
+
+<div style="height:16px"></div>
+
+<!-- Recent activity feed -->
+<div class="card pane">
+  <h3 class="section-title">Recent activity</h3>
+  <div class="list" style="margin-top:10px">
+    {% if activity %}
+      {% for a in activity %}
+        <div class="item">
+          <div style="display:flex;gap:10px;align-items:center">
+            <span aria-hidden="true">{{ a.icon }}</span>
+            <div style="display:flex;flex-direction:column">
+              <strong>{{ a.title }}</strong>
+              <span class="muted">{{ a.subtitle }}</span>
+            </div>
+          </div>
+          <div class="muted">{{ a.created_at|date:"Y-m-d H:i" }}</div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="muted">Nothing yet.</div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
