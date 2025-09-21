@@ -352,6 +352,117 @@
   width: 100%;
   height: 100%;
 }
+
+/* === MOBILE-CENTERED + iPHONE-SAFE OVERRIDES === */
+
+/* Full-bleed container that centers inner card */
+.profile-settings{
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+  /* safe-area padding for notched iPhones */
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+  /* stop unexpected zoom/resizes on iOS */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Center the card and control its max width cleanly */
+.profile-settings .card{
+  width: min(100%, 960px);     /* never wider than 960, but fill phone width */
+  margin: 16px auto 20px;      /* true centering */
+  padding: clamp(16px, 3.5vw, 24px);
+}
+
+/* Prevent “too narrow” grids on phones */
+.profile-settings .info-grid{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (min-width: 700px){
+  .profile-settings .info-grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px){
+  .profile-settings .info-grid{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Edit grid: single column on phones, two on larger screens */
+.profile-settings .edit-grid{
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 900px){
+  .profile-settings .edit-grid{
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+}
+
+/* Inputs at 16px on mobile so Safari doesn't zoom on focus */
+@media (max-width: 640px){
+  .profile-settings input[type="text"],
+  .profile-settings input[type="url"]{
+    font-size: 16px;
+    height: 44px;
+  }
+  .profile-settings .btn-row{ justify-content: center; }
+  .profile-settings .actions{ justify-content: center; }
+}
+
+/* Remove accidental horizontal scroll anywhere inside */
+.profile-settings, .profile-settings *{
+  min-width: 0;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+/* Avatar row: keep compact but not cramped */
+@media (max-width: 420px){
+  .profile-settings .profile-row{
+    grid-template-columns: 76px 1fr;
+    gap: 10px;
+  }
+  .profile-settings .avatar__img{ width: 76px; height: 76px; }
+}
+
+/* Optional: lock page from sideways wobble on iOS */
+html, body { overflow-x: hidden; }
+
+/* === Compact vertical spacing for mobile (reduces big gap under card) === */
+
+/* 1) Reduce the card’s outside margins + bottom padding */
+@media (max-width: 640px){
+  .profile-settings .card{
+    margin: 4px auto 4px;        /* was ~20px → tighter */
+    padding: 14px 14px 6px;       /* less bottom padding */
+  }
+}
+
+/* 2) Trim section gaps inside the card */
+@media (max-width: 640px){
+  .card__header .sub{ margin-bottom: 8px; }
+
+  .profile-settings .profile-row{ margin: 6px 0 10px; } /* was 10px 0 18px */
+  .profile-settings .info-grid{ margin: 6px 0 4px; gap: 10px; }
+  .profile-settings .edit-grid{ margin-top: 10px; gap: 12px; }
+  .profile-settings .actions{ margin-top: 10px; }       /* tighten Save area */
+}
+
+/* 3) Remove trailing space from the last element in the card */
+.profile-settings .card > :last-child{
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* 4) Prevent any extra whitespace below due to box model quirks */
+.profile-settings .card{
+  line-height: 1.35;
+}
+
 </style>
 
 

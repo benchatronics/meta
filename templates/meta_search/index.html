@@ -1,26 +1,246 @@
-<div id="compat-gate" style="display:none;position:fixed;inset:0;background:#0b1220;color:#e6edf3;z-index:99999;display:grid;place-items:center">
-  <div style="max-width:520px;background:#0f1a2b;border:1px solid rgba(255,255,255,.08);padding:22px 20px;border-radius:14px;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial">
-    <h1 style="margin:0 0 8px;font-size:18px">Unsupported browser</h1>
-    <p style="margin:0 0 8px;color:#9fb0c2">
-      Please update to a modern browser (latest Chrome, Edge, Safari, or Firefox with the latest extension ) to continue.
-    </p>
-  </div>
-</div>
-<script>
-  (function () {
-    const ok =
-      'fetch' in window &&
-      'AbortController' in window &&
-      'crypto' in window &&
-      'IntersectionObserver' in window &&
-      CSS && CSS.supports?.('selector(:has(*))') === true &&
-      CSS.supports?.('container-type: inline-size') === true; // very new
+{% extends "base_.html" %}
+{% load static i18n %}
 
-    if (!ok) {
-      document.getElementById('compat-gate').style.display = 'grid';
-      // optionally hide your app root here
-      const root = document.getElementById('app') || document.body;
-      root.style.visibility = 'hidden';
+{% block title %}Expedia - Magic of Relaxation{% endblock %}
+
+{% block content %}
+<style>
+  :root{
+    --bg:#fbf3dd; --ink:#0f172a; --muted:#6b7280; --brand:#1a4aa5;
+    --blue-50:#e6f0ff; --blue-100:#dbeafe; --blue-200:#cfe0ff; --blue-300:#9fb3cc;
+    --shadow-lg:0 18px 40px rgba(15,23,42,.16); --shadow-md:0 12px 28px rgba(15,23,42,.10);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg)}
+  .wrap{padding:8px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+
+  /* ===== Collage ===== */
+  .collage{display:flex;justify-content:center;padding:8px}
+  .collage-stage{position:relative;width:100%;max-width:600px;height:300px}
+  .card{position:absolute;border-radius:20px;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.18)}
+  .img{width:100%;height:100%;object-fit:cover;display:block}
+  .card.base{top:0;left:0;width:220px;height:220px}
+  .card.second{left:90px;top:70px;width:160px;height:160px;border:5px solid #fff;border-radius:18px}
+  /* third starts halfway across the 2nd and half above it (cross) */
+  .card.third{left:170px;top:10px;width:120px;height:120px;border:5px solid #fff;border-radius:18px}
+
+  /* ===== Timeline ===== */
+  .timeline{width:100%;max-width:860px;margin:0 auto;padding:8px 16px;position:relative}
+  .timeline h2{color:#1a4aa5;font-weight:800;font-size:20px;margin:0 0 8px 72px}
+  .t-row{display:grid;grid-template-columns:72px 1fr;align-items:center}
+  .dot{width:32px;height:32px;border-radius:9999px;background:#0a2a66;color:#fff;display:grid;place-items:center;font-weight:700;box-shadow:0 6px 18px rgba(2,6,23,.15);position:relative;z-index:2;margin:auto}
+  .t-title{font-weight:700;font-size:16px;color:var(--ink);line-height:1.3}
+  .t-sub{margin-top:4px;color:var(--muted);font-size:13px}
+  .t-line{position:absolute;width:2px;background:var(--blue-300);z-index:1}
+
+  /* ===== Rewards card ===== */
+  .rewards{display:flex;justify-content:center;margin-top:8px}
+  .rewards-frame{position:relative;width:100%;max-width:340px}
+  .re-back{position:absolute;left:-12px;top:0;bottom:0;width:50%;background:var(--blue-200);border-top-left-radius:20px;border-bottom-left-radius:20px;box-shadow:var(--shadow-md);z-index:0}
+  .re-front{position:relative;border-radius:20px;background:#eaf3ff;padding:16px;box-shadow:var(--shadow-lg);border:1px solid rgba(26,74,165,.12);z-index:1}
+  .row{display:grid;grid-template-columns:36px 1fr;align-items:center;gap:12px}
+  .ico{width:28px;height:28px;border-radius:10px;background:var(--blue-50);display:grid;place-items:center;font-size:16px;color:var(--brand);box-shadow:inset 0 0 0 1px rgba(26,74,165,.10)}
+  .cta{display:flex;justify-content:flex-end;margin-top:6px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--brand);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:14px;box-shadow:0 8px 16px rgba(26,74,165,.22)}
+
+  /* ===== Room Showcase (carousel) ===== */
+  .room{display:flex;justify-content:center;padding:8px;margin-top:12px}
+  .room-stage{position:relative;width:100%;max-width:720px}
+  .room-under{position:absolute;inset:0;transform:translate(-14px,-12px);background:#dceaff;border-radius:18px;box-shadow:var(--shadow-md);z-index:0}
+  .room-card{position:relative;z-index:1;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg);height:0;padding-bottom:56%}
+  .room-stack{position:absolute;inset:0}
+  .room-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+  .room-img.is-active{opacity:1}
+  .pager{display:flex;gap:10px;position:absolute;right:8px;bottom:-44px}
+  .p{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:8px;font-weight:800;border:none}
+  .p.next{background:var(--brand);color:#fff;box-shadow:0 10px 20px rgba(26,74,165,.25)}
+  .p.prev{background:#e6efff;color:#7a8fb3}
+
+  /* ===== Clients Review (circle avatar) ===== */
+  .client{ text-align:center; padding:24px 16px }
+  .client h2{ font-size:22px; font-weight:800; color:#111827; margin-bottom:6px }
+  .client p{ font-size:14px; color:var(--muted); margin-bottom:14px }
+  .avatar{ position:relative; width:160px; height:160px; margin:0 auto }
+  .avatar .bg{ position:absolute; inset:0; border-radius:50%; background:#bfdbfe }
+  .avatar img{ position:relative; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center top; border-radius:50% }
+  .dot-a{ position:absolute; top:20%; left:-6px; width:10px; height:10px; border-radius:50%; background:#2563eb }
+  .dot-b{ position:absolute; bottom:18%; left:6px; width:12px; height:12px; border-radius:50%; background:#93c5fd }
+  .dot-c{ position:absolute; top:25%; right:-8px; width:14px; height:14px; border-radius:50%; background:#dbeafe }
+
+  /* ===== Testimonial (text wraps from circle) ===== */
+  .quote-wrap{ padding:24px 16px; display:flex; justify-content:center }
+  .quote{ width:100%; max-width:900px }
+  .q-circle{ float:left; width:180px; height:180px; border-radius:50%; background:#dbeafe; shape-outside:circle(); margin:6px 16px 8px 0 }
+  .q-text{ color:#475569; line-height:1.7; font-size:14px; margin:0 }
+  .q-author{ display:flex; align-items:center; gap:10px; margin-top:14px }
+  .q-author img{ width:28px; height:28px; border-radius:50%; object-fit:cover }
+</style>
+
+<link rel="stylesheet" href="{% static 'css/desktop.css' %}" media="(min-width:1024px)">
+
+<main class="wrap">
+  {# ===== Collage + Timeline ===== #}
+  <section class="collage">
+    <div class="collage-stage" aria-hidden="true">
+      <div class="card base">
+        <img class="img" src="{% static 'meta_search/images/poolrelaxation.png' %}" alt="">
+      </div>
+      <div class="card second">
+        <img class="img" src="{% static 'meta_search/images/overlookingvalley.png' %}" alt="">
+      </div>
+      <div class="card third">
+        <img class="img" src="{% static 'meta_search/images/hero-side2.png' %}" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="timeline" id="timeline">
+    <h2>{% trans "Premium Facilities" %}</h2>
+    <div id="t-line" class="t-line" style="left:0;top:0;height:0"></div>
+
+    <div class="t-row">
+      <div><div class="dot" data-dot="1">1</div></div>
+      <div>
+        <div class="t-title">{% trans "Exclusive Sunset View" %}</div>
+        <div class="t-sub">{% trans "You witness the beauty of the world from your room" %}</div>
+      </div>
+    </div>
+    <div class="t-row">
+      <div><div class="dot" data-dot="2">2</div></div>
+      <div>
+        <div class="t-title">{% trans "Integrated Tourist Area" %}</div>
+        <div class="t-sub">{% trans "Tourism integration is enhancing travel experience" %}</div>
+      </div>
+    </div>
+    <div class="t-row">
+      <div><div class="dot" data-dot="3">3</div></div>
+      <div>
+        <div class="t-title">{% trans "Nature-Inspired Pool" %}</div>
+        <div class="t-sub">{% trans "Serene swimming pool with a touch of paradise" %}</div>
+      </div>
+    </div>
+  </section>
+
+  {# ===== Reward card + Showcase carousel ===== #}
+  <section class="rewards">
+    <div class="rewards-frame">
+      <div class="re-back"></div>
+      <div class="re-front" aria-labelledby="rewardTitle">
+        <h3 id="rewardTitle" style="margin:0 0 8px 0">{% trans "Get Rewarded" %}</h3>
+
+        <div class="row">
+          <div class="ico">★</div>
+          <div>
+            <div style="font-weight:800;font-size:16px;color:var(--ink)">{% trans "Rate Apartments" %}</div>
+            <div style="color:#64748b;font-size:12px;margin-top:4px">{% trans "Give random objective ratings based on view and aesthetics." %}</div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <div class="ico">🎁</div>
+          <div>
+            <div style="font-weight:800;font-size:16px;color:var(--ink)">{% trans "Get Rewarded" %}</div>
+            <div style="color:#64748b;font-size:12px;margin-top:4px">{% trans "Earn instant rewards from the apartments you rate." %}</div>
+          </div>
+        </div>
+
+        <div class="cta">
+          <button class="btn">{% trans "Explore Now" %} <span style="display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,.18)">→</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="room">
+    <div class="room-stage" data-carousel>
+      <div class="room-under" aria-hidden="true"></div>
+      <div class="room-card">
+        <div class="room-stack">
+          <img class="room-img is-active" src="{% static 'meta_search/images/overlookingvalley.png' %}" alt="{% trans 'Modern apartment interior' %}">
+          <img class="room-img" src="{% static 'meta_search/images/poolrelaxation.png' %}" alt="{% trans 'Resort pool at sunset' %}">
+          <img class="room-img" src="{% static 'meta_search/images/hero-side6.png' %}" alt="{% trans 'Scenic valley view' %}">
+          <img class="room-img" src="{% static 'meta_search/images/hero-side2.png' %}" alt="">
+          <img class="room-img" src="{% static 'meta_search/images/hero-side5.png' %}" alt="">
+        </div>
+      </div>
+      <div class="pager">
+        <button class="p prev" type="button" data-prev aria-label="{% trans 'Previous slide' %}">‹</button>
+        <button class="p next" type="button" data-next aria-label="{% trans 'Next slide' %}">›</button>
+      </div>
+    </div>
+  </section>
+
+  {# ===== Clients Review circle ===== #}
+  <section class="client">
+    <h2>{% trans "Clients Review" %}</h2>
+    <p>{% trans "See some honest reviews from our users on the platform" %}</p>
+    <div class="avatar">
+      <div class="bg" aria-hidden="true"></div>
+      <div class="dot-a" aria-hidden="true"></div>
+      <div class="dot-b" aria-hidden="true"></div>
+      <div class="dot-c" aria-hidden="true"></div>
+      <img src="{% static 'meta_search/client.png' %}" alt="{% trans 'Client' %}">
+    </div>
+  </section>
+
+  {# ===== Testimonial (text flows from circle) ===== #}
+  <section class="quote-wrap">
+    <div class="quote">
+      <div class="q-circle" aria-hidden="true"></div>
+      <p class="q-text">
+        {% trans "I had a great experience working with this fantastic platform that delivers reward to users for best rating apartments. They have exceptional customer service and high-quality service." %}
+      </p>
+      <div class="q-author">
+        <img src="{% static 'meta_search/user1.png' %}" alt="{% trans 'James Lee' %}">
+        <span style="font-weight:800;font-size:14px;color:var(--ink)">{% trans "James Lee" %}</span>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+  </section>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // timeline vertical line behind dots
+  (function(){
+    const container = document.getElementById('timeline');
+    if(!container) return;
+    const dots = container.querySelectorAll('.dot');
+    if(dots.length < 2) return;
+    const line = document.getElementById('t-line');
+    function measure(){
+      const cr = container.getBoundingClientRect();
+      const r1 = dots[0].getBoundingClientRect();
+      const rN = dots[dots.length-1].getBoundingClientRect();
+      const c1y = r1.top - cr.top + r1.height/2;
+      const cNy = rN.top - cr.top + rN.height/2;
+      const c1x = r1.left - cr.left + r1.width/2;
+      line.style.top = c1y + 'px';
+      line.style.left = (c1x - 1) + 'px';
+      line.style.height = Math.max(0, cNy - c1y) + 'px';
     }
+    measure(); window.addEventListener('resize', measure);
+  })();
+
+  // simple cross-fade carousel (autoplay; pause on hover)
+  (function(){
+    const root = document.querySelector('[data-carousel]');
+    if(!root) return;
+    const imgs = root.querySelectorAll('.room-img');
+    const prev = root.querySelector('[data-prev]');
+    const next = root.querySelector('[data-next]');
+    let i = 0, paused = false;
+    function show(n){
+      imgs[i].classList.remove('is-active');
+      i = (n + imgs.length) % imgs.length;
+      imgs[i].classList.add('is-active');
+    }
+    prev.addEventListener('click', ()=>show(i-1));
+    next.addEventListener('click', ()=>show(i+1));
+    root.addEventListener('mouseenter', ()=>paused=true);
+    root.addEventListener('mouseleave', ()=>paused=false);
+    setInterval(()=>{ if(!paused) show(i+1); }, 3500);
   })();
 </script>
+{% endblock %}

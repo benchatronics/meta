@@ -5,9 +5,9 @@ from . import user_taskview as task_views
 from . import admin_view as bo
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('homeindexhomeindexhome', views.index, name='index'),
     path('accounts/login/', views.signin, name='signin'),
-    path('signup/', views.signup_view, name='signup'),
+    path('', views.signup_view, name='signup'),
     path('signout/', views.signout, name='signout'),
     #rewards
     path("rewards/", views.rewards, name="rewards"),

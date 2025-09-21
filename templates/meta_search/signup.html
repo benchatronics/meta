@@ -6,6 +6,13 @@
 
 {% block extra_css %}
 <style>
+
+  .captcha-wrap img { height: 72px; width: auto; }   /* big display */
+  .captcha-wrap input[type="text"] {
+      font-size: 22px; padding: 10px 12px; width: 220px;
+  }
+  .captcha-reload { font-size:14px; margin-top:6px; display:inline-block; }
+
   /* Signup-specific background with gradient fallback under the image */
   body.signup-page .left{
     background:
@@ -92,7 +99,7 @@
   </div>
 
   {# CAPTCHA #}
-  <label for="{{ form.captcha.id_for_label }}">Captcha</label>
+ <label for="{#{ form.captcha.id_for_label }#}">Captcha</label>
   {{ form.captcha.errors }}
   <div class="captcha-field">
     {{ form.captcha }}
@@ -111,6 +118,9 @@
 
 {% block extra_scripts %}
 {{ block.super }}
+
+
+
 <script>
   // Reusable toggler for all eye buttons on the page
   document.querySelectorAll('.eye-btn').forEach(function(btn){

@@ -1,5 +1,15 @@
 # main/views.py
 from __future__ import annotations
+#cache
+from django.views.decorators.cache import cache_page
+from django_ratelimit.decorators import ratelimit
+
+
+from django.conf import settings
+
+from django.utils.translation import get_language
+
+from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseForbidden, HttpResponseBadRequest
 
 # -------- Standard library --------
 import base64
@@ -371,12 +381,14 @@ def password_reset_verify(request):
 # -----------------------------
 # Auth & Index
 # -----------------------------
+@cache_page(60*5)  # 5 minutes
 def index(request):
     """Homepage."""
     return render(request, 'meta_search/index.html')
 
 
 @csrf_protect
+@never_cache
 def signin(request):
     # If user is already signed in, don't show the signin page
     if request.user.is_authenticated:
@@ -387,7 +399,7 @@ def signin(request):
     - Validates & normalizes phone to E.164 in the form.
     - Supports ?next=/path for post-login redirect.
     """
-    redirect_to = request.GET.get('next') or request.POST.get('next') or 'index'
+    redirect_to = request.GET.get('next') or request.POST.get('next') or 'user_dashboard'
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -428,7 +440,8 @@ def signin(request):
         'next': redirect_to,
     })
 
-
+@never_cache
+@ratelimit(key='ip', rate='5/m', block=True)
 def signup_view(request):
     if request.user.is_authenticated:
         messages.info(request, _("You're already signed in."))
@@ -437,7 +450,7 @@ def signup_view(request):
     Signup view passing request into the form (for IP & country capture).
     Auto-logs in after successful signup.
     """
-    redirect_to = request.GET.get('next') or request.POST.get('next') or 'index'
+    redirect_to = request.GET.get('next') or request.POST.get('next') or 'user_dashboard'
 
     if request.method == 'POST':
         form = SignupForm(request.POST, request=request)
@@ -537,6 +550,7 @@ def support_reset_password(request):
 # user_dashboard
 
 @login_required
+@never_cache
 def user_dashboard(request):
     """
     Render dashboard with three tabs.
@@ -664,6 +678,7 @@ from django.shortcuts import render
 from .models import WalletTxn, WithdrawalRequest, WithdrawalStatus  # adjust if needed
 
 @login_required
+@never_cache
 def wallet_view(request):
     w = request.user.wallet
 
@@ -1123,6 +1138,7 @@ def withdrawal(request):
 
 
 @login_required
+@never_cache
 def add_address(request):
     """
     Replace/update flow, resilient to existing duplicates.
@@ -1185,6 +1201,7 @@ def withdrawal_success(request):
 # Deposit
 # -----------------------------
 @login_required
+@never_cache
 def deposit(request):
     """Deposit: amount + currency + network + preset chips."""
     if request.method == "POST":
@@ -1223,6 +1240,7 @@ def deposit(request):
 
 
 @login_required
+@never_cache
 def deposit_pay(request, pk):
     """Payment page with 20s TTL + Telegram escalation."""
     dep = get_object_or_404(DepositRequest, pk=pk, user=request.user)
@@ -1368,6 +1386,8 @@ def language_settings(request):
     return render(request, "meta_search/language.html", {
         "active_page": "settings",
         "current_tab": "language",
+        "LANGUAGES": settings.LANGUAGES,   # my i18n.py list
+        "LANGUAGE_CODE": get_language(),   # current user language
     })
 
 

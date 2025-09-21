@@ -6,35 +6,71 @@
 
 {% block extra_head %}
 <style>
-  /* (same scoped styles as before) */
+  /* ===== Rewards — Single Carousel, Desktop-first, Responsive, Autoplay ===== */
   .rw-scope{--rw-blue:#0a63ff;--rw-ink:#0f172a;--rw-muted:#6b7280;--rw-border:#e5e7eb}
-  .rw-scope *, .rw-scope *::before, .rw-scope *::after{box-sizing:border-box}
-  .rw-scope .rw-wrap{max-width:1200px;margin:0 auto;padding:0 16px}
-  .rw-scope .rw-card{margin-top:12px;border:1px solid var(--rw-border);border-radius:22px;background:linear-gradient(180deg,#fbfdff,#eef2f7);box-shadow:0 8px 28px rgba(15,23,42,.06);overflow:hidden}
-  .rw-scope .rw-grid{display:grid;grid-template-columns:6fr 6fr;gap:0;align-items:center;padding:28px}
-  .rw-scope .rw-imgWrap{padding-right:20px}
-  .rw-scope .rw-imgBox{position:relative;width:100%;max-width:560px;aspect-ratio:4/3;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(2,6,23,.08)}
-  .rw-scope .rw-imgBox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .rw-scope .rw-text{padding-left:20px}
-  .rw-scope .rw-title{margin:0;font-size:26px;font-weight:800;color:var(--rw-blue)}
-  .rw-scope .rw-sub{margin:6px 0 0 0;color:var(--rw-muted);font-size:14px}
-  .rw-scope .rw-list{list-style:none;margin:16px 0 0 0;padding:0}
-  .rw-scope .rw-list li{display:flex;gap:12px;align-items:baseline;margin:10px 0;font-size:15px;color:#334155}
-  .rw-scope .rw-num{width:22px;color:#94a3b8;flex:none;text-align:right}
-  .rw-scope .rw-get{color:#64748b}
-  .rw-scope .rw-blue{color:var(--rw-blue);font-weight:600}
-  .rw-scope .rw-fine{color:#64748b;font-size:14px;margin-top:14px}
-  .rw-scope .rw-controls{display:flex;align-items:center;justify-content:space-between;padding:0 28px 24px 28px}
-  .rw-scope .rw-nav{display:flex;gap:10px}
-  .rw-scope .rw-btn{width:44px;height:44px;border-radius:999px;border:1px solid #d1d5db;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;box-shadow:0 2px 6px rgba(0,0,0,.06)}
-  .rw-scope .rw-bars{display:flex;gap:10px;align-items:center}
-  .rw-scope .rw-bar{height:6px;width:56px;background:#cbd5e1;border-radius:999px;transition:width .2s ease, background .2s ease;cursor:pointer}
-  .rw-scope .rw-bar.rw-active{background:var(--rw-blue);width:96px}
+  .rw-scope, .rw-scope *{box-sizing:border-box}
+  .rw-wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+
+  .rw-card{
+    margin:18px 0;border:1px solid var(--rw-border);border-radius:22px;
+    background:linear-gradient(180deg,#fbfdff,#eef2f7);
+    box-shadow:0 8px 28px rgba(15,23,42,.06);overflow:hidden
+  }
+
+  .rw-carousel{position:relative;overflow:hidden;border-radius:18px}
+  .rw-track{display:flex;transition:transform .5s cubic-bezier(.22,.61,.36,1);will-change:transform}
+
+  /* Slide — image left, text right */
+  .rw-slide{min-width:100%;padding:26px;display:grid;grid-template-columns:6fr 6fr;gap:22px;align-items:center}
+  .rw-imgbox{
+    position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#f3f6fb;
+    box-shadow:0 10px 30px rgba(2,6,23,.06)
+  }
+  .rw-imgbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+
+  .rw-copy{padding-inline:6px}
+  .rw-title{margin:0 0 6px;font-size:26px;font-weight:800;color:var(--rw-blue)}
+  .rw-sub{margin:0;color:var(--rw-muted);font-size:14px}
+  .rw-list{list-style:none;margin:16px 0 0;padding:0}
+  .rw-list li{display:flex;gap:12px;align-items:baseline;margin:10px 0;font-size:15px;color:#334155}
+  .rw-num{width:22px;color:#94a3b8;flex:none;text-align:right}
+  .rw-get{color:#64748b}
+  .rw-accent{color:var(--rw-blue);font-weight:700}
+  .rw-fine{color:#64748b;font-size:14px;margin-top:14px}
+
+  .rw-controls{display:flex;align-items:center;justify-content:space-between;padding:0 20px 18px}
+  .rw-nav{display:flex;gap:10px}
+  .rw-btn{
+    width:44px;height:44px;border-radius:999px;border:1px solid #d1d5db;background:#fff;
+    display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;
+    box-shadow:0 2px 6px rgba(0,0,0,.06)
+  }
+  .rw-btn:active{transform:scale(.98)}
+  .rw-btn:focus-visible{outline:3px solid rgba(10,99,255,.35);outline-offset:2px;border-color:#9ec3ff}
+
+  .rw-dots{display:flex;gap:8px;align-items:center}
+  .rw-dot{width:8px;height:8px;border-radius:999px;background:#cbd5e1;border:0;cursor:pointer}
+  .rw-dot.is-active{background:var(--rw-blue);width:20px;border-radius:6px}
+
+  /* ===== Mobile / small screens ===== */
   @media (max-width:1023px){
-    .rw-scope .rw-grid{grid-template-columns:1fr;padding:20px}
-    .rw-scope .rw-imgWrap{padding-right:0}
-    .rw-scope .rw-text{padding-left:0;margin-top:16px}
-    .rw-scope .rw-title{font-size:24px}
+    .rw-slide{grid-template-columns:1fr;gap:16px;padding:18px}
+    .rw-title{font-size:22px}
+  }
+  @media (max-width:480px){
+    .rw-card{border-radius:18px}
+    .rw-imgbox{border-radius:12px}
+    .rw-title{font-size:20px}
+    .rw-sub{font-size:13px}
+    .rw-list li{font-size:14px}
+    .rw-btn{width:40px;height:40px}
+    .rw-dot{width:7px;height:7px}
+    .rw-dot.is-active{width:18px}
+  }
+
+  /* Respect reduced motion: keep transform snappy */
+  @media (prefers-reduced-motion: reduce) {
+    .rw-track{transition:transform .001s linear}
   }
 </style>
 {% endblock %}
@@ -42,28 +78,166 @@
 {% block content %}
 <div class="rw-scope" id="rwRewards">
   <section class="rw-wrap">
-    <div class="rw-card">
-      <div class="rw-grid">
-        <div class="rw-imgWrap">
-          <div class="rw-imgBox">
-            <img id="rw-slide-image" src="" alt="Reward slide image">
-          </div>
-        </div>
-        <div class="rw-text">
-          <h2 class="rw-title" id="rw-slide-title"></h2>
-          <p class="rw-sub" id="rw-slide-sub"></p>
-          <ol class="rw-list" id="rw-slide-list"></ol>
-          <div class="rw-fine" id="rw-slide-fine"></div>
+
+    <!-- ======== CAROUSEL: START ======== -->
+    <div class="rw-card" aria-roledescription="carousel" aria-label="Rewards">
+      <div class="rw-carousel">
+        <div class="rw-track" aria-live="polite">
+
+          <!-- ======== SLIDES: START (8 slides) ======== -->
+
+          <!-- Slide 1 — Deposit Bonus (overview) -->
+          <article class="rw-slide">
+            <div class="rw-imgbox">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal3.png' %}" alt="Deposit Bonus">
+            </div>
+            <div class="rw-copy">
+              <h3 class="rw-title">Deposit Bonus</h3>
+              <p class="rw-sub">Reset Amount Reward</p>
+              <ol class="rw-list">
+                <li><span class="rw-num">1.</span><span style="flex:1">300 EUR</span><span class="rw-get">Get</span><span class="rw-accent">50 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">500 EUR</span><span class="rw-get">Get</span><span class="rw-accent">120 EUR</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">1000 EUR</span><span class="rw-get">Get</span><span class="rw-accent">250 EUR</span></li>
+                <li><span class="rw-num">4.</span><span style="flex:1">1500 EUR</span><span class="rw-get">Get</span><span class="rw-accent">350 EUR</span></li>
+              </ol>
+              <div class="rw-fine">
+                <div>Please contact customer service for reward.</div>
+                <div>You can only collect once a day; reset the reward.</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Slide 2 — Deposit Bonus (detail) -->
+          <article class="rw-slide">
+            <div class="rw-imgbox">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal5.png' %}" alt="Deposit Bonus Details">
+            </div>
+            <div class="rw-copy">
+              <h3 class="rw-title">Deposit Bonus</h3>
+              <p class="rw-sub">Repeat of tiers for clarity</p>
+              <ol class="rw-list">
+                <li><span class="rw-num">1.</span><span style="flex:1">300 EUR</span><span class="rw-get">Get</span><span class="rw-accent">50 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">500 EUR</span><span class="rw-get">Get</span><span class="rw-accent">120 EUR</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">1000 EUR</span><span class="rw-get">Get</span><span class="rw-accent">250 EUR</span></li>
+                <li><span class="rw-num">4.</span><span style="flex:1">1500 EUR</span><span class="rw-get">Get</span><span class="rw-accent">350 EUR</span></li>
+              </ol>
+              <div class="rw-fine"><div>Collect once per day.</div></div>
+            </div>
+          </article>
+
+          <!-- Slide 3 — Consecutive Days (overview) -->
+          <article class="rw-slide">
+            <div class="rw-imgbox">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal4.png' %}" alt="Consecutive Days Rewards">
+            </div>
+            <div class="rw-copy">
+              <h3 class="rw-title">Consecutive Days Rewards</h3>
+              <p class="rw-sub">Work for consecutive days and receive a reward of:</p>
+              <ol class="rw-list">
+                <li><span class="rw-num">1.</span><span style="flex:1">5 days</span><span class="rw-get">Reward</span><span class="rw-accent">300 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">15 days</span><span class="rw-get">Reward</span><span class="rw-accent">700 EUR</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">30 days</span><span class="rw-get">Reward</span><span class="rw-accent">1,500 EUR</span></li>
+              </ol>
+            </div>
+          </article>
+
+          <!-- Slide 4 — Consecutive Days (detail) -->
+          <article class="rw-slide">
+            <div class="rw-imgbox">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="Consecutive Days Details">
+            </div>
+            <div class="rw-copy">
+              <h3 class="rw-title">Consecutive Days</h3>
+              <p class="rw-sub">Maintain streaks to unlock larger rewards.</p>
+              <ol class="rw-list">
+                <li><span class="rw-num">1.</span><span style="flex:1">5 days</span><span class="rw-get">Get</span><span class="rw-accent">300 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">15 days</span><span class="rw-get">Get</span><span class="rw-accent">700 EUR</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">30 days</span><span class="rw-get">Get</span><span class="rw-accent">1,500 EUR</span></li>
+              </ol>
+            </div>
+          </article>
+
+          <!-- Slide 5 — About Gift Boxes (overview) -->
+          <article class="rw-slide">
+            <div class="rw-imgbox">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="About Gift Boxes">
+            </div>
+            <div class="rw-copy">
+              <h3 class="rw-title">About Gift Boxes</h3>
+              <p class="rw-sub">Have a chance to get 0–3 random Gift Boxes every round.</p>
+              <ol class="rw-list">
+                <li><span class="rw-num">1.</span><span style="flex:1">Gift Boxes Cash Bonus</span><span class="rw-get">Up to</span><span class="rw-accent">2,000 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">Gift Boxes Commission Bonus</span><span class="rw-get">Up to</span><span class="rw-accent">30× commission</span></li>
+              </ol>
+              <div class="rw-fine"><div>For more details, contact customer service.</div></div>
+            </div>
+          </article>
+
+          <!-- Slide 6 — Gift Boxes (detail) -->
+          <article class="rw-slide">
+            <div class="rw-imgbox">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal3.png' %}" alt="Gift Boxes Detail">
+            </div>
+            <div class="rw-copy">
+              <h3 class="rw-title">Gift Boxes</h3>
+              <p class="rw-sub">Two types of Gift Boxes rewards are available.</p>
+              <ol class="rw-list">
+                <li><span class="rw-num">1.</span><span style="flex:1">Daily Box</span><span class="rw-get">Chance</span><span class="rw-accent">€5–€50</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">Milestone Box</span><span class="rw-get">Chance</span><span class="rw-accent">€20–€150</span></li>
+              </ol>
+              <div class="rw-fine"><div>Box odds reset weekly.</div></div>
+            </div>
+          </article>
+
+          <!-- Slide 7 — About Rank (overview) -->
+          <article class="rw-slide">
+            <div class="rw-imgbox">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal5.png' %}" alt="About Rank">
+            </div>
+            <div class="rw-copy">
+              <h3 class="rw-title">About Rank</h3>
+              <p class="rw-sub">Commission tiers & upgrade notes</p>
+              <ol class="rw-list">
+                <li><span class="rw-num">1.</span><span style="flex:1">VIP</span><span class="rw-get">Commission</span><span class="rw-accent">8–10%</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">VVIP</span><span class="rw-get">Commission</span><span class="rw-accent">10–12%</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">SVIP</span><span class="rw-get">Commission</span><span class="rw-accent">12–13%</span></li>
+              </ol>
+              <div class="rw-fine"><div>Contact Customer Service for more details.</div></div>
+            </div>
+          </article>
+
+          <!-- Slide 8 — About Rank (detail) -->
+          <article class="rw-slide">
+            <div class="rw-imgbox">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="About Rank Details">
+            </div>
+            <div class="rw-copy">
+              <h3 class="rw-title">Rank Upgrade Details</h3>
+              <p class="rw-sub">More constraints & upgrade hints</p>
+              <ol class="rw-list">
+                <li><span class="rw-num">1.</span><span style="flex:1">VIP</span><span class="rw-get">Note</span><span class="rw-accent">One withdrawal/day</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">VVIP</span><span class="rw-get">Note</span><span class="rw-accent">Two withdrawals/day</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">Upgrade</span><span class="rw-get">Recharge</span><span class="rw-accent">300 EUR</span></li>
+              </ol>
+              <div class="rw-fine"><div>SVIP can become an agent; subordinate commissions may apply.</div></div>
+            </div>
+          </article>
+
+          <!-- ======== SLIDES: END ======== -->
+
         </div>
       </div>
+
       <div class="rw-controls">
         <div class="rw-nav">
           <button class="rw-btn" type="button" data-rw-dir="-1" aria-label="Previous">◀</button>
           <button class="rw-btn" type="button" data-rw-dir="1"  aria-label="Next">▶</button>
         </div>
-        <div class="rw-bars" id="rw-bars"></div>
+        <div class="rw-dots" role="tablist" aria-label="Slide indicators"></div>
       </div>
     </div>
+    <!-- ======== CAROUSEL: END ======== -->
+
   </section>
 </div>
 {% endblock %}
@@ -72,85 +246,103 @@
 {{ block.super }}
 <script>
 (function(){
-  const root = document.getElementById('rwRewards');
-  if (!root) return;
+  // Guard against double init if base injects twice
+  if (window.__rwRewardsInit) return;
+  window.__rwRewardsInit = true;
 
-  const slides = [
-    { src: "{% static 'meta_search/img/rewards_1.jpg' %}", title: "Deposit Bonus",  sub: "Reset Amount Reward",
-      list: [["300 EUR","Get","50 EUR"],["500 EUR","Get","120 EUR"],["1000 EUR","Get","250 EUR"],["1500 EUR","Get","350 EUR"]],
-      fine: ["Please contact customer service for reward","You can only collect once a day, reset the reward"] },
-    { src: "{% static 'meta_search/img/rewards_2.jpg' %}", title: "Cashback Weekend", sub: "Extra 5% on deposits (Sat–Sun)",
-      list: [["Min 100 EUR","Get","5% back"]], fine: ["Promo auto-applies. Terms apply."] },
-    { src: "{% static 'meta_search/img/rewards_3.jpg' %}", title: "Loyalty Boost", sub: "Level up faster this week",
-      list: [["Tasks","Count x","2"],["Referrals","Earn","x1.5"]], fine: ["Boost resets Monday 00:00."] },
-    { src: "{% static 'meta_search/img/rewards_4.jpg' %}", title: "VIP Tier Trial", sub: "Try VIP tasks for a day",
-      list: [["VIP Tasks","Worth","Varies"],["Commission","Up to","€??"]], fine: ["Contact support to enable trial."] },
-    { src: "{% static 'meta_search/img/rewards_5.jpg' %}", title: "Streak Rewards", sub: "Complete tasks daily",
-      list: [["3-day","Bonus","€10"],["7-day","Bonus","€30"]], fine: ["Missed a day? Streak resets."] },
-    { src: "{% static 'meta_search/img/rewards_6.jpg' %}", title: "Referral Bonus", sub: "Invite and earn",
-      list: [["Each friend","Gives","€??"],["Cap","Per month","€??"]], fine: ["Applies after friend’s first task."] },
-  ];
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const AUTOPLAY_MS = 5000; // change speed here (ms)
 
-  const imgEl   = root.querySelector('#rw-slide-image');
-  const titleEl = root.querySelector('#rw-slide-title');
-  const subEl   = root.querySelector('#rw-slide-sub');
-  const listEl  = root.querySelector('#rw-slide-list');
-  const fineEl  = root.querySelector('#rw-slide-fine');
-  const barsEl  = root.querySelector('#rw-bars');
-  const btns    = root.querySelectorAll('.rw-btn');
+  const card = document.querySelector('#rwRewards .rw-card');
+  if (!card || card.dataset.rwInit === '1') return;
+  card.dataset.rwInit = '1';
 
-  slides.forEach((_, i) => {
-    const b = document.createElement('div');
-    b.className = 'rw-bar' + (i===0 ? ' rw-active' : '');
-    b.dataset.rwIndex = i;
-    b.addEventListener('click', () => { idx = i; render(idx); });
-    barsEl.appendChild(b);
+  const frame  = card.querySelector('.rw-carousel');
+  const track  = card.querySelector('.rw-track');
+  const slides = Array.from(track.children);
+  const prev   = card.querySelector('[data-rw-dir="-1"]');
+  const next   = card.querySelector('[data-rw-dir="1"]');
+  const dotsEl = card.querySelector('.rw-dots');
+  let i = 0, timer = null, playing = false, inView = true;
+
+  // Build dots
+  dotsEl.innerHTML = '';
+  slides.forEach((_, k) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'rw-dot' + (k===0 ? ' is-active' : '');
+    dot.setAttribute('aria-label', 'Go to slide ' + (k+1));
+    dot.addEventListener('click', () => { go(k); restart(); });
+    dotsEl.appendChild(dot);
   });
 
-  let idx = 0;
-  function render(i){
-    const s = slides[i] || {};
-    imgEl.src = s.src || '';
-    titleEl.textContent = s.title || '';
-    subEl.textContent   = s.sub || '';
-    listEl.innerHTML = '';
-    (s.list||[]).forEach((row,n)=>{
-      const li = document.createElement('li');
-      li.innerHTML = `<span class="rw-num">${n+1}.</span>
-                      <span style="flex:1">${row[0]||''}</span>
-                      <span class="rw-get">${row[1]||''}</span>
-                      <span class="rw-blue">${row[2]||''}</span>`;
-      listEl.appendChild(li);
-    });
-    fineEl.innerHTML = (s.fine||[]).map(t=>`<div>${t}</div>`).join('');
-    barsEl.querySelectorAll('.rw-bar').forEach((el,k)=> el.classList.toggle('rw-active', k===i));
+  function go(n){
+    i = (n + slides.length) % slides.length;
+    track.style.transform = 'translateX(' + (-i * 100) + '%)';
+    dotsEl.querySelectorAll('.rw-dot').forEach((d,idx)=> d.classList.toggle('is-active', idx===i));
   }
 
-  btns.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const dir = parseInt(btn.getAttribute('data-rw-dir'),10) || 0;
-      const total = slides.length;
-      idx = (idx + dir + total) % total;
-      render(idx);
-    });
-  });
+  function start(){
+    if (prefersReduced || slides.length < 2 || playing === true || !inView) return;
+    playing = true;
+    stop(); // just in case
+    timer = setInterval(()=> go(i+1), AUTOPLAY_MS);
+  }
+  function stop(){
+    if (timer) clearInterval(timer);
+    timer = null; playing = false;
+  }
+  function restart(){ stop(); start(); }
 
-  // Touch swipe inside the card
-  const card = root.querySelector('.rw-card');
+  // Controls
+  prev && prev.addEventListener('click', () => { go(i-1); restart(); });
+  next && next.addEventListener('click', () => { go(i+1); restart(); });
+
+  // Pause on hover/focus; resume on leave/blur
+  card.addEventListener('mouseenter', stop);
+  card.addEventListener('mouseleave', start);
+  card.addEventListener('focusin', stop);
+  card.addEventListener('focusout', start);
+
+  // Touch: pause while swiping, resume after
   let downX = null;
-  card.addEventListener('touchstart', e=>{ downX = e.touches[0].clientX; }, {passive:true});
-  card.addEventListener('touchend', e=>{
-    if(downX === null) return;
-    const dx = e.changedTouches[0].clientX - downX;
-    if(Math.abs(dx) > 40){
-      const total = slides.length;
-      idx = (idx + (dx < 0 ? 1 : -1) + total) % total;
-      render(idx);
+  frame.addEventListener('touchstart', e=>{ downX = e.touches[0].clientX; stop(); }, {passive:true});
+  frame.addEventListener('touchend', e=>{
+    if(downX !== null){
+      const dx = e.changedTouches[0].clientX - downX;
+      if(Math.abs(dx) > 40){ go(i + (dx < 0 ? 1 : -1)); }
+      downX = null;
     }
-    downX = null;
+    start();
+  }, {passive:true});
+
+  // Pause when tab hidden
+  document.addEventListener('visibilitychange', ()=> document.hidden ? stop() : start());
+
+  // Pause when carousel not in viewport
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry => { inView = entry.isIntersecting; inView ? start() : stop(); });
+    }, {threshold: 0.3});
+    io.observe(card);
+  }
+
+  // Keyboard
+  card.tabIndex = 0;
+  card.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowLeft'){ go(i-1); restart(); }
+    if(e.key === 'ArrowRight'){ go(i+1); restart(); }
   });
 
-  render(0);
+  // Hide controls if only one slide (safety)
+  if (slides.length < 2) {
+    const ctrls = card.querySelector('.rw-controls');
+    if (ctrls) ctrls.style.display = 'none';
+  }
+
+  // Initial
+  go(0);
+  start();
 })();
 </script>
 {% endblock %}

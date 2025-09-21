@@ -1,5 +1,5 @@
 {% extends "base_settings.html" %}
-{% load i18n %}
+{% load i18n lang_extras %}
 
 {% block title %}Settings — Language{% endblock %}
 {% block breadcrumb %}Home / setting / language{% endblock %}
@@ -8,47 +8,40 @@
 <h3>{% trans "Language" %}</h3>
 <div class="sub">{% trans "Select your language." %}</div>
 
-{% get_current_language as LANGUAGE_CODE %}
-{% get_available_languages as avail_codes %}
-{% get_language_info_list for avail_codes as langs %}
-
 <form method="post" action="{% url 'set_language' %}">
   {% csrf_token %}
   <input type="hidden" name="next" value="{{ request.get_full_path }}">
 
   <div class="lang-grid">
-    {% for l in langs %}
+    {% for code,label in LANGUAGES %}
+      {% with isrtl=code|is_rtl %}
       <button type="submit"
               name="language"
-              value="{{ l.code }}"
-              class="lang-pill {% if l.code == LANGUAGE_CODE %}selected{% endif %}">
-        {# Same flag mapping style you use in the header #}
-        {% if l.code == 'fr' %}🇫🇷
-        {% elif l.code == 'es' or l.code == 'es-MX' or l.code == 'es-AR' %}🇪🇸
-        {% elif l.code == 'de' %}🇩🇪
-        {% elif l.code == 'it' %}🇮🇹
-        {% elif l.code == 'pt' %}🇵🇹
-        {% elif l.code == 'ar' %}🇸🇦
-        {% elif l.code == 'zh-hans' or l.code == 'zh' %}🇨🇳
-        {% elif l.code == 'ja' %}🇯🇵
-        {% elif l.code == 'ko' %}🇰🇷
-        {% elif l.code == 'ru' %}🇷🇺
-        {% elif l.code == 'nl' %}🇳🇱
-        {% elif l.code == 'pl' %}🇵🇱
-        {% elif l.code == 'fi' %}🇫🇮
-        {% elif l.code == 'sv' %}🇸🇪
-        {% elif l.code == 'no' %}🇳🇴
-        {% elif l.code == 'bg' %}🇧🇬
-        {% elif l.code == 'uk' %}🇺🇦
-        {% elif l.code == 'en-US' %}🇺🇸
-        {% else %}🇬🇧{% endif %}
+              value="{{ code }}"
+              class="lang-pill {% if code == LANGUAGE_CODE %}selected{% endif %}"
+              {% if isrtl %}dir="rtl"{% endif %}>
+        {{ code|lang_flag }}
         <span class="flag"></span>
-        <span>{{ l.name_local }}</span>
-        {% if l.code != l.name %}
-          <span style="color:#777;margin-left:6px;">({{ l.name }})</span>
-        {% endif %}
+        <span>{{ code|safe_lang_local_name }}</span>
+        <span style="color:#777;margin-left:6px;">({{ code|safe_lang_en_name }})</span>
       </button>
+      {% endwith %}
     {% endfor %}
   </div>
 </form>
+
+<style>
+    /* Make the grid wrap nicely on mobile */
+.lang-grid{
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.lang-pill{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 12px; border-radius:12px; border:1px solid #e5e7eb;
+  background:#fff; cursor:pointer;
+}
+.lang-pill.selected{ border-color:#2f57ff; box-shadow:0 0 0 3px rgba(47,87,255,.18); }
+
+
+</style>
 {% endblock %}

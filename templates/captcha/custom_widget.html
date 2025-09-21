@@ -1,0 +1,8 @@
+{% load i18n %}
+<div class="captcha-wrap">
+  <img src="{{ image_url }}" alt="{% trans 'Captcha' %}" width="240" height="90">
+  <input type="text" name="{{ hidden_field_name }}" value="{{ key }}" hidden>
+  <input type="text" name="{{ answer_field_name }}" autocomplete="off"
+         placeholder="{% trans 'Enter answer' %}" style="font-size:22px;padding:10px 12px;width:220px">
+  <div><a class="captcha-reload" href="{{ refresh_url }}">{% trans "Reload image" %}</a></div>
+</div>

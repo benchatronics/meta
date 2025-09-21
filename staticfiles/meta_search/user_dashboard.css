@@ -1,0 +1,341 @@
+/* ================================
+   User Dashboard — SCOPED (no layout conflicts)
+   Scope: inside <div class="ud"> ... </div>
+   ================================ */
+
+/* Local tokens */
+.ud{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#1a1f36;
+  --muted:#7c8aa6;
+  --line:#e8edf4;
+
+  --blue-600:#2451FF;
+  --blue-700:#1d3fe6;
+  --blue-50:#eef2ff;
+
+  --chip-green:#13b981;
+  --chip-blue:#2563eb;
+  --chip-amber:#f59e0b;
+
+  --radius-lg:18px;
+  --radius-md:14px;
+  --radius-sm:10px;
+
+  --shadow-sm:0 6px 18px rgba(20,40,80,.06);
+  --shadow-md:0 14px 30px rgba(20,40,80,.10);
+
+  --easing:cubic-bezier(.22,.61,.36,1);
+  --speed:260ms;
+}
+
+/* Header under the base topbar */
+.ud .greet h1{
+  margin:0;font-size:26px;font-weight:700;display:flex;align-items:center;gap:8px;color:var(--text)
+}
+.ud .greet p{margin:.25rem 0 0;color:var(--muted);font-size:13.5px}
+
+/* FILTER STRIP */
+.ud .filters{
+  display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:12px;box-shadow:var(--shadow-sm)
+}
+.ud .pill{
+  display:flex;align-items:center;gap:10px;background:#f3f6fb;border:1px solid #e7edf6;
+  border-radius:12px;padding:10px 12px;color:#52607b;font-size:14px;position:relative
+}
+.ud .pill i{color:#8aa0c6}
+.ud .pill .pill-label{user-select:none}
+
+/* Rating dropdown pill */
+.ud .pill-select{padding-right:36px}
+.ud .pill-select select{
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;border:none;background:transparent;
+  font:inherit;color:#2d3a58;outline:none;min-width:110px;cursor:pointer
+}
+.ud .pill-select .caret{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:#8aa0c6
+}
+
+.ud .search-btn{
+  background:var(--blue-600);color:#fff;border:none;border-radius:12px;padding:0 22px;font-weight:600;
+  cursor:pointer;transition:background var(--speed) var(--easing);font-size:14.5px
+}
+.ud .search-btn:hover{background:var(--blue-700)}
+
+/* TABS */
+.ud .tabs{
+  display:flex;gap:26px;margin:18px 2px 8px;border-bottom:1px solid var(--line)
+}
+.ud .tab{
+  padding:12px 2px;margin-bottom:-1px;cursor:pointer;color:#8795b2;font-weight:600;font-size:14.5px;position:relative
+}
+.ud .tab.active{color:var(--blue-600)}
+.ud .tab.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2.5px;background:var(--blue-600);border-radius:10px}
+
+/* GRID (cards) */
+.ud .grid{display:grid;gap:18px;grid-template-columns:repeat(3,1fr);margin-top:14px}
+.ud .card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);overflow:hidden;transition:transform 160ms var(--easing),box-shadow 160ms var(--easing)
+}
+.ud .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+
+.ud .cover{position:relative;aspect-ratio:4/3;background:#dfe7f5;overflow:hidden}
+.ud .cover img{width:100%;height:100%;object-fit:cover;display:block}
+.ud .save{
+  position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;
+  background:#fff;color:#111827;display:grid;place-items:center;box-shadow:var(--shadow-sm);border:1px solid var(--line)
+}
+.ud .save i{font-size:16px}
+
+.ud .content{padding:14px 14px 12px}
+.ud .title{margin:2px 0 6px;font-size:16px;font-weight:700;color:#0e1a2b}
+.ud .desc{
+  margin:0 0 12px;color:#6b7896;font-size:13px;line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
+}
+
+/* ===== INLINE META ROW (force single line) ===== */
+.ud .card .content .metas{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  flex-wrap:nowrap !important;          /* ← override any previous wrap */
+  min-height:44px;
+}
+.ud .card .content .metas .country{
+  display:inline-flex;align-items:center;gap:8px;
+  color:#4a5877;font-weight:600;font-size:13.5px;
+  background:#f5f7fb;border:1px solid #e9eef6;padding:8px 10px;border-radius:12px;
+  flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ud .card .content .metas .country .fa-location-dot{color:#ef4444;opacity:.9}
+.ud .card .content .metas .right{
+  display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;white-space:nowrap
+}
+.ud .score{
+  background:var(--blue-50);color:var(--blue-600);border:1px solid #dfe6ff;
+  padding:8px 9px;border-radius:10px;font-weight:700;font-size:13px;min-width:44px;text-align:center
+}
+.ud .chip{padding:8px 10px;border-radius:999px;font-weight:700;font-size:12.5px;color:#fff}
+.ud .chip.green{background:var(--chip-green)}
+.ud .chip.blue{background:var(--chip-blue)}
+.ud .chip.amber{background:var(--chip-amber)}
+
+/* Responsive */
+@media (max-width:1200px){.ud .grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:920px){.ud .filters{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){
+  .ud .grid{grid-template-columns:1fr}
+  .ud .greet h1{font-size:22px}
+  .ud .filters{grid-template-columns:1fr}
+  /* allow wrap on very small screens */
+  .ud .card .content .metas{flex-wrap:wrap !important;row-gap:8px}
+  .ud .card .content .metas .country{flex:1 1 100%}
+  .ud .card .content .metas .right{flex:1 1 auto}
+}
+
+/* Accessibility helper */
+.ud .sr-only{
+  position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0
+}
+
+/* Location / Date / Rating / Search strip */
+.ud .filters { display: none !important; }
+
+/* ===== Phone-only hides (do NOT affect menu/toggle) ===== */
+@media (max-width: 620px){
+  /* Greeting section inside the dashboard */
+  .ud .greet { display: none !important; }
+}
+
+/* (Optional) if your “phone” breakpoint differs, change 620px above) */
+
+/* ===== Mobile-only header + filters ===== */
+:root{
+  --mxp-muted:#6b7280;
+  --mxp-border:#e5e7eb;
+  --mxp-shadow:0 6px 18px rgba(20,40,80,.06);
+}
+
+@media (max-width: 900px){
+  /* hide original desktop pieces on phones WITHOUT changing your HTML */
+  .ud > .greet,
+  .ud > form.filters{ display: none !important; }
+
+  .mxp-mobile-only{ display:block; }
+
+  .mxp-greeting{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 12px; background:#fff; border-bottom:1px solid var(--mxp-border);
+  }
+  .mxp-avatar{ width:48px; height:48px; border-radius:999px; object-fit:cover; box-shadow:var(--mxp-shadow); }
+  .mxp-hello{ margin:0; font:700 18px/1.25 "Poppins", system-ui; color:#111; }
+  .mxp-sub{ margin:4px 0 0; font:500 13px/1.3 "Poppins", system-ui; color:var(--mxp-muted); }
+  .mxp-profile-link{ margin-top:6px; display:inline-block; font:600 12px/1 "Poppins"; color:#2451FF; text-decoration:none; }
+  .mxp-wave{ display:inline-block; transform-origin:70% 70%; }
+
+  .mxp-filters-bar{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 12px; background:#fff; border-bottom:1px solid #eee;
+  }
+  .mxp-filters-pill{
+    flex:1; display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px; border:1px solid var(--mxp-border); border-radius:16px; background:#fff;
+    box-shadow:var(--mxp-shadow); font-weight:600; color:#111827;
+  }
+  .mxp-filters-pill .left{ display:flex; align-items:center; gap:10px; }
+  .mxp-search-btn{
+    width:46px; height:46px; display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--mxp-border); border-radius:14px; background:#fff; box-shadow:var(--mxp-shadow);
+  }
+
+  /* Panel holds the MOBILE copy of the form */
+  .mxp-filter-panel{
+    background:#fff; overflow:hidden;
+    transition:max-height .25s ease, padding .25s ease;
+    max-height:0; padding:0 12px; border-bottom:1px solid transparent;
+  }
+  .mxp-filter-panel.open{
+    max-height:480px; padding:8px 12px 14px; border-bottom-color:#eee;
+  }
+  .mxp-filter-panel .pill{
+    display:flex; align-items:center; gap:8px;
+    height:44px; padding:0 12px; margin-bottom:10px;
+    border:1px solid var(--mxp-border); border-radius:12px; background:#fff;
+  }
+  .mxp-filter-panel .pill i{ color:#6b7280; }
+  .mxp-filter-panel input[type="text"],
+  .mxp-filter-panel input[type="date"],
+  .mxp-filter-panel select{
+    flex:1; height:100%; border:none; outline:none; background:transparent;
+    font-size:15px; color:#1f2937;
+  }
+  .mxp-filter-panel .pill-select{ position:relative; }
+  .mxp-filter-panel .pill-select .caret{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    pointer-events:none; color:#6b7280;
+  }
+}
+
+/* Desktop/tablet: hide the mobile block */
+@media (min-width: 901px){
+  .mxp-mobile-only{ display: none !important; }
+}
+@media (max-width: 900px){
+  .mxp-mobile-only .mxp-avatar{ border-radius:50% !important; }
+}
+
+
+/* ===== end of Mobile-only header + filters ===== */
+
+/* =========================================
+   Mobile/desktop visibility & mobile filters
+   ========================================= */
+
+/* sensible defaults */
+.mxp-mobile-only { display: none; }
+
+/* ---------- DESKTOP / TABLET (>=901px) ---------- */
+@media (min-width: 901px){
+
+  /* Show your original desktop greeting and desktop filter strip */
+  .ud > .greet { display: block !important; }
+  .ud > form.filters { display: block !important; }  /* if your base makes it flex/grid, that wins */
+
+  /* Hide the mobile-only block and its pieces */
+  .mxp-mobile-only,
+  .mxp-filters-bar,
+  .mxp-filter-panel { display: none !important; }
+}
+
+/* ---------- MOBILE (<=900px) ---------- */
+@media (max-width: 900px){
+
+  /* Hide the desktop versions on phones */
+  .ud > .greet { display: none !important; }
+  .ud > form.filters { display: none !important; }
+
+  /* Show the mobile header+filters block */
+  .mxp-mobile-only { display: block !important; }
+
+  /* ----- Mobile greeting (avatar + text) ----- */
+  .mxp-greeting{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 12px; background:#fff; border-bottom:1px solid #e5e7eb;
+  }
+  .mxp-avatar{
+    width:48px; height:48px; border-radius:999px; object-fit:cover;
+    box-shadow:0 6px 18px rgba(20,40,80,.06);
+  }
+  .mxp-hello{ margin:0; font:700 18px/1.25 "Poppins",system-ui; color:#111; }
+  .mxp-sub{ margin:4px 0 0; font:500 13px/1.3 "Poppins",system-ui; color:#6b7280; }
+  .mxp-profile-link{ margin-top:6px; display:inline-block; font:600 12px/1 "Poppins"; color:#2451FF; text-decoration:none; }
+
+  /* ----- Mobile Filters bar (pill + round search) ----- */
+  .mxp-filters-bar{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 12px; background:#fff; border-bottom:1px solid #eee;
+  }
+  .mxp-filters-pill{
+    flex:1; display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px; border:1px solid #e5e7eb; border-radius:16px; background:#fff;
+    box-shadow:0 6px 18px rgba(20,40,80,.06); font-weight:600; color:#111827;
+  }
+  .mxp-filters-pill .left{ display:flex; align-items:center; gap:10px; }
+  .mxp-search-btn{
+    width:46px; height:46px; display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid #e5e7eb; border-radius:14px; background:#fff; box-shadow:0 6px 18px rgba(20,40,80,.06);
+  }
+
+  /* ----- Collapsible panel that holds the MOBILE copy of the form ----- */
+  .mxp-filter-panel{
+    position: relative; /* keep it in normal flow so it doesn't cover content */
+    background:#fff; overflow:hidden;
+    max-height:0; padding:0 12px;
+    border-bottom:1px solid transparent;
+    transition:max-height .25s ease, padding .25s ease, border-color .25s ease;
+  }
+  .mxp-filter-panel.open{
+    max-height:480px; padding:8px 12px 14px;
+    border-bottom-color:#eee;
+  }
+
+  /* Fields inside the mobile panel */
+  .mxp-filter-panel .pill{
+    display:flex; align-items:center; gap:8px;
+    height:44px; padding:0 12px; margin-bottom:10px;
+    border:1px solid #e5e7eb; border-radius:12px; background:#fff;
+  }
+  .mxp-filter-panel .pill i{ color:#6b7280; }
+  .mxp-filter-panel input[type="text"],
+  .mxp-filter-panel input[type="date"],
+  .mxp-filter-panel select{
+    flex:1; height:100%; border:none; outline:none; background:transparent;
+    font-size:15px; color:#1f2937;
+  }
+  .mxp-filter-panel .pill-select{ position:relative; }
+  .mxp-filter-panel .pill-select .caret{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    pointer-events:none; color:#6b7280;
+  }
+
+  /* Make sure page content isn't hidden behind any fixed elements (e.g., a bottom nav) */
+  .main{ padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Optional: if any global CSS is too aggressive and hides content,
+   you can un-comment this to ensure the content grid shows.
+   .grid { display: grid !important; } 
+*/
+
+.emoji-icon{ display:inline-block; font-size:18px; line-height:1; vertical-align:middle; margin-right:8px; }
+.mxp-search-btn .emoji-icon{ font-size:20px; margin-right:0; }
+
+.emoji-caret{
+  display:inline-block; font-size:16px; line-height:1; vertical-align:middle;
+  margin-left:6px; transition:transform .2s ease;
+}
+#mxpFilterToggle[aria-expanded="true"] .emoji-caret{ transform: rotate(180deg); }
+

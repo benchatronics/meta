@@ -158,6 +158,10 @@ def unique_slugify(instance, value, slug_field_name="slug", max_length=150):
     return slug
 
 
+def flag_from_iso2(code: str) -> str:
+    code = (code or "").strip().upper()
+    return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in code if "A" <= c <= "Z")
+
 class Country(models.Model):
     name = models.CharField(max_length=80, unique=True)
     iso = models.CharField(max_length=2, unique=True, db_index=True)
@@ -172,7 +176,11 @@ class Country(models.Model):
     def save(self, *args, **kwargs):
         if self.iso:
             self.iso = self.iso.strip().upper()
+            # 👉 Only set flag if it's empty, so manual overrides still work
+            if not self.flag:
+                self.flag = flag_from_iso2(self.iso)
         super().save(*args, **kwargs)
+
 
 
 class Hotel(models.Model):

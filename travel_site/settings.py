@@ -1,9 +1,29 @@
-from pathlib import Path
-import os
-from .i18n import LANGUAGES, LANGUAGE_CODE 
+import pymysql
+pymysql.install_as_MySQLdb()
 
 from pathlib import Path
 import os
+from .i18n import LANGUAGES, LANGUAGE_CODE
+
+# ==== Simple Captcha: senior-friendly ====
+CAPTCHA_IMAGE_SIZE = (240, 90)          # wider + taller image
+CAPTCHA_FONT_SIZE = 70                  # big characters
+CAPTCHA_LETTER_ROTATION = (-10, 10)     # minimal tilt (easier to read)
+CAPTCHA_NOISE_FUNCTIONS = ()            # remove arcs/dots noise
+CAPTCHA_BACKGROUND_COLOR = '#FFFFFF'    # white background
+CAPTCHA_FOREGROUND_COLOR = '#000000'    # black text (max contrast)
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+#CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+# ^ switches to easy math (e.g., "7 + 3 = ?") — easier than distorted letters
+
+CAPTCHA_LENGTH = 4                      # keep short; math is already easy
+CAPTCHA_TIMEOUT = 5                     # minutes; typical default is okay
+
+
+CAPTCHA_WIDGET_TEMPLATE = 'captcha/custom_widget.html'
+
+APPEND_SLASH = True
+
 
 # Base dir of project (folder that contains manage.py)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,17 +62,31 @@ TELEGRAM_VERIFY_TTL_MINUTES = 1
 TRIAL_BONUS_ENABLED = True
 TRIAL_BONUS_EUR = 300    # easy to change later (e.g., 0 to disable without removing the feature)
 
+# fast loading
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 86400
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
-# --- Core ---
-SECRET_KEY = "django-insecure-2x^94vgug#2-*q6&-(bfy^s)!an^je)r(m=(*ouk#)g@62-ul0"
+
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("DJANGO_SECRET_KEY is not set in environment variables")
+
+
+# --- Proxy headers (Cloudflare/PythonAnywhere front proxy) ---
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+
 DEBUG = True
-ALLOWED_HOSTS = [
-    "10.50.83.196",
-    "scamperlinks.pythonanywhere.com",
-    "localhost",
-    "127.0.0.1",
-    "localhost:8000",
-]
+
+ALLOWED_HOSTS = ["scamperlinks.pythonanywhere.com/","xpediabooster.com","www.xpediabooster.com"]
+CSRF_TRUSTED_ORIGINS = ["https://scamperlinks.pythonanywhere.com/","https://xpediabooster.com","https://www.xpediabooster.com"]
 
 # --- Apps ---
 INSTALLED_APPS = [
@@ -62,7 +96,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # your app
+    #app name
     "main",
     # extras
     "site_tags",
@@ -86,7 +120,8 @@ SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
 # --- Middleware ---
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.gzip.GZipMiddleware",
+    #"whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     # LocaleMiddleware must be right after SessionMiddleware
     "django.middleware.locale.LocaleMiddleware",
@@ -98,6 +133,18 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "travel_site.urls"
+
+# settings.py
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/home/scamperlinks/metasearch/.cache",
+        "TIMEOUT": 300,  # 5 minutes
+    }
+}
+
+
+
 
 # --- Templates ---
 TEMPLATES = [
@@ -121,10 +168,28 @@ WSGI_APPLICATION = "travel_site.wsgi.application"
 # --- Database ---
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "scamperlinks$default",
+        "USER": "scamperlinks",
+        "PASSWORD": os.getenv("MYSQL_PASSWORD"),
+        "HOST": "scamperlinks.mysql.pythonanywhere-services.com",
+        "PORT": "3306",
+        "OPTIONS": {
+            "charset": "utf8mb4",
+            "use_unicode": True,
+            "init_command": "SET NAMES 'utf8mb4', sql_mode='STRICT_TRANS_TABLES'",
+        },
+        "CONN_MAX_AGE": 300,
     }
 }
+
+
+#DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.sqlite3",
+#        "NAME": BASE_DIR / "db.sqlite3",
+#       }
+#}
 
 # --- Auth / Passwords ---
 AUTH_PASSWORD_VALIDATORS = [
@@ -150,10 +215,17 @@ STATIC_ROOT = BASE_DIR / "staticfiles"  # for collectstatic (PythonAnywhere/prod
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # your local assets
 
 # WhiteNoise recommended setting (serves compressed files)
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+#STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+#login redirect and logout
+LOGIN_REDIRECT_URL = "user_dashboard"
+LOGOUT_REDIRECT_URL = "signin"
+
+
+
 
 
 
