@@ -8,615 +8,2298 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 16:12+0000\n"
+"POT-Creation-Date: 2025-09-23 16:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: main/admin.py:44
+#: main/admin.py:392
 msgid "Clear withdrawal PIN"
-msgstr ""
+msgstr "철수 핀을 지우십시오"
 
-#: main/admin.py:46
+#: main/admin.py:394
 msgid ""
 "Tick to remove any existing withdrawal PIN so the user must set a new one."
 msgstr ""
+"기존 인출 핀을 제거하려면 틱을 제거하여 사용자가 새 인출 핀을 새로 설정해야합"
+"니다."
 
-#: main/admin.py:49
+#: main/admin.py:397
 msgid "Set new withdrawal PIN"
-msgstr ""
+msgstr "새 인출 핀을 설정하십시오"
 
-#: main/admin.py:57
+#: main/admin.py:405
 msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
-msgstr ""
+msgstr "선택 과목. 정확히 6 자리를 입력하여 핀을 설정/재설정하십시오."
 
-#: main/admin.py:70
+#: main/admin.py:418
 msgid "PIN must be exactly 6 digits."
-msgstr ""
+msgstr "핀은 정확히 6 자리 여야합니다."
 
-#: main/admin.py:136
+#: main/admin.py:483
 msgid "Withdrawal security"
-msgstr ""
+msgstr "철수 보안"
 
 #: main/forms.py:27
 msgid "Account password"
-msgstr ""
+msgstr "계정 비밀번호"
 
-#: main/forms.py:31
+#: main/forms.py:31 templates/meta_search/withdrawal.html:350
 msgid "Withdrawal password (6 digits)"
-msgstr ""
+msgstr "철수 비밀번호 (6 자리)"
 
 #: main/forms.py:35
 msgid "Confirm withdrawal password"
-msgstr ""
+msgstr "인출 비밀번호를 확인하십시오"
 
 #: main/forms.py:46
 msgid "Incorrect account password."
-msgstr ""
+msgstr "잘못된 계정 비밀번호."
 
 #: main/forms.py:53 main/forms.py:87
 msgid "Enter exactly 6 digits."
-msgstr ""
+msgstr "정확히 6 자리를 입력하십시오."
 
-#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:268
 msgid "Passwords do not match."
-msgstr ""
+msgstr "암호는 일치하지 않습니다."
 
 #: main/forms.py:61
 msgid "Current withdrawal password"
-msgstr ""
+msgstr "현재 철수 비밀번호"
 
 #: main/forms.py:65
 msgid "New withdrawal password (6 digits)"
-msgstr ""
+msgstr "새로운 철수 비밀번호 (6 자리)"
 
 #: main/forms.py:69
 msgid "Confirm new withdrawal password"
-msgstr ""
+msgstr "새 인출 비밀번호를 확인하십시오"
 
 #: main/forms.py:80
 msgid "Incorrect withdrawal password."
-msgstr ""
+msgstr "잘못된 인출 비밀번호."
 
 #: main/forms.py:161
 #, python-format
 msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
-msgstr ""
+msgstr "jpg/png/webp/gif, 최대 [[[token_0]]] mb."
 
 #: main/forms.py:162
 msgid "Direct image URL (used only if no file is uploaded)."
-msgstr ""
+msgstr "직접 이미지 URL (파일이 업로드되지 않은 경우에만 사용)."
 
 #: main/forms.py:180
 msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
-msgstr ""
+msgstr "지원되지 않는 이미지 유형. JPG, PNG, Webp 또는 GIF를 사용하십시오."
 
 #: main/forms.py:182
 #, python-format
 msgid "Image too large (max %(mb)s MB)."
-msgstr ""
+msgstr "이미지가 너무 큽니다 (max [[[[token_0]]]] mb)."
 
 #: main/forms.py:191
 msgid "Only http/https URLs are allowed."
-msgstr ""
+msgstr "HTTP/HTTPS URL 만 허용됩니다."
 
 #: main/forms.py:206 main/forms.py:371 main/forms.py:581
 msgid "Country code"
-msgstr ""
+msgstr "국가 코드"
 
 #: main/forms.py:211 main/forms.py:376 main/forms.py:586
 msgid "Enter your phone number"
-msgstr ""
+msgstr "전화 번호를 입력하십시오"
 
 #: main/forms.py:215 main/forms.py:380 main/forms.py:590
 msgid "Phone number"
-msgstr ""
+msgstr "전화 번호"
 
 #: main/forms.py:220
 msgid "Enter your invitation code"
-msgstr ""
+msgstr "초대장 코드를 입력하십시오"
 
 #: main/forms.py:223
 msgid "Invitation code"
-msgstr ""
+msgstr "초대장 코드"
 
 #: main/forms.py:225 main/forms.py:592
 msgid "I am not a robot"
-msgstr ""
+msgstr "나는 로봇이 아닙니다"
 
 #: main/forms.py:236 main/forms.py:385 main/forms.py:615
 msgid "Enter your password"
-msgstr ""
+msgstr "비밀번호를 입력하십시오"
 
 #: main/forms.py:240
 msgid "Re-enter your password"
-msgstr ""
+msgstr "비밀번호를 다시 입력하십시오"
 
-#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:233
 msgid "Invalid phone number format."
-msgstr ""
+msgstr "잘못된 전화 번호 형식."
 
-#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:235
 msgid "This phone number is not possible for the selected country."
-msgstr ""
+msgstr "이 전화 번호는 선택된 국가에서는 불가능합니다."
 
-#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:237
 msgid "This phone number is not valid for the selected country."
-msgstr ""
+msgstr "이 전화 번호는 선택된 국가에 유효하지 않습니다."
 
 #: main/forms.py:281 main/forms.py:429 main/forms.py:657
 #, python-format
 msgid ""
 "Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
 msgstr ""
+"전화 번호 길이는 [[[[token_0]]]의 %(lo) d와 %(hi) d 숫자 사이 여야합니다."
 
 #: main/forms.py:293
 msgid "An account with this phone already exists."
-msgstr ""
+msgstr "이 전화기의 계정이 이미 존재합니다."
 
-#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:80
+#: templates/meta_search/signup.html:54
 msgid "Password"
-msgstr ""
+msgstr "비밀번호"
 
 #: main/forms.py:325
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user’s "
 "password, but you can change the password using the “Change password” form."
 msgstr ""
+"원시 비밀번호는 저장되지 않으므로이 사용자의 비밀번호를 볼 수있는 방법이 없지"
+"만 \"비밀번호 변경\"양식을 사용하여 암호를 변경할 수 있습니다."
 
 #: main/forms.py:352
 msgid "User phone (E.164 or local NG)"
-msgstr ""
+msgstr "사용자 전화 (E.164 또는 로컬 NG)"
 
 #: main/forms.py:353
 msgid "+2348012345678 or 080..."
-msgstr ""
+msgstr "+2348012345678 또는 080 ..."
 
-#: main/forms.py:355 main/views.py:210
+#: main/forms.py:355 main/views.py:262
 #: templates/meta_search/settings_change_password.html:83
+#: templates/meta_search/support_reset_password.html:77
 msgid "New password"
-msgstr ""
+msgstr "새 비밀번호"
 
-#: main/forms.py:356 main/views.py:211
+#: main/forms.py:356 main/views.py:263
 msgid "Confirm new password"
-msgstr ""
+msgstr "새 비밀번호를 확인하십시오"
 
 #: main/forms.py:670
 msgid "Phone does not match your account."
-msgstr ""
+msgstr "전화는 귀하의 계정과 일치하지 않습니다."
 
-#: main/models.py:578 templates/base_info.html:22
+#: main/models.py:672 templates/base_info.html:22
 #: templates/meta_search/info_index.html:27
 msgid "About us"
-msgstr ""
+msgstr "우리에 대해"
 
-#: main/models.py:579 templates/base_info.html:26
+#: main/models.py:673 templates/base_info.html:26
 #: templates/meta_search/info_index.html:31
 msgid "Contact us"
-msgstr ""
+msgstr "저희에게 연락하십시오"
 
-#: main/models.py:580 templates/base_info.html:30
+#: main/models.py:674 templates/base_info.html:30
 #: templates/meta_search/info_index.html:35
 msgid "Help"
-msgstr ""
+msgstr "돕다"
 
-#: main/models.py:581 templates/base_info.html:34
+#: main/models.py:675 templates/base_info.html:34
 #: templates/meta_search/info_index.html:39
+#: templates/meta_search/profile_settings.html:75
 msgid "Level"
-msgstr ""
+msgstr "수준"
 
-#: main/models.py:582 templates/base_info.html:38
+#: main/models.py:676 templates/base_info.html:38
 #: templates/meta_search/info_index.html:43
 msgid "Sign-in reward"
-msgstr ""
+msgstr "로그인 보상"
 
-#: main/views.py:69
+#: main/views.py:121
 msgid "Withdrawal password set."
-msgstr ""
+msgstr "철수 비밀번호 세트."
 
-#: main/views.py:79
+#: main/views.py:131
 msgid "You don’t have a withdrawal password yet. Set one first."
-msgstr ""
+msgstr "아직 인출 비밀번호가 없습니다. 먼저 하나를 설정하십시오."
 
-#: main/views.py:86
+#: main/views.py:138
 msgid "Withdrawal password updated."
-msgstr ""
+msgstr "철수 비밀번호 업데이트."
 
-#: main/views.py:209
+#: main/views.py:261
 msgid "Verification code"
-msgstr ""
+msgstr "확인 코드"
 
-#: main/views.py:247
+#: main/views.py:299
 msgid "No account found for that phone."
-msgstr ""
+msgstr "해당 전화에 대한 계정이 없습니다."
 
-#: main/views.py:259
+#: main/views.py:311
 #, python-format
 msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
-msgstr ""
-
-#: main/views.py:263
-msgid "We couldn’t send the code. Please try again in a moment."
-msgstr ""
-
-#: main/views.py:267
-msgid "Unexpected error sending code. Try again later."
-msgstr ""
-
-#: main/views.py:272
-msgid "We sent a verification code to your phone."
-msgstr ""
-
-#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
-#: main/views.py:1169
-msgid "Please correct the errors below."
-msgstr ""
-
-#: main/views.py:290
-msgid "Start by entering your phone number."
-msgstr ""
-
-#: main/views.py:298
-msgid "Invalid or expired code."
-msgstr ""
-
-#: main/views.py:304
-msgid "Account not found. Please start over."
-msgstr ""
+msgstr "재설정 코드는 다음과 같습니다. [[[Token_0]]]. 10 분 안에 만료됩니다."
 
 #: main/views.py:315
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr "코드를 보낼 수 없었습니다. 잠시 후 다시 시도하십시오."
+
+#: main/views.py:319
+msgid "Unexpected error sending code. Try again later."
+msgstr "예상치 못한 오류 전송 코드. 나중에 다시 시도하십시오."
+
+#: main/views.py:324
+msgid "We sent a verification code to your phone."
+msgstr "우리는 귀하의 전화로 확인 코드를 보냈습니다."
+
+#: main/views.py:327 main/views.py:374 main/views.py:434 main/views.py:463
+#: main/views.py:1421
+msgid "Please correct the errors below."
+msgstr "아래 오류를 수정하십시오."
+
+#: main/views.py:342
+msgid "Start by entering your phone number."
+msgstr "전화 번호를 입력하여 시작하십시오."
+
+#: main/views.py:350
+msgid "Invalid or expired code."
+msgstr "유효하지 않거나 만료 된 코드."
+
+#: main/views.py:356
+msgid "Account not found. Please start over."
+msgstr "계정을 찾을 수 없습니다. 다시 시작하십시오."
+
+#: main/views.py:367
 msgid "Your password has been reset. You can now sign in."
-msgstr ""
+msgstr "비밀번호가 재설정되었습니다. 이제 로그인 할 수 있습니다."
 
-#: main/views.py:341 main/views.py:392
+#: main/views.py:395 main/views.py:447
 msgid "You're already signed in."
-msgstr ""
+msgstr "당신은 이미 로그인되었습니다."
 
-#: main/views.py:375
+#: main/views.py:429
 msgid "Welcome back!"
-msgstr ""
+msgstr "다시 오신 것을 환영합니다!"
 
-#: main/views.py:378
+#: main/views.py:432
 msgid "Invalid phone or password."
-msgstr ""
+msgstr "잘못된 전화 또는 비밀번호."
 
-#: main/views.py:405
+#: main/views.py:460
 msgid "Account created!"
-msgstr ""
+msgstr "생성 된 계정!"
 
-#: main/views.py:421
+#: main/views.py:476
 msgid "You have been logged out."
-msgstr ""
+msgstr "당신은 로그 아웃되었습니다."
 
-#: main/views.py:468
+#: main/views.py:523
 msgid "Invalid phone format. Please enter a valid number."
-msgstr ""
+msgstr "잘못된 전화 형식. 유효한 번호를 입력하십시오."
 
-#: main/views.py:474
+#: main/views.py:529
 #, python-format
 msgid "No user found with phone %(phone)s."
-msgstr ""
+msgstr "전화로 찾은 사용자는 없습니다 [[[Token_0]]]."
 
-#: main/views.py:490
+#: main/views.py:545
 #, python-format
 msgid "Password reset for %(phone)s."
-msgstr ""
+msgstr "[[[token_0]]]에 대한 비밀번호 재설정."
 
-#: main/views.py:1167
+#: main/views.py:1419
 msgid "Password updated."
-msgstr ""
+msgstr "비밀번호 업데이트."
 
-#: templates/base_info.html:4
-msgid "info"
-msgstr ""
+#: templates/base_auth.html:6
+msgid "Auth"
+msgstr "인증"
 
-#: templates/meta_search/announcements.html:5
+#: templates/base_auth.html:18
+msgid "Orbitpedia"
+msgstr "Orbitpedia"
+
+#: templates/base_auth.html:29 templates/meta_search/address_add.html:22
+#: templates/meta_search/deposit.html:20
+#: templates/meta_search/deposit_pay.html:21
+#: templates/meta_search/withdrawal.html:150
+#: templates/meta_search/withdrawal_success.html:101
+#, fuzzy
+#| msgid "Welcome back!"
+msgid "Go back"
+msgstr "다시 오신 것을 환영합니다!"
+
+#: templates/base_auth.html:32 templates/base_info.html:5
+#: templates/base_settings.html:6 templates/base_user.html:122
+#: templates/base_user.html:124 templates/base_user.html:128
+#: templates/base_user.html:285 templates/base_user.html:287
+#: templates/meta_search/address_add.html:7
 #: templates/meta_search/announcements.html:13
-msgid "Announcements"
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/password_reset_verify.html:86
+#: templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "Home"
+msgstr "집"
+
+#: templates/base_info.html:4 templates/base_info.html:5
+msgid "info"
+msgstr "정보"
+
+#: templates/base_info.html:14 templates/base_user.html:152
+#: templates/base_user.html:154 templates/meta_search/announcements.html:10
+#: templates/meta_search/announcements.html:13
+msgid "Info"
+msgstr "정보"
+
+#: templates/base_settings.html:5 templates/base_user.html:148
+#: templates/base_user.html:150 templates/meta_search/admin_dashboard.html:99
+#: templates/meta_search/profile_settings.html:7
+msgid "Settings"
+msgstr "설정"
+
+#: templates/base_settings.html:6 templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "setting"
+msgstr "환경"
+
+#: templates/base_settings.html:15
+msgid "Setting"
+msgstr "환경"
+
+#: templates/base_settings.html:23
+msgid "Profile"
+msgstr "윤곽"
+
+#: templates/base_settings.html:27 templates/meta_search/language.html:8
+#: templates/meta_search/profile_settings.html:71
+msgid "Language"
+msgstr "언어"
+
+#: templates/base_settings.html:31
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "비밀번호를 변경하십시오"
+
+#: templates/base_settings.html:35
+#, fuzzy
+#| msgid "Withdrawal password set."
+msgid "Withdrawal password"
+msgstr "철수 비밀번호 세트."
+
+#: templates/base_user.html:7 templates/base_user.html:144
+#: templates/meta_search/address_add.html:7
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5 templates/meta_search/wallet.html:5
+msgid "My Wallet"
+msgstr "내 지갑"
+
+#: templates/base_user.html:94 templates/base_user.html:95
+msgid "Dashboard"
+msgstr "계기반"
+
+#: templates/base_user.html:99
+msgid "Collapse menu"
+msgstr "붕괴 메뉴"
+
+#: templates/base_user.html:99 templates/base_user.html:230
+msgid "Collapse"
+msgstr "무너지다"
+
+#: templates/base_user.html:107 templates/base_user.html:109
+#: templates/base_user.html:111
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "User avatar"
+msgstr "고객 아바타 1"
+
+#: templates/base_user.html:116 templates/meta_search/profile_settings.html:63
+msgid "User ID"
+msgstr "사용자 ID"
+
+#: templates/base_user.html:117
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:67 templates/meta_search/signup.html:46
+#: templates/meta_search/support_reset_password.html:62
+msgid "Phone"
+msgstr "핸드폰"
+
+#: templates/base_user.html:121
+msgid "Sidebar"
+msgstr "사이드 바"
+
+#: templates/base_user.html:130
+msgid "impersonation"
 msgstr ""
 
-#: templates/meta_search/announcements.html:26
-msgid "No announcements at the moment."
+#: templates/base_user.html:133 templates/meta_search/task_dashboard.html:4
+#: templates/meta_search/task_dashboard.html:5
+#: templates/meta_search/task_dashboard.html:14
+#: templates/tasks/task_detail.html:5
+msgid "Task"
+msgstr "일"
+
+#: templates/base_user.html:135 templates/base_user.html:290
+#: templates/base_user.html:292 templates/meta_search/admin_dashboard.html:87
+msgid "Tasks"
+msgstr "작업"
+
+#: templates/base_user.html:137 templates/meta_search/rewards.html:4
+#: templates/meta_search/rewards.html:5 templates/meta_search/rewards.html:85
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Rewards"
+msgstr "보상을 받으십시오"
+
+#: templates/base_user.html:139 templates/base_user.html:296
+#: templates/base_user.html:298 templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/task_dashboard.html:52
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Reward"
+msgstr "보상을 받으십시오"
+
+#: templates/base_user.html:142
+#, fuzzy
+#| msgid "Account password"
+msgid "Account"
+msgstr "계정 비밀번호"
+
+#: templates/base_user.html:146 templates/base_user.html:302
+#: templates/base_user.html:304 templates/meta_search/wallet.html:6
+msgid "Wallet"
+msgstr "지갑"
+
+#: templates/base_user.html:159 templates/base_user.html:164
+msgid "Admin Panel"
+msgstr "관리자 패널"
+
+#: templates/base_user.html:170 templates/base_user.html:172
+msgid "Admin settings"
+msgstr "관리자 설정"
+
+#: templates/base_user.html:176 templates/base_user.html:178
+msgid "Logout"
+msgstr "로그 아웃"
+
+#: templates/base_user.html:191
+msgid "Menu"
+msgstr "메뉴"
+
+#: templates/base_user.html:204 templates/base_user.html:205
+#: templates/meta_search/admin_dashboard.html:80
+#: templates/meta_search/announcements.html:6
+#: templates/meta_search/announcements.html:13
+#: templates/meta_search/announcements.html:21
+msgid "Announcements"
+msgstr "공지 사항"
+
+#: templates/base_user.html:230
+msgid "Expand"
+msgstr "확장하다"
+
+#: templates/base_user.html:284
+msgid "Primary"
+msgstr "주요한"
+
+#: templates/captcha/custom_widget.html:3
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:114 templates/meta_search/signup.html:124
+msgid "Captcha"
+msgstr "CARTCHA"
+
+#: templates/captcha/custom_widget.html:6
+#, fuzzy
+#| msgid "Enter your password"
+msgid "Enter answer"
+msgstr "비밀번호를 입력하십시오"
+
+#: templates/captcha/custom_widget.html:7
+msgid "Reload image"
+msgstr "새로 고침 이미지"
+
+#: templates/meta_search/address_add.html:4
+#: templates/meta_search/address_add.html:31
+#: templates/meta_search/address_add.html:37
+msgid "Add Payout Address"
+msgstr "지불금 주소를 추가하십시오"
+
+#: templates/meta_search/address_add.html:5
+msgid "Wallet Address"
+msgstr "지갑 주소"
+
+#: templates/meta_search/address_add.html:7
+msgid "Add Address"
+msgstr "주소를 추가하십시오"
+
+#: templates/meta_search/address_add.html:65
+msgid "Address Type"
+msgstr "주소 유형"
+
+#: templates/meta_search/address_add.html:81
+#: templates/meta_search/deposit.html:157
+msgid "Ethereum (ERC20)"
+msgstr "이더 리움 (ERC20)"
+
+#: templates/meta_search/address_add.html:89
+#: templates/meta_search/deposit.html:163
+#: templates/meta_search/withdrawal.html:316
+msgid "USDT (TRC20)"
+msgstr "USDT (TRC20)"
+
+#: templates/meta_search/address_add.html:106
+#: templates/meta_search/deposit_pay.html:142
+#: templates/meta_search/withdrawal.html:252
+msgid "Address"
+msgstr "주소"
+
+#: templates/meta_search/address_add.html:112
+msgid "Select a network to see the required format."
+msgstr "필요한 형식을 보려면 네트워크를 선택하십시오."
+
+#: templates/meta_search/address_add.html:129
+msgid "Label (optional)"
+msgstr "레이블 (선택 사항)"
+
+#: templates/meta_search/address_add.html:141
+msgid "Save Address"
+msgstr "주소를 저장하십시오"
+
+#: templates/meta_search/address_add.html:142
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "뒤쪽에"
+
+#: templates/meta_search/address_add.html:156
+msgid ""
+"Ethereum address must start with 0x and be 42 characters total (0x + 40 hex)."
 msgstr ""
+"이더 리움 주소는 0x로 시작하고 총 42 자로 시작해야합니다 (0x + 40 16 진수)."
+
+#: templates/meta_search/address_add.html:157
+msgid "TRC20 address must start with T and be 34 characters (Base58)."
+msgstr "TRC20 주소는 t로 시작하고 34 자 (Base58)가되어야합니다."
+
+#: templates/meta_search/admin_dashboard.html:5
+msgid "Admin Office"
+msgstr "관리 사무소"
+
+#: templates/meta_search/admin_dashboard.html:6
+msgid "Admin"
+msgstr "관리자"
+
+#: templates/meta_search/admin_dashboard.html:36
+msgid "Users"
+msgstr "사용자"
+
+#: templates/meta_search/admin_dashboard.html:39
+msgid "Browse users"
+msgstr "사용자를 찾아보십시오"
+
+#: templates/meta_search/admin_dashboard.html:40
+msgid "Blocked users"
+msgstr "차단 된 사용자"
+
+#: templates/meta_search/admin_dashboard.html:46
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawals"
+msgstr "철수 보안"
+
+#: templates/meta_search/admin_dashboard.html:49
+#: templates/meta_search/wallet.html:578
+msgid "Pending"
+msgstr "보류 중"
+
+#: templates/meta_search/admin_dashboard.html:52
+#: templates/meta_search/admin_dashboard.html:71
+#: templates/meta_search/wallet.html:404 templates/meta_search/wallet.html:578
+#, fuzzy
+#| msgid "Confirm Password"
+msgid "Confirmed"
+msgstr "비밀번호를 확인하십시오"
+
+#: templates/meta_search/admin_dashboard.html:55
+#: templates/meta_search/wallet.html:578
+msgid "Failed"
+msgstr "실패한"
+
+#: templates/meta_search/admin_dashboard.html:62
+msgid "Deposits"
+msgstr "매장"
+
+#: templates/meta_search/admin_dashboard.html:65
+msgid "Awaiting Payment"
+msgstr "지불을 기다리고 있습니다"
+
+#: templates/meta_search/admin_dashboard.html:68
+#, fuzzy
+#| msgid "Clients Review"
+msgid "Awaiting Review"
+msgstr "클라이언트 검토"
+
+#: templates/meta_search/admin_dashboard.html:78
+msgid "Content"
+msgstr "콘텐츠"
+
+#: templates/meta_search/admin_dashboard.html:81
+msgid "Info pages"
+msgstr "정보 페이지"
+
+#: templates/meta_search/admin_dashboard.html:89
+msgid "User tasks"
+msgstr "사용자 작업"
+
+#: templates/meta_search/admin_dashboard.html:90
+msgid "Task templates"
+msgstr "작업 템플릿"
+
+#: templates/meta_search/admin_dashboard.html:91
+msgid "Forced directives"
+msgstr "강제 지시문"
+
+#: templates/meta_search/admin_dashboard.html:97
+msgid "System"
+msgstr "체계"
+
+#: templates/meta_search/admin_dashboard.html:109
+msgid "Pending withdrawals (latest 10)"
+msgstr "보류중인 철수 (최신 10)"
+
+#: templates/meta_search/admin_dashboard.html:110
+msgid "View all"
+msgstr "모두보기"
+
+#: templates/meta_search/admin_dashboard.html:123
+msgid "Open"
+msgstr "열려 있는"
+
+#: templates/meta_search/admin_dashboard.html:128
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "No pending withdrawals."
+msgstr "인출 비밀번호를 확인하십시오"
+
+#: templates/meta_search/admin_dashboard.html:137
+msgid "Recent activity"
+msgstr "최근 활동"
+
+#: templates/meta_search/admin_dashboard.html:153
+msgid "Nothing yet."
+msgstr "아직 아무것도 없습니다."
+
+#: templates/meta_search/announcements.html:9
+msgid "information"
+msgstr "정보"
+
+#: templates/meta_search/announcements.html:34
+msgid "No announcements at the moment."
+msgstr "현재 발표가 없습니다."
+
+#: templates/meta_search/deposit.html:4 templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit.html:28
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/wallet.html:181 templates/meta_search/wallet.html:189
+#: templates/meta_search/wallet.html:202 templates/meta_search/wallet.html:327
+msgid "Deposit"
+msgstr "보증금"
+
+#: templates/meta_search/deposit.html:119
+#: templates/meta_search/deposit_pay.html:139
+#: templates/meta_search/withdrawal.html:200
+#: templates/meta_search/withdrawal_success.html:137
+msgid "Amount"
+msgstr "양"
+
+#: templates/meta_search/deposit.html:131
+#: templates/meta_search/withdrawal.html:215
+msgid "Currency"
+msgstr "통화"
+
+#: templates/meta_search/deposit.html:147
+msgid "Minimum 10. Choose a preset or enter an amount."
+msgstr "최소 10. 사전 설정을 선택하거나 금액을 입력하십시오."
+
+#: templates/meta_search/deposit.html:152
+msgid "Payment Method"
+msgstr "지불 방법"
+
+#: templates/meta_search/deposit.html:174
+msgid "Proceed to Pay →"
+msgstr "급여 →"
+
+#: templates/meta_search/deposit_pay.html:4
+msgid "Pay Deposit"
+msgstr "보증금을 지불하십시오"
+
+#: templates/meta_search/deposit_pay.html:5
+msgid "Pay"
+msgstr "지불하다"
+
+#: templates/meta_search/deposit_pay.html:29
+#: templates/meta_search/deposit_pay.html:79
+msgid "Payment details"
+msgstr "지불 세부 사항"
+
+#: templates/meta_search/deposit_pay.html:85
+#, fuzzy
+#| msgid "Change password"
+msgid "Change payment method"
+msgstr "비밀번호를 변경하십시오"
+
+#: templates/meta_search/deposit_pay.html:96
+msgid "Ethereum"
+msgstr "이더 리움"
+
+#: templates/meta_search/deposit_pay.html:104
+msgid "Copy amount"
+msgstr "복사 금액"
+
+#: templates/meta_search/deposit_pay.html:116
+msgid "QR code"
+msgstr "QR 코드"
+
+#: templates/meta_search/deposit_pay.html:121
+#, python-format
+msgid "Scan to pay · %(dep.get_network_display)s"
+msgstr "SCAN · %(dep.get_network_display) s로 스캔하십시오"
+
+#: templates/meta_search/deposit_pay.html:132
+#: templates/meta_search/deposit_pay.html:177
+msgid "Verifying…"
+msgstr "확인…"
+
+#: templates/meta_search/deposit_pay.html:133
+#, python-brace-format
+msgid "Verifying… ({time} left)"
+msgstr "확인…"
+
+#: templates/meta_search/deposit_pay.html:134
+msgid "You can use “Verify now” for quick help."
+msgstr "빠른 도움을 받으려면 \"지금 확인\"을 사용할 수 있습니다."
+
+#: templates/meta_search/deposit_pay.html:135
+msgid "QR error"
+msgstr "QR 오류"
+
+#: templates/meta_search/deposit_pay.html:138
+msgid "Network"
+msgstr "회로망"
+
+#: templates/meta_search/deposit_pay.html:145
+msgid "Copy address"
+msgstr "주소를 복사하십시오"
+
+#: templates/meta_search/deposit_pay.html:152
+msgid "Reference"
+msgstr "참조"
+
+#: templates/meta_search/deposit_pay.html:155
+msgid "Copy reference"
+msgstr "복사 참조"
+
+#: templates/meta_search/deposit_pay.html:164
+msgid "I’ve Paid — Verify"
+msgstr "지불했습니다 - 확인"
+
+#: templates/meta_search/deposit_pay.html:166
+msgid "We’ll check the network and update your balance when confirmed."
+msgstr "확인되면 네트워크를 확인하고 잔액을 업데이트합니다."
+
+#: templates/meta_search/deposit_pay.html:174
+#: templates/meta_search/deposit_pay.html:183
+msgid "Verify now"
+msgstr "지금 확인하십시오"
+
+#: templates/meta_search/deposit_pay.html:175
+msgid "Need quick approval? Use <strong>Verify now</strong>."
+msgstr ""
+"빠른 승인이 필요하십니까? [[[[token_0]]]] 지금 [[[[token_1]]]]를 확인하십시"
+"오."
+
+#: templates/meta_search/deposit_pay.html:185
+msgid "Need quick approval? You can use <strong>Verify now</strong>."
+msgstr ""
+"빠른 승인이 필요하십니까? [[[[token_0]]]] 지금 [[[[[token_1]]]]를 확인할 수 "
+"있습니다."
+
+#: templates/meta_search/deposit_pay.html:189
+msgid "Payment failed"
+msgstr "결제가 실패했습니다"
+
+#: templates/meta_search/deposit_pay.html:190
+msgid "Try again"
+msgstr "다시 시도하십시오"
+
+#: templates/meta_search/deposit_pay.html:193
+msgid "This deposit is a draft."
+msgstr "이 예금은 초안입니다."
+
+#: templates/meta_search/deposit_pay.html:194
+msgid "Continue to deposit"
+msgstr "계속 입금하십시오"
+
+#: templates/meta_search/deposit_pay.html:197
+msgid "Thanks! Recieved We’ll verify the payment shortly."
+msgstr "감사해요! 우리는 곧 지불을 확인할 것입니다."
+
+#: templates/meta_search/deposit_pay.html:198
+#: templates/meta_search/withdrawal_success.html:170
+msgid "Go to Wallet"
+msgstr "지갑으로 가십시오"
+
+#: templates/meta_search/deposit_pay.html:201
+#, python-format
+msgid "Status: %(dep.status)s"
+msgstr "상태 : %(dep.status) s"
+
+#: templates/meta_search/deposit_pay.html:209
+#: templates/meta_search/withdrawal_success.html:196
+msgid "Copied"
+msgstr "복사"
 
 #: templates/meta_search/ide.html:18
 msgid "Seaside resort at dusk"
-msgstr ""
+msgstr "황혼에 해변 리조트"
 
 #: templates/meta_search/ide.html:24
 msgid "Experience The Magic Of Relaxation"
-msgstr ""
+msgstr "휴식의 마법을 경험하십시오"
 
 #: templates/meta_search/ide.html:25
 msgid ""
 "Indulge in the epitome of coastal living as you discover the breathtaking "
 "beauty and tranquility of luxury."
 msgstr ""
+"숨막히는 아름다움과 사치의 평온함을 발견하면서 해안 생활의 전형에 빠지십시오."
 
 #: templates/meta_search/ide.html:30
 msgid "Customer avatar 1"
-msgstr ""
+msgstr "고객 아바타 1"
 
 #: templates/meta_search/ide.html:31
 msgid "Customer avatar 2"
-msgstr ""
+msgstr "고객 아바타 2"
 
 #: templates/meta_search/ide.html:32
 msgid "Customer avatar 3"
-msgstr ""
+msgstr "고객 아바타 3"
 
 #: templates/meta_search/ide.html:34
 msgid "Trusted by over 25k+ people"
-msgstr ""
+msgstr "25K 이상의 사람들이 신뢰합니다"
 
 #: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+#: templates/meta_search/index.html:148
 msgid "Explore Now"
-msgstr ""
+msgstr "지금 탐색하십시오"
 
 #: templates/meta_search/ide.html:40
 msgid "Travel partners"
-msgstr ""
+msgstr "여행 파트너"
 
-#: templates/meta_search/ide.html:58
+#: templates/meta_search/ide.html:58 templates/meta_search/index.html:98
 msgid "Premium Facilities"
-msgstr ""
+msgstr "프리미엄 시설"
 
-#: templates/meta_search/ide.html:61
+#: templates/meta_search/ide.html:61 templates/meta_search/index.html:104
 msgid "Exclusive Sunset View"
-msgstr ""
+msgstr "독점적 인 일몰보기"
 
-#: templates/meta_search/ide.html:62
+#: templates/meta_search/ide.html:62 templates/meta_search/index.html:105
 msgid "You witness the beauty of the world from your room"
-msgstr ""
+msgstr "당신은 당신의 방에서 세상의 아름다움을 목격합니다"
 
-#: templates/meta_search/ide.html:65
+#: templates/meta_search/ide.html:65 templates/meta_search/index.html:111
 msgid "Integrated Tourist Area"
-msgstr ""
+msgstr "통합 관광 지역"
 
 #: templates/meta_search/ide.html:66
 msgid "Enhancing your travel experience"
-msgstr ""
+msgstr "여행 경험을 향상시킵니다"
 
-#: templates/meta_search/ide.html:69
+#: templates/meta_search/ide.html:69 templates/meta_search/index.html:118
 msgid "Nature-Inspired Pool"
-msgstr ""
+msgstr "자연에서 영감을 얻은 수영장"
 
-#: templates/meta_search/ide.html:70
+#: templates/meta_search/ide.html:70 templates/meta_search/index.html:119
 msgid "Serene swimming pool with a touch of paradise"
-msgstr ""
+msgstr "낙원을 만질 수있는 고요한 수영장"
 
 #: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+#: templates/meta_search/index.html:129 templates/meta_search/index.html:142
 msgid "Get Rewarded"
-msgstr ""
+msgstr "보상을 받으십시오"
 
-#: templates/meta_search/ide.html:85
+#: templates/meta_search/ide.html:85 templates/meta_search/index.html:134
 msgid "Rate Apartments"
-msgstr ""
+msgstr "아파트를 평가합니다"
 
-#: templates/meta_search/ide.html:86
+#: templates/meta_search/ide.html:86 templates/meta_search/index.html:135
 msgid "Give random objective ratings based on view and aesthetics."
-msgstr ""
+msgstr "관점과 미학에 따라 임의의 객관적인 평가를 제공하십시오."
 
-#: templates/meta_search/ide.html:94
+#: templates/meta_search/ide.html:94 templates/meta_search/index.html:143
 msgid "Earn instant rewards from the apartments you rate."
-msgstr ""
+msgstr "당신이 평가하는 아파트에서 즉각적인 보상을 받으십시오."
 
 #: templates/meta_search/ide.html:102
 msgid "Featured apartments carousel"
-msgstr ""
+msgstr "특집 아파트 회전 목마"
 
-#: templates/meta_search/ide.html:103
+#: templates/meta_search/ide.html:103 templates/meta_search/index.html:167
 msgid "Previous slide"
-msgstr ""
+msgstr "이전 슬라이드"
 
-#: templates/meta_search/ide.html:104
+#: templates/meta_search/ide.html:104 templates/meta_search/index.html:168
 msgid "Next slide"
-msgstr ""
+msgstr "다음 슬라이드"
 
-#: templates/meta_search/ide.html:108
+#: templates/meta_search/ide.html:108 templates/meta_search/index.html:159
 msgid "Modern apartment interior"
-msgstr ""
+msgstr "현대 아파트 인테리어"
 
-#: templates/meta_search/ide.html:111
+#: templates/meta_search/ide.html:111 templates/meta_search/index.html:160
 msgid "Resort pool at sunset"
-msgstr ""
+msgstr "일몰에 리조트 풀"
 
-#: templates/meta_search/ide.html:114
+#: templates/meta_search/ide.html:114 templates/meta_search/index.html:161
 msgid "Scenic valley view"
-msgstr ""
+msgstr "경치 좋은 계곡 전망"
 
-#: templates/meta_search/ide.html:129
+#: templates/meta_search/ide.html:129 templates/meta_search/index.html:175
 msgid "Clients Review"
-msgstr ""
+msgstr "클라이언트 검토"
 
-#: templates/meta_search/ide.html:130
+#: templates/meta_search/ide.html:130 templates/meta_search/index.html:176
 msgid "See some honest reviews from our users on the platform"
-msgstr ""
+msgstr "플랫폼에서 사용자의 정직한 리뷰보기"
 
-#: templates/meta_search/ide.html:135
+#: templates/meta_search/ide.html:135 templates/meta_search/index.html:182
 msgid "Client"
-msgstr ""
+msgstr "고객"
 
 #: templates/meta_search/ide.html:137
 msgid ""
 "Had a great experience using this for solid bookings. Customer service was "
 "top-notch."
 msgstr ""
+"탄탄한 예약을 위해 이것을 사용하는 훌륭한 경험이있었습니다. 고객 서비스는 최"
+"고였습니다."
 
 #: templates/meta_search/ide.html:147
 msgid "Get your inspiration of luxury and get rewarded"
-msgstr ""
+msgstr "사치에 대한 영감을 얻고 보상을 받으십시오"
 
 #: templates/meta_search/ide.html:148
 msgid "Earn new rewards at every step you take under true luxury."
-msgstr ""
+msgstr "진정한 사치하에 취하는 모든 단계에서 새로운 보상을 받으십시오."
 
 #: templates/meta_search/ide.html:149
 msgid "See More"
-msgstr ""
+msgstr "더보십시오"
 
 #: templates/meta_search/ide.html:152
 msgid "Luxury inspiration"
-msgstr ""
+msgstr "고급 영감"
 
 #: templates/meta_search/includes/_header.html:60
 msgid "Get started"
+msgstr "시작하세요"
+
+#: templates/meta_search/index.html:112
+#, fuzzy
+#| msgid "Enhancing your travel experience"
+msgid "Tourism integration is enhancing travel experience"
+msgstr "여행 경험을 향상시킵니다"
+
+#: templates/meta_search/index.html:191
+msgid ""
+"I had a great experience working with this fantastic platform that delivers "
+"reward to users for best rating apartments. They have exceptional customer "
+"service and high-quality service."
 msgstr ""
+"나는이 환상적인 플랫폼을 사용하여 최고의 평가 아파트에 대한 사용자에게 보상"
+"을 제공하는 훌륭한 경험을 가지고있었습니다. 그들은 탁월한 고객 서비스와 고품"
+"질 서비스를 보유하고 있습니다."
+
+#: templates/meta_search/index.html:194 templates/meta_search/index.html:195
+msgid "James Lee"
+msgstr "제임스 리"
 
 #: templates/meta_search/info_index.html:6
 msgid "Info Center"
-msgstr ""
+msgstr "정보 센터"
 
 #: templates/meta_search/info_index.html:7
 msgid "Pick a section on the left, or use the quick links below."
-msgstr ""
+msgstr "왼쪽의 섹션을 선택하거나 아래의 빠른 링크를 사용하십시오."
 
 #: templates/meta_search/info_index.html:19
 #: templates/meta_search/info_page.html:17
 msgid "View all announcements"
-msgstr ""
-
-#: templates/meta_search/language.html:8
-msgid "Language"
-msgstr ""
+msgstr "모든 공지 사항을보십시오"
 
 #: templates/meta_search/language.html:9
 msgid "Select your language."
-msgstr ""
+msgstr "언어를 선택하십시오."
 
 #: templates/meta_search/password_reset_phone.html:4
 msgid "Reset Password – Step 1"
-msgstr ""
+msgstr "비밀번호 재설정 - 1 단계"
 
 #: templates/meta_search/password_reset_phone.html:6
 #: templates/meta_search/password_reset_verify.html:6
 #: templates/meta_search/password_reset_verify.html:79
 msgid "Reset Password"
-msgstr ""
+msgstr "비밀번호를 재설정하십시오"
 
 #: templates/meta_search/password_reset_phone.html:21
 msgid "Enter your phone number to get a verification code."
-msgstr ""
-
-#: templates/meta_search/password_reset_phone.html:41
-#: templates/meta_search/settings_change_password.html:42
-#: templates/meta_search/signin.html:45
-msgid "Phone"
-msgstr ""
+msgstr "확인 코드를 받으려면 전화 번호를 입력하십시오."
 
 #: templates/meta_search/password_reset_phone.html:59
 msgid "Send Code"
-msgstr ""
+msgstr "코드를 보내십시오"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Remembered your password?"
-msgstr ""
+msgstr "비밀번호를 기억하십니까?"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Sign in"
-msgstr ""
+msgstr "로그인"
 
 #: templates/meta_search/password_reset_verify.html:4
 msgid "Reset Password – Step 2"
-msgstr ""
+msgstr "비밀번호 재설정 - 2 단계"
 
 #: templates/meta_search/password_reset_verify.html:21
 msgid "Enter the code sent to your phone, then choose a new password."
-msgstr ""
+msgstr "전화로 전송 된 코드를 입력 한 다음 새 비밀번호를 선택하십시오."
 
 #: templates/meta_search/password_reset_verify.html:43
 msgid "Verification Code"
-msgstr ""
+msgstr "확인 코드"
 
 #: templates/meta_search/password_reset_verify.html:52
 msgid "New Password"
-msgstr ""
+msgstr "새 비밀번호"
 
 #: templates/meta_search/password_reset_verify.html:61
 #: templates/meta_search/password_reset_verify.html:74
 #: templates/meta_search/settings_change_password.html:76
 #: templates/meta_search/settings_change_password.html:93
 #: templates/meta_search/settings_change_password.html:112
-#: templates/meta_search/signin.html:68
+#: templates/meta_search/signin.html:94
 msgid "Show/Hide password"
-msgstr ""
+msgstr "비밀번호 표시/숨기기"
 
 #: templates/meta_search/password_reset_verify.html:65
+#: templates/meta_search/signup.html:85
 msgid "Confirm Password"
-msgstr ""
+msgstr "비밀번호를 확인하십시오"
 
-#: templates/meta_search/password_reset_verify.html:84
-msgid "Back"
-msgstr ""
+#: templates/meta_search/profile_settings.html:5
+msgid "Settings — Profile"
+msgstr "설정 - 프로필"
 
-#: templates/meta_search/password_reset_verify.html:86
-msgid "Home"
-msgstr ""
+#: templates/meta_search/profile_settings.html:8
+msgid "profile"
+msgstr "윤곽"
+
+#: templates/meta_search/profile_settings.html:15
+msgid "Basic Info"
+msgstr "기본 정보"
+
+#: templates/meta_search/profile_settings.html:16
+msgid "Manage your details and personal preferences here."
+msgstr "여기에서 세부 사항과 개인 취향을 관리하십시오."
+
+#: templates/meta_search/profile_settings.html:33
+msgid "Avatar"
+msgstr "화신"
+
+#: templates/meta_search/profile_settings.html:40
+msgid "Change image"
+msgstr "이미지 변경"
+
+#: templates/meta_search/profile_settings.html:51
+msgid "Remove"
+msgstr "제거하다"
+
+#: templates/meta_search/profile_settings.html:55
+msgid "JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80)."
+msgstr "JPG, PNG, Webp 또는 GIF. 이상 : 120 × 120 (최소 80 × 80)."
+
+#: templates/meta_search/profile_settings.html:67
+#, fuzzy
+#| msgid "Phone number"
+msgid "Phone Number"
+msgstr "전화 번호"
+
+#: templates/meta_search/profile_settings.html:76
+msgid "LEVEL 1"
+msgstr "레벨 1"
+
+#: templates/meta_search/profile_settings.html:83
+msgid "Nickname"
+msgstr "별명"
+
+#: templates/meta_search/profile_settings.html:89
+msgid "Image URL (optional)"
+msgstr "이미지 URL (선택 사항)"
+
+#: templates/meta_search/profile_settings.html:92
+msgid "Used only if no uploaded image exists."
+msgstr "업로드 된 이미지가없는 경우에만 사용됩니다."
+
+#: templates/meta_search/profile_settings.html:97
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "변경 사항을 저장하십시오"
+
+#: templates/meta_search/rewards.html:94 templates/meta_search/rewards.html:97
+#: templates/meta_search/rewards.html:118
+msgid "Deposit Bonus"
+msgstr "예금 보너스"
+
+#: templates/meta_search/rewards.html:98
+msgid "Reset Amount Reward"
+msgstr "재설정 금액 보상"
+
+#: templates/meta_search/rewards.html:100
+#: templates/meta_search/rewards.html:101
+#: templates/meta_search/rewards.html:102
+#: templates/meta_search/rewards.html:103
+#: templates/meta_search/rewards.html:121
+#: templates/meta_search/rewards.html:122
+#: templates/meta_search/rewards.html:123
+#: templates/meta_search/rewards.html:124
+#: templates/meta_search/rewards.html:155
+#: templates/meta_search/rewards.html:156
+#: templates/meta_search/rewards.html:157
+msgid "Get"
+msgstr "얻다"
+
+#: templates/meta_search/rewards.html:106
+#, fuzzy
+#| msgid "Please correct the errors below."
+msgid "Please contact customer service for reward."
+msgstr "아래 오류를 수정하십시오."
+
+#: templates/meta_search/rewards.html:107
+msgid "You can only collect once a day; reset the reward."
+msgstr "하루에 한 번만 수집 할 수 있습니다. 보상을 재설정하십시오."
+
+#: templates/meta_search/rewards.html:115
+msgid "Deposit Bonus Details"
+msgstr "예금 보너스 세부 정보"
+
+#: templates/meta_search/rewards.html:119
+msgid "Repeat of tiers for clarity"
+msgstr "명확성을 위해 계층의 반복"
+
+#: templates/meta_search/rewards.html:126
+msgid "Collect once per day."
+msgstr "하루에 한 번 수집하십시오."
+
+#: templates/meta_search/rewards.html:133
+#: templates/meta_search/rewards.html:136
+msgid "Consecutive Days Rewards"
+msgstr "연속적인 일 보상"
+
+#: templates/meta_search/rewards.html:137
+msgid "Work for consecutive days and receive a reward of:"
+msgstr "연속적인 일을하고 다음의 보상을받습니다."
+
+#: templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:155
+msgid "5 days"
+msgstr "5 일"
+
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:156
+msgid "15 days"
+msgstr "15 일"
+
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/rewards.html:157
+msgid "30 days"
+msgstr "30 일"
+
+#: templates/meta_search/rewards.html:149
+msgid "Consecutive Days Details"
+msgstr "연속적인 세부 사항"
+
+#: templates/meta_search/rewards.html:152
+msgid "Consecutive Days"
+msgstr "연속 일"
+
+#: templates/meta_search/rewards.html:153
+msgid "Maintain streaks to unlock larger rewards."
+msgstr "더 큰 보상을 잠금 해제하기 위해 줄무늬를 유지하십시오."
+
+#: templates/meta_search/rewards.html:165
+#: templates/meta_search/rewards.html:168
+msgid "About Gift Boxes"
+msgstr "선물 상자에 대해"
+
+#: templates/meta_search/rewards.html:169
+msgid "Have a chance to get 0–3 random Gift Boxes every round."
+msgstr "매번 라운드마다 0–3 임의의 선물 상자를 얻을 수 있습니다."
+
+#: templates/meta_search/rewards.html:171
+msgid "Gift Boxes Cash Bonus"
+msgstr "선물 상자 현금 보너스"
+
+#: templates/meta_search/rewards.html:171
+#: templates/meta_search/rewards.html:172
+msgid "Up to"
+msgstr "최대"
+
+#: templates/meta_search/rewards.html:172
+msgid "Gift Boxes Commission Bonus"
+msgstr "선물 상자 커미션 보너스"
+
+#: templates/meta_search/rewards.html:172
+msgid "30× commission"
+msgstr "30 × 커미션"
+
+#: templates/meta_search/rewards.html:174
+msgid "For more details, contact customer service."
+msgstr "자세한 내용은 고객 서비스에 문의하십시오."
+
+#: templates/meta_search/rewards.html:181
+msgid "Gift Boxes Detail"
+msgstr "선물 상자 세부 사항"
+
+#: templates/meta_search/rewards.html:184
+msgid "Gift Boxes"
+msgstr "선물 상자"
+
+#: templates/meta_search/rewards.html:185
+msgid "Two types of Gift Boxes rewards are available."
+msgstr "두 가지 유형의 선물 상자 보상을 사용할 수 있습니다."
+
+#: templates/meta_search/rewards.html:187
+msgid "Daily Box"
+msgstr "매일 상자"
+
+#: templates/meta_search/rewards.html:187
+#: templates/meta_search/rewards.html:188
+msgid "Chance"
+msgstr "가능성"
+
+#: templates/meta_search/rewards.html:188
+msgid "Milestone Box"
+msgstr "이정표 상자"
+
+#: templates/meta_search/rewards.html:190
+msgid "Box odds reset weekly."
+msgstr "박스 승률은 매주 재설정됩니다."
+
+#: templates/meta_search/rewards.html:197
+#: templates/meta_search/rewards.html:200
+#, fuzzy
+#| msgid "About us"
+msgid "About Rank"
+msgstr "우리에 대해"
+
+#: templates/meta_search/rewards.html:201
+msgid "Commission tiers & upgrade notes"
+msgstr "커미션 계층 및 업그레이드 노트"
+
+#: templates/meta_search/rewards.html:203
+#: templates/meta_search/rewards.html:204
+#: templates/meta_search/rewards.html:205 templates/meta_search/wallet.html:191
+#: templates/meta_search/wallet.html:204 templates/meta_search/wallet.html:238
+#: templates/meta_search/wallet.html:251 templates/meta_search/wallet.html:282
+#: templates/meta_search/wallet.html:295 templates/meta_search/wallet.html:382
+#: templates/meta_search/wallet.html:573 templates/meta_search/wallet.html:581
+#: templates/tasks/task_detail.html:154
+msgid "Commission"
+msgstr "수수료"
+
+#: templates/meta_search/rewards.html:207
+msgid "Contact Customer Service for more details."
+msgstr "자세한 내용은 고객 서비스에 문의하십시오."
+
+#: templates/meta_search/rewards.html:214
+msgid "About Rank Details"
+msgstr "순위 세부 사항에 대해"
+
+#: templates/meta_search/rewards.html:217
+msgid "Rank Upgrade Details"
+msgstr "업그레이드 세부 사항 순위"
+
+#: templates/meta_search/rewards.html:218
+msgid "More constraints & upgrade hints"
+msgstr "더 많은 제약 및 업그레이드 힌트"
+
+#: templates/meta_search/rewards.html:220
+#: templates/meta_search/rewards.html:221
+msgid "Note"
+msgstr "메모"
+
+#: templates/meta_search/rewards.html:220
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "One withdrawal/day"
+msgstr "새 인출 핀을 설정하십시오"
+
+#: templates/meta_search/rewards.html:221
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Two withdrawals/day"
+msgstr "인출 비밀번호를 확인하십시오"
+
+#: templates/meta_search/rewards.html:222
+msgid "Upgrade"
+msgstr "치받이"
+
+#: templates/meta_search/rewards.html:222
+msgid "Recharge"
+msgstr "재충전"
+
+#: templates/meta_search/rewards.html:224
+msgid "SVIP can become an agent; subordinate commissions may apply."
+msgstr "SVIP는 에이전트가 될 수 있습니다. 하위 커미션이 적용될 수 있습니다."
+
+#: templates/meta_search/rewards.html:235
+#, fuzzy
+#| msgid "Previous slide"
+msgid "Previous"
+msgstr "이전 슬라이드"
+
+#: templates/meta_search/rewards.html:236
+msgid "Next"
+msgstr "다음"
+
+#: templates/meta_search/rewards.html:238
+msgid "Slide indicators"
+msgstr "슬라이드 표시기"
 
 #: templates/meta_search/settings_change_password.html:4
 msgid "Settings — Change password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:20
-msgid "Change password"
-msgstr ""
+msgstr "설정 - 비밀번호 변경"
 
 #: templates/meta_search/settings_change_password.html:22
 msgid ""
 "For security, confirm your phone, pass the captcha, then set a strong "
 "password."
 msgstr ""
-
-#: templates/meta_search/settings_change_password.html:55
-#: templates/meta_search/signin.html:73
-msgid "Captcha"
-msgstr ""
+"보안을 위해 전화를 확인하고 보안 문자를 통과 한 다음 강력한 비밀번호를 설정하"
+"십시오."
 
 #: templates/meta_search/settings_change_password.html:66
 msgid "Old password"
-msgstr ""
+msgstr "오래된 비밀번호"
 
 #: templates/meta_search/settings_change_password.html:79
 msgid "Forgot current password?"
-msgstr ""
+msgstr "현재 비밀번호를 잊으 셨나요?"
 
 #: templates/meta_search/settings_change_password.html:95
 msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
-msgstr ""
+msgstr "글자, 숫자 및 기호가 혼합 된 8 개 이상의 문자를 사용하십시오."
 
 #: templates/meta_search/settings_change_password.html:102
+#: templates/meta_search/support_reset_password.html:94
 msgid "Confirm password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:116
-msgid "Save Changes"
-msgstr ""
+msgstr "비밀번호를 확인하십시오"
 
 #: templates/meta_search/signin.html:4
-msgid "Sign In - Expedia"
-msgstr ""
+msgid "Sign In - Orbitpedia"
+msgstr "로그인 - Orbitpedia"
 
-#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:123
 msgid "Sign In"
-msgstr ""
+msgstr "로그인"
 
-#: templates/meta_search/signin.html:21
+#: templates/meta_search/signin.html:43
 msgid "Welcome back, please sign in"
-msgstr ""
+msgstr "다시 오신 것을 환영합니다. 로그인하십시오"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Don’t have an account?"
-msgstr ""
+msgstr "계정이 없습니까?"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Create one"
-msgstr ""
+msgstr "하나를 만듭니다"
 
-#: templates/meta_search/signin.html:89
+#: templates/meta_search/signin.html:130
 msgid "Forgotten password?"
+msgstr "잊어 버린 비밀번호?"
+
+#: templates/meta_search/signup.html:4
+#, fuzzy
+#| msgid "Sign In - Orbitpedia"
+msgid "Sign Up - Orbitpedia"
+msgstr "로그인 - Orbitpedia"
+
+#: templates/meta_search/signup.html:6
+#, fuzzy
+#| msgid "Sign in"
+msgid "Sign Up"
+msgstr "로그인"
+
+#: templates/meta_search/signup.html:41
+msgid "Hello friend, let’s get you registered"
+msgstr "안녕하세요 친구, 등록하겠습니다"
+
+#: templates/meta_search/signup.html:66 templates/meta_search/signup.html:67
+#: templates/meta_search/signup.html:69 templates/meta_search/signup.html:97
+#: templates/meta_search/signup.html:98 templates/meta_search/signup.html:100
+#, fuzzy
+#| msgid "Show/Hide password"
+msgid "Show password"
+msgstr "비밀번호 표시/숨기기"
+
+#: templates/meta_search/signup.html:68 templates/meta_search/signup.html:99
+#, fuzzy
+#| msgid "Show/Hide password"
+msgid "Hide password"
+msgstr "비밀번호 표시/숨기기"
+
+#: templates/meta_search/signup.html:116
+#, fuzzy
+#| msgid "Invitation code"
+msgid "Invitation Code"
+msgstr "초대장 코드"
+
+#: templates/meta_search/signup.html:133
+#, fuzzy
+#| msgid "Get started"
+msgid "Get Started"
+msgstr "시작하세요"
+
+#: templates/meta_search/signup.html:138
+#, fuzzy
+#| msgid "Don’t have an account?"
+msgid "Already have an account?"
+msgstr "계정이 없습니까?"
+
+#: templates/meta_search/signup.html:138
+msgid "Login"
+msgstr "로그인"
+
+#: templates/meta_search/support_reset_password.html:6
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Support – Reset Password"
+msgstr "비밀번호를 재설정하십시오"
+
+#: templates/meta_search/support_reset_password.html:38
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset User Password (Support)"
+msgstr "비밀번호를 재설정하십시오"
+
+#: templates/meta_search/support_reset_password.html:39
+msgid "Enter the user’s phone and a new password. This action is logged."
+msgstr "사용자의 전화와 새 비밀번호를 입력하십시오. 이 조치는 기록됩니다."
+
+#: templates/meta_search/support_reset_password.html:70
+msgid ""
+"Accepts <b>E.164</b> (e.g. <code>+2348012345678</code>) or local NG like "
+"<code>080…</code>."
 msgstr ""
+"[[[token_0]]]] e.164 [[[[token_1]]]] (예 : "
+"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[)]]]]])]]]] 또는 로컬 ng와 같은 "
+"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[)))]]]]]]) [[token_4]]]]"
+
+#: templates/meta_search/support_reset_password.html:82
+#: templates/meta_search/support_reset_password.html:84
+#: templates/meta_search/support_reset_password.html:99
+#: templates/meta_search/support_reset_password.html:101
+msgid "Show"
+msgstr "보여주다"
+
+#: templates/meta_search/support_reset_password.html:83
+#: templates/meta_search/support_reset_password.html:100
+msgid "Hide"
+msgstr "숨다"
+
+#: templates/meta_search/support_reset_password.html:112
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset password"
+msgstr "비밀번호를 재설정하십시오"
+
+#: templates/meta_search/support_reset_password.html:113
+msgid "You must be logged in as <b>staff</b>."
+msgstr "[[[[token_0]]]] 직원 [[[[Token_1]]]]로 로그인해야합니다."
+
+#: templates/meta_search/support_reset_password.html:118
+msgid ""
+"Tip: Use strong passwords (12+ chars, mix of letters, numbers & symbols). "
+"This operation is recorded in the Admin log."
+msgstr ""
+"팁 : 강력한 비밀번호 (12+ 숯, 문자, 숫자 및 기호의 혼합)를 사용하십시오. 이 "
+"작업은 관리자 로그에 기록됩니다."
+
+#: templates/meta_search/support_reset_password.html:147
+msgid "Working…"
+msgstr "일하고 있는…"
+
+#: templates/meta_search/task_dashboard.html:25
+msgid "Balances"
+msgstr "균형"
+
+#: templates/meta_search/task_dashboard.html:38
+msgid "Tasks Promo"
+msgstr "작업 프로모션"
+
+#: templates/meta_search/task_dashboard.html:45
+msgid "Complete Tasks"
+msgstr "완전한 작업"
+
+#: templates/meta_search/task_dashboard.html:46
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "and get rewarded"
+msgstr "보상을 받으십시오"
+
+#: templates/meta_search/task_dashboard.html:60
+msgid "Locked:"
+msgstr "잠긴 :"
+
+#: templates/meta_search/task_dashboard.html:61
+msgid "You have completed your trial. Please contact customer care."
+msgstr "당신은 당신의 시험을 완료했습니다. 고객 관리에 문의하십시오."
+
+#: templates/meta_search/task_dashboard.html:64
+#, python-format
+msgid "Tasks available: <strong>%(n)s</strong>"
+msgstr "이용 가능한 작업 : [[[Token_0]]]] [[[[Token_2]]]] [[[Token_1]]]]"
+
+#: templates/meta_search/task_dashboard.html:66
+msgid "You’re up to date. Click below to get your next task."
+msgstr "당신은 최신입니다. 다음 작업을 보려면 아래를 클릭하십시오."
+
+#: templates/meta_search/task_dashboard.html:78
+msgid "Locked — contact support"
+msgstr "잠긴 - 연락처 지원"
+
+#: templates/meta_search/task_dashboard.html:80
+#: templates/tasks/user_task_dashboard.html:254
+msgid "Click to get your task"
+msgstr "작업을 클릭하십시오"
+
+#: templates/meta_search/task_dashboard.html:90
+msgid "Filter tasks"
+msgstr "필터 작업"
+
+#: templates/meta_search/task_dashboard.html:91
+#: templates/meta_search/task_dashboard.html:105
+#: templates/meta_search/wallet.html:188 templates/meta_search/wallet.html:201
+#: templates/tasks/user_task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:300
+msgid "All"
+msgstr "모두"
+
+#: templates/meta_search/task_dashboard.html:92
+#: templates/meta_search/task_dashboard.html:106
+#: templates/tasks/task_detail.html:169
+#: templates/tasks/user_task_dashboard.html:265
+#: templates/tasks/user_task_dashboard.html:301
+msgid "Completed"
+msgstr "완전한"
+
+#: templates/meta_search/task_dashboard.html:93
+#: templates/meta_search/task_dashboard.html:107
+#: templates/tasks/user_task_dashboard.html:239
+#: templates/tasks/user_task_dashboard.html:266
+#: templates/tasks/user_task_dashboard.html:302
+msgid "Processing"
+msgstr "처리"
+
+#: templates/meta_search/task_dashboard.html:98
+#: templates/meta_search/task_dashboard.html:101
+#: templates/meta_search/task_dashboard.html:112
+#: templates/tasks/user_task_dashboard.html:260
+msgid "Task History"
+msgstr "작업 기록"
+
+#: templates/meta_search/task_dashboard.html:103
+#: templates/meta_search/task_dashboard.html:104
+#: templates/meta_search/task_dashboard.html:138
+#: templates/meta_search/task_dashboard.html:168
+#: templates/meta_search/task_dashboard.html:198
+#: templates/meta_search/task_dashboard.html:223
+#: templates/meta_search/withdrawal_success.html:144
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:319
+msgid "Status"
+msgstr "상태"
+
+#: templates/meta_search/task_dashboard.html:124
+#: templates/meta_search/task_dashboard.html:154
+#: templates/meta_search/task_dashboard.html:184
+#: templates/meta_search/task_dashboard.html:239
+#: templates/meta_search/task_dashboard.html:252
+#: templates/meta_search/task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:288
+#: templates/tasks/user_task_dashboard.html:313
+msgid "View"
+msgstr "보다"
+
+#: templates/meta_search/task_dashboard.html:128
+#: templates/meta_search/task_dashboard.html:158
+#: templates/meta_search/task_dashboard.html:188
+#: templates/tasks/user_task_dashboard.html:317
+msgid "Product"
+msgstr "제품"
+
+#: templates/meta_search/task_dashboard.html:134
+#: templates/meta_search/task_dashboard.html:164
+#: templates/meta_search/task_dashboard.html:194
+#: templates/meta_search/task_dashboard.html:221
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:318
+msgid "Price"
+msgstr "가격"
+
+#: templates/meta_search/task_dashboard.html:142
+#: templates/meta_search/task_dashboard.html:172
+#: templates/meta_search/task_dashboard.html:202
+#: templates/meta_search/task_dashboard.html:222
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:320
+msgid "Comm"
+msgstr "통신"
+
+#: templates/meta_search/task_dashboard.html:209
+#: templates/meta_search/task_dashboard.html:269
+msgid "No Task History"
+msgstr "작업 기록이 없습니다"
+
+#: templates/meta_search/task_dashboard.html:218
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Product Name"
+msgstr "제품 이름"
+
+#: templates/meta_search/task_dashboard.html:219
+#: templates/tasks/task_detail.html:110
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Order ID"
+msgstr "주문 ID"
+
+#: templates/meta_search/task_dashboard.html:220
+#: templates/meta_search/user_dashboard.html:101
+#: templates/tasks/task_detail.html:118
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Date"
+msgstr "날짜"
+
+#: templates/meta_search/task_dashboard.html:224
+msgid "Action"
+msgstr "행동"
+
+#: templates/meta_search/task_dashboard.html:233
+#: templates/meta_search/task_dashboard.html:246
+#: templates/meta_search/task_dashboard.html:258
+#, python-format
+msgid "Task #%(id)s"
+msgstr "작업 #[[[Token_0]]]]"
+
+#: templates/meta_search/task_dashboard.html:280
+#: templates/meta_search/wallet.html:397 templates/tasks/task_detail.html:186
+#: templates/tasks/user_task_dashboard.html:350
+msgid "Close"
+msgstr "닫다"
+
+#: templates/meta_search/task_dashboard.html:290
+msgid "Trial Complete"
+msgstr "시험 완료"
+
+#: templates/meta_search/task_dashboard.html:291
+msgid ""
+"You’ve completed all trial tasks. Please contact customer care to continue."
+msgstr "모든 시험 작업을 완료했습니다. 계속하려면 고객 관리에 문의하십시오."
+
+#: templates/meta_search/task_dashboard.html:292
+#: templates/tasks/task_detail.html:195
+#: templates/tasks/user_task_dashboard.html:357
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "Customer care"
+msgstr "고객 아바타 1"
+
+#: templates/meta_search/user_dashboard.html:6
+msgid "Dashboard — Tasks & Rewards"
+msgstr "대시 보드 - 작업 및 보상"
+
+#: templates/meta_search/user_dashboard.html:7
+msgid "My Dashboard"
+msgstr "내 대시 보드"
+
+#: templates/meta_search/user_dashboard.html:9
+msgid "Home / dashboard"
+msgstr "홈 / 대시 보드"
+
+#: templates/meta_search/user_dashboard.html:98
+#: templates/meta_search/user_dashboard.html:164
+msgid "User"
+msgstr "사용자"
+
+#: templates/meta_search/user_dashboard.html:99
+msgid "View Profile"
+msgstr "프로필을 봅니다"
+
+#: templates/meta_search/user_dashboard.html:100
+msgid "Location"
+msgstr "위치"
+
+#: templates/meta_search/user_dashboard.html:102
+#: templates/meta_search/user_dashboard.html:107
+msgid "Rating"
+msgstr "평가"
+
+#: templates/meta_search/user_dashboard.html:103
+msgid "Search"
+msgstr "찾다"
+
+#: templates/meta_search/user_dashboard.html:104
+#: templates/meta_search/user_dashboard.html:238
+msgid "Filters"
+msgstr "필터"
+
+#: templates/meta_search/user_dashboard.html:105
+msgid "Recommended"
+msgstr "추천"
+
+#: templates/meta_search/user_dashboard.html:106
+msgid "Popular"
+msgstr "인기 있는"
+
+#: templates/meta_search/user_dashboard.html:108
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "Your avatar"
+msgstr "고객 아바타 1"
+
+#: templates/meta_search/user_dashboard.html:109
+#: templates/meta_search/user_dashboard.html:169
+msgid "Let’s do some task and earn reward"
+msgstr "일을하고 보상을 받자"
+
+#: templates/meta_search/user_dashboard.html:208
+msgid "Mobile header & filters"
+msgstr "모바일 헤더 및 필터"
+
+#: templates/meta_search/user_dashboard.html:210
+msgid "View profile"
+msgstr "프로필을 봅니다"
+
+#: templates/meta_search/user_dashboard.html:224
+msgid "wave"
+msgstr "파도"
+
+#: templates/meta_search/user_dashboard.html:293
+#, fuzzy, python-format
+#| msgid "Save Changes"
+msgid "Save %(name)s"
+msgstr "변경 사항을 저장하십시오"
+
+#: templates/meta_search/user_dashboard.html:320
+#, python-format
+msgid "No %(tab)s hotels available."
+msgstr "아니요 [[[[Token_0]]]] 호텔 이용 가능."
+
+#: templates/meta_search/wallet.html:7
+msgid "Home / my wallet"
+msgstr "집 / 내 지갑"
+
+#: templates/meta_search/wallet.html:160
+msgid "Wallet Summary"
+msgstr "지갑 요약"
+
+#: templates/meta_search/wallet.html:163
+msgid "Current Balance"
+msgstr "현재 균형"
+
+#: templates/meta_search/wallet.html:166 templates/meta_search/wallet.html:601
+msgid "Hide balance"
+msgstr "균형을 숨 깁니다"
+
+#: templates/meta_search/wallet.html:176
+msgid "Trial Bonus"
+msgstr "시험 보너스"
+
+#: templates/meta_search/wallet.html:182 templates/meta_search/wallet.html:249
+#: templates/meta_search/wallet.html:293 templates/meta_search/wallet.html:581
+#: templates/meta_search/withdrawal.html:5
+#: templates/meta_search/withdrawal.html:157
+msgid "Withdraw"
+msgstr "철회하다"
+
+#: templates/meta_search/wallet.html:187
+msgid "Filter transactions (mobile)"
+msgstr "필터 거래 (모바일)"
+
+#: templates/meta_search/wallet.html:190 templates/meta_search/wallet.html:203
+#: templates/meta_search/wallet.html:240 templates/meta_search/wallet.html:284
+#: templates/meta_search/wallet.html:351 templates/meta_search/wallet.html:573
+#: templates/meta_search/withdrawal.html:6
+#: templates/meta_search/withdrawal.html:199
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal"
+msgstr "철수 보안"
+
+#: templates/meta_search/wallet.html:196
+msgid "Transactions"
+msgstr "업무"
+
+#: templates/meta_search/wallet.html:199
+msgid "Filter transactions (desktop)"
+msgstr "필터 트랜잭션 (데스크탑)"
+
+#: templates/meta_search/wallet.html:247 templates/meta_search/wallet.html:291
+msgid "Added funds"
+msgstr "추가 자금"
+
+#: templates/meta_search/wallet.html:253 templates/meta_search/wallet.html:297
+#: templates/meta_search/wallet.html:581
+msgid "Adjustment"
+msgstr "조정"
+
+#: templates/meta_search/wallet.html:310
+msgid "No Transaction History"
+msgstr "거래 기록이 없습니다"
+
+#: templates/meta_search/wallet.html:311
+msgid "When you start using your wallet, entries will show here."
+msgstr "지갑을 사용하기 시작하면 여기에 출품작이 표시됩니다."
+
+#: templates/meta_search/wallet.html:327
+#, python-format
+msgid "Added funds • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "추가 자금 • %(T.created_at | 날짜 : \"y-m-d\") s"
+
+#: templates/meta_search/wallet.html:331
+msgid "No deposits yet"
+msgstr "아직 예금이 없습니다"
+
+#: templates/meta_search/wallet.html:347
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal (Pending)"
+msgstr "철수 보안"
+
+#: templates/meta_search/wallet.html:349
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal (Failed)"
+msgstr "철수 보안"
+
+#: templates/meta_search/wallet.html:356
+msgid "Requested"
+msgstr "요청"
+
+#: templates/meta_search/wallet.html:358
+msgid "Request"
+msgstr "요구"
+
+#: templates/meta_search/wallet.html:360
+msgid "Posted"
+msgstr "게시"
+
+#: templates/meta_search/wallet.html:367
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "No withdrawals yet"
+msgstr "철수 보안"
+
+#: templates/meta_search/wallet.html:382
+#, python-format
+msgid "Payment • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "지불 • %(T.Created_at | 날짜 : \"Y-M-D\") s"
+
+#: templates/meta_search/wallet.html:386
+msgid "No commissions yet"
+msgstr "아직 커미션이 없습니다"
+
+#: templates/meta_search/wallet.html:398
+msgid "Transaction Details"
+msgstr "거래 세부 사항"
+
+#: templates/meta_search/wallet.html:406
+msgid "Transaction ID"
+msgstr "거래 ID"
+
+#: templates/meta_search/wallet.html:406
+msgid "Copy ID"
+msgstr "복사 ID"
+
+#: templates/meta_search/wallet.html:408
+msgid "Description"
+msgstr "설명"
+
+#: templates/meta_search/wallet.html:410
+msgid "State"
+msgstr "상태"
+
+#: templates/meta_search/wallet.html:581
+msgid "Added fund to wallet"
+msgstr "지갑에 자금을 추가했습니다"
+
+#: templates/meta_search/wallet.html:600
+msgid "Show balance"
+msgstr "균형을 보여주십시오"
+
+#: templates/meta_search/withdrawal.html:8
+msgid "Home / my Wallet / Withdrawal"
+msgstr "홈 / 내 지갑 / 철수"
+
+#: templates/meta_search/withdrawal.html:167
+msgid "Your withdrawal method is verified."
+msgstr "철수 방법이 확인되었습니다."
+
+#: templates/meta_search/withdrawal.html:222
+msgid "EUR (Euro)"
+msgstr "EUR (EURO)"
+
+#: templates/meta_search/withdrawal.html:227
+msgid "USD (US Dollar)"
+msgstr "USD (US Dollar)"
+
+#: templates/meta_search/withdrawal.html:232
+msgid "GBP (Pound)"
+msgstr "GBP (파운드)"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Min"
+msgstr "최소"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Max"
+msgstr "맥스"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "per request"
+msgstr "요청 당"
+
+#: templates/meta_search/withdrawal.html:256
+msgid "Bound wallet address"
+msgstr "묶인 지갑 주소"
+
+#: templates/meta_search/withdrawal.html:257
+msgid "Update address"
+msgstr "업데이트 주소"
+
+#: templates/meta_search/withdrawal.html:264
+msgid "Network:"
+msgstr "회로망:"
+
+#: templates/meta_search/withdrawal.html:278
+msgid "Bind your wallet address first"
+msgstr "먼저 지갑 주소를 바인딩하십시오"
+
+#: templates/meta_search/withdrawal.html:279
+msgid "Bind Wallet Address"
+msgstr "지갑 주소를 바인딩합니다"
+
+#: templates/meta_search/withdrawal.html:283
+msgid ""
+"You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste "
+"your wallet address → verify (email/SMS) → the address will be saved and "
+"auto-filled here."
+msgstr ""
+"바인드 주소 페이지로 이동 → 네트워크 선택 (예 : TRC20) → 지갑 주소를 붙여 넣"
+"습니다 → VERIFY (이메일/SMS) → 주소가 저장되고 자동으로 채워집니다."
+
+#: templates/meta_search/withdrawal.html:285
+msgid "Bind wallet address?"
+msgstr "바인드 지갑 주소?"
+
+#: templates/meta_search/withdrawal.html:296
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal Method"
+msgstr "철수 보안"
+
+#: templates/meta_search/withdrawal.html:303
+msgid "ETHEREUM"
+msgstr "이더 리움"
+
+#: templates/meta_search/withdrawal.html:330
+#: templates/meta_search/withdrawal.html:472
+msgid "The withdrawal requirement has yet to be fulfilled."
+msgstr "철수 요건은 아직 이행되지 않았습니다."
+
+#: templates/meta_search/withdrawal.html:332
+msgid "WITHDRAW"
+msgstr "철회하다"
+
+#: templates/meta_search/withdrawal.html:339
+#, fuzzy
+#| msgid "You don’t have a withdrawal password yet. Set one first."
+msgid "For security, you must set a withdrawal password first."
+msgstr "아직 인출 비밀번호가 없습니다. 먼저 하나를 설정하십시오."
+
+#: templates/meta_search/withdrawal.html:340
+#, fuzzy
+#| msgid "Current withdrawal password"
+msgid "Set withdrawal password"
+msgstr "현재 철수 비밀번호"
+
+#: templates/meta_search/withdrawal.html:349
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Confirm withdrawal"
+msgstr "인출 비밀번호를 확인하십시오"
+
+#: templates/meta_search/withdrawal.html:354
+#, fuzzy
+#| msgid "Incorrect withdrawal password."
+msgid "Enter your 6-digit withdrawal password to continue."
+msgstr "잘못된 인출 비밀번호."
+
+#: templates/meta_search/withdrawal.html:356
+msgid "Cancel"
+msgstr "취소"
+
+#: templates/meta_search/withdrawal.html:357
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Confirm & Withdraw"
+msgstr "인출 비밀번호를 확인하십시오"
+
+#: templates/meta_search/withdrawal.html:368
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal policy"
+msgstr "철수 보안"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "The withdrawal requirement has yet to be fulfilled"
+msgstr "철수 요건은 아직 이행되지 않았습니다"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "COMPLETE MORE TASKS"
+msgstr "더 많은 작업을 완료하십시오"
+
+#: templates/meta_search/withdrawal.html:371
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "before the next withdrawal."
+msgstr "새 인출 핀을 설정하십시오"
+
+#: templates/meta_search/withdrawal.html:373
+#, python-format
+msgid ""
+"Locked: The withdrawal requirement has yet to be fulfilled "
+"%(withdraw_cycles_remaining)s"
+msgstr "잠금 : 철수 요건은 아직 이행되지 않았다 [[[[Token_0]]]]"
+
+#: templates/meta_search/withdrawal.html:377
+msgid "Got it"
+msgstr "알았어요"
+
+#: templates/meta_search/withdrawal.html:500
+msgid "Processing…"
+msgstr "처리…"
+
+#: templates/meta_search/withdrawal_success.html:5
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal Submitted"
+msgstr "철수 보안"
+
+#: templates/meta_search/withdrawal_success.html:6
+msgid "Home / my Wallet / Withdrawal / Success"
+msgstr "홈 / 내 지갑 / 철수 / 성공"
+
+#: templates/meta_search/withdrawal_success.html:108
+msgid "Awaiting Approval"
+msgstr "승인을 기다리고 있습니다"
+
+#: templates/meta_search/withdrawal_success.html:114
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal submitted"
+msgstr "철수 보안"
+
+#: templates/meta_search/withdrawal_success.html:121
+msgid "We’ve received your request."
+msgstr "귀하의 요청을 받았습니다."
+
+#: templates/meta_search/withdrawal_success.html:122
+msgid "You’ll get an update once it’s reviewed."
+msgstr "검토되면 업데이트를 받게됩니다."
+
+#: templates/meta_search/withdrawal_success.html:129
+msgid "Request ID"
+msgstr "요청 ID"
+
+#: templates/meta_search/withdrawal_success.html:132
+#: templates/meta_search/withdrawal_success.html:197
+msgid "Copy"
+msgstr "복사"
+
+#: templates/meta_search/withdrawal_success.html:150
+#: templates/tasks/user_task_dashboard.html:312
+msgid "Submitted"
+msgstr "제출된"
+
+#: templates/meta_search/withdrawal_success.html:157
+msgid "To"
+msgstr "에게"
+
+#: templates/meta_search/withdrawal_success.html:166
+msgid "Your withdrawal request has been submitted."
+msgstr "철수 요청이 제출되었습니다."
+
+#: templates/meta_search/withdrawal_success.html:171
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "Make another withdrawal"
+msgstr "새 인출 핀을 설정하십시오"
+
+#: templates/meta_search/withdrawal_success.html:175
+msgid ""
+"Tip: If you navigate back to the withdrawal page, it will load a fresh form "
+"so it can’t be submitted twice."
+msgstr ""
+"팁 : 철수 페이지로 다시 탐색하면 새로운 양식을로드하여 두 번 제출할 수 없습니"
+"다."
+
+#: templates/tasks/task_detail.html:4
+msgid "Task Preview"
+msgstr "작업 미리보기"
+
+#: templates/tasks/task_detail.html:6
+msgid "Home / Task / Detail"
+msgstr "홈 / 작업 / 세부 사항"
+
+#: templates/tasks/task_detail.html:90
+msgid "Task image"
+msgstr "작업 이미지"
+
+#: templates/tasks/task_detail.html:103
+msgid "Rated"
+msgstr "평가"
+
+#: templates/tasks/task_detail.html:152
+msgid "1X commission"
+msgstr "1X 커미션"
+
+#: templates/tasks/task_detail.html:165
+msgid "Submit"
+msgstr "제출하다"
+
+#: templates/tasks/task_detail.html:167
+msgid "Submitted (waiting)"
+msgstr "제출 (대기)"
+
+#: templates/tasks/task_detail.html:191
+msgid "Congratulations!"
+msgstr "축하해요!"
+
+#: templates/tasks/task_detail.html:193
+msgid ""
+"You have received a platinum package. For more info please contact customer "
+"service."
+msgstr ""
+"플래티넘 패키지를 받았습니다. 자세한 내용은 고객 서비스에 문의하십시오."
+
+#: templates/tasks/user_task_dashboard.html:5
+#: templates/tasks/user_task_dashboard.html:6
+msgid "Tasks Dashboard"
+msgstr "작업 대시 보드"
+
+#: templates/tasks/user_task_dashboard.html:213
+msgid "Home / Task"
+msgstr "가정 / 작업"
+
+#: templates/tasks/user_task_dashboard.html:227
+msgid "Total Asset"
+msgstr "총 자산"
+
+#: templates/tasks/user_task_dashboard.html:231
+msgid "Asset"
+msgstr "유산"
+
+#: templates/tasks/user_task_dashboard.html:235
+msgid "Dividends"
+msgstr "배당금"
+
+#: templates/tasks/user_task_dashboard.html:246
+msgid "Complete Tasks and get"
+msgstr "작업을 완료하고 얻습니다"
+
+#: templates/tasks/user_task_dashboard.html:246
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "rewarded"
+msgstr "보상을 받으십시오"
+
+#: templates/tasks/user_task_dashboard.html:247
+msgid "Banner Image"
+msgstr "배너 이미지"
+
+#: templates/tasks/user_task_dashboard.html:249
+msgid "Order received today:"
+msgstr "오늘받은 주문 :"
+
+#: templates/tasks/user_task_dashboard.html:252
+msgid "Fetching your task…"
+msgstr "당신의 과제를 가져 오기…"
+
+#: templates/tasks/user_task_dashboard.html:262
+msgid "Filter status"
+msgstr "필터 상태"
+
+#: templates/tasks/user_task_dashboard.html:268
+msgid "Apply"
+msgstr "적용하다"
+
+#: templates/tasks/user_task_dashboard.html:293
+#: templates/tasks/user_task_dashboard.html:323
+msgid "No tasks yet."
+msgstr "아직 작업이 없습니다."
+
+#: templates/tasks/user_task_dashboard.html:311
+msgid "Approved"
+msgstr "승인"
+
+#: templates/tasks/user_task_dashboard.html:335
+#: templates/tasks/user_task_dashboard.html:392
+msgid "Loading…"
+msgstr "로딩…"
+
+#: templates/tasks/user_task_dashboard.html:336
+#: templates/tasks/user_task_dashboard.html:386
+msgid "Please wait a moment"
+msgstr "잠시 기다려주세요"
+
+#: templates/tasks/user_task_dashboard.html:353
+msgid "Oh No!"
+msgstr "안 돼!"
+
+#: templates/tasks/user_task_dashboard.html:355
+msgid ""
+"You have completed <strong id=\"completedCount\">0</strong> orders."
+"<br>Please contact customer service for assistance."
+msgstr ""
+"[[[[Token_0]]]] 0 [[[[[Token_1]]]] 주문을 완료했습니다. [[[[Token_2]]]] 고객 "
+"서비스에 문의하십시오."

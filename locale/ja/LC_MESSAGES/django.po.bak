@@ -1,0 +1,624 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 16:12+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: main/admin.py:44
+msgid "Clear withdrawal PIN"
+msgstr "クリア離脱ピン"
+
+#: main/admin.py:46
+msgid ""
+"Tick to remove any existing withdrawal PIN so the user must set a new one."
+msgstr "ユーザーが新しいものを設定する必要があるように、既存の引き出しピンを削除するには、チェックしてください。"
+
+#: main/admin.py:49
+msgid "Set new withdrawal PIN"
+msgstr "新しい引き出しピンを設定します"
+
+#: main/admin.py:57
+msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
+msgstr "オプション。正確に6桁を入力して、ピンを設定/リセットします。"
+
+#: main/admin.py:70
+msgid "PIN must be exactly 6 digits."
+msgstr "ピンは正確に6桁でなければなりません。"
+
+#: main/admin.py:136
+msgid "Withdrawal security"
+msgstr "撤退セキュリティ"
+
+#: main/forms.py:27
+msgid "Account password"
+msgstr "アカウントパスワード"
+
+#: main/forms.py:31
+msgid "Withdrawal password (6 digits)"
+msgstr "引き出しパスワード（6桁）"
+
+#: main/forms.py:35
+msgid "Confirm withdrawal password"
+msgstr "引き出しパスワードを確認します"
+
+#: main/forms.py:46
+msgid "Incorrect account password."
+msgstr "誤ったアカウントパスワード。"
+
+#: main/forms.py:53 main/forms.py:87
+msgid "Enter exactly 6 digits."
+msgstr "正確に6桁を入力します。"
+
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+msgid "Passwords do not match."
+msgstr "パスワードが一致しません。"
+
+#: main/forms.py:61
+msgid "Current withdrawal password"
+msgstr "現在の引き出しパスワード"
+
+#: main/forms.py:65
+msgid "New withdrawal password (6 digits)"
+msgstr "新しい引き出しパスワード（6桁）"
+
+#: main/forms.py:69
+msgid "Confirm new withdrawal password"
+msgstr "新しい引き出しパスワードを確認します"
+
+#: main/forms.py:80
+msgid "Incorrect withdrawal password."
+msgstr "誤った引き出しパスワード。"
+
+#: main/forms.py:161
+#, python-format
+msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
+msgstr "jpg/png/webp/gif、upまで[[[[token_0]]]] mb。"
+
+#: main/forms.py:162
+msgid "Direct image URL (used only if no file is uploaded)."
+msgstr "Direct Image URL（ファイルがアップロードされていない場合にのみ使用）。"
+
+#: main/forms.py:180
+msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
+msgstr "サポートされていない画像タイプ。 JPG、PNG、WebP、またはGIFを使用します。"
+
+#: main/forms.py:182
+#, python-format
+msgid "Image too large (max %(mb)s MB)."
+msgstr "画像が大きすぎる（max [[[[[token_0]]]] mb）。"
+
+#: main/forms.py:191
+msgid "Only http/https URLs are allowed."
+msgstr "HTTP/HTTPS URLのみが許可されています。"
+
+#: main/forms.py:206 main/forms.py:371 main/forms.py:581
+msgid "Country code"
+msgstr "国コード"
+
+#: main/forms.py:211 main/forms.py:376 main/forms.py:586
+msgid "Enter your phone number"
+msgstr "電話番号を入力してください"
+
+#: main/forms.py:215 main/forms.py:380 main/forms.py:590
+msgid "Phone number"
+msgstr "電話番号"
+
+#: main/forms.py:220
+msgid "Enter your invitation code"
+msgstr "招待コードを入力してください"
+
+#: main/forms.py:223
+msgid "Invitation code"
+msgstr "招待コード"
+
+#: main/forms.py:225 main/forms.py:592
+msgid "I am not a robot"
+msgstr "私はロボットではありません"
+
+#: main/forms.py:236 main/forms.py:385 main/forms.py:615
+msgid "Enter your password"
+msgstr "パスワードを入力してください"
+
+#: main/forms.py:240
+msgid "Re-enter your password"
+msgstr "パスワードを再入力します"
+
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+msgid "Invalid phone number format."
+msgstr "無効な電話番号形式。"
+
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+msgid "This phone number is not possible for the selected country."
+msgstr "この電話番号は、選択した国では不可能です。"
+
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+msgid "This phone number is not valid for the selected country."
+msgstr "この電話番号は、選択した国では無効です。"
+
+#: main/forms.py:281 main/forms.py:429 main/forms.py:657
+#, python-format
+msgid ""
+"Phone number length must be between %(lo)d and %(hi)d digits for "
+"%(country)s."
+msgstr "電話番号の長さは、[[[[[[token_0]]]]]の場合、％（lo）dと％（hi）d digitsの間でなければなりません。"
+
+#: main/forms.py:293
+msgid "An account with this phone already exists."
+msgstr "この電話のアカウントはすでに存在しています。"
+
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+msgid "Password"
+msgstr "パスワード"
+
+#: main/forms.py:325
+msgid ""
+"Raw passwords are not stored, so there is no way to see this user’s "
+"password, but you can change the password using the “Change password” form."
+msgstr ""
+"生のパスワードは保存されていないため、このユーザーのパスワードを表示する方法はありませんが、「パスワードの変更」フォームを使用してパスワードを変更できます。"
+
+#: main/forms.py:352
+msgid "User phone (E.164 or local NG)"
+msgstr "ユーザー電話（E.164またはローカルNG）"
+
+#: main/forms.py:353
+msgid "+2348012345678 or 080..."
+msgstr "+2348012345678または080 ..."
+
+#: main/forms.py:355 main/views.py:210
+#: templates/meta_search/settings_change_password.html:83
+msgid "New password"
+msgstr "新しいパスワード"
+
+#: main/forms.py:356 main/views.py:211
+msgid "Confirm new password"
+msgstr "新しいパスワードを確認します"
+
+#: main/forms.py:670
+msgid "Phone does not match your account."
+msgstr "電話はあなたのアカウントと一致しません。"
+
+#: main/models.py:578 templates/base_info.html:22
+#: templates/meta_search/info_index.html:27
+msgid "About us"
+msgstr "私たちについて"
+
+#: main/models.py:579 templates/base_info.html:26
+#: templates/meta_search/info_index.html:31
+msgid "Contact us"
+msgstr "お問い合わせ"
+
+#: main/models.py:580 templates/base_info.html:30
+#: templates/meta_search/info_index.html:35
+msgid "Help"
+msgstr "ヘルプ"
+
+#: main/models.py:581 templates/base_info.html:34
+#: templates/meta_search/info_index.html:39
+msgid "Level"
+msgstr "レベル"
+
+#: main/models.py:582 templates/base_info.html:38
+#: templates/meta_search/info_index.html:43
+msgid "Sign-in reward"
+msgstr "サインイン報酬"
+
+#: main/views.py:69
+msgid "Withdrawal password set."
+msgstr "引き出しパスワードセット。"
+
+#: main/views.py:79
+msgid "You don’t have a withdrawal password yet. Set one first."
+msgstr "引き出しパスワードはまだありません。最初に1つを設定します。"
+
+#: main/views.py:86
+msgid "Withdrawal password updated."
+msgstr "引き出しパスワードが更新されました。"
+
+#: main/views.py:209
+msgid "Verification code"
+msgstr "検証コード"
+
+#: main/views.py:247
+msgid "No account found for that phone."
+msgstr "その電話のアカウントは見つかりませんでした。"
+
+#: main/views.py:259
+#, python-format
+msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
+msgstr "リセットコードは次のとおりです。[[[[[[token_0]]]]。 10分で失効します。"
+
+#: main/views.py:263
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr "コードを送信できませんでした。すぐにもう一度やり直してください。"
+
+#: main/views.py:267
+msgid "Unexpected error sending code. Try again later."
+msgstr "予期しないエラー送信コード。後でもう一度やり直してください。"
+
+#: main/views.py:272
+msgid "We sent a verification code to your phone."
+msgstr "確認コードをお使いの携帯電話に送信しました。"
+
+#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
+#: main/views.py:1169
+msgid "Please correct the errors below."
+msgstr "以下のエラーを修正してください。"
+
+#: main/views.py:290
+msgid "Start by entering your phone number."
+msgstr "電話番号を入力することから始めます。"
+
+#: main/views.py:298
+msgid "Invalid or expired code."
+msgstr "無効または期限切れのコード。"
+
+#: main/views.py:304
+msgid "Account not found. Please start over."
+msgstr "アカウントが見つかりません。やり直してください。"
+
+#: main/views.py:315
+msgid "Your password has been reset. You can now sign in."
+msgstr "パスワードがリセットされています。サインインすることができます。"
+
+#: main/views.py:341 main/views.py:392
+msgid "You're already signed in."
+msgstr "あなたはすでにサインインしています。"
+
+#: main/views.py:375
+msgid "Welcome back!"
+msgstr "おかえり！"
+
+#: main/views.py:378
+msgid "Invalid phone or password."
+msgstr "無効な電話またはパスワード。"
+
+#: main/views.py:405
+msgid "Account created!"
+msgstr "作成されたアカウント！"
+
+#: main/views.py:421
+msgid "You have been logged out."
+msgstr "あなたはログアウトされています。"
+
+#: main/views.py:468
+msgid "Invalid phone format. Please enter a valid number."
+msgstr "無効な電話形式。有効な番号を入力してください。"
+
+#: main/views.py:474
+#, python-format
+msgid "No user found with phone %(phone)s."
+msgstr "電話[[[[[[token_0]]]]]でユーザーは見つかりませんでした。"
+
+#: main/views.py:490
+#, python-format
+msgid "Password reset for %(phone)s."
+msgstr "[[[[[[[token_0]]]]]のパスワードリセット。"
+
+#: main/views.py:1167
+msgid "Password updated."
+msgstr "パスワードが更新されました。"
+
+#: templates/base_info.html:4
+msgid "info"
+msgstr "情報"
+
+#: templates/meta_search/announcements.html:5
+#: templates/meta_search/announcements.html:13
+msgid "Announcements"
+msgstr "発表"
+
+#: templates/meta_search/announcements.html:26
+msgid "No announcements at the moment."
+msgstr "現時点では発表はありません。"
+
+#: templates/meta_search/ide.html:18
+msgid "Seaside resort at dusk"
+msgstr "夕暮れの海辺のリゾート"
+
+#: templates/meta_search/ide.html:24
+msgid "Experience The Magic Of Relaxation"
+msgstr "リラクゼーションの魔法を体験してください"
+
+#: templates/meta_search/ide.html:25
+msgid ""
+"Indulge in the epitome of coastal living as you discover the breathtaking "
+"beauty and tranquility of luxury."
+msgstr "息をのむような美しさと贅沢の静けさを発見するにつれて、沿岸生活の縮図にふける。"
+
+#: templates/meta_search/ide.html:30
+msgid "Customer avatar 1"
+msgstr "顧客アバター1"
+
+#: templates/meta_search/ide.html:31
+msgid "Customer avatar 2"
+msgstr "顧客アバター2"
+
+#: templates/meta_search/ide.html:32
+msgid "Customer avatar 3"
+msgstr "顧客アバター3"
+
+#: templates/meta_search/ide.html:34
+msgid "Trusted by over 25k+ people"
+msgstr "25K以上の人々から信頼されています"
+
+#: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+msgid "Explore Now"
+msgstr "今すぐ探索してください"
+
+#: templates/meta_search/ide.html:40
+msgid "Travel partners"
+msgstr "旅行パートナー"
+
+#: templates/meta_search/ide.html:58
+msgid "Premium Facilities"
+msgstr "プレミアム施設"
+
+#: templates/meta_search/ide.html:61
+msgid "Exclusive Sunset View"
+msgstr "排他的なサンセットビュー"
+
+#: templates/meta_search/ide.html:62
+msgid "You witness the beauty of the world from your room"
+msgstr "あなたはあなたの部屋から世界の美しさを目撃します"
+
+#: templates/meta_search/ide.html:65
+msgid "Integrated Tourist Area"
+msgstr "統合された観光エリア"
+
+#: templates/meta_search/ide.html:66
+msgid "Enhancing your travel experience"
+msgstr "旅行体験を向上させます"
+
+#: templates/meta_search/ide.html:69
+msgid "Nature-Inspired Pool"
+msgstr "自然にインスパイアされたプール"
+
+#: templates/meta_search/ide.html:70
+msgid "Serene swimming pool with a touch of paradise"
+msgstr "楽園のタッチ付きの穏やかなスイミングプール"
+
+#: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+msgid "Get Rewarded"
+msgstr "報われます"
+
+#: templates/meta_search/ide.html:85
+msgid "Rate Apartments"
+msgstr "アパートを評価します"
+
+#: templates/meta_search/ide.html:86
+msgid "Give random objective ratings based on view and aesthetics."
+msgstr "視聴と美学に基づいてランダムな客観的評価を与えます。"
+
+#: templates/meta_search/ide.html:94
+msgid "Earn instant rewards from the apartments you rate."
+msgstr "評価するアパートからインスタント報酬を獲得します。"
+
+#: templates/meta_search/ide.html:102
+msgid "Featured apartments carousel"
+msgstr "注目のアパートカルーセル"
+
+#: templates/meta_search/ide.html:103
+msgid "Previous slide"
+msgstr "前のスライド"
+
+#: templates/meta_search/ide.html:104
+msgid "Next slide"
+msgstr "次のスライド"
+
+#: templates/meta_search/ide.html:108
+msgid "Modern apartment interior"
+msgstr "モダンなアパートのインテリア"
+
+#: templates/meta_search/ide.html:111
+msgid "Resort pool at sunset"
+msgstr "日没時のリゾートプール"
+
+#: templates/meta_search/ide.html:114
+msgid "Scenic valley view"
+msgstr "風光明媚な谷の景色"
+
+#: templates/meta_search/ide.html:129
+msgid "Clients Review"
+msgstr "クライアントのレビュー"
+
+#: templates/meta_search/ide.html:130
+msgid "See some honest reviews from our users on the platform"
+msgstr "プラットフォーム上のユーザーからの正直なレビューをご覧ください"
+
+#: templates/meta_search/ide.html:135
+msgid "Client"
+msgstr "クライアント"
+
+#: templates/meta_search/ide.html:137
+msgid ""
+"Had a great experience using this for solid bookings. Customer service was "
+"top-notch."
+msgstr "堅実な予約にこれを使用した素晴らしい経験がありました。カスタマーサービスは一流でした。"
+
+#: templates/meta_search/ide.html:147
+msgid "Get your inspiration of luxury and get rewarded"
+msgstr "贅沢のインスピレーションを得て、報われます"
+
+#: templates/meta_search/ide.html:148
+msgid "Earn new rewards at every step you take under true luxury."
+msgstr "真の贅沢の下で取るすべてのステップで新しい報酬を獲得します。"
+
+#: templates/meta_search/ide.html:149
+msgid "See More"
+msgstr "もっと参照してください"
+
+#: templates/meta_search/ide.html:152
+msgid "Luxury inspiration"
+msgstr "豪華なインスピレーション"
+
+#: templates/meta_search/includes/_header.html:60
+msgid "Get started"
+msgstr "始めましょう"
+
+#: templates/meta_search/info_index.html:6
+msgid "Info Center"
+msgstr "情報センター"
+
+#: templates/meta_search/info_index.html:7
+msgid "Pick a section on the left, or use the quick links below."
+msgstr "左側のセクションを選択するか、以下のクイックリンクを使用します。"
+
+#: templates/meta_search/info_index.html:19
+#: templates/meta_search/info_page.html:17
+msgid "View all announcements"
+msgstr "すべてのアナウンスを表示します"
+
+#: templates/meta_search/language.html:8
+msgid "Language"
+msgstr "言語"
+
+#: templates/meta_search/language.html:9
+msgid "Select your language."
+msgstr "あなたの言語を選択します。"
+
+#: templates/meta_search/password_reset_phone.html:4
+msgid "Reset Password – Step 1"
+msgstr "パスワードのリセット - ステップ1"
+
+#: templates/meta_search/password_reset_phone.html:6
+#: templates/meta_search/password_reset_verify.html:6
+#: templates/meta_search/password_reset_verify.html:79
+msgid "Reset Password"
+msgstr "パスワードをリセットします"
+
+#: templates/meta_search/password_reset_phone.html:21
+msgid "Enter your phone number to get a verification code."
+msgstr "確認コードを取得するには、電話番号を入力します。"
+
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:45
+msgid "Phone"
+msgstr "電話"
+
+#: templates/meta_search/password_reset_phone.html:59
+msgid "Send Code"
+msgstr "コードを送信します"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Remembered your password?"
+msgstr "パスワードを覚えていますか？"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Sign in"
+msgstr "サインイン"
+
+#: templates/meta_search/password_reset_verify.html:4
+msgid "Reset Password – Step 2"
+msgstr "パスワードのリセット - ステップ2"
+
+#: templates/meta_search/password_reset_verify.html:21
+msgid "Enter the code sent to your phone, then choose a new password."
+msgstr "電話に送信されたコードを入力してから、新しいパスワードを選択します。"
+
+#: templates/meta_search/password_reset_verify.html:43
+msgid "Verification Code"
+msgstr "検証コード"
+
+#: templates/meta_search/password_reset_verify.html:52
+msgid "New Password"
+msgstr "新しいパスワード"
+
+#: templates/meta_search/password_reset_verify.html:61
+#: templates/meta_search/password_reset_verify.html:74
+#: templates/meta_search/settings_change_password.html:76
+#: templates/meta_search/settings_change_password.html:93
+#: templates/meta_search/settings_change_password.html:112
+#: templates/meta_search/signin.html:68
+msgid "Show/Hide password"
+msgstr "パスワードを表示/非表示にします"
+
+#: templates/meta_search/password_reset_verify.html:65
+msgid "Confirm Password"
+msgstr "パスワードを認証する"
+
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "戻る"
+
+#: templates/meta_search/password_reset_verify.html:86
+msgid "Home"
+msgstr "家"
+
+#: templates/meta_search/settings_change_password.html:4
+msgid "Settings — Change password"
+msgstr "設定 - パスワードを変更します"
+
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "パスワードを変更する"
+
+#: templates/meta_search/settings_change_password.html:22
+msgid ""
+"For security, confirm your phone, pass the captcha, then set a strong "
+"password."
+msgstr "セキュリティのために、携帯電話を確認し、Captchaを渡して、強力なパスワードを設定します。"
+
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:73
+msgid "Captcha"
+msgstr "キャプチャ"
+
+#: templates/meta_search/settings_change_password.html:66
+msgid "Old password"
+msgstr "以前のパスワード"
+
+#: templates/meta_search/settings_change_password.html:79
+msgid "Forgot current password?"
+msgstr "現在のパスワードを忘れましたか？"
+
+#: templates/meta_search/settings_change_password.html:95
+msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
+msgstr "文字、数字、シンボルが混在する8つ以上の文字を使用します。"
+
+#: templates/meta_search/settings_change_password.html:102
+msgid "Confirm password"
+msgstr "パスワードを認証する"
+
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "変更を保存します"
+
+#: templates/meta_search/signin.html:4
+msgid "Sign In - Orbitpedia"
+msgstr "サインイン - エクスペディア"
+
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+msgid "Sign In"
+msgstr "サインイン"
+
+#: templates/meta_search/signin.html:21
+msgid "Welcome back, please sign in"
+msgstr "ようこそ、サインインしてください"
+
+#: templates/meta_search/signin.html:87
+msgid "Don’t have an account?"
+msgstr "アカウントを持っていませんか？"
+
+#: templates/meta_search/signin.html:87
+msgid "Create one"
+msgstr "1つを作成します"
+
+#: templates/meta_search/signin.html:89
+msgid "Forgotten password?"
+msgstr "パスワードを忘れましたか？"

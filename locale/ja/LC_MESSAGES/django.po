@@ -8,615 +8,2310 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 16:12+0000\n"
+"POT-Creation-Date: 2025-09-23 16:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: main/admin.py:44
+#: main/admin.py:392
 msgid "Clear withdrawal PIN"
-msgstr ""
+msgstr "クリア離脱ピン"
 
-#: main/admin.py:46
+#: main/admin.py:394
 msgid ""
 "Tick to remove any existing withdrawal PIN so the user must set a new one."
 msgstr ""
+"ユーザーが新しいものを設定する必要があるように、既存の引き出しピンを削除する"
+"には、チェックしてください。"
 
-#: main/admin.py:49
+#: main/admin.py:397
 msgid "Set new withdrawal PIN"
-msgstr ""
+msgstr "新しい引き出しピンを設定します"
 
-#: main/admin.py:57
+#: main/admin.py:405
 msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
-msgstr ""
+msgstr "オプション。正確に6桁を入力して、ピンを設定/リセットします。"
 
-#: main/admin.py:70
+#: main/admin.py:418
 msgid "PIN must be exactly 6 digits."
-msgstr ""
+msgstr "ピンは正確に6桁でなければなりません。"
 
-#: main/admin.py:136
+#: main/admin.py:483
 msgid "Withdrawal security"
-msgstr ""
+msgstr "撤退セキュリティ"
 
 #: main/forms.py:27
 msgid "Account password"
-msgstr ""
+msgstr "アカウントパスワード"
 
-#: main/forms.py:31
+#: main/forms.py:31 templates/meta_search/withdrawal.html:350
 msgid "Withdrawal password (6 digits)"
-msgstr ""
+msgstr "引き出しパスワード（6桁）"
 
 #: main/forms.py:35
 msgid "Confirm withdrawal password"
-msgstr ""
+msgstr "引き出しパスワードを確認します"
 
 #: main/forms.py:46
 msgid "Incorrect account password."
-msgstr ""
+msgstr "誤ったアカウントパスワード。"
 
 #: main/forms.py:53 main/forms.py:87
 msgid "Enter exactly 6 digits."
-msgstr ""
+msgstr "正確に6桁を入力します。"
 
-#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:268
 msgid "Passwords do not match."
-msgstr ""
+msgstr "パスワードが一致しません。"
 
 #: main/forms.py:61
 msgid "Current withdrawal password"
-msgstr ""
+msgstr "現在の引き出しパスワード"
 
 #: main/forms.py:65
 msgid "New withdrawal password (6 digits)"
-msgstr ""
+msgstr "新しい引き出しパスワード（6桁）"
 
 #: main/forms.py:69
 msgid "Confirm new withdrawal password"
-msgstr ""
+msgstr "新しい引き出しパスワードを確認します"
 
 #: main/forms.py:80
 msgid "Incorrect withdrawal password."
-msgstr ""
+msgstr "誤った引き出しパスワード。"
 
 #: main/forms.py:161
 #, python-format
 msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
-msgstr ""
+msgstr "jpg/png/webp/gif、upまで[[[[token_0]]]] mb。"
 
 #: main/forms.py:162
 msgid "Direct image URL (used only if no file is uploaded)."
-msgstr ""
+msgstr "Direct Image URL（ファイルがアップロードされていない場合にのみ使用）。"
 
 #: main/forms.py:180
 msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
 msgstr ""
+"サポートされていない画像タイプ。 JPG、PNG、WebP、またはGIFを使用します。"
 
 #: main/forms.py:182
 #, python-format
 msgid "Image too large (max %(mb)s MB)."
-msgstr ""
+msgstr "画像が大きすぎる（max [[[[[token_0]]]] mb）。"
 
 #: main/forms.py:191
 msgid "Only http/https URLs are allowed."
-msgstr ""
+msgstr "HTTP/HTTPS URLのみが許可されています。"
 
 #: main/forms.py:206 main/forms.py:371 main/forms.py:581
 msgid "Country code"
-msgstr ""
+msgstr "国コード"
 
 #: main/forms.py:211 main/forms.py:376 main/forms.py:586
 msgid "Enter your phone number"
-msgstr ""
+msgstr "電話番号を入力してください"
 
 #: main/forms.py:215 main/forms.py:380 main/forms.py:590
 msgid "Phone number"
-msgstr ""
+msgstr "電話番号"
 
 #: main/forms.py:220
 msgid "Enter your invitation code"
-msgstr ""
+msgstr "招待コードを入力してください"
 
 #: main/forms.py:223
 msgid "Invitation code"
-msgstr ""
+msgstr "招待コード"
 
 #: main/forms.py:225 main/forms.py:592
 msgid "I am not a robot"
-msgstr ""
+msgstr "私はロボットではありません"
 
 #: main/forms.py:236 main/forms.py:385 main/forms.py:615
 msgid "Enter your password"
-msgstr ""
+msgstr "パスワードを入力してください"
 
 #: main/forms.py:240
 msgid "Re-enter your password"
-msgstr ""
+msgstr "パスワードを再入力します"
 
-#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:233
 msgid "Invalid phone number format."
-msgstr ""
+msgstr "無効な電話番号形式。"
 
-#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:235
 msgid "This phone number is not possible for the selected country."
-msgstr ""
+msgstr "この電話番号は、選択した国では不可能です。"
 
-#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:237
 msgid "This phone number is not valid for the selected country."
-msgstr ""
+msgstr "この電話番号は、選択した国では無効です。"
 
 #: main/forms.py:281 main/forms.py:429 main/forms.py:657
 #, python-format
 msgid ""
 "Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
 msgstr ""
+"電話番号の長さは、[[[[[[token_0]]]]]の場合、％（lo）dと％（hi）d digitsの間で"
+"なければなりません。"
 
 #: main/forms.py:293
 msgid "An account with this phone already exists."
-msgstr ""
+msgstr "この電話のアカウントはすでに存在しています。"
 
-#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:80
+#: templates/meta_search/signup.html:54
 msgid "Password"
-msgstr ""
+msgstr "パスワード"
 
 #: main/forms.py:325
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user’s "
 "password, but you can change the password using the “Change password” form."
 msgstr ""
+"生のパスワードは保存されていないため、このユーザーのパスワードを表示する方法"
+"はありませんが、「パスワードの変更」フォームを使用してパスワードを変更できま"
+"す。"
 
 #: main/forms.py:352
 msgid "User phone (E.164 or local NG)"
-msgstr ""
+msgstr "ユーザー電話（E.164またはローカルNG）"
 
 #: main/forms.py:353
 msgid "+2348012345678 or 080..."
-msgstr ""
+msgstr "+2348012345678または080 ..."
 
-#: main/forms.py:355 main/views.py:210
+#: main/forms.py:355 main/views.py:262
 #: templates/meta_search/settings_change_password.html:83
+#: templates/meta_search/support_reset_password.html:77
 msgid "New password"
-msgstr ""
+msgstr "新しいパスワード"
 
-#: main/forms.py:356 main/views.py:211
+#: main/forms.py:356 main/views.py:263
 msgid "Confirm new password"
-msgstr ""
+msgstr "新しいパスワードを確認します"
 
 #: main/forms.py:670
 msgid "Phone does not match your account."
-msgstr ""
+msgstr "電話はあなたのアカウントと一致しません。"
 
-#: main/models.py:578 templates/base_info.html:22
+#: main/models.py:672 templates/base_info.html:22
 #: templates/meta_search/info_index.html:27
 msgid "About us"
-msgstr ""
+msgstr "私たちについて"
 
-#: main/models.py:579 templates/base_info.html:26
+#: main/models.py:673 templates/base_info.html:26
 #: templates/meta_search/info_index.html:31
 msgid "Contact us"
-msgstr ""
+msgstr "お問い合わせ"
 
-#: main/models.py:580 templates/base_info.html:30
+#: main/models.py:674 templates/base_info.html:30
 #: templates/meta_search/info_index.html:35
 msgid "Help"
-msgstr ""
+msgstr "ヘルプ"
 
-#: main/models.py:581 templates/base_info.html:34
+#: main/models.py:675 templates/base_info.html:34
 #: templates/meta_search/info_index.html:39
+#: templates/meta_search/profile_settings.html:75
 msgid "Level"
-msgstr ""
+msgstr "レベル"
 
-#: main/models.py:582 templates/base_info.html:38
+#: main/models.py:676 templates/base_info.html:38
 #: templates/meta_search/info_index.html:43
 msgid "Sign-in reward"
-msgstr ""
+msgstr "サインイン報酬"
 
-#: main/views.py:69
+#: main/views.py:121
 msgid "Withdrawal password set."
-msgstr ""
+msgstr "引き出しパスワードセット。"
 
-#: main/views.py:79
+#: main/views.py:131
 msgid "You don’t have a withdrawal password yet. Set one first."
-msgstr ""
+msgstr "引き出しパスワードはまだありません。最初に1つを設定します。"
 
-#: main/views.py:86
+#: main/views.py:138
 msgid "Withdrawal password updated."
-msgstr ""
+msgstr "引き出しパスワードが更新されました。"
 
-#: main/views.py:209
+#: main/views.py:261
 msgid "Verification code"
-msgstr ""
+msgstr "検証コード"
 
-#: main/views.py:247
+#: main/views.py:299
 msgid "No account found for that phone."
-msgstr ""
+msgstr "その電話のアカウントは見つかりませんでした。"
 
-#: main/views.py:259
+#: main/views.py:311
 #, python-format
 msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
-msgstr ""
-
-#: main/views.py:263
-msgid "We couldn’t send the code. Please try again in a moment."
-msgstr ""
-
-#: main/views.py:267
-msgid "Unexpected error sending code. Try again later."
-msgstr ""
-
-#: main/views.py:272
-msgid "We sent a verification code to your phone."
-msgstr ""
-
-#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
-#: main/views.py:1169
-msgid "Please correct the errors below."
-msgstr ""
-
-#: main/views.py:290
-msgid "Start by entering your phone number."
-msgstr ""
-
-#: main/views.py:298
-msgid "Invalid or expired code."
-msgstr ""
-
-#: main/views.py:304
-msgid "Account not found. Please start over."
-msgstr ""
+msgstr "リセットコードは次のとおりです。[[[[[[token_0]]]]。 10分で失効します。"
 
 #: main/views.py:315
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr "コードを送信できませんでした。すぐにもう一度やり直してください。"
+
+#: main/views.py:319
+msgid "Unexpected error sending code. Try again later."
+msgstr "予期しないエラー送信コード。後でもう一度やり直してください。"
+
+#: main/views.py:324
+msgid "We sent a verification code to your phone."
+msgstr "確認コードをお使いの携帯電話に送信しました。"
+
+#: main/views.py:327 main/views.py:374 main/views.py:434 main/views.py:463
+#: main/views.py:1421
+msgid "Please correct the errors below."
+msgstr "以下のエラーを修正してください。"
+
+#: main/views.py:342
+msgid "Start by entering your phone number."
+msgstr "電話番号を入力することから始めます。"
+
+#: main/views.py:350
+msgid "Invalid or expired code."
+msgstr "無効または期限切れのコード。"
+
+#: main/views.py:356
+msgid "Account not found. Please start over."
+msgstr "アカウントが見つかりません。やり直してください。"
+
+#: main/views.py:367
 msgid "Your password has been reset. You can now sign in."
-msgstr ""
+msgstr "パスワードがリセットされています。サインインすることができます。"
 
-#: main/views.py:341 main/views.py:392
+#: main/views.py:395 main/views.py:447
 msgid "You're already signed in."
-msgstr ""
+msgstr "あなたはすでにサインインしています。"
 
-#: main/views.py:375
+#: main/views.py:429
 msgid "Welcome back!"
-msgstr ""
+msgstr "おかえり！"
 
-#: main/views.py:378
+#: main/views.py:432
 msgid "Invalid phone or password."
-msgstr ""
+msgstr "無効な電話またはパスワード。"
 
-#: main/views.py:405
+#: main/views.py:460
 msgid "Account created!"
-msgstr ""
+msgstr "作成されたアカウント！"
 
-#: main/views.py:421
+#: main/views.py:476
 msgid "You have been logged out."
-msgstr ""
+msgstr "あなたはログアウトされています。"
 
-#: main/views.py:468
+#: main/views.py:523
 msgid "Invalid phone format. Please enter a valid number."
-msgstr ""
+msgstr "無効な電話形式。有効な番号を入力してください。"
 
-#: main/views.py:474
+#: main/views.py:529
 #, python-format
 msgid "No user found with phone %(phone)s."
-msgstr ""
+msgstr "電話[[[[[[token_0]]]]]でユーザーは見つかりませんでした。"
 
-#: main/views.py:490
+#: main/views.py:545
 #, python-format
 msgid "Password reset for %(phone)s."
-msgstr ""
+msgstr "[[[[[[[token_0]]]]]のパスワードリセット。"
 
-#: main/views.py:1167
+#: main/views.py:1419
 msgid "Password updated."
-msgstr ""
+msgstr "パスワードが更新されました。"
 
-#: templates/base_info.html:4
-msgid "info"
-msgstr ""
+#: templates/base_auth.html:6
+msgid "Auth"
+msgstr "認証"
 
-#: templates/meta_search/announcements.html:5
+#: templates/base_auth.html:18
+msgid "Orbitpedia"
+msgstr "orbitpedia"
+
+#: templates/base_auth.html:29 templates/meta_search/address_add.html:22
+#: templates/meta_search/deposit.html:20
+#: templates/meta_search/deposit_pay.html:21
+#: templates/meta_search/withdrawal.html:150
+#: templates/meta_search/withdrawal_success.html:101
+#, fuzzy
+#| msgid "Welcome back!"
+msgid "Go back"
+msgstr "おかえり！"
+
+#: templates/base_auth.html:32 templates/base_info.html:5
+#: templates/base_settings.html:6 templates/base_user.html:122
+#: templates/base_user.html:124 templates/base_user.html:128
+#: templates/base_user.html:285 templates/base_user.html:287
+#: templates/meta_search/address_add.html:7
 #: templates/meta_search/announcements.html:13
-msgid "Announcements"
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/password_reset_verify.html:86
+#: templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "Home"
+msgstr "家"
+
+#: templates/base_info.html:4 templates/base_info.html:5
+msgid "info"
+msgstr "情報"
+
+#: templates/base_info.html:14 templates/base_user.html:152
+#: templates/base_user.html:154 templates/meta_search/announcements.html:10
+#: templates/meta_search/announcements.html:13
+msgid "Info"
+msgstr "情報"
+
+#: templates/base_settings.html:5 templates/base_user.html:148
+#: templates/base_user.html:150 templates/meta_search/admin_dashboard.html:99
+#: templates/meta_search/profile_settings.html:7
+msgid "Settings"
+msgstr "設定"
+
+#: templates/base_settings.html:6 templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "setting"
+msgstr "設定"
+
+#: templates/base_settings.html:15
+msgid "Setting"
+msgstr "設定"
+
+#: templates/base_settings.html:23
+msgid "Profile"
+msgstr "プロフィール"
+
+#: templates/base_settings.html:27 templates/meta_search/language.html:8
+#: templates/meta_search/profile_settings.html:71
+msgid "Language"
+msgstr "言語"
+
+#: templates/base_settings.html:31
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "パスワードを変更する"
+
+#: templates/base_settings.html:35
+#, fuzzy
+#| msgid "Withdrawal password set."
+msgid "Withdrawal password"
+msgstr "引き出しパスワードセット。"
+
+#: templates/base_user.html:7 templates/base_user.html:144
+#: templates/meta_search/address_add.html:7
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5 templates/meta_search/wallet.html:5
+msgid "My Wallet"
+msgstr "私の財布"
+
+#: templates/base_user.html:94 templates/base_user.html:95
+msgid "Dashboard"
+msgstr "ダッシュボード"
+
+#: templates/base_user.html:99
+msgid "Collapse menu"
+msgstr "崩壊メニュー"
+
+#: templates/base_user.html:99 templates/base_user.html:230
+msgid "Collapse"
+msgstr "崩壊"
+
+#: templates/base_user.html:107 templates/base_user.html:109
+#: templates/base_user.html:111
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "User avatar"
+msgstr "顧客アバター1"
+
+#: templates/base_user.html:116 templates/meta_search/profile_settings.html:63
+msgid "User ID"
+msgstr "ユーザーID"
+
+#: templates/base_user.html:117
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:67 templates/meta_search/signup.html:46
+#: templates/meta_search/support_reset_password.html:62
+msgid "Phone"
+msgstr "電話"
+
+#: templates/base_user.html:121
+msgid "Sidebar"
+msgstr "サイドバー"
+
+#: templates/base_user.html:130
+msgid "impersonation"
 msgstr ""
 
-#: templates/meta_search/announcements.html:26
-msgid "No announcements at the moment."
+#: templates/base_user.html:133 templates/meta_search/task_dashboard.html:4
+#: templates/meta_search/task_dashboard.html:5
+#: templates/meta_search/task_dashboard.html:14
+#: templates/tasks/task_detail.html:5
+msgid "Task"
+msgstr "タスク"
+
+#: templates/base_user.html:135 templates/base_user.html:290
+#: templates/base_user.html:292 templates/meta_search/admin_dashboard.html:87
+msgid "Tasks"
+msgstr "タスク"
+
+#: templates/base_user.html:137 templates/meta_search/rewards.html:4
+#: templates/meta_search/rewards.html:5 templates/meta_search/rewards.html:85
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Rewards"
+msgstr "報われます"
+
+#: templates/base_user.html:139 templates/base_user.html:296
+#: templates/base_user.html:298 templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/task_dashboard.html:52
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Reward"
+msgstr "報われます"
+
+#: templates/base_user.html:142
+#, fuzzy
+#| msgid "Account password"
+msgid "Account"
+msgstr "アカウントパスワード"
+
+#: templates/base_user.html:146 templates/base_user.html:302
+#: templates/base_user.html:304 templates/meta_search/wallet.html:6
+msgid "Wallet"
+msgstr "財布"
+
+#: templates/base_user.html:159 templates/base_user.html:164
+msgid "Admin Panel"
+msgstr "管理パネル"
+
+#: templates/base_user.html:170 templates/base_user.html:172
+msgid "Admin settings"
+msgstr "管理者設定"
+
+#: templates/base_user.html:176 templates/base_user.html:178
+msgid "Logout"
+msgstr "ログアウト"
+
+#: templates/base_user.html:191
+msgid "Menu"
+msgstr "メニュー"
+
+#: templates/base_user.html:204 templates/base_user.html:205
+#: templates/meta_search/admin_dashboard.html:80
+#: templates/meta_search/announcements.html:6
+#: templates/meta_search/announcements.html:13
+#: templates/meta_search/announcements.html:21
+msgid "Announcements"
+msgstr "発表"
+
+#: templates/base_user.html:230
+msgid "Expand"
+msgstr "拡大する"
+
+#: templates/base_user.html:284
+msgid "Primary"
+msgstr "主要な"
+
+#: templates/captcha/custom_widget.html:3
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:114 templates/meta_search/signup.html:124
+msgid "Captcha"
+msgstr "キャプチャ"
+
+#: templates/captcha/custom_widget.html:6
+#, fuzzy
+#| msgid "Enter your password"
+msgid "Enter answer"
+msgstr "パスワードを入力してください"
+
+#: templates/captcha/custom_widget.html:7
+msgid "Reload image"
+msgstr "画像をリロードします"
+
+#: templates/meta_search/address_add.html:4
+#: templates/meta_search/address_add.html:31
+#: templates/meta_search/address_add.html:37
+msgid "Add Payout Address"
+msgstr "ペイアウトアドレスを追加します"
+
+#: templates/meta_search/address_add.html:5
+msgid "Wallet Address"
+msgstr "ウォレットアドレス"
+
+#: templates/meta_search/address_add.html:7
+msgid "Add Address"
+msgstr "アドレスを追加します"
+
+#: templates/meta_search/address_add.html:65
+msgid "Address Type"
+msgstr "アドレスタイプ"
+
+#: templates/meta_search/address_add.html:81
+#: templates/meta_search/deposit.html:157
+msgid "Ethereum (ERC20)"
+msgstr "Ethereum（ERC20）"
+
+#: templates/meta_search/address_add.html:89
+#: templates/meta_search/deposit.html:163
+#: templates/meta_search/withdrawal.html:316
+msgid "USDT (TRC20)"
+msgstr "USDT（TRC20）"
+
+#: templates/meta_search/address_add.html:106
+#: templates/meta_search/deposit_pay.html:142
+#: templates/meta_search/withdrawal.html:252
+msgid "Address"
+msgstr "住所"
+
+#: templates/meta_search/address_add.html:112
+msgid "Select a network to see the required format."
+msgstr "ネットワークを選択して、必要な形式を確認します。"
+
+#: templates/meta_search/address_add.html:129
+msgid "Label (optional)"
+msgstr "ラベル（オプション）"
+
+#: templates/meta_search/address_add.html:141
+msgid "Save Address"
+msgstr "アドレスを保存します"
+
+#: templates/meta_search/address_add.html:142
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "戻る"
+
+#: templates/meta_search/address_add.html:156
+msgid ""
+"Ethereum address must start with 0x and be 42 characters total (0x + 40 hex)."
 msgstr ""
+"Ethereumアドレスは0倍で開始し、合計42文字（0x + 40ヘックス）でなければなりま"
+"せん。"
+
+#: templates/meta_search/address_add.html:157
+msgid "TRC20 address must start with T and be 34 characters (Base58)."
+msgstr "TRC20アドレスはTで開始し、34文字（Base58）でなければなりません。"
+
+#: templates/meta_search/admin_dashboard.html:5
+msgid "Admin Office"
+msgstr "管理事務所"
+
+#: templates/meta_search/admin_dashboard.html:6
+msgid "Admin"
+msgstr "管理者"
+
+#: templates/meta_search/admin_dashboard.html:36
+msgid "Users"
+msgstr "ユーザー"
+
+#: templates/meta_search/admin_dashboard.html:39
+msgid "Browse users"
+msgstr "ユーザーを閲覧します"
+
+#: templates/meta_search/admin_dashboard.html:40
+msgid "Blocked users"
+msgstr "ブロックされたユーザー"
+
+#: templates/meta_search/admin_dashboard.html:46
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawals"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/admin_dashboard.html:49
+#: templates/meta_search/wallet.html:578
+msgid "Pending"
+msgstr "保留中"
+
+#: templates/meta_search/admin_dashboard.html:52
+#: templates/meta_search/admin_dashboard.html:71
+#: templates/meta_search/wallet.html:404 templates/meta_search/wallet.html:578
+#, fuzzy
+#| msgid "Confirm Password"
+msgid "Confirmed"
+msgstr "パスワードを認証する"
+
+#: templates/meta_search/admin_dashboard.html:55
+#: templates/meta_search/wallet.html:578
+msgid "Failed"
+msgstr "失敗した"
+
+#: templates/meta_search/admin_dashboard.html:62
+msgid "Deposits"
+msgstr "預金"
+
+#: templates/meta_search/admin_dashboard.html:65
+msgid "Awaiting Payment"
+msgstr "支払いを待っています"
+
+#: templates/meta_search/admin_dashboard.html:68
+#, fuzzy
+#| msgid "Clients Review"
+msgid "Awaiting Review"
+msgstr "クライアントのレビュー"
+
+#: templates/meta_search/admin_dashboard.html:78
+msgid "Content"
+msgstr "コンテンツ"
+
+#: templates/meta_search/admin_dashboard.html:81
+msgid "Info pages"
+msgstr "情報ページ"
+
+#: templates/meta_search/admin_dashboard.html:89
+msgid "User tasks"
+msgstr "ユーザータスク"
+
+#: templates/meta_search/admin_dashboard.html:90
+msgid "Task templates"
+msgstr "タスクテンプレート"
+
+#: templates/meta_search/admin_dashboard.html:91
+msgid "Forced directives"
+msgstr "強制指令"
+
+#: templates/meta_search/admin_dashboard.html:97
+msgid "System"
+msgstr "システム"
+
+#: templates/meta_search/admin_dashboard.html:109
+msgid "Pending withdrawals (latest 10)"
+msgstr "保留中の引き出し（最新10）"
+
+#: templates/meta_search/admin_dashboard.html:110
+msgid "View all"
+msgstr "すべてを表示します"
+
+#: templates/meta_search/admin_dashboard.html:123
+msgid "Open"
+msgstr "開ける"
+
+#: templates/meta_search/admin_dashboard.html:128
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "No pending withdrawals."
+msgstr "引き出しパスワードを確認します"
+
+#: templates/meta_search/admin_dashboard.html:137
+msgid "Recent activity"
+msgstr "最近の活動"
+
+#: templates/meta_search/admin_dashboard.html:153
+msgid "Nothing yet."
+msgstr "まだ何もありません。"
+
+#: templates/meta_search/announcements.html:9
+msgid "information"
+msgstr "情報"
+
+#: templates/meta_search/announcements.html:34
+msgid "No announcements at the moment."
+msgstr "現時点では発表はありません。"
+
+#: templates/meta_search/deposit.html:4 templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit.html:28
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/wallet.html:181 templates/meta_search/wallet.html:189
+#: templates/meta_search/wallet.html:202 templates/meta_search/wallet.html:327
+msgid "Deposit"
+msgstr "デポジット"
+
+#: templates/meta_search/deposit.html:119
+#: templates/meta_search/deposit_pay.html:139
+#: templates/meta_search/withdrawal.html:200
+#: templates/meta_search/withdrawal_success.html:137
+msgid "Amount"
+msgstr "額"
+
+#: templates/meta_search/deposit.html:131
+#: templates/meta_search/withdrawal.html:215
+msgid "Currency"
+msgstr "通貨"
+
+#: templates/meta_search/deposit.html:147
+msgid "Minimum 10. Choose a preset or enter an amount."
+msgstr "最小10。プリセットを選択するか、金額を入力します。"
+
+#: templates/meta_search/deposit.html:152
+msgid "Payment Method"
+msgstr "支払方法"
+
+#: templates/meta_search/deposit.html:174
+msgid "Proceed to Pay →"
+msgstr "支払い→"
+
+#: templates/meta_search/deposit_pay.html:4
+msgid "Pay Deposit"
+msgstr "デポジットを支払います"
+
+#: templates/meta_search/deposit_pay.html:5
+msgid "Pay"
+msgstr "支払う"
+
+#: templates/meta_search/deposit_pay.html:29
+#: templates/meta_search/deposit_pay.html:79
+msgid "Payment details"
+msgstr "支払いの詳細"
+
+#: templates/meta_search/deposit_pay.html:85
+#, fuzzy
+#| msgid "Change password"
+msgid "Change payment method"
+msgstr "パスワードを変更する"
+
+#: templates/meta_search/deposit_pay.html:96
+msgid "Ethereum"
+msgstr "イーサリアム"
+
+#: templates/meta_search/deposit_pay.html:104
+msgid "Copy amount"
+msgstr "コピー金額"
+
+#: templates/meta_search/deposit_pay.html:116
+msgid "QR code"
+msgstr "QRコード"
+
+#: templates/meta_search/deposit_pay.html:121
+#, python-format
+msgid "Scan to pay · %(dep.get_network_display)s"
+msgstr "スキャンして支払います"
+
+#: templates/meta_search/deposit_pay.html:132
+#: templates/meta_search/deposit_pay.html:177
+msgid "Verifying…"
+msgstr "検証…"
+
+#: templates/meta_search/deposit_pay.html:133
+#, python-brace-format
+msgid "Verifying… ({time} left)"
+msgstr "検証…（[[[[[[[token_0]]]]]]左）"
+
+#: templates/meta_search/deposit_pay.html:134
+msgid "You can use “Verify now” for quick help."
+msgstr "迅速なヘルプのために「今すぐ検証」を使用できます。"
+
+#: templates/meta_search/deposit_pay.html:135
+msgid "QR error"
+msgstr "QRエラー"
+
+#: templates/meta_search/deposit_pay.html:138
+msgid "Network"
+msgstr "ネットワーク"
+
+#: templates/meta_search/deposit_pay.html:145
+msgid "Copy address"
+msgstr "アドレスをコピーします"
+
+#: templates/meta_search/deposit_pay.html:152
+msgid "Reference"
+msgstr "参照"
+
+#: templates/meta_search/deposit_pay.html:155
+msgid "Copy reference"
+msgstr "リファレンスをコピーします"
+
+#: templates/meta_search/deposit_pay.html:164
+msgid "I’ve Paid — Verify"
+msgstr "私は支払いました - 確認"
+
+#: templates/meta_search/deposit_pay.html:166
+msgid "We’ll check the network and update your balance when confirmed."
+msgstr "確認されたら、ネットワークを確認し、残高を更新します。"
+
+#: templates/meta_search/deposit_pay.html:174
+#: templates/meta_search/deposit_pay.html:183
+msgid "Verify now"
+msgstr "今すぐ確認してください"
+
+#: templates/meta_search/deposit_pay.html:175
+msgid "Need quick approval? Use <strong>Verify now</strong>."
+msgstr ""
+"迅速な承認が必要ですか？ [[[[[token_0]]]]]を使用します[[[[[token_1]]]]を"
+"[[[[[token_1]]]]を使用します。"
+
+#: templates/meta_search/deposit_pay.html:185
+msgid "Need quick approval? You can use <strong>Verify now</strong>."
+msgstr ""
+"迅速な承認が必要ですか？ [[[[[[[[token]]]]]]]を使用することができます"
+"[[[[[[token_1]]]]を使用できます。"
+
+#: templates/meta_search/deposit_pay.html:189
+msgid "Payment failed"
+msgstr "支払いは失敗しました"
+
+#: templates/meta_search/deposit_pay.html:190
+msgid "Try again"
+msgstr "もう一度やり直してください"
+
+#: templates/meta_search/deposit_pay.html:193
+msgid "This deposit is a draft."
+msgstr "このデポジットはドラフトです。"
+
+#: templates/meta_search/deposit_pay.html:194
+msgid "Continue to deposit"
+msgstr "引き続き預金します"
+
+#: templates/meta_search/deposit_pay.html:197
+msgid "Thanks! Recieved We’ll verify the payment shortly."
+msgstr "ありがとう！受け取ったことで、すぐに支払いを確認します。"
+
+#: templates/meta_search/deposit_pay.html:198
+#: templates/meta_search/withdrawal_success.html:170
+msgid "Go to Wallet"
+msgstr "ウォレットに行きます"
+
+#: templates/meta_search/deposit_pay.html:201
+#, python-format
+msgid "Status: %(dep.status)s"
+msgstr "ステータス：％（dep.status）s"
+
+#: templates/meta_search/deposit_pay.html:209
+#: templates/meta_search/withdrawal_success.html:196
+msgid "Copied"
+msgstr "コピー"
 
 #: templates/meta_search/ide.html:18
 msgid "Seaside resort at dusk"
-msgstr ""
+msgstr "夕暮れの海辺のリゾート"
 
 #: templates/meta_search/ide.html:24
 msgid "Experience The Magic Of Relaxation"
-msgstr ""
+msgstr "リラクゼーションの魔法を体験してください"
 
 #: templates/meta_search/ide.html:25
 msgid ""
 "Indulge in the epitome of coastal living as you discover the breathtaking "
 "beauty and tranquility of luxury."
 msgstr ""
+"息をのむような美しさと贅沢の静けさを発見するにつれて、沿岸生活の縮図にふけ"
+"る。"
 
 #: templates/meta_search/ide.html:30
 msgid "Customer avatar 1"
-msgstr ""
+msgstr "顧客アバター1"
 
 #: templates/meta_search/ide.html:31
 msgid "Customer avatar 2"
-msgstr ""
+msgstr "顧客アバター2"
 
 #: templates/meta_search/ide.html:32
 msgid "Customer avatar 3"
-msgstr ""
+msgstr "顧客アバター3"
 
 #: templates/meta_search/ide.html:34
 msgid "Trusted by over 25k+ people"
-msgstr ""
+msgstr "25K以上の人々から信頼されています"
 
 #: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+#: templates/meta_search/index.html:148
 msgid "Explore Now"
-msgstr ""
+msgstr "今すぐ探索してください"
 
 #: templates/meta_search/ide.html:40
 msgid "Travel partners"
-msgstr ""
+msgstr "旅行パートナー"
 
-#: templates/meta_search/ide.html:58
+#: templates/meta_search/ide.html:58 templates/meta_search/index.html:98
 msgid "Premium Facilities"
-msgstr ""
+msgstr "プレミアム施設"
 
-#: templates/meta_search/ide.html:61
+#: templates/meta_search/ide.html:61 templates/meta_search/index.html:104
 msgid "Exclusive Sunset View"
-msgstr ""
+msgstr "排他的なサンセットビュー"
 
-#: templates/meta_search/ide.html:62
+#: templates/meta_search/ide.html:62 templates/meta_search/index.html:105
 msgid "You witness the beauty of the world from your room"
-msgstr ""
+msgstr "あなたはあなたの部屋から世界の美しさを目撃します"
 
-#: templates/meta_search/ide.html:65
+#: templates/meta_search/ide.html:65 templates/meta_search/index.html:111
 msgid "Integrated Tourist Area"
-msgstr ""
+msgstr "統合された観光エリア"
 
 #: templates/meta_search/ide.html:66
 msgid "Enhancing your travel experience"
-msgstr ""
+msgstr "旅行体験を向上させます"
 
-#: templates/meta_search/ide.html:69
+#: templates/meta_search/ide.html:69 templates/meta_search/index.html:118
 msgid "Nature-Inspired Pool"
-msgstr ""
+msgstr "自然にインスパイアされたプール"
 
-#: templates/meta_search/ide.html:70
+#: templates/meta_search/ide.html:70 templates/meta_search/index.html:119
 msgid "Serene swimming pool with a touch of paradise"
-msgstr ""
+msgstr "楽園のタッチ付きの穏やかなスイミングプール"
 
 #: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+#: templates/meta_search/index.html:129 templates/meta_search/index.html:142
 msgid "Get Rewarded"
-msgstr ""
+msgstr "報われます"
 
-#: templates/meta_search/ide.html:85
+#: templates/meta_search/ide.html:85 templates/meta_search/index.html:134
 msgid "Rate Apartments"
-msgstr ""
+msgstr "アパートを評価します"
 
-#: templates/meta_search/ide.html:86
+#: templates/meta_search/ide.html:86 templates/meta_search/index.html:135
 msgid "Give random objective ratings based on view and aesthetics."
-msgstr ""
+msgstr "視聴と美学に基づいてランダムな客観的評価を与えます。"
 
-#: templates/meta_search/ide.html:94
+#: templates/meta_search/ide.html:94 templates/meta_search/index.html:143
 msgid "Earn instant rewards from the apartments you rate."
-msgstr ""
+msgstr "評価するアパートからインスタント報酬を獲得します。"
 
 #: templates/meta_search/ide.html:102
 msgid "Featured apartments carousel"
-msgstr ""
+msgstr "注目のアパートカルーセル"
 
-#: templates/meta_search/ide.html:103
+#: templates/meta_search/ide.html:103 templates/meta_search/index.html:167
 msgid "Previous slide"
-msgstr ""
+msgstr "前のスライド"
 
-#: templates/meta_search/ide.html:104
+#: templates/meta_search/ide.html:104 templates/meta_search/index.html:168
 msgid "Next slide"
-msgstr ""
+msgstr "次のスライド"
 
-#: templates/meta_search/ide.html:108
+#: templates/meta_search/ide.html:108 templates/meta_search/index.html:159
 msgid "Modern apartment interior"
-msgstr ""
+msgstr "モダンなアパートのインテリア"
 
-#: templates/meta_search/ide.html:111
+#: templates/meta_search/ide.html:111 templates/meta_search/index.html:160
 msgid "Resort pool at sunset"
-msgstr ""
+msgstr "日没時のリゾートプール"
 
-#: templates/meta_search/ide.html:114
+#: templates/meta_search/ide.html:114 templates/meta_search/index.html:161
 msgid "Scenic valley view"
-msgstr ""
+msgstr "風光明媚な谷の景色"
 
-#: templates/meta_search/ide.html:129
+#: templates/meta_search/ide.html:129 templates/meta_search/index.html:175
 msgid "Clients Review"
-msgstr ""
+msgstr "クライアントのレビュー"
 
-#: templates/meta_search/ide.html:130
+#: templates/meta_search/ide.html:130 templates/meta_search/index.html:176
 msgid "See some honest reviews from our users on the platform"
-msgstr ""
+msgstr "プラットフォーム上のユーザーからの正直なレビューをご覧ください"
 
-#: templates/meta_search/ide.html:135
+#: templates/meta_search/ide.html:135 templates/meta_search/index.html:182
 msgid "Client"
-msgstr ""
+msgstr "クライアント"
 
 #: templates/meta_search/ide.html:137
 msgid ""
 "Had a great experience using this for solid bookings. Customer service was "
 "top-notch."
 msgstr ""
+"堅実な予約にこれを使用した素晴らしい経験がありました。カスタマーサービスは一"
+"流でした。"
 
 #: templates/meta_search/ide.html:147
 msgid "Get your inspiration of luxury and get rewarded"
-msgstr ""
+msgstr "贅沢のインスピレーションを得て、報われます"
 
 #: templates/meta_search/ide.html:148
 msgid "Earn new rewards at every step you take under true luxury."
-msgstr ""
+msgstr "真の贅沢の下で取るすべてのステップで新しい報酬を獲得します。"
 
 #: templates/meta_search/ide.html:149
 msgid "See More"
-msgstr ""
+msgstr "もっと参照してください"
 
 #: templates/meta_search/ide.html:152
 msgid "Luxury inspiration"
-msgstr ""
+msgstr "豪華なインスピレーション"
 
 #: templates/meta_search/includes/_header.html:60
 msgid "Get started"
+msgstr "始めましょう"
+
+#: templates/meta_search/index.html:112
+#, fuzzy
+#| msgid "Enhancing your travel experience"
+msgid "Tourism integration is enhancing travel experience"
+msgstr "旅行体験を向上させます"
+
+#: templates/meta_search/index.html:191
+msgid ""
+"I had a great experience working with this fantastic platform that delivers "
+"reward to users for best rating apartments. They have exceptional customer "
+"service and high-quality service."
 msgstr ""
+"私はこの素晴らしいプラットフォームを使用して、最高の評価アパートメントのため"
+"にユーザーに報酬を提供する素晴らしい経験がありました。彼らは例外的な顧客サー"
+"ビスと高品質のサービスを持っています。"
+
+#: templates/meta_search/index.html:194 templates/meta_search/index.html:195
+msgid "James Lee"
+msgstr "ジェームズ・リー"
 
 #: templates/meta_search/info_index.html:6
 msgid "Info Center"
-msgstr ""
+msgstr "情報センター"
 
 #: templates/meta_search/info_index.html:7
 msgid "Pick a section on the left, or use the quick links below."
-msgstr ""
+msgstr "左側のセクションを選択するか、以下のクイックリンクを使用します。"
 
 #: templates/meta_search/info_index.html:19
 #: templates/meta_search/info_page.html:17
 msgid "View all announcements"
-msgstr ""
-
-#: templates/meta_search/language.html:8
-msgid "Language"
-msgstr ""
+msgstr "すべてのアナウンスを表示します"
 
 #: templates/meta_search/language.html:9
 msgid "Select your language."
-msgstr ""
+msgstr "あなたの言語を選択します。"
 
 #: templates/meta_search/password_reset_phone.html:4
 msgid "Reset Password – Step 1"
-msgstr ""
+msgstr "パスワードのリセット - ステップ1"
 
 #: templates/meta_search/password_reset_phone.html:6
 #: templates/meta_search/password_reset_verify.html:6
 #: templates/meta_search/password_reset_verify.html:79
 msgid "Reset Password"
-msgstr ""
+msgstr "パスワードをリセットします"
 
 #: templates/meta_search/password_reset_phone.html:21
 msgid "Enter your phone number to get a verification code."
-msgstr ""
-
-#: templates/meta_search/password_reset_phone.html:41
-#: templates/meta_search/settings_change_password.html:42
-#: templates/meta_search/signin.html:45
-msgid "Phone"
-msgstr ""
+msgstr "確認コードを取得するには、電話番号を入力します。"
 
 #: templates/meta_search/password_reset_phone.html:59
 msgid "Send Code"
-msgstr ""
+msgstr "コードを送信します"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Remembered your password?"
-msgstr ""
+msgstr "パスワードを覚えていますか？"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Sign in"
-msgstr ""
+msgstr "サインイン"
 
 #: templates/meta_search/password_reset_verify.html:4
 msgid "Reset Password – Step 2"
-msgstr ""
+msgstr "パスワードのリセット - ステップ2"
 
 #: templates/meta_search/password_reset_verify.html:21
 msgid "Enter the code sent to your phone, then choose a new password."
-msgstr ""
+msgstr "電話に送信されたコードを入力してから、新しいパスワードを選択します。"
 
 #: templates/meta_search/password_reset_verify.html:43
 msgid "Verification Code"
-msgstr ""
+msgstr "検証コード"
 
 #: templates/meta_search/password_reset_verify.html:52
 msgid "New Password"
-msgstr ""
+msgstr "新しいパスワード"
 
 #: templates/meta_search/password_reset_verify.html:61
 #: templates/meta_search/password_reset_verify.html:74
 #: templates/meta_search/settings_change_password.html:76
 #: templates/meta_search/settings_change_password.html:93
 #: templates/meta_search/settings_change_password.html:112
-#: templates/meta_search/signin.html:68
+#: templates/meta_search/signin.html:94
 msgid "Show/Hide password"
-msgstr ""
+msgstr "パスワードを表示/非表示にします"
 
 #: templates/meta_search/password_reset_verify.html:65
+#: templates/meta_search/signup.html:85
 msgid "Confirm Password"
-msgstr ""
+msgstr "パスワードを認証する"
 
-#: templates/meta_search/password_reset_verify.html:84
-msgid "Back"
-msgstr ""
+#: templates/meta_search/profile_settings.html:5
+msgid "Settings — Profile"
+msgstr "設定 - プロファイル"
 
-#: templates/meta_search/password_reset_verify.html:86
-msgid "Home"
+#: templates/meta_search/profile_settings.html:8
+msgid "profile"
+msgstr "プロフィール"
+
+#: templates/meta_search/profile_settings.html:15
+msgid "Basic Info"
+msgstr "基本情報"
+
+#: templates/meta_search/profile_settings.html:16
+msgid "Manage your details and personal preferences here."
+msgstr "ここで詳細と個人的な好みを管理してください。"
+
+#: templates/meta_search/profile_settings.html:33
+msgid "Avatar"
+msgstr "アバター"
+
+#: templates/meta_search/profile_settings.html:40
+msgid "Change image"
+msgstr "画像を変更します"
+
+#: templates/meta_search/profile_settings.html:51
+msgid "Remove"
+msgstr "取り除く"
+
+#: templates/meta_search/profile_settings.html:55
+msgid "JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80)."
+msgstr "JPG、PNG、WebP、またはGIF。理想：120×120（最小80×80）。"
+
+#: templates/meta_search/profile_settings.html:67
+#, fuzzy
+#| msgid "Phone number"
+msgid "Phone Number"
+msgstr "電話番号"
+
+#: templates/meta_search/profile_settings.html:76
+msgid "LEVEL 1"
+msgstr "レベル1"
+
+#: templates/meta_search/profile_settings.html:83
+msgid "Nickname"
+msgstr "ニックネーム"
+
+#: templates/meta_search/profile_settings.html:89
+msgid "Image URL (optional)"
+msgstr "画像URL（オプション）"
+
+#: templates/meta_search/profile_settings.html:92
+msgid "Used only if no uploaded image exists."
+msgstr "アップロードされた画像が存在しない場合にのみ使用されます。"
+
+#: templates/meta_search/profile_settings.html:97
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "変更を保存します"
+
+#: templates/meta_search/rewards.html:94 templates/meta_search/rewards.html:97
+#: templates/meta_search/rewards.html:118
+msgid "Deposit Bonus"
+msgstr "デポジットボーナス"
+
+#: templates/meta_search/rewards.html:98
+msgid "Reset Amount Reward"
+msgstr "リセットされた金額報酬"
+
+#: templates/meta_search/rewards.html:100
+#: templates/meta_search/rewards.html:101
+#: templates/meta_search/rewards.html:102
+#: templates/meta_search/rewards.html:103
+#: templates/meta_search/rewards.html:121
+#: templates/meta_search/rewards.html:122
+#: templates/meta_search/rewards.html:123
+#: templates/meta_search/rewards.html:124
+#: templates/meta_search/rewards.html:155
+#: templates/meta_search/rewards.html:156
+#: templates/meta_search/rewards.html:157
+msgid "Get"
+msgstr "得る"
+
+#: templates/meta_search/rewards.html:106
+#, fuzzy
+#| msgid "Please correct the errors below."
+msgid "Please contact customer service for reward."
+msgstr "以下のエラーを修正してください。"
+
+#: templates/meta_search/rewards.html:107
+msgid "You can only collect once a day; reset the reward."
+msgstr "1日に1回しか収集できません。報酬をリセットします。"
+
+#: templates/meta_search/rewards.html:115
+msgid "Deposit Bonus Details"
+msgstr "ボーナスの詳細を入金します"
+
+#: templates/meta_search/rewards.html:119
+msgid "Repeat of tiers for clarity"
+msgstr "明確にするためのティアの繰り返し"
+
+#: templates/meta_search/rewards.html:126
+msgid "Collect once per day."
+msgstr "1日に1回集めます。"
+
+#: templates/meta_search/rewards.html:133
+#: templates/meta_search/rewards.html:136
+msgid "Consecutive Days Rewards"
+msgstr "連続した日々の報酬"
+
+#: templates/meta_search/rewards.html:137
+msgid "Work for consecutive days and receive a reward of:"
+msgstr "連続して働き、次の報酬を受け取ります"
+
+#: templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:155
+msgid "5 days"
+msgstr "5日"
+
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:156
+msgid "15 days"
+msgstr "15日"
+
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/rewards.html:157
+msgid "30 days"
+msgstr "30日"
+
+#: templates/meta_search/rewards.html:149
+msgid "Consecutive Days Details"
+msgstr "連続した日の詳細"
+
+#: templates/meta_search/rewards.html:152
+msgid "Consecutive Days"
+msgstr "連続した日"
+
+#: templates/meta_search/rewards.html:153
+msgid "Maintain streaks to unlock larger rewards."
+msgstr "ストリークを維持して、より大きな報酬のロックを解除します。"
+
+#: templates/meta_search/rewards.html:165
+#: templates/meta_search/rewards.html:168
+msgid "About Gift Boxes"
+msgstr "ギフトボックスについて"
+
+#: templates/meta_search/rewards.html:169
+msgid "Have a chance to get 0–3 random Gift Boxes every round."
+msgstr "毎回0〜3のランダムギフトボックスを入手する機会があります。"
+
+#: templates/meta_search/rewards.html:171
+msgid "Gift Boxes Cash Bonus"
+msgstr "ギフトボックスキャッシュボーナス"
+
+#: templates/meta_search/rewards.html:171
+#: templates/meta_search/rewards.html:172
+msgid "Up to"
+msgstr "まで"
+
+#: templates/meta_search/rewards.html:172
+msgid "Gift Boxes Commission Bonus"
+msgstr "ギフトボックス委員会のボーナス"
+
+#: templates/meta_search/rewards.html:172
+msgid "30× commission"
+msgstr "30×委員会"
+
+#: templates/meta_search/rewards.html:174
+msgid "For more details, contact customer service."
+msgstr "詳細については、カスタマーサービスにお問い合わせください。"
+
+#: templates/meta_search/rewards.html:181
+msgid "Gift Boxes Detail"
+msgstr "ギフトボックスの詳細"
+
+#: templates/meta_search/rewards.html:184
+msgid "Gift Boxes"
+msgstr "ギフトボックス"
+
+#: templates/meta_search/rewards.html:185
+msgid "Two types of Gift Boxes rewards are available."
+msgstr "2種類のギフトボックスの報酬が利用可能です。"
+
+#: templates/meta_search/rewards.html:187
+msgid "Daily Box"
+msgstr "毎日の箱"
+
+#: templates/meta_search/rewards.html:187
+#: templates/meta_search/rewards.html:188
+msgid "Chance"
+msgstr "チャンス"
+
+#: templates/meta_search/rewards.html:188
+msgid "Milestone Box"
+msgstr "マイルストーンボックス"
+
+#: templates/meta_search/rewards.html:190
+msgid "Box odds reset weekly."
+msgstr "ボックスオッズは毎週リセットされます。"
+
+#: templates/meta_search/rewards.html:197
+#: templates/meta_search/rewards.html:200
+#, fuzzy
+#| msgid "About us"
+msgid "About Rank"
+msgstr "私たちについて"
+
+#: templates/meta_search/rewards.html:201
+msgid "Commission tiers & upgrade notes"
+msgstr "コミッション層とアップグレードノート"
+
+#: templates/meta_search/rewards.html:203
+#: templates/meta_search/rewards.html:204
+#: templates/meta_search/rewards.html:205 templates/meta_search/wallet.html:191
+#: templates/meta_search/wallet.html:204 templates/meta_search/wallet.html:238
+#: templates/meta_search/wallet.html:251 templates/meta_search/wallet.html:282
+#: templates/meta_search/wallet.html:295 templates/meta_search/wallet.html:382
+#: templates/meta_search/wallet.html:573 templates/meta_search/wallet.html:581
+#: templates/tasks/task_detail.html:154
+msgid "Commission"
+msgstr "手数料"
+
+#: templates/meta_search/rewards.html:207
+msgid "Contact Customer Service for more details."
+msgstr "詳細については、カスタマーサービスにお問い合わせください。"
+
+#: templates/meta_search/rewards.html:214
+msgid "About Rank Details"
+msgstr "ランクの詳細について"
+
+#: templates/meta_search/rewards.html:217
+msgid "Rank Upgrade Details"
+msgstr "アップグレードの詳細をランク付けします"
+
+#: templates/meta_search/rewards.html:218
+msgid "More constraints & upgrade hints"
+msgstr "より多くの制約とアップグレードヒント"
+
+#: templates/meta_search/rewards.html:220
+#: templates/meta_search/rewards.html:221
+msgid "Note"
+msgstr "注記"
+
+#: templates/meta_search/rewards.html:220
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "One withdrawal/day"
+msgstr "新しい引き出しピンを設定します"
+
+#: templates/meta_search/rewards.html:221
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Two withdrawals/day"
+msgstr "引き出しパスワードを確認します"
+
+#: templates/meta_search/rewards.html:222
+msgid "Upgrade"
+msgstr "アップグレード"
+
+#: templates/meta_search/rewards.html:222
+msgid "Recharge"
+msgstr "充電"
+
+#: templates/meta_search/rewards.html:224
+msgid "SVIP can become an agent; subordinate commissions may apply."
 msgstr ""
+"SVIPはエージェントになることができます。下位委員会が適用される場合がありま"
+"す。"
+
+#: templates/meta_search/rewards.html:235
+#, fuzzy
+#| msgid "Previous slide"
+msgid "Previous"
+msgstr "前のスライド"
+
+#: templates/meta_search/rewards.html:236
+msgid "Next"
+msgstr "次"
+
+#: templates/meta_search/rewards.html:238
+msgid "Slide indicators"
+msgstr "スライドインジケーター"
 
 #: templates/meta_search/settings_change_password.html:4
 msgid "Settings — Change password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:20
-msgid "Change password"
-msgstr ""
+msgstr "設定 - パスワードを変更します"
 
 #: templates/meta_search/settings_change_password.html:22
 msgid ""
 "For security, confirm your phone, pass the captcha, then set a strong "
 "password."
 msgstr ""
-
-#: templates/meta_search/settings_change_password.html:55
-#: templates/meta_search/signin.html:73
-msgid "Captcha"
-msgstr ""
+"セキュリティのために、携帯電話を確認し、Captchaを渡して、強力なパスワードを設"
+"定します。"
 
 #: templates/meta_search/settings_change_password.html:66
 msgid "Old password"
-msgstr ""
+msgstr "以前のパスワード"
 
 #: templates/meta_search/settings_change_password.html:79
 msgid "Forgot current password?"
-msgstr ""
+msgstr "現在のパスワードを忘れましたか？"
 
 #: templates/meta_search/settings_change_password.html:95
 msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
-msgstr ""
+msgstr "文字、数字、シンボルが混在する8つ以上の文字を使用します。"
 
 #: templates/meta_search/settings_change_password.html:102
+#: templates/meta_search/support_reset_password.html:94
 msgid "Confirm password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:116
-msgid "Save Changes"
-msgstr ""
+msgstr "パスワードを認証する"
 
 #: templates/meta_search/signin.html:4
-msgid "Sign In - Expedia"
-msgstr ""
+msgid "Sign In - Orbitpedia"
+msgstr "サインイン - エクスペディア"
 
-#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:123
 msgid "Sign In"
-msgstr ""
+msgstr "サインイン"
 
-#: templates/meta_search/signin.html:21
+#: templates/meta_search/signin.html:43
 msgid "Welcome back, please sign in"
-msgstr ""
+msgstr "ようこそ、サインインしてください"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Don’t have an account?"
-msgstr ""
+msgstr "アカウントを持っていませんか？"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Create one"
-msgstr ""
+msgstr "1つを作成します"
 
-#: templates/meta_search/signin.html:89
+#: templates/meta_search/signin.html:130
 msgid "Forgotten password?"
+msgstr "パスワードを忘れましたか？"
+
+#: templates/meta_search/signup.html:4
+#, fuzzy
+#| msgid "Sign In - Orbitpedia"
+msgid "Sign Up - Orbitpedia"
+msgstr "サインイン - エクスペディア"
+
+#: templates/meta_search/signup.html:6
+#, fuzzy
+#| msgid "Sign in"
+msgid "Sign Up"
+msgstr "サインイン"
+
+#: templates/meta_search/signup.html:41
+msgid "Hello friend, let’s get you registered"
+msgstr "こんにちは友達、登録しましょう"
+
+#: templates/meta_search/signup.html:66 templates/meta_search/signup.html:67
+#: templates/meta_search/signup.html:69 templates/meta_search/signup.html:97
+#: templates/meta_search/signup.html:98 templates/meta_search/signup.html:100
+#, fuzzy
+#| msgid "Show/Hide password"
+msgid "Show password"
+msgstr "パスワードを表示/非表示にします"
+
+#: templates/meta_search/signup.html:68 templates/meta_search/signup.html:99
+#, fuzzy
+#| msgid "Show/Hide password"
+msgid "Hide password"
+msgstr "パスワードを表示/非表示にします"
+
+#: templates/meta_search/signup.html:116
+#, fuzzy
+#| msgid "Invitation code"
+msgid "Invitation Code"
+msgstr "招待コード"
+
+#: templates/meta_search/signup.html:133
+#, fuzzy
+#| msgid "Get started"
+msgid "Get Started"
+msgstr "始めましょう"
+
+#: templates/meta_search/signup.html:138
+#, fuzzy
+#| msgid "Don’t have an account?"
+msgid "Already have an account?"
+msgstr "アカウントを持っていませんか？"
+
+#: templates/meta_search/signup.html:138
+msgid "Login"
+msgstr "ログイン"
+
+#: templates/meta_search/support_reset_password.html:6
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Support – Reset Password"
+msgstr "パスワードをリセットします"
+
+#: templates/meta_search/support_reset_password.html:38
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset User Password (Support)"
+msgstr "パスワードをリセットします"
+
+#: templates/meta_search/support_reset_password.html:39
+msgid "Enter the user’s phone and a new password. This action is logged."
 msgstr ""
+"ユーザーの電話と新しいパスワードを入力します。このアクションは記録されます。"
+
+#: templates/meta_search/support_reset_password.html:70
+msgid ""
+"Accepts <b>E.164</b> (e.g. <code>+2348012345678</code>) or local NG like "
+"<code>080…</code>."
+msgstr ""
+"[[[[[[[[token]]]]]]] e.164 [[[[[token_1]]]]）（例えば"
+"[[[[[token_2]]]]+2348012345678 [[[[[token_3]]]]）または[[[[token_4]]]のような"
+"ローカルngを受け入れる。"
+
+#: templates/meta_search/support_reset_password.html:82
+#: templates/meta_search/support_reset_password.html:84
+#: templates/meta_search/support_reset_password.html:99
+#: templates/meta_search/support_reset_password.html:101
+msgid "Show"
+msgstr "見せる"
+
+#: templates/meta_search/support_reset_password.html:83
+#: templates/meta_search/support_reset_password.html:100
+msgid "Hide"
+msgstr "隠れる"
+
+#: templates/meta_search/support_reset_password.html:112
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset password"
+msgstr "パスワードをリセットします"
+
+#: templates/meta_search/support_reset_password.html:113
+msgid "You must be logged in as <b>staff</b>."
+msgstr ""
+"[[[[[[token_0]]]]]スタッフ[[[[token_1]]]]としてログインする必要があります。"
+
+#: templates/meta_search/support_reset_password.html:118
+msgid ""
+"Tip: Use strong passwords (12+ chars, mix of letters, numbers & symbols). "
+"This operation is recorded in the Admin log."
+msgstr ""
+"ヒント：強力なパスワードを使用します（12+ chars、文字の組み合わせ、数字、記"
+"号）。この操作は、管理ログに記録されます。"
+
+#: templates/meta_search/support_reset_password.html:147
+msgid "Working…"
+msgstr "働く…"
+
+#: templates/meta_search/task_dashboard.html:25
+msgid "Balances"
+msgstr "バランス"
+
+#: templates/meta_search/task_dashboard.html:38
+msgid "Tasks Promo"
+msgstr "タスクプロモーション"
+
+#: templates/meta_search/task_dashboard.html:45
+msgid "Complete Tasks"
+msgstr "完全なタスク"
+
+#: templates/meta_search/task_dashboard.html:46
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "and get rewarded"
+msgstr "報われます"
+
+#: templates/meta_search/task_dashboard.html:60
+msgid "Locked:"
+msgstr "ロック："
+
+#: templates/meta_search/task_dashboard.html:61
+msgid "You have completed your trial. Please contact customer care."
+msgstr ""
+"あなたはあなたのトライアルを完了しました。カスタマーケアに連絡してください。"
+
+#: templates/meta_search/task_dashboard.html:64
+#, python-format
+msgid "Tasks available: <strong>%(n)s</strong>"
+msgstr "利用可能なタスク：[[[[[token_0]]]]] [[[[token_2]]]] [[[[token_1]]]"
+
+#: templates/meta_search/task_dashboard.html:66
+msgid "You’re up to date. Click below to get your next task."
+msgstr ""
+"あなたは最新のものです。次のタスクを取得するには、以下をクリックしてくださ"
+"い。"
+
+#: templates/meta_search/task_dashboard.html:78
+msgid "Locked — contact support"
+msgstr "ロックされています - 連絡先サポート"
+
+#: templates/meta_search/task_dashboard.html:80
+#: templates/tasks/user_task_dashboard.html:254
+msgid "Click to get your task"
+msgstr "クリックしてタスクを取得します"
+
+#: templates/meta_search/task_dashboard.html:90
+msgid "Filter tasks"
+msgstr "フィルタータスク"
+
+#: templates/meta_search/task_dashboard.html:91
+#: templates/meta_search/task_dashboard.html:105
+#: templates/meta_search/wallet.html:188 templates/meta_search/wallet.html:201
+#: templates/tasks/user_task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:300
+msgid "All"
+msgstr "全て"
+
+#: templates/meta_search/task_dashboard.html:92
+#: templates/meta_search/task_dashboard.html:106
+#: templates/tasks/task_detail.html:169
+#: templates/tasks/user_task_dashboard.html:265
+#: templates/tasks/user_task_dashboard.html:301
+msgid "Completed"
+msgstr "完了しました"
+
+#: templates/meta_search/task_dashboard.html:93
+#: templates/meta_search/task_dashboard.html:107
+#: templates/tasks/user_task_dashboard.html:239
+#: templates/tasks/user_task_dashboard.html:266
+#: templates/tasks/user_task_dashboard.html:302
+msgid "Processing"
+msgstr "処理"
+
+#: templates/meta_search/task_dashboard.html:98
+#: templates/meta_search/task_dashboard.html:101
+#: templates/meta_search/task_dashboard.html:112
+#: templates/tasks/user_task_dashboard.html:260
+msgid "Task History"
+msgstr "タスク履歴"
+
+#: templates/meta_search/task_dashboard.html:103
+#: templates/meta_search/task_dashboard.html:104
+#: templates/meta_search/task_dashboard.html:138
+#: templates/meta_search/task_dashboard.html:168
+#: templates/meta_search/task_dashboard.html:198
+#: templates/meta_search/task_dashboard.html:223
+#: templates/meta_search/withdrawal_success.html:144
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:319
+msgid "Status"
+msgstr "状態"
+
+#: templates/meta_search/task_dashboard.html:124
+#: templates/meta_search/task_dashboard.html:154
+#: templates/meta_search/task_dashboard.html:184
+#: templates/meta_search/task_dashboard.html:239
+#: templates/meta_search/task_dashboard.html:252
+#: templates/meta_search/task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:288
+#: templates/tasks/user_task_dashboard.html:313
+msgid "View"
+msgstr "ビュー"
+
+#: templates/meta_search/task_dashboard.html:128
+#: templates/meta_search/task_dashboard.html:158
+#: templates/meta_search/task_dashboard.html:188
+#: templates/tasks/user_task_dashboard.html:317
+msgid "Product"
+msgstr "製品"
+
+#: templates/meta_search/task_dashboard.html:134
+#: templates/meta_search/task_dashboard.html:164
+#: templates/meta_search/task_dashboard.html:194
+#: templates/meta_search/task_dashboard.html:221
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:318
+msgid "Price"
+msgstr "価格"
+
+#: templates/meta_search/task_dashboard.html:142
+#: templates/meta_search/task_dashboard.html:172
+#: templates/meta_search/task_dashboard.html:202
+#: templates/meta_search/task_dashboard.html:222
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:320
+msgid "Comm"
+msgstr "comm"
+
+#: templates/meta_search/task_dashboard.html:209
+#: templates/meta_search/task_dashboard.html:269
+msgid "No Task History"
+msgstr "タスク履歴はありません"
+
+#: templates/meta_search/task_dashboard.html:218
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Product Name"
+msgstr "製品名"
+
+#: templates/meta_search/task_dashboard.html:219
+#: templates/tasks/task_detail.html:110
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Order ID"
+msgstr "IDを注文します"
+
+#: templates/meta_search/task_dashboard.html:220
+#: templates/meta_search/user_dashboard.html:101
+#: templates/tasks/task_detail.html:118
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Date"
+msgstr "日付"
+
+#: templates/meta_search/task_dashboard.html:224
+msgid "Action"
+msgstr "アクション"
+
+#: templates/meta_search/task_dashboard.html:233
+#: templates/meta_search/task_dashboard.html:246
+#: templates/meta_search/task_dashboard.html:258
+#, python-format
+msgid "Task #%(id)s"
+msgstr "タスク＃[[[[token_0]]]]"
+
+#: templates/meta_search/task_dashboard.html:280
+#: templates/meta_search/wallet.html:397 templates/tasks/task_detail.html:186
+#: templates/tasks/user_task_dashboard.html:350
+msgid "Close"
+msgstr "近い"
+
+#: templates/meta_search/task_dashboard.html:290
+msgid "Trial Complete"
+msgstr "トライアルが完了します"
+
+#: templates/meta_search/task_dashboard.html:291
+msgid ""
+"You’ve completed all trial tasks. Please contact customer care to continue."
+msgstr ""
+"すべてのトライアルタスクを完了しました。継続するには、カスタマーケアに連絡し"
+"てください。"
+
+#: templates/meta_search/task_dashboard.html:292
+#: templates/tasks/task_detail.html:195
+#: templates/tasks/user_task_dashboard.html:357
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "Customer care"
+msgstr "顧客アバター1"
+
+#: templates/meta_search/user_dashboard.html:6
+msgid "Dashboard — Tasks & Rewards"
+msgstr "ダッシュボード - タスクと報酬"
+
+#: templates/meta_search/user_dashboard.html:7
+msgid "My Dashboard"
+msgstr "私のダッシュボード"
+
+#: templates/meta_search/user_dashboard.html:9
+msgid "Home / dashboard"
+msgstr "ホーム /ダッシュボード"
+
+#: templates/meta_search/user_dashboard.html:98
+#: templates/meta_search/user_dashboard.html:164
+msgid "User"
+msgstr "ユーザー"
+
+#: templates/meta_search/user_dashboard.html:99
+msgid "View Profile"
+msgstr "プロファイルを表示します"
+
+#: templates/meta_search/user_dashboard.html:100
+msgid "Location"
+msgstr "位置"
+
+#: templates/meta_search/user_dashboard.html:102
+#: templates/meta_search/user_dashboard.html:107
+msgid "Rating"
+msgstr "評価"
+
+#: templates/meta_search/user_dashboard.html:103
+msgid "Search"
+msgstr "検索"
+
+#: templates/meta_search/user_dashboard.html:104
+#: templates/meta_search/user_dashboard.html:238
+msgid "Filters"
+msgstr "フィルター"
+
+#: templates/meta_search/user_dashboard.html:105
+msgid "Recommended"
+msgstr "推奨"
+
+#: templates/meta_search/user_dashboard.html:106
+msgid "Popular"
+msgstr "人気のある"
+
+#: templates/meta_search/user_dashboard.html:108
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "Your avatar"
+msgstr "顧客アバター1"
+
+#: templates/meta_search/user_dashboard.html:109
+#: templates/meta_search/user_dashboard.html:169
+msgid "Let’s do some task and earn reward"
+msgstr "いくつかのタスクをして、報酬を獲得しましょう"
+
+#: templates/meta_search/user_dashboard.html:208
+msgid "Mobile header & filters"
+msgstr "モバイルヘッダーとフィルター"
+
+#: templates/meta_search/user_dashboard.html:210
+msgid "View profile"
+msgstr "プロファイルを表示します"
+
+#: templates/meta_search/user_dashboard.html:224
+msgid "wave"
+msgstr "波"
+
+#: templates/meta_search/user_dashboard.html:293
+#, fuzzy, python-format
+#| msgid "Save Changes"
+msgid "Save %(name)s"
+msgstr "変更を保存します"
+
+#: templates/meta_search/user_dashboard.html:320
+#, python-format
+msgid "No %(tab)s hotels available."
+msgstr "いいえ[[[[[token_0]]]]ホテルが利用可能です。"
+
+#: templates/meta_search/wallet.html:7
+msgid "Home / my wallet"
+msgstr "家 /私の財布"
+
+#: templates/meta_search/wallet.html:160
+msgid "Wallet Summary"
+msgstr "ウォレットの概要"
+
+#: templates/meta_search/wallet.html:163
+msgid "Current Balance"
+msgstr "現在のバランス"
+
+#: templates/meta_search/wallet.html:166 templates/meta_search/wallet.html:601
+msgid "Hide balance"
+msgstr "バランスを隠します"
+
+#: templates/meta_search/wallet.html:176
+msgid "Trial Bonus"
+msgstr "トライアルボーナス"
+
+#: templates/meta_search/wallet.html:182 templates/meta_search/wallet.html:249
+#: templates/meta_search/wallet.html:293 templates/meta_search/wallet.html:581
+#: templates/meta_search/withdrawal.html:5
+#: templates/meta_search/withdrawal.html:157
+msgid "Withdraw"
+msgstr "撤回する"
+
+#: templates/meta_search/wallet.html:187
+msgid "Filter transactions (mobile)"
+msgstr "フィルタートランザクション（モバイル）"
+
+#: templates/meta_search/wallet.html:190 templates/meta_search/wallet.html:203
+#: templates/meta_search/wallet.html:240 templates/meta_search/wallet.html:284
+#: templates/meta_search/wallet.html:351 templates/meta_search/wallet.html:573
+#: templates/meta_search/withdrawal.html:6
+#: templates/meta_search/withdrawal.html:199
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/wallet.html:196
+msgid "Transactions"
+msgstr "トランザクション"
+
+#: templates/meta_search/wallet.html:199
+msgid "Filter transactions (desktop)"
+msgstr "フィルタートランザクション（デスクトップ）"
+
+#: templates/meta_search/wallet.html:247 templates/meta_search/wallet.html:291
+msgid "Added funds"
+msgstr "資金を追加しました"
+
+#: templates/meta_search/wallet.html:253 templates/meta_search/wallet.html:297
+#: templates/meta_search/wallet.html:581
+msgid "Adjustment"
+msgstr "調整"
+
+#: templates/meta_search/wallet.html:310
+msgid "No Transaction History"
+msgstr "取引履歴はありません"
+
+#: templates/meta_search/wallet.html:311
+msgid "When you start using your wallet, entries will show here."
+msgstr "ウォレットの使用を開始すると、エントリがここに表示されます。"
+
+#: templates/meta_search/wallet.html:327
+#, python-format
+msgid "Added funds • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "追加ファンド•％（T.Created_at | date： \"y-m-d\"）s"
+
+#: templates/meta_search/wallet.html:331
+msgid "No deposits yet"
+msgstr "まだ預金はありません"
+
+#: templates/meta_search/wallet.html:347
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal (Pending)"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/wallet.html:349
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal (Failed)"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/wallet.html:356
+msgid "Requested"
+msgstr "リクエスト"
+
+#: templates/meta_search/wallet.html:358
+msgid "Request"
+msgstr "リクエスト"
+
+#: templates/meta_search/wallet.html:360
+msgid "Posted"
+msgstr "投稿されました"
+
+#: templates/meta_search/wallet.html:367
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "No withdrawals yet"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/wallet.html:382
+#, python-format
+msgid "Payment • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "支払い•％（t.created_at | date： \"y-m-d\"）s"
+
+#: templates/meta_search/wallet.html:386
+msgid "No commissions yet"
+msgstr "まだ手数料はありません"
+
+#: templates/meta_search/wallet.html:398
+msgid "Transaction Details"
+msgstr "トランザクションの詳細"
+
+#: templates/meta_search/wallet.html:406
+msgid "Transaction ID"
+msgstr "トランザクションID"
+
+#: templates/meta_search/wallet.html:406
+msgid "Copy ID"
+msgstr "IDをコピーします"
+
+#: templates/meta_search/wallet.html:408
+msgid "Description"
+msgstr "説明"
+
+#: templates/meta_search/wallet.html:410
+msgid "State"
+msgstr "州"
+
+#: templates/meta_search/wallet.html:581
+msgid "Added fund to wallet"
+msgstr "ウォレットにファンドを追加しました"
+
+#: templates/meta_search/wallet.html:600
+msgid "Show balance"
+msgstr "バランスを示します"
+
+#: templates/meta_search/withdrawal.html:8
+msgid "Home / my Wallet / Withdrawal"
+msgstr "ホーム /私の財布 /離脱"
+
+#: templates/meta_search/withdrawal.html:167
+msgid "Your withdrawal method is verified."
+msgstr "撤退方法が検証されています。"
+
+#: templates/meta_search/withdrawal.html:222
+msgid "EUR (Euro)"
+msgstr "EUR（ユーロ）"
+
+#: templates/meta_search/withdrawal.html:227
+msgid "USD (US Dollar)"
+msgstr "USD（米ドル）"
+
+#: templates/meta_search/withdrawal.html:232
+msgid "GBP (Pound)"
+msgstr "GBP（ポンド）"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Min"
+msgstr "分"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Max"
+msgstr "マックス"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "per request"
+msgstr "リクエストごと"
+
+#: templates/meta_search/withdrawal.html:256
+msgid "Bound wallet address"
+msgstr "バインドされたウォレットアドレス"
+
+#: templates/meta_search/withdrawal.html:257
+msgid "Update address"
+msgstr "アドレスを更新します"
+
+#: templates/meta_search/withdrawal.html:264
+msgid "Network:"
+msgstr "ネットワーク："
+
+#: templates/meta_search/withdrawal.html:278
+msgid "Bind your wallet address first"
+msgstr "最初にウォレットアドレスをバインドします"
+
+#: templates/meta_search/withdrawal.html:279
+msgid "Bind Wallet Address"
+msgstr "バインドウォレットアドレス"
+
+#: templates/meta_search/withdrawal.html:283
+msgid ""
+"You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste "
+"your wallet address → verify (email/SMS) → the address will be saved and "
+"auto-filled here."
+msgstr ""
+"Bindアドレスページ→[TRC20など）を選択します→貼り付けアドレスを貼り付け→[電子"
+"メール/SMS]→[アドレスは保存され、自動化されます。"
+
+#: templates/meta_search/withdrawal.html:285
+msgid "Bind wallet address?"
+msgstr "バインドウォレットアドレス？"
+
+#: templates/meta_search/withdrawal.html:296
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal Method"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/withdrawal.html:303
+msgid "ETHEREUM"
+msgstr "イーサリアム"
+
+#: templates/meta_search/withdrawal.html:330
+#: templates/meta_search/withdrawal.html:472
+msgid "The withdrawal requirement has yet to be fulfilled."
+msgstr "撤退要件はまだ満たされていません。"
+
+#: templates/meta_search/withdrawal.html:332
+msgid "WITHDRAW"
+msgstr "撤回する"
+
+#: templates/meta_search/withdrawal.html:339
+#, fuzzy
+#| msgid "You don’t have a withdrawal password yet. Set one first."
+msgid "For security, you must set a withdrawal password first."
+msgstr "引き出しパスワードはまだありません。最初に1つを設定します。"
+
+#: templates/meta_search/withdrawal.html:340
+#, fuzzy
+#| msgid "Current withdrawal password"
+msgid "Set withdrawal password"
+msgstr "現在の引き出しパスワード"
+
+#: templates/meta_search/withdrawal.html:349
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Confirm withdrawal"
+msgstr "引き出しパスワードを確認します"
+
+#: templates/meta_search/withdrawal.html:354
+#, fuzzy
+#| msgid "Incorrect withdrawal password."
+msgid "Enter your 6-digit withdrawal password to continue."
+msgstr "誤った引き出しパスワード。"
+
+#: templates/meta_search/withdrawal.html:356
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: templates/meta_search/withdrawal.html:357
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Confirm & Withdraw"
+msgstr "引き出しパスワードを確認します"
+
+#: templates/meta_search/withdrawal.html:368
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal policy"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "The withdrawal requirement has yet to be fulfilled"
+msgstr "撤退要件はまだ満たされていません"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "COMPLETE MORE TASKS"
+msgstr "より多くのタスクを完了します"
+
+#: templates/meta_search/withdrawal.html:371
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "before the next withdrawal."
+msgstr "新しい引き出しピンを設定します"
+
+#: templates/meta_search/withdrawal.html:373
+#, python-format
+msgid ""
+"Locked: The withdrawal requirement has yet to be fulfilled "
+"%(withdraw_cycles_remaining)s"
+msgstr "ロックされた：引き出し要件はまだ満たされていません[[[[[token_0]]]]"
+
+#: templates/meta_search/withdrawal.html:377
+msgid "Got it"
+msgstr "わかった"
+
+#: templates/meta_search/withdrawal.html:500
+msgid "Processing…"
+msgstr "処理…"
+
+#: templates/meta_search/withdrawal_success.html:5
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal Submitted"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/withdrawal_success.html:6
+msgid "Home / my Wallet / Withdrawal / Success"
+msgstr "ホーム /私の財布 /撤退 /成功"
+
+#: templates/meta_search/withdrawal_success.html:108
+msgid "Awaiting Approval"
+msgstr "承認を待っています"
+
+#: templates/meta_search/withdrawal_success.html:114
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal submitted"
+msgstr "撤退セキュリティ"
+
+#: templates/meta_search/withdrawal_success.html:121
+msgid "We’ve received your request."
+msgstr "リクエストを受け取りました。"
+
+#: templates/meta_search/withdrawal_success.html:122
+msgid "You’ll get an update once it’s reviewed."
+msgstr "レビューすると更新されます。"
+
+#: templates/meta_search/withdrawal_success.html:129
+msgid "Request ID"
+msgstr "リクエストID"
+
+#: templates/meta_search/withdrawal_success.html:132
+#: templates/meta_search/withdrawal_success.html:197
+msgid "Copy"
+msgstr "コピー"
+
+#: templates/meta_search/withdrawal_success.html:150
+#: templates/tasks/user_task_dashboard.html:312
+msgid "Submitted"
+msgstr "提出"
+
+#: templates/meta_search/withdrawal_success.html:157
+msgid "To"
+msgstr "に"
+
+#: templates/meta_search/withdrawal_success.html:166
+msgid "Your withdrawal request has been submitted."
+msgstr "あなたの撤回要求が提出されました。"
+
+#: templates/meta_search/withdrawal_success.html:171
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "Make another withdrawal"
+msgstr "新しい引き出しピンを設定します"
+
+#: templates/meta_search/withdrawal_success.html:175
+msgid ""
+"Tip: If you navigate back to the withdrawal page, it will load a fresh form "
+"so it can’t be submitted twice."
+msgstr ""
+"ヒント：引き出しページに戻ると、新鮮なフォームをロードして2回送信できません。"
+
+#: templates/tasks/task_detail.html:4
+msgid "Task Preview"
+msgstr "タスクプレビュー"
+
+#: templates/tasks/task_detail.html:6
+msgid "Home / Task / Detail"
+msgstr "ホーム /タスク /詳細"
+
+#: templates/tasks/task_detail.html:90
+msgid "Task image"
+msgstr "タスク画像"
+
+#: templates/tasks/task_detail.html:103
+msgid "Rated"
+msgstr "定格"
+
+#: templates/tasks/task_detail.html:152
+msgid "1X commission"
+msgstr "1x委員会"
+
+#: templates/tasks/task_detail.html:165
+msgid "Submit"
+msgstr "提出する"
+
+#: templates/tasks/task_detail.html:167
+msgid "Submitted (waiting)"
+msgstr "提出（待機）"
+
+#: templates/tasks/task_detail.html:191
+msgid "Congratulations!"
+msgstr "おめでとう！"
+
+#: templates/tasks/task_detail.html:193
+msgid ""
+"You have received a platinum package. For more info please contact customer "
+"service."
+msgstr ""
+"プラチナパッケージを受け取りました。詳細については、カスタマーサービスにお問"
+"い合わせください。"
+
+#: templates/tasks/user_task_dashboard.html:5
+#: templates/tasks/user_task_dashboard.html:6
+msgid "Tasks Dashboard"
+msgstr "タスクダッシュボード"
+
+#: templates/tasks/user_task_dashboard.html:213
+msgid "Home / Task"
+msgstr "ホーム /タスク"
+
+#: templates/tasks/user_task_dashboard.html:227
+msgid "Total Asset"
+msgstr "総資産"
+
+#: templates/tasks/user_task_dashboard.html:231
+msgid "Asset"
+msgstr "資産"
+
+#: templates/tasks/user_task_dashboard.html:235
+msgid "Dividends"
+msgstr "配当"
+
+#: templates/tasks/user_task_dashboard.html:246
+msgid "Complete Tasks and get"
+msgstr "タスクを完了して取得します"
+
+#: templates/tasks/user_task_dashboard.html:246
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "rewarded"
+msgstr "報われます"
+
+#: templates/tasks/user_task_dashboard.html:247
+msgid "Banner Image"
+msgstr "バナー画像"
+
+#: templates/tasks/user_task_dashboard.html:249
+msgid "Order received today:"
+msgstr "今日受け取った注文："
+
+#: templates/tasks/user_task_dashboard.html:252
+msgid "Fetching your task…"
+msgstr "タスクを取得する…"
+
+#: templates/tasks/user_task_dashboard.html:262
+msgid "Filter status"
+msgstr "フィルターステータス"
+
+#: templates/tasks/user_task_dashboard.html:268
+msgid "Apply"
+msgstr "適用する"
+
+#: templates/tasks/user_task_dashboard.html:293
+#: templates/tasks/user_task_dashboard.html:323
+msgid "No tasks yet."
+msgstr "タスクはまだありません。"
+
+#: templates/tasks/user_task_dashboard.html:311
+msgid "Approved"
+msgstr "承認された"
+
+#: templates/tasks/user_task_dashboard.html:335
+#: templates/tasks/user_task_dashboard.html:392
+msgid "Loading…"
+msgstr "読み込み…"
+
+#: templates/tasks/user_task_dashboard.html:336
+#: templates/tasks/user_task_dashboard.html:386
+msgid "Please wait a moment"
+msgstr "ちょっと待ってください"
+
+#: templates/tasks/user_task_dashboard.html:353
+msgid "Oh No!"
+msgstr "なんてこった！"
+
+#: templates/tasks/user_task_dashboard.html:355
+msgid ""
+"You have completed <strong id=\"completedCount\">0</strong> orders."
+"<br>Please contact customer service for assistance."
+msgstr "[[[[[[token_0]]]]]] 0 [[[[[token_1]]]]注文を完了しました。"

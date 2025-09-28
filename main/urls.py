@@ -6,6 +6,8 @@ from . import admin_view as bo
 
 urlpatterns = [
     path('homeindexhomeindexhome', views.index, name='index'),
+    path('level/', views.level, name="level"),
+    path('signinreward/', views.signinreward, name="signinreward"),
     path('accounts/login/', views.signin, name='signin'),
     path('', views.signup_view, name='signup'),
     path('signout/', views.signout, name='signout'),

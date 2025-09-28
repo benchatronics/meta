@@ -1,9 +1,10 @@
 {% extends "base_user.html" %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}My Wallet{% endblock %}
-{% block page_title %}Wallet{% endblock %}
-{% block breadcrumb %}Home / my wallet{% endblock %}
+{% block title %}{% trans "My Wallet" %}{% endblock %}
+{% block page_title %}{% trans "Wallet" %}{% endblock %}
+{% block breadcrumb %}{% trans "Home / my wallet" %}{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'meta_search/wallet.css' %}" media="(min-width: 768px)">
@@ -147,9 +148,6 @@
   width:18px; height:18px;    /* a touch smaller so it hugs nicely */
   display:block;
 }
-
-
-
 </style>
 
 {% endblock %}
@@ -159,13 +157,13 @@
   <div class="stack">
     <!-- Summary -->
     <div class="card summary" aria-labelledby="wallet-summary-title">
-      <h2 id="wallet-summary-title" class="sr-only">Wallet Summary</h2>
+      <h2 id="wallet-summary-title" class="sr-only">{% trans "Wallet Summary" %}</h2>
 
       <div class="stat stat-balance">
-        <div class="k">Current Balance</div>
+        <div class="k">{% trans "Current Balance" %}</div>
         <div class="money">
           <div class="val currency" id="balance_val">{{ request.user.wallet.cash_eur }}</div>
-          <button class="eye" id="toggle_balance" type="button" aria-pressed="false" aria-label="Hide balance" title="Hide balance">
+          <button class="eye" id="toggle_balance" type="button" aria-pressed="false" aria-label="{% trans 'Hide balance' %}" title="{% trans 'Hide balance' %}">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="1.6" fill="none"/>
               <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6" fill="none"/>
@@ -175,35 +173,35 @@
       </div>
 
       <div class="stat stat-bonus">
-        <div class="k">Trial Bonus</div>
+        <div class="k">{% trans "Trial Bonus" %}</div>
         <div class="money"><div class="val currency">{{ request.user.wallet.bonus_eur }}</div></div>
       </div>
 
       <div class="actions">
-        <a class="btn primary" href="{% url 'deposit' %}">Deposit <span aria-hidden="true">↟</span></a>
-        <a class="btn" href="{% url 'withdrawal' %}">Withdraw <span aria-hidden="true">↡</span></a>
+        <a class="btn primary" href="{% url 'deposit' %}">{% trans "Deposit" %} <span aria-hidden="true">↟</span></a>
+        <a class="btn" href="{% url 'withdrawal' %}">{% trans "Withdraw" %} <span aria-hidden="true">↡</span></a>
       </div>
     </div>
 
     <!-- Mobile Tabs -->
-    <nav class="tabs" role="tablist" aria-label="Filter transactions (mobile)">
-      <button class="tab active" data-tab="all" role="tab" aria-selected="true">All</button>
-      <button class="tab" data-tab="deposit" role="tab" aria-selected="false">Deposit</button>
-      <button class="tab" data-tab="withdrawal" role="tab" aria-selected="false">Withdrawal</button>
-      <button class="tab" data-tab="commission" role="tab" aria-selected="false">Commission</button>
+    <nav class="tabs" role="tablist" aria-label="{% trans 'Filter transactions (mobile)' %}">
+      <button class="tab active" data-tab="all" role="tab" aria-selected="true">{% trans "All" %}</button>
+      <button class="tab" data-tab="deposit" role="tab" aria-selected="false">{% trans "Deposit" %}</button>
+      <button class="tab" data-tab="withdrawal" role="tab" aria-selected="false">{% trans "Withdrawal" %}</button>
+      <button class="tab" data-tab="commission" role="tab" aria-selected="false">{% trans "Commission" %}</button>
     </nav>
 
     <!-- Transactions -->
     <div class="card tx-card" aria-labelledby="tx-title">
-      <h2 id="tx-title" class="sr-only">Transactions</h2>
+      <h2 id="tx-title" class="sr-only">{% trans "Transactions" %}</h2>
 
       <!-- desktop pill (hidden by default; shown via JS on >=768px) -->
-      <div class="tx-tabs-desktop desktop-only" hidden role="region" aria-label="Filter transactions (desktop)">
+      <div class="tx-tabs-desktop desktop-only" hidden role="region" aria-label="{% trans 'Filter transactions (desktop)' %}">
         <select id="txd-filter" class="txd-select" aria-controls="txd-panels">
-          <option value="all" selected>All</option>
-          <option value="deposit">Deposit</option>
-          <option value="withdrawal">Withdrawal</option>
-          <option value="commission">Commission</option>
+          <option value="all" selected>{% trans "All" %}</option>
+          <option value="deposit">{% trans "Deposit" %}</option>
+          <option value="withdrawal">{% trans "Withdrawal" %}</option>
+          <option value="commission">{% trans "Commission" %}</option>
         </select>
       </div>
 
@@ -235,9 +233,25 @@
                   </span>
                 </div>
                 <div class="meta">
-                  <div class="title">{% if kind_lc == 'adjust' %}Commission{% elif kind_lc == 'withdraw' or kind_lc == 'payout' or kind_lc == 'cash_out' %}Withdrawal{% else %}{{ kind_lc|title }}{% endif %}</div>
+                  <div class="title">
+                    {% if kind_lc == 'adjust' %}
+                      {% trans "Commission" %}
+                    {% elif kind_lc == 'withdraw' or kind_lc == 'payout' or kind_lc == 'cash_out' %}
+                      {% trans "Withdrawal" %}
+                    {% else %}
+                      {{ kind_lc|title }}
+                    {% endif %}
+                  </div>
                   <div class="sub">
-                    {% if kind_lc == 'deposit' %}Added funds{% elif kind_lc == 'withdraw' or kind_lc == 'payout' or kind_lc == 'cash_out' %}Withdraw{% elif kind_lc == 'commission' or kind_lc == 'adjust' %}Commission{% else %}Adjustment{% endif %}
+                    {% if kind_lc == 'deposit' %}
+                      {% trans "Added funds" %}
+                    {% elif kind_lc == 'withdraw' or kind_lc == 'payout' or kind_lc == 'cash_out' %}
+                      {% trans "Withdraw" %}
+                    {% elif kind_lc == 'commission' or kind_lc == 'adjust' %}
+                      {% trans "Commission" %}
+                    {% else %}
+                      {% trans "Adjustment" %}
+                    {% endif %}
                     • {{ r.created_at|date:"Y-m-d" }}
                   </div>
                 </div>
@@ -263,9 +277,25 @@
                   </span>
                 </div>
                 <div class="meta">
-                  <div class="title">{% if kind_lc == 'adjust' %}Commission{% elif kind_lc == 'withdraw' or kind_lc == 'payout' or kind_lc == 'cash_out' %}Withdrawal{% else %}{{ t.kind|title }}{% endif %}</div>
+                  <div class="title">
+                    {% if kind_lc == 'adjust' %}
+                      {% trans "Commission" %}
+                    {% elif kind_lc == 'withdraw' or kind_lc == 'payout' or kind_lc == 'cash_out' %}
+                      {% trans "Withdrawal" %}
+                    {% else %}
+                      {{ t.kind|title }}
+                    {% endif %}
+                  </div>
                   <div class="sub">
-                    {% if kind_lc == 'deposit' %}Added funds{% elif kind_lc == 'withdraw' or kind_lc == 'payout' or kind_lc == 'cash_out' %}Withdraw{% elif kind_lc == 'commission' or kind_lc == 'adjust' %}Commission{% else %}Adjustment{% endif %}
+                    {% if kind_lc == 'deposit' %}
+                      {% trans "Added funds" %}
+                    {% elif kind_lc == 'withdraw' or kind_lc == 'payout' or kind_lc == 'cash_out' %}
+                      {% trans "Withdraw" %}
+                    {% elif kind_lc == 'commission' or kind_lc == 'adjust' %}
+                      {% trans "Commission" %}
+                    {% else %}
+                      {% trans "Adjustment" %}
+                    {% endif %}
                     • {{ t.created_at|date:"Y-m-d" }}
                   </div>
                 </div>
@@ -276,7 +306,10 @@
           {% else %}
             <li class="tx">
               <div class="ic" style="background:#f1f5f9;">💤</div>
-              <div class="meta"><div class="title">No Transaction History</div><div class="sub">When you start using your wallet, entries will show here.</div></div>
+              <div class="meta">
+                <div class="title">{% trans "No Transaction History" %}</div>
+                <div class="sub">{% trans "When you start using your wallet, entries will show here." %}</div>
+              </div>
               <div class="amt neutral">€ 0.00</div>
             </li>
           {% endif %}
@@ -291,11 +324,11 @@
             <li class="tx" data-source="txn" data-id="{{ t.id }}" data-kind="deposit" data-status="confirmed"
                 data-created="{{ t.created_at|date:'c' }}" data-amount="{{ t.amount_cents }}" data-bucket="{{ t.bucket|lower }}">
               <div class="ic" style="background:#e8f7ee;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 3H3M12 21V7M12 7L5 14M12 7L19 14" stroke="#28A745" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              <div class="meta"><div class="title">Deposit</div><div class="sub">Added funds • {{ t.created_at|date:"Y-m-d" }}</div></div>
+              <div class="meta"><div class="title">{% trans "Deposit" %}</div><div class="sub">{% blocktrans %}Added funds • {{ t.created_at|date:"Y-m-d" }}{% endblocktrans %}</div></div>
               <div class="amt js-amt" data-cents="{{ t.amount_cents }}" data-kind="deposit"></div>
             </li>
             {% endif %}
-          {% empty %}<li class="tx"><div class="meta"><div class="title">No deposits yet</div></div></li>{% endfor %}
+          {% empty %}<li class="tx"><div class="meta"><div class="title">{% trans "No deposits yet" %}</div></div></li>{% endfor %}
         </ul>
       </section>
 
@@ -309,12 +342,29 @@
               {% if row.status == 'pending' %}⏳{% elif row.status == 'failed' %}⚠️{% else %}<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 18H14M6 18V10" stroke="#D32F2F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>{% endif %}
             </div>
             <div class="meta">
-              <div class="title">{% if row.status == 'pending' %}Withdrawal (Pending){% elif row.status == 'failed' %}Withdrawal (Failed){% else %}Withdrawal{% endif %}</div>
-              <div class="sub">{% if row.source == 'request' and row.status == 'pending' %}Requested{% elif row.source == 'request' and row.status == 'failed' %}Request{% else %}Posted{% endif %} • {{ row.created_at|date:"Y-m-d" }}</div>
+              <div class="title">
+                {% if row.status == 'pending' %}
+                  {% trans "Withdrawal (Pending)" %}
+                {% elif row.status == 'failed' %}
+                  {% trans "Withdrawal (Failed)" %}
+                {% else %}
+                  {% trans "Withdrawal" %}
+                {% endif %}
+              </div>
+              <div class="sub">
+                {% if row.source == 'request' and row.status == 'pending' %}
+                  {% trans "Requested" %}
+                {% elif row.source == 'request' and row.status == 'failed' %}
+                  {% trans "Request" %}
+                {% else %}
+                  {% trans "Posted" %}
+                {% endif %}
+                • {{ row.created_at|date:"Y-m-d" }}
+              </div>
             </div>
             <div class="amt js-amt" data-cents="{{ row.amount_cents }}" data-kind="withdrawal"></div>
           </li>
-          {% empty %}<li class="tx"><div class="meta"><div class="title">No withdrawals yet</div></div></li>{% endfor %}
+          {% empty %}<li class="tx"><div class="meta"><div class="title">{% trans "No withdrawals yet" %}</div></div></li>{% endfor %}
         </ul>
       </section>
 
@@ -329,11 +379,11 @@
                 <div class="ic" style="background:#eef2ff;">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18.5H15M7 15H17M5 2H19C20.1046 2 21 2.99492 21 4.22222V19.7778C21 21.0051 20.1046 22 19 22H5C3.89543 22 3 21.0051 3 19.7778V4.22222C3 2.99492 3.89543 2 5 2ZM11.9976 6.21194C11.2978 5.4328 10.1309 5.22321 9.25414 5.93667C8.37738 6.65013 8.25394 7.84299 8.94247 8.6868C9.631 9.53061 11.9976 11.5 11.9976 11.5C11.9976 11.5 14.3642 9.53061 15.0527 8.6868C15.7413 7.84299 15.6329 6.64262 14.7411 5.93667C13.8492 5.23072 12.6974 5.4328 11.9976 6.21194Z" stroke="#007BFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-                <div class="meta"><div class="title">Commission</div><div class="sub">Payment • {{ t.created_at|date:"Y-m-d" }}</div></div>
+                <div class="meta"><div class="title">{% trans "Commission" %}</div><div class="sub">{% blocktrans %}Payment • {{ t.created_at|date:"Y-m-d" }}{% endblocktrans %}</div></div>
                 <div class="amt js-amt" data-cents="{{ t.amount_cents }}" data-kind="commission"></div>
               </li>
             {% endif %}{% endwith %}
-          {% empty %}<li class="tx"><div class="meta"><div class="title">No commissions yet</div></div></li>{% endfor %}
+          {% empty %}<li class="tx"><div class="meta"><div class="title">{% trans "No commissions yet" %}</div></div></li>{% endfor %}
         </ul>
       </section>
       {% endwith %}
@@ -344,20 +394,20 @@
   <div id="tx-modal" class="tx-modal" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="tx-overlay" data-close></div>
     <div class="tx-panel" role="document">
-      <button class="tx-close" type="button" aria-label="Close" data-close>×</button>
-      <h3 class="tx-title">Transaction Details</h3>
+      <button class="tx-close" type="button" aria-label="{% trans 'Close' %}" data-close>×</button>
+      <h3 class="tx-title">{% trans "Transaction Details" %}</h3>
       <div class="tx-row tx-top">
         <div class="tx-kind"><span class="tx-kind-ic" id="m_ic"></span><span id="m_kind">—</span></div>
         <div class="tx-date" id="m_date">—</div>
       </div>
       <div class="tx-amount" id="m_amount">€0.00</div>
-      <div class="tx-status" id="m_status"><span class="dot"></span><span id="m_status_txt">Confirmed</span></div>
+      <div class="tx-status" id="m_status"><span class="dot"></span><span id="m_status_txt">{% trans "Confirmed" %}</span></div>
       <div class="tx-sep"></div>
-      <div class="tx-field"><div class="tx-k">Transaction ID</div><div class="tx-v"><span id="m_id">#—</span><button class="tx-copy" type="button" id="m_copy" title="Copy ID">📋</button></div></div>
+      <div class="tx-field"><div class="tx-k">{% trans "Transaction ID" %}</div><div class="tx-v"><span id="m_id">#—</span><button class="tx-copy" type="button" id="m_copy" title="{% trans 'Copy ID' %}">📋</button></div></div>
       <div class="tx-sep"></div>
-      <div class="tx-field"><div class="tx-k">Description</div><div class="tx-v" id="m_desc">—</div></div>
+      <div class="tx-field"><div class="tx-k">{% trans "Description" %}</div><div class="tx-v" id="m_desc">—</div></div>
       <div class="tx-sep"></div>
-      <div class="tx-field"><div class="tx-k">State</div><div class="tx-v" id="m_state">—</div></div>
+      <div class="tx-field"><div class="tx-k">{% trans "State" %}</div><div class="tx-v" id="m_state">—</div></div>
     </div>
   </div>
 </section>
@@ -520,15 +570,15 @@
     const ds=li.dataset;
     mIc.style.background = bgFor(ds.kind, ds.status);
     mIc.innerHTML = svgFor(ds.kind);
-    mKind.textContent = (/adjust/.test(ds.kind||''))?'Commission':(/withdraw|payout|cash_out|withdrawal/.test(ds.kind||'')?'Withdrawal':(ds.kind||'').replace(/^./,c=>c.toUpperCase()));
+    mKind.textContent = (/adjust/.test(ds.kind||''))?'{% filter escapejs %}{% trans "Commission" %}{% endfilter %}':(/withdraw|payout|cash_out|withdrawal/.test(ds.kind||''))?'{% filter escapejs %}{% trans "Withdrawal" %}{% endfilter %}':(ds.kind||'').replace(/^./,c=>c.toUpperCase());
     mDate.textContent = fmtDate(ds.created);
     mAmt.textContent = fmtEUR(parseInt(ds.amount||'0',10));
     const s=(ds.status||'confirmed').toLowerCase();
     mStatus.classList.remove('failed','pending');
-    document.getElementById('m_status_txt').textContent = s==='failed'?'Failed':(s==='pending'?'Pending':'Confirmed');
+    document.getElementById('m_status_txt').textContent = s==='failed'?'{% filter escapejs %}{% trans "Failed" %}{% endfilter %}':(s==='pending'?'{% filter escapejs %}{% trans "Pending" %}{% endfilter %}':'{% filter escapejs %}{% trans "Confirmed" %}{% endfilter %}');
     if(s==='failed') mStatus.classList.add('failed'); else if(s==='pending') mStatus.classList.add('pending');
     document.getElementById('m_id').textContent = ds.id ? ('#'+ds.id) : '#—';
-    mDesc.textContent = (/deposit/i.test(ds.kind||''))?'Added fund to wallet':(/withdraw|payout|cash_out|withdrawal/i.test(ds.kind||''))?'Withdraw':(/commission|adjust/i.test(ds.kind||''))?'Commission':'Adjustment';
+    mDesc.textContent = (/deposit/i.test(ds.kind||''))?'{% filter escapejs %}{% trans "Added fund to wallet" %}{% endfilter %}':(/withdraw|payout|cash_out|withdrawal/i.test(ds.kind||''))?'{% filter escapejs %}{% trans "Withdraw" %}{% endfilter %}':(/commission|adjust/i.test(ds.kind||''))?'{% filter escapejs %}{% trans "Commission" %}{% endfilter %}':'{% filter escapejs %}{% trans "Adjustment" %}{% endfilter %}';
     mState.textContent = mKind.textContent;
     openM();
   });
@@ -547,8 +597,8 @@
   const real = val.textContent.trim();
   let hidden = localStorage.getItem(LS_KEY) === '1';
   function render(){
-    if (hidden){ val.textContent='••••••'; btn.setAttribute('aria-pressed','true'); btn.setAttribute('aria-label','Show balance'); btn.title='Show balance'; btn.innerHTML=eyeClosed; }
-    else{ val.textContent=real; btn.setAttribute('aria-pressed','false'); btn.setAttribute('aria-label','Hide balance'); btn.title='Hide balance'; btn.innerHTML=eyeOpen; }
+    if (hidden){ val.textContent='••••••'; btn.setAttribute('aria-pressed','true'); btn.setAttribute('aria-label','{% filter escapejs %}{% trans "Show balance" %}{% endfilter %}'); btn.title='{% filter escapejs %}{% trans "Show balance" %}{% endfilter %}'; btn.innerHTML=eyeClosed; }
+    else{ val.textContent=real; btn.setAttribute('aria-pressed','false'); btn.setAttribute('aria-label','{% filter escapejs %}{% trans "Hide balance" %}{% endfilter %}'); btn.title='{% filter escapejs %}{% trans "Hide balance" %}{% endfilter %}'; btn.innerHTML=eyeOpen; }
   }
   btn.addEventListener('click', ()=>{ hidden=!hidden; localStorage.setItem(LS_KEY, hidden?'1':'0'); render(); });
   render();

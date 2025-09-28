@@ -1,0 +1,233 @@
+/* ================= DESKTOP ONLY (>=768px) ================= */
+@media (min-width:768px){
+
+  /* Sign-in Reward page (desktop) */
+  .sr-wrap{max-width:900px;margin:20px auto 56px;padding:0 16px}
+
+  .sr-banner{
+    position:relative;background:#fff5cc;border:1px solid #ffed99;border-radius:18px;
+    padding:20px 20px 88px;box-shadow:0 10px 20px rgba(0,0,0,.08);overflow:visible;
+  }
+  .sr-row{display:flex;gap:12px;align-items:flex-start}
+  .sr-badge{width:32px;height:32px;border-radius:50%;background:#fff;
+    display:grid;place-items:center;border:1px solid #ffed99;box-shadow:0 2px 6px rgba(0,0,0,.06);margin-top:2px;flex:0 0 32px}
+  .sr-text{max-width:460px;position:relative;z-index:2}
+  .sr-kicker{font-weight:600;color:#1f2937;font-size:14px}
+  .sr-amount{margin:.2rem 0 0;font-weight:800;color:#1e3a8a;font-size:28px;white-space:nowrap}
+  .sr-sub{margin:.35rem 0 0;color:#64748b;font-size:12px;line-height:1.4}
+
+  .sr-art{margin-left:auto;flex:0 0 260px;position:relative;z-index:1}
+  .sr-art svg{width:100%;height:auto;display:block;border-radius:16px}
+  .sr-art img{
+    display:block;
+    width:176px;      /* matches original */
+    height:128px;
+    object-fit:cover; /* use 'contain' if you prefer no crop */
+    border-radius:16px;
+  }
+
+  /* Floating chips */
+  .sr-chips{
+    position:absolute;left:16px;right:16px;bottom:-26px;background:#fff;border-radius:18px;
+    padding:12px 14px;box-shadow:0 10px 20px rgba(0,0,0,.08);border:1px solid #e5e7eb;z-index:20;
+    display:flex;justify-content:space-between;gap:10px
+  }
+  .sr-chip{width:19%;text-align:left;display:flex;flex-direction:column;align-items:flex-start}
+  .sr-chip .circle{width:40px;height:40px;border-radius:50%;background:#e8f0ff;display:grid;place-items:center;border:1px solid #cfe0ff}
+  .sr-chip .sr-meta{margin-top:6px;font-size:12px;color:#667085}
+  .sr-chip .sr-val{font-weight:800;font-size:14px;color:#111827}
+
+  .sr-banner-spacer{height:96px}
+
+  /* Notes + timeline */
+  .sr-notes{background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 10px 20px rgba(0,0,0,.08);padding:16px}
+  .sr-timeline{margin:0;padding:0;list-style:none}
+  .sr-item{
+    display:grid;grid-template-columns:40px 1fr;column-gap:16px;position:relative;padding:20px 0
+  }
+
+  /* line behind the icon (desktop) */
+  .sr-item::before{
+    content:"";position:absolute;left:20px;top:0;bottom:0;width:2px;background:#bfdbfe;z-index:0;
+  }
+  .sr-item.first::before{top:40px}   /* 20 (pt) + 20 (half 40px icon) */
+  .sr-item.last::before{bottom:40px} /* 20 (pb) + 20 (half icon) */
+
+  /* icon above the line (desktop) */
+  .sr-icon{
+    width:40px;height:40px;border-radius:50%;background:#2563eb;color:#fff;
+    display:grid;place-items:center;box-shadow:0 6px 16px rgba(37,99,235,.35);
+    position:relative;z-index:1;
+  }
+  .sr-item p{margin:0;color:#374151;line-height:1.7}
+
+  /* Bottom bar */
+  .sr-bottom{margin-top:18px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 10px 20px rgba(0,0,0,.08)}
+  .sr-bottom-row{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-top:1px solid #e5e7eb}
+  .sr-progress{font-weight:800;font-size:28px;color:#0f172a}
+  .sr-btn{appearance:none;border:0;outline:0;background:#2563eb;color:#fff;font-weight:600;padding:12px 22px;border-radius:14px;cursor:pointer}
+  .sr-btn:active{transform:translateY(1px)}
+}
+
+
+
+/*mobile only*/
+/* ===== MOBILE ONLY (<=767px) ===== */
+.sr-chip{ min-width:0; }
+.sr-chip .sr-meta, .sr-chip .sr-val{
+  overflow:visible;    /* ensure nothing hides the text */
+}
+
+@media (max-width: 767px){
+  .sr-wrap{max-width:420px;margin:16px auto 56px;padding:0 16px}
+
+  /* Banner */
+  .sr-banner{
+    position:relative; overflow:hidden;
+    background:#FFF3C7; border:1px solid #FFE89A; border-radius:22px;
+    box-shadow:0 6px 16px rgba(0,0,0,.06);
+  }
+  .sr-banner > .sr-row{align-items:flex-start; gap:12px; padding:16px 16px 12px}
+  .sr-badge{flex:0 0 32px; width:32px;height:32px;border-radius:50%;
+    background:#fff;border:1px solid #FFE386;display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .sr-text{max-width:60%; padding-left:0; margin-left:0}
+  .sr-kicker{margin:0;font-weight:600;color:#0F172A;font-size:16px;line-height:1}
+  .sr-amount{margin:.5rem 0 0;color:#0B3AAE;font-weight:800;font-size:28px;line-height:1}
+  .sr-sub{margin:.4rem 0 0;color:#64748B;font-size:10px;line-height:1.2}
+
+  /* Banner image (inside card) */
+  .sr-art{position:absolute; right:12px; top:12px}
+  .sr-art img{display:block; width:92px; height:auto; border-radius:12px}
+
+  /* Day chips (own card, floating just over main card top) */
+  .sr-banner-spacer{height:0} /* we’ll control spacing with margins below */
+  .sr-days-card{
+    margin-top:-12px; position:relative; z-index:20;
+  }
+  .sr-days{
+    display:flex; justify-content:space-between; gap:8px;
+    padding:12px 14px; border-radius:18px; background:#fff;
+    border:1px solid #e5e7eb; box-shadow:0 10px 20px rgba(0,0,0,.08);
+  }
+  .sr-chip{width:19%; text-align:left; display:flex; flex-direction:column; align-items:flex-start}
+  .sr-chip .circle{width:40px;height:40px;border-radius:50%;background:#e8f0ff;display:grid;place-items:center;border:1px solid #cfe0ff}
+  .sr-chip .sr-meta{margin-top:6px;font-size:11px;color:#667085;white-space:nowrap}
+  .sr-chip .sr-val{font-weight:800;font-size:13px;color:#111827;white-space:nowrap}
+
+  /* Timeline card (provides room under the floating chips) */
+  .sr-notes{
+    margin-top:-8px; padding:16px; position:relative; z-index:10;
+    background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 10px 20px rgba(0,0,0,.08);
+  }
+  .sr-timeline{margin:0;padding:0;list-style:none}
+  .sr-item{display:grid;grid-template-columns:40px 1fr;column-gap:16px;position:relative;padding:20px 0}
+  .sr-item::before{content:"";position:absolute;left:20px;top:0;bottom:0;width:2px;background:#bfdbfe;z-index:0}
+  .sr-item.first::before{top:40px}
+  .sr-item.last::before{bottom:80px}
+
+ .sr-icon{width:40px;height:40px;border-radius:50%;background:#2563eb;color:#fff;display:grid;place-items:center;box-shadow:0 6px 16px rgba(37,99,235,.35);position:relative;z-index:1}
+  .sr-item p{margin:0;color:#374151;line-height:1.6}
+
+
+  /* Bottom bar */
+  .sr-bottom{margin-top:12px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 10px 20px rgba(0,0,0,.08)}
+  .sr-bottom-row{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-top:1px solid #e5e7eb}
+  .sr-progress{font-weight:800;font-size:32px;color:#0f172a}
+  .sr-btn{appearance:none;border:0;outline:0;background:#2563eb;color:#fff;font-weight:600;padding:12px 22px;border-radius:14px;cursor:pointer}
+
+}
+
+/* ===== Fix mobile layout for banner + day chips ===== */
+
+@media (max-width: 767px){
+
+  /* Banner: keep content left, leave room for the floating chips */
+  .sr-banner{
+    position: relative;
+    padding: 16px 16px 84px;   /* bottom padding so chips won’t overlap text */
+    overflow: hidden;
+    background: #FFF3C7;
+    border: 1px solid #FFE89A;
+    border-radius: 22px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.06);
+  }
+  .sr-row{ align-items: flex-start; gap: 12px; }
+  .sr-text{ max-width: 58%; margin: 0; padding: 0; }
+  .sr-kicker{ font-size: 16px; line-height: 1; margin: 0; }
+  .sr-amount{ font-size: 28px; line-height: 1; margin: .5rem 0 0; }
+  .sr-sub{ font-size: 11px; line-height: 1.25; margin: .4rem 0 0; }
+
+  /* Illustration sits inside banner, top-right */
+  .sr-art{ position: absolute; right: 12px; top: 12px; }
+  .sr-art img{ width: 96px; height: auto; border-radius: 12px; display: block; }
+
+  /* Day chips: white card that floats just BELOW the banner */
+  .sr-chips{
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -26px;                 /* pulls the card below the banner edge */
+    z-index: 20;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.08);
+  }
+
+  .sr-chip .circle{
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #e8f0ff;
+    border: 1px solid #cfe0ff;
+    display: grid; place-items: center;
+  }
+  .sr-chip .meta{ font-size: 11px; margin-top: 4px; color: #667085; white-space: nowrap; }
+  .sr-chip .val{ font-size: 13px; font-weight: 800; color: #111827; white-space: nowrap; }
+
+  /* Space under banner to clear the floating chips */
+  .sr-banner-spacer{ height: 46px; }
+
+  /* (Unrelated) Ensure timeline line stays behind the icons */
+  .sr-item::before{ z-index: 0; }
+  .sr-icon{ position: relative; z-index: 1; }
+}
+
+/* ===== MOBILE FIX: let chips show fully ===== */
+@media (max-width: 767px){
+  /* allow the floating chips to hang outside the banner */
+  .sr-banner{
+    overflow: visible;          /* was: hidden */
+    padding-bottom: 96px;       /* give room for the chips */
+  }
+
+  /* keep chips just below the banner edge */
+  .sr-chips{
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -34px;              /* a bit lower so nothing is clipped */
+    z-index: 20;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.08);
+  }
+
+  /* spacer under banner so timeline doesn't collide with chips */
+  .sr-banner-spacer{ height: 58px; } /* was 46px */
+}
+
+
+

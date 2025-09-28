@@ -1,12 +1,17 @@
 {# templates/meta_search/announcements.html #}
 {% extends "base_user.html" %}
 {% load i18n %}
-{% load static%}
-{% block title %}{% trans "Announcements" %}{% endblock %}
-{% block page_title %}<span role="img" aria-label="information">&#8505;&#65039;</span>
-info {% endblock %}
+{% load static %}
 
-{% block breadcrumb %}Home / info / announcements{% endblock %}
+{% block title %}{% trans "Announcements" %}{% endblock %}
+
+{% block page_title %}
+  <span role="img" aria-label="{% trans 'information' %}">&#8505;&#65039;</span>
+  {% trans "Info" %}
+{% endblock %}
+
+{% block breadcrumb %}{% trans "Home" %} / {% trans "Info" %} / {% trans "Announcements" %}{% endblock %}
+
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'meta_search/settings.css' %}">
 {% endblock %}

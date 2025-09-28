@@ -18,7 +18,7 @@ html,body{height:100%;margin:0;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans
 }
 .left::after{content:"";position:absolute;inset:0;background:rgba(20,32,60,.28);backdrop-filter:blur(2px);pointer-events:none}
 .brand{position:absolute;top:20px;left:20px;z-index:2;display:flex;gap:10px;color:#fff;font-weight:800}
-.brand img{height:28px}
+.brand img{height:50px}
 .left-content{position:absolute;top:50%;left:48px;transform:translateY(-50%);color:#fff;z-index:2}
 .left-content h2{margin:0 0 14px;font-size:48px;font-weight:800}
 .left-content .underline{width:80px;height:4px;border-radius:999px;background:#fff}
@@ -157,7 +157,7 @@ ul.errorlist{
   .left-content{left:20px;top:56%;transform:translateY(-50%)}
   .left-content h2{font-size:40px}
   .brand{left:auto;right:20px;top:16px}
-  .brand img{height:24px}
+  .brand img{height:50px}
   .home-area{top:16px;left:16px;bottom:auto;gap:8px}
   .back-btn-rect{height:36px;padding:0 12px;border-radius:6px}
   /*.home-link{display:none}*/
@@ -192,7 +192,7 @@ ul.errorlist{
   .left-content{left:20px;top:56%;transform:translateY(-50%)}
   .left-content h2{font-size:40px}
   .brand{left:auto;right:20px;top:16px}
-  .brand img{height:24px}
+  .brand img{height:50px}
   .home-area{top:16px;left:16px;bottom:auto;gap:8px}
   .back-btn-rect{height:36px;padding:0 12px;border-radius:6px}
   .home-link{display:none}

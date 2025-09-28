@@ -8,131 +8,2237 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-09 14:12+0000\n"
+"POT-Creation-Date: 2025-09-22 00:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: yo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: templates/meta_search/includes/_footer.html:13
-msgid "Home"
-msgstr ""
+#: main/admin.py:386
+msgid "Clear withdrawal PIN"
+msgstr "Ko ba ẹrọ yiyọ kuro"
 
-#: templates/meta_search/includes/_footer.html:14
-msgid "Contact Us"
+#: main/admin.py:388
+msgid ""
+"Tick to remove any existing withdrawal PIN so the user must set a new one."
 msgstr ""
+"Ami lati yọ eyikeyi PIN yiyọ kuro ti o wa tẹlẹ ki olumulo naa gbọdọ ṣeto "
+"tuntun tuntun kan."
 
-#: templates/meta_search/includes/_footer.html:15
-msgid "About Us"
+#: main/admin.py:391
+msgid "Set new withdrawal PIN"
+msgstr "Ṣeto PIN EXTrawal tuntun"
+
+#: main/admin.py:399
+msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
+msgstr "Iyan. Tẹ awọn nọmba 6 deede lati ṣeto / Tun PIN naa sii."
+
+#: main/admin.py:412
+msgid "PIN must be exactly 6 digits."
+msgstr "Pin gbọdọ jẹ deede awọn nọmba 6."
+
+#: main/admin.py:476
+msgid "Withdrawal security"
+msgstr "Yiyọ kuro aabo"
+
+#: main/forms.py:27
+msgid "Account password"
+msgstr "Ọrọigbaniwọle iroyin"
+
+#: main/forms.py:31 templates/meta_search/withdrawal.html:350
+msgid "Withdrawal password (6 digits)"
+msgstr "Ọrọ igbaniwọle yiyọ kuro (awọn nọmba 6)"
+
+#: main/forms.py:35
+msgid "Confirm withdrawal password"
+msgstr "Jẹrisi ọrọ igbaniwọle yiyọ kuro"
+
+#: main/forms.py:46
+msgid "Incorrect account password."
+msgstr "Ti ko tọ ọrọ igbaniwọle ti ko tọ."
+
+#: main/forms.py:53 main/forms.py:87
+msgid "Enter exactly 6 digits."
+msgstr "Tẹ ni deede awọn nọmba 6."
+
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:268
+msgid "Passwords do not match."
+msgstr "Awọn ọrọigbaniwọle ko baamu."
+
+#: main/forms.py:61
+msgid "Current withdrawal password"
+msgstr "Ọrọ igbaniwọle yiyọ kuro lọwọlọwọ"
+
+#: main/forms.py:65
+msgid "New withdrawal password (6 digits)"
+msgstr "Ọrọigbaniwọle Indrawal tuntun (awọn nọmba 6)"
+
+#: main/forms.py:69
+msgid "Confirm new withdrawal password"
+msgstr "Jẹrisi ọrọ igbaniwọle yiyọ kuro tuntun"
+
+#: main/forms.py:80
+msgid "Incorrect withdrawal password."
+msgstr "Ti ko tọ ọrọ igbaniwọle yiyọ kuro."
+
+#: main/forms.py:161
+#, python-format
+msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
+msgstr "JPG / PNG / WebP / gif, titi di [T ['en_0] MB."
+
+#: main/forms.py:162
+msgid "Direct image URL (used only if no file is uploaded)."
+msgstr "URL Aworan Aworan taara (Ti a lo nikan ti ko ba gbe faili silẹ)."
+
+#: main/forms.py:180
+msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
+msgstr "Iru aworan ti ko ni atilẹyin. Lo JPG, PNG, WebP, tabi GIF."
+
+#: main/forms.py:182
+#, python-format
+msgid "Image too large (max %(mb)s MB)."
+msgstr "Aworan ju nla ([[[atken_0]]]]]]]]]]]]]]]]]])."
+
+#: main/forms.py:191
+msgid "Only http/https URLs are allowed."
+msgstr "Nikan http / htps Urls gba laaye."
+
+#: main/forms.py:206 main/forms.py:371 main/forms.py:581
+msgid "Country code"
+msgstr "Koodu orilẹ-ede"
+
+#: main/forms.py:211 main/forms.py:376 main/forms.py:586
+msgid "Enter your phone number"
+msgstr "Tẹ nọmba foonu rẹ"
+
+#: main/forms.py:215 main/forms.py:380 main/forms.py:590
+msgid "Phone number"
+msgstr "Nomba fonu"
+
+#: main/forms.py:220
+msgid "Enter your invitation code"
+msgstr "Tẹ koodu ifiwepe rẹ"
+
+#: main/forms.py:223
+msgid "Invitation code"
+msgstr "Koodu ifiwepe"
+
+#: main/forms.py:225 main/forms.py:592
+msgid "I am not a robot"
+msgstr "Emi kii ṣe robot kan"
+
+#: main/forms.py:236 main/forms.py:385 main/forms.py:615
+msgid "Enter your password"
+msgstr "Tẹ ọrọ igbaniwọle rẹ sii"
+
+#: main/forms.py:240
+msgid "Re-enter your password"
+msgstr "Tun-tẹ ọrọ igbaniwọle rẹ sii"
+
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:233
+msgid "Invalid phone number format."
+msgstr "Ọna kika Nọmba foonu ti ko wulo."
+
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:235
+msgid "This phone number is not possible for the selected country."
+msgstr "Nọmba foonu yii ko ṣee ṣe fun orilẹ-ede ti o yan."
+
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:237
+msgid "This phone number is not valid for the selected country."
+msgstr "Nọmba foonu yii ko wulo fun orilẹ-ede ti o yan."
+
+#: main/forms.py:281 main/forms.py:429 main/forms.py:657
+#, python-format
+msgid ""
+"Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
 msgstr ""
+"Gigun nọmba foonu gbọdọ jẹ laarin% (Lo) D ati% (Hi) D ni nọmba fun "
+"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[(["
 
-#: templates/meta_search/includes/_footer.html:16
-msgid "FAQ"
+#: main/forms.py:293
+msgid "An account with this phone already exists."
+msgstr "Akọọlẹ kan pẹlu foonu yii tẹlẹ."
+
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:80
+#: templates/meta_search/signup.html:54
+msgid "Password"
+msgstr "Ọrọ igbaniwọle"
+
+#: main/forms.py:325
+msgid ""
+"Raw passwords are not stored, so there is no way to see this user’s "
+"password, but you can change the password using the “Change password” form."
 msgstr ""
+"Awọn ọrọigbaniwọle Raw ko wa ni fipamọ, nitorinaa ko si ọna lati rii ọrọ "
+"igbaniwọle olumulo yii, ṣugbọn o le yi ọrọ igbaniwọle pada nipa lilo \"Ọrọ "
+"igbaniwọle Yiyipada\" Yipada \"Fọọmu Yiyipada\"."
 
-#: templates/meta_search/includes/_footer.html:17
+#: main/forms.py:352
+msgid "User phone (E.164 or local NG)"
+msgstr "Foonu olumulo (E.164 tabi NG NG)"
+
+#: main/forms.py:353
+msgid "+2348012345678 or 080..."
+msgstr "+2348012345678 tabi 080 ..."
+
+#: main/forms.py:355 main/views.py:262
+#: templates/meta_search/settings_change_password.html:83
+#: templates/meta_search/support_reset_password.html:77
+msgid "New password"
+msgstr "Ọrọ aṣina Tuntun"
+
+#: main/forms.py:356 main/views.py:263
+msgid "Confirm new password"
+msgstr "Jẹrisi Ọrọigbaniwọle Tuntun"
+
+#: main/forms.py:670
+msgid "Phone does not match your account."
+msgstr "Foonu ko baamu akọọlẹ rẹ."
+
+#: main/models.py:672 templates/base_info.html:22
+#: templates/meta_search/info_index.html:27
+#, fuzzy
+#| msgid "About Us"
+msgid "About us"
+msgstr "Nipa re"
+
+#: main/models.py:673 templates/base_info.html:26
+#: templates/meta_search/info_index.html:31
+#, fuzzy
+#| msgid "Contact Us"
+msgid "Contact us"
+msgstr "Pe wa"
+
+#: main/models.py:674 templates/base_info.html:30
+#: templates/meta_search/info_index.html:35
+msgid "Help"
+msgstr "Egba Mi O"
+
+#: main/models.py:675 templates/base_info.html:34
+#: templates/meta_search/info_index.html:39
+#: templates/meta_search/profile_settings.html:75
 msgid "Level"
-msgstr ""
+msgstr "Ipele"
 
-#: templates/meta_search/includes/_footer.html:20
-msgid "Imprint"
-msgstr ""
+#: main/models.py:676 templates/base_info.html:38
+#: templates/meta_search/info_index.html:43
+msgid "Sign-in reward"
+msgstr "Buwolu - ni ere"
 
-#: templates/meta_search/includes/_footer.html:21
-msgid "Privacy"
-msgstr ""
+#: main/views.py:121
+msgid "Withdrawal password set."
+msgstr "Yiyọ kuro ni ọrọ igbaniwọle yiyọ kuro."
 
-#: templates/meta_search/includes/_header.html:50
-msgid "Get started"
-msgstr ""
+#: main/views.py:131
+msgid "You don’t have a withdrawal password yet. Set one first."
+msgstr "O ko ni ọrọ igbaniwọle yiyọ kuro sibẹsibẹ. Ṣeto ọkan akọkọ."
 
-#: templates/meta_search/index.html:24
+#: main/views.py:138
+msgid "Withdrawal password updated."
+msgstr "Yiyọ kuro ọrọ igbaniwọle yiyọ kuro."
+
+#: main/views.py:261
+msgid "Verification code"
+msgstr "Kodu afimo"
+
+#: main/views.py:299
+msgid "No account found for that phone."
+msgstr "Ko si iroyin ti a rii fun foonu naa."
+
+#: main/views.py:311
+#, python-format
+msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
+msgstr "Koodu atunto rẹ ni: [[deken_0]. O pari ni iṣẹju mẹwa 10."
+
+#: main/views.py:315
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr "A ko le fi koodu ranṣẹ. Jọwọ gbiyanju lẹẹkansi ni iṣẹju kan."
+
+#: main/views.py:319
+msgid "Unexpected error sending code. Try again later."
+msgstr "Aṣiṣe airotẹlẹ aṣiṣe. Gbiyanju lẹẹkansi nigbamii."
+
+#: main/views.py:324
+msgid "We sent a verification code to your phone."
+msgstr "A firanṣẹ koodu ijerisi si foonu rẹ."
+
+#: main/views.py:327 main/views.py:374 main/views.py:434 main/views.py:463
+#: main/views.py:1421
+msgid "Please correct the errors below."
+msgstr "Jọwọ ṣe atunṣe awọn aṣiṣe ni isalẹ."
+
+#: main/views.py:342
+msgid "Start by entering your phone number."
+msgstr "Bẹrẹ nipa titẹ nọmba foonu rẹ."
+
+#: main/views.py:350
+msgid "Invalid or expired code."
+msgstr "Ti ko wulo tabi pari."
+
+#: main/views.py:356
+msgid "Account not found. Please start over."
+msgstr "Account ko rii. Jọwọ bẹrẹ."
+
+#: main/views.py:367
+msgid "Your password has been reset. You can now sign in."
+msgstr "Ọrọ igbaniwọle rẹ ti tun bẹrẹ. O le wọle bayi."
+
+#: main/views.py:395 main/views.py:447
+msgid "You're already signed in."
+msgstr "O ti wa tẹlẹ ti wọle."
+
+#: main/views.py:429
+msgid "Welcome back!"
+msgstr "Ku aabọ pada!"
+
+#: main/views.py:432
+msgid "Invalid phone or password."
+msgstr "Foonu ti ko wulo tabi ọrọ igbaniwọle."
+
+#: main/views.py:460
+msgid "Account created!"
+msgstr "Aṣẹ iroyin ti ṣẹda!"
+
+#: main/views.py:476
+msgid "You have been logged out."
+msgstr "O ti wa ni ibuwolu wọle."
+
+#: main/views.py:523
+msgid "Invalid phone format. Please enter a valid number."
+msgstr "Ọna kika foonu ti ko wulo. Jọwọ tẹ nọmba to wulo."
+
+#: main/views.py:529
+#, python-format
+msgid "No user found with phone %(phone)s."
+msgstr "Ko si olumulo ti o rii pẹlu foonu [[deken_0]."
+
+#: main/views.py:545
+#, python-format
+msgid "Password reset for %(phone)s."
+msgstr "Atunto Ọrọigbaniwọle fun [[T [[[[[[[[[]."
+
+#: main/views.py:1419
+msgid "Password updated."
+msgstr "A imudojuiwọn ọrọ igbaniwọle."
+
+#: templates/base_auth.html:6
+msgid "Auth"
+msgstr "Ak"
+
+#: templates/base_auth.html:18
+msgid "Orbitpedia"
+msgstr "Orbitpedia"
+
+#: templates/base_auth.html:29 templates/meta_search/address_add.html:22
+#: templates/meta_search/deposit.html:20
+#: templates/meta_search/deposit_pay.html:21
+#: templates/meta_search/withdrawal.html:150
+#: templates/meta_search/withdrawal_success.html:101
+msgid "Go back"
+msgstr "Pada"
+
+#: templates/base_auth.html:32 templates/base_info.html:5
+#: templates/base_settings.html:6 templates/base_user.html:122
+#: templates/base_user.html:124 templates/base_user.html:278
+#: templates/base_user.html:280 templates/meta_search/address_add.html:7
+#: templates/meta_search/announcements.html:13
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/password_reset_verify.html:86
+#: templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "Home"
+msgstr "Ile"
+
+#: templates/base_info.html:4 templates/base_info.html:5
+msgid "info"
+msgstr "alaye"
+
+#: templates/base_info.html:14 templates/base_user.html:145
+#: templates/base_user.html:147 templates/meta_search/announcements.html:10
+#: templates/meta_search/announcements.html:13
+msgid "Info"
+msgstr "Alaye"
+
+#: templates/base_settings.html:5 templates/base_user.html:141
+#: templates/base_user.html:143 templates/meta_search/admin_dashboard.html:99
+#: templates/meta_search/profile_settings.html:7
+msgid "Settings"
+msgstr "Eto"
+
+#: templates/base_settings.html:6 templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "setting"
+msgstr "eto"
+
+#: templates/base_settings.html:15
+msgid "Setting"
+msgstr "Eto"
+
+#: templates/base_settings.html:23
+msgid "Profile"
+msgstr "Aworan"
+
+#: templates/base_settings.html:27 templates/meta_search/language.html:8
+#: templates/meta_search/profile_settings.html:71
+msgid "Language"
+msgstr "Ede"
+
+#: templates/base_settings.html:31
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "Tun oruko akowole re se"
+
+#: templates/base_settings.html:35
+msgid "Withdrawal password"
+msgstr "Ọrọ igbaniwọle yiyọ kuro"
+
+#: templates/base_user.html:7 templates/base_user.html:137
+#: templates/meta_search/address_add.html:7
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5 templates/meta_search/wallet.html:5
+msgid "My Wallet"
+msgstr "Apamọwọ mi"
+
+#: templates/base_user.html:94 templates/base_user.html:95
+msgid "Dashboard"
+msgstr "Dasibodu"
+
+#: templates/base_user.html:99
+msgid "Collapse menu"
+msgstr "Akojọ aṣayan"
+
+#: templates/base_user.html:99 templates/base_user.html:223
+msgid "Collapse"
+msgstr "Bi ṣubu"
+
+#: templates/base_user.html:107 templates/base_user.html:109
+#: templates/base_user.html:111
+msgid "User avatar"
+msgstr "Olumulo avatar"
+
+#: templates/base_user.html:116 templates/meta_search/profile_settings.html:63
+msgid "User ID"
+msgstr "Idanimọ olumulo"
+
+#: templates/base_user.html:117
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:67 templates/meta_search/signup.html:46
+#: templates/meta_search/support_reset_password.html:62
+msgid "Phone"
+msgstr "Foonu"
+
+#: templates/base_user.html:121
+msgid "Sidebar"
+msgstr "Ẹgbẹ"
+
+#: templates/base_user.html:126 templates/meta_search/task_dashboard.html:4
+#: templates/meta_search/task_dashboard.html:5
+#: templates/meta_search/task_dashboard.html:14
+#: templates/tasks/task_detail.html:5
+msgid "Task"
+msgstr "Iṣẹ"
+
+#: templates/base_user.html:128 templates/base_user.html:283
+#: templates/base_user.html:285 templates/meta_search/admin_dashboard.html:87
+msgid "Tasks"
+msgstr "Awọn iṣẹ-ṣiṣe"
+
+#: templates/base_user.html:130 templates/meta_search/rewards.html:4
+#: templates/meta_search/rewards.html:5 templates/meta_search/rewards.html:83
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Rewards"
+msgstr "Gba ere"
+
+#: templates/base_user.html:132 templates/base_user.html:289
+#: templates/base_user.html:291 templates/meta_search/rewards.html:137
+#: templates/meta_search/rewards.html:138
+#: templates/meta_search/rewards.html:139
+#: templates/meta_search/task_dashboard.html:52
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Reward"
+msgstr "Gba ere"
+
+#: templates/base_user.html:135
+msgid "Account"
+msgstr "Akọọlẹ"
+
+#: templates/base_user.html:139 templates/base_user.html:295
+#: templates/base_user.html:297 templates/meta_search/wallet.html:6
+msgid "Wallet"
+msgstr "Ohun apamọwọwọ"
+
+#: templates/base_user.html:152 templates/base_user.html:157
+msgid "Admin Panel"
+msgstr "Abojuto nronu"
+
+#: templates/base_user.html:163 templates/base_user.html:165
+msgid "Admin settings"
+msgstr "Eto abojuto"
+
+#: templates/base_user.html:169 templates/base_user.html:171
+msgid "Logout"
+msgstr "Aami ojo"
+
+#: templates/base_user.html:184
+msgid "Menu"
+msgstr "Mẹnu"
+
+#: templates/base_user.html:197 templates/base_user.html:198
+#: templates/meta_search/admin_dashboard.html:80
+#: templates/meta_search/announcements.html:6
+#: templates/meta_search/announcements.html:13
+#: templates/meta_search/announcements.html:21
+msgid "Announcements"
+msgstr "Awọn ikede"
+
+#: templates/base_user.html:223
+msgid "Expand"
+msgstr "Faagun"
+
+#: templates/base_user.html:277
+msgid "Primary"
+msgstr "Akọbẹrẹ"
+
+#: templates/captcha/custom_widget.html:3
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:114 templates/meta_search/signup.html:124
+msgid "Captcha"
+msgstr "KỌMỌ"
+
+#: templates/captcha/custom_widget.html:6
+msgid "Enter answer"
+msgstr "Tẹ idahun"
+
+#: templates/captcha/custom_widget.html:7
+msgid "Reload image"
+msgstr "Tun gbe aworan"
+
+#: templates/meta_search/address_add.html:4
+#: templates/meta_search/address_add.html:31
+#: templates/meta_search/address_add.html:37
+msgid "Add Payout Address"
+msgstr "Ṣafikun adirẹsi owo"
+
+#: templates/meta_search/address_add.html:5
+msgid "Wallet Address"
+msgstr "Adirẹsi apamọwọ"
+
+#: templates/meta_search/address_add.html:7
+msgid "Add Address"
+msgstr "Fi adirẹsi adirẹsi sii"
+
+#: templates/meta_search/address_add.html:65
+msgid "Address Type"
+msgstr "Oriṣi adirẹsi"
+
+#: templates/meta_search/address_add.html:81
+#: templates/meta_search/deposit.html:157
+msgid "Ethereum (ERC20)"
+msgstr "Etheum (erc20)"
+
+#: templates/meta_search/address_add.html:89
+#: templates/meta_search/deposit.html:163
+#: templates/meta_search/withdrawal.html:316
+msgid "USDT (TRC20)"
+msgstr "USDT (TRC20)"
+
+#: templates/meta_search/address_add.html:106
+#: templates/meta_search/deposit_pay.html:142
+#: templates/meta_search/withdrawal.html:252
+msgid "Address"
+msgstr "Isọrọsi"
+
+#: templates/meta_search/address_add.html:112
+msgid "Select a network to see the required format."
+msgstr "Yan nẹtiwọọki lati wo ọna kika ti o nilo."
+
+#: templates/meta_search/address_add.html:129
+msgid "Label (optional)"
+msgstr "Isamisi (Iyan)"
+
+#: templates/meta_search/address_add.html:141
+msgid "Save Address"
+msgstr "Fipamọ adirẹsi"
+
+#: templates/meta_search/address_add.html:142
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "Ẹhin"
+
+#: templates/meta_search/address_add.html:156
+msgid ""
+"Ethereum address must start with 0x and be 42 characters total (0x + 40 hex)."
+msgstr ""
+"Adirẹsi Etheum gbọdọ bẹrẹ pẹlu 0x ati jẹ awọn ohun kikọ 42 lapapọ (0x + 40 "
+"hex)."
+
+#: templates/meta_search/address_add.html:157
+msgid "TRC20 address must start with T and be 34 characters (Base58)."
+msgstr "Adirẹsi TRC20 gbọdọ bẹrẹ pẹlu t ati jẹ awọn ohun kikọ 34 (Base58)."
+
+#: templates/meta_search/admin_dashboard.html:5
+msgid "Admin Office"
+msgstr "Ọfiisi abojuto"
+
+#: templates/meta_search/admin_dashboard.html:6
+msgid "Admin"
+msgstr "Abojuto"
+
+#: templates/meta_search/admin_dashboard.html:36
+msgid "Users"
+msgstr "Awọn olumulo"
+
+#: templates/meta_search/admin_dashboard.html:39
+msgid "Browse users"
+msgstr "Ṣawakiri awọn olumulo"
+
+#: templates/meta_search/admin_dashboard.html:40
+msgid "Blocked users"
+msgstr "Awọn olumulo ti o dina"
+
+#: templates/meta_search/admin_dashboard.html:46
+msgid "Withdrawals"
+msgstr "Yọ kuro"
+
+#: templates/meta_search/admin_dashboard.html:49
+#: templates/meta_search/wallet.html:578
+msgid "Pending"
+msgstr "Akoko iduro"
+
+#: templates/meta_search/admin_dashboard.html:52
+#: templates/meta_search/admin_dashboard.html:71
+#: templates/meta_search/wallet.html:404 templates/meta_search/wallet.html:578
+msgid "Confirmed"
+msgstr "Jẹrisi"
+
+#: templates/meta_search/admin_dashboard.html:55
+#: templates/meta_search/wallet.html:578
+msgid "Failed"
+msgstr "Kuna"
+
+#: templates/meta_search/admin_dashboard.html:62
+msgid "Deposits"
+msgstr "Awọn idogo"
+
+#: templates/meta_search/admin_dashboard.html:65
+msgid "Awaiting Payment"
+msgstr "Wiwa isanwo"
+
+#: templates/meta_search/admin_dashboard.html:68
+#, fuzzy
+#| msgid "Clients Review"
+msgid "Awaiting Review"
+msgstr "Atunwo Awọn alabara"
+
+#: templates/meta_search/admin_dashboard.html:78
+msgid "Content"
+msgstr "Akoonu"
+
+#: templates/meta_search/admin_dashboard.html:81
+msgid "Info pages"
+msgstr "Awọn oju-iwe Alaye"
+
+#: templates/meta_search/admin_dashboard.html:89
+msgid "User tasks"
+msgstr "Awọn iṣẹ ṣiṣe olumulo"
+
+#: templates/meta_search/admin_dashboard.html:90
+msgid "Task templates"
+msgstr "Awọn awoṣe iṣẹ-ṣiṣe"
+
+#: templates/meta_search/admin_dashboard.html:91
+msgid "Forced directives"
+msgstr "Awọn itọsọna ti a fi agbara mu"
+
+#: templates/meta_search/admin_dashboard.html:97
+msgid "System"
+msgstr "Eto"
+
+#: templates/meta_search/admin_dashboard.html:109
+msgid "Pending withdrawals (latest 10)"
+msgstr "Ijoyin awọn idiwọ (tuntun 10)"
+
+#: templates/meta_search/admin_dashboard.html:110
+msgid "View all"
+msgstr "Wo Gbogbo"
+
+#: templates/meta_search/admin_dashboard.html:123
+msgid "Open"
+msgstr "Ṣii"
+
+#: templates/meta_search/admin_dashboard.html:128
+msgid "No pending withdrawals."
+msgstr "Ko si awọn yiyọkuro isunmọtosi."
+
+#: templates/meta_search/admin_dashboard.html:137
+msgid "Recent activity"
+msgstr "Iṣẹ ṣiṣe laipe"
+
+#: templates/meta_search/admin_dashboard.html:153
+msgid "Nothing yet."
+msgstr "Ko si nkankan sibẹsibẹ."
+
+#: templates/meta_search/announcements.html:9
+msgid "information"
+msgstr "alaye"
+
+#: templates/meta_search/announcements.html:34
+msgid "No announcements at the moment."
+msgstr "Ko si awọn ikede ni akoko yii."
+
+#: templates/meta_search/deposit.html:4 templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit.html:28
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/wallet.html:181 templates/meta_search/wallet.html:189
+#: templates/meta_search/wallet.html:202 templates/meta_search/wallet.html:327
+msgid "Deposit"
+msgstr "Owo ifipamọ"
+
+#: templates/meta_search/deposit.html:119
+#: templates/meta_search/deposit_pay.html:139
+#: templates/meta_search/withdrawal.html:200
+#: templates/meta_search/withdrawal_success.html:137
+msgid "Amount"
+msgstr "Iye"
+
+#: templates/meta_search/deposit.html:131
+#: templates/meta_search/withdrawal.html:215
+msgid "Currency"
+msgstr "Owo"
+
+#: templates/meta_search/deposit.html:147
+msgid "Minimum 10. Choose a preset or enter an amount."
+msgstr "O kere 10. Yan tito tẹlẹ tabi tẹ iye kan."
+
+#: templates/meta_search/deposit.html:152
+msgid "Payment Method"
+msgstr "Eto isanwo"
+
+#: templates/meta_search/deposit.html:174
+msgid "Proceed to Pay →"
+msgstr "Tẹsiwaju lati sanwo →"
+
+#: templates/meta_search/deposit_pay.html:4
+msgid "Pay Deposit"
+msgstr "San idogo"
+
+#: templates/meta_search/deposit_pay.html:5
+#, fuzzy
+#| msgid "Privacy"
+msgid "Pay"
+msgstr "Ibi aṣiri"
+
+#: templates/meta_search/deposit_pay.html:29
+#: templates/meta_search/deposit_pay.html:79
+msgid "Payment details"
+msgstr "Awọn alaye isanwo"
+
+#: templates/meta_search/deposit_pay.html:85
+msgid "Change payment method"
+msgstr "Ayipada ọna isanwo pada"
+
+#: templates/meta_search/deposit_pay.html:96
+msgid "Ethereum"
+msgstr "Etheum"
+
+#: templates/meta_search/deposit_pay.html:104
+msgid "Copy amount"
+msgstr "Daakọ iye"
+
+#: templates/meta_search/deposit_pay.html:116
+msgid "QR code"
+msgstr "Koodu QR"
+
+#: templates/meta_search/deposit_pay.html:121
+#, python-format
+msgid "Scan to pay · %(dep.get_network_display)s"
+msgstr "Ọlọjẹ si isanwo% (Iwosan_Get_NetHORY_Display) s"
+
+#: templates/meta_search/deposit_pay.html:132
+#: templates/meta_search/deposit_pay.html:177
+msgid "Verifying…"
+msgstr "Ijẹrisi ..."
+
+#: templates/meta_search/deposit_pay.html:133
+#, python-brace-format
+msgid "Verifying… ({time} left)"
+msgstr "Ijẹrisi ... ([[[[[[[[[[[[["
+
+#: templates/meta_search/deposit_pay.html:134
+msgid "You can use “Verify now” for quick help."
+msgstr "O le lo \"Dajudaju bayi\" fun iranlọwọ iyara."
+
+#: templates/meta_search/deposit_pay.html:135
+msgid "QR error"
+msgstr "Aṣiṣe QR"
+
+#: templates/meta_search/deposit_pay.html:138
+msgid "Network"
+msgstr "Nẹtiwọọki"
+
+#: templates/meta_search/deposit_pay.html:145
+msgid "Copy address"
+msgstr "Adirẹsi Copy"
+
+#: templates/meta_search/deposit_pay.html:152
+msgid "Reference"
+msgstr "Itọkasi"
+
+#: templates/meta_search/deposit_pay.html:155
+msgid "Copy reference"
+msgstr "Itọkasi itọkasi"
+
+#: templates/meta_search/deposit_pay.html:164
+msgid "I’ve Paid — Verify"
+msgstr "Mo ti sanwo - Daju"
+
+#: templates/meta_search/deposit_pay.html:166
+msgid "We’ll check the network and update your balance when confirmed."
+msgstr "A yoo ṣayẹwo nẹtiwọọki ati imudojuiwọn iwọntunwọnsi rẹ nigbati timo."
+
+#: templates/meta_search/deposit_pay.html:174
+#: templates/meta_search/deposit_pay.html:183
+msgid "Verify now"
+msgstr "Daju bayi"
+
+#: templates/meta_search/deposit_pay.html:175
+msgid "Need quick approval? Use <strong>Verify now</strong>."
+msgstr ""
+"Nilo ifọwọsi yara? Lo [[[[[[[[[[[[[[[[[deken_0]]]]]]]]]]])] "
+"[[[[[[[[[[[[[[[[[]]]]]]]])] Dajudaju [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[(["
+
+#: templates/meta_search/deposit_pay.html:185
+msgid "Need quick approval? You can use <strong>Verify now</strong>."
+msgstr ""
+"Nilo ifọwọsi yara? O le lo "
+"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[["
+
+#: templates/meta_search/deposit_pay.html:189
+msgid "Payment failed"
+msgstr "Isanwo kuna"
+
+#: templates/meta_search/deposit_pay.html:190
+msgid "Try again"
+msgstr "Gbiyanju lẹẹkansi"
+
+#: templates/meta_search/deposit_pay.html:193
+msgid "This deposit is a draft."
+msgstr "Ipese yii jẹ iwe afọwọkọ kan."
+
+#: templates/meta_search/deposit_pay.html:194
+msgid "Continue to deposit"
+msgstr "Tẹsiwaju lati fi sii"
+
+#: templates/meta_search/deposit_pay.html:197
+msgid "Thanks! Recieved We’ll verify the payment shortly."
+msgstr "O ṣeun! Gba pada a yoo rii daju isanwo naa laipẹ."
+
+#: templates/meta_search/deposit_pay.html:198
+#: templates/meta_search/withdrawal_success.html:170
+msgid "Go to Wallet"
+msgstr "Lọ si apamọwọ"
+
+#: templates/meta_search/deposit_pay.html:201
+#, python-format
+msgid "Status: %(dep.status)s"
+msgstr "Ipo:% (deto.status) s"
+
+#: templates/meta_search/deposit_pay.html:209
+#: templates/meta_search/withdrawal_success.html:196
+msgid "Copied"
+msgstr "Dakọ"
+
+#: templates/meta_search/ide.html:18
+msgid "Seaside resort at dusk"
+msgstr "Okuta okun ni dusk"
+
+#: templates/meta_search/ide.html:24
 msgid "Experience The Magic Of Relaxation"
-msgstr ""
+msgstr "Ni iriri idan ti isinmi"
 
-#: templates/meta_search/index.html:25
+#: templates/meta_search/ide.html:25
 msgid ""
 "Indulge in the epitome of coastal living as you discover the breathtaking "
 "beauty and tranquility of luxury."
 msgstr ""
+"Indulge ni apapo ti eti okun gbigbe bi o ṣe ṣe awari ẹwa ẹmi ati idakẹjẹ ti "
+"igbadun."
 
-#: templates/meta_search/index.html:34
+#: templates/meta_search/ide.html:30
+msgid "Customer avatar 1"
+msgstr "Onibara Avatar 1"
+
+#: templates/meta_search/ide.html:31
+msgid "Customer avatar 2"
+msgstr "Onibara Avatar 2"
+
+#: templates/meta_search/ide.html:32
+msgid "Customer avatar 3"
+msgstr "Onibara Avatar 3"
+
+#: templates/meta_search/ide.html:34
 msgid "Trusted by over 25k+ people"
-msgstr ""
+msgstr "Gbẹkẹle nipasẹ 25k + eniyan"
 
-#: templates/meta_search/index.html:35 templates/meta_search/index.html:71
+#: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+#: templates/meta_search/index.html:148
 msgid "Explore Now"
-msgstr ""
+msgstr "Ṣawari bayi"
 
-#: templates/meta_search/index.html:55
+#: templates/meta_search/ide.html:40
+#, fuzzy
+#| msgid "Rate Apartments"
+msgid "Travel partners"
+msgstr "Awọn ilana oṣuwọn"
+
+#: templates/meta_search/ide.html:58 templates/meta_search/index.html:98
 msgid "Premium Facilities"
-msgstr ""
+msgstr "Awọn ohun elo Ere"
 
-#: templates/meta_search/index.html:57
+#: templates/meta_search/ide.html:61 templates/meta_search/index.html:104
 msgid "Exclusive Sunset View"
-msgstr ""
+msgstr "Wiwo oorun"
 
-#: templates/meta_search/index.html:57
+#: templates/meta_search/ide.html:62 templates/meta_search/index.html:105
 msgid "You witness the beauty of the world from your room"
-msgstr ""
+msgstr "O jẹri ẹwa ti agbaye lati yara rẹ"
 
-#: templates/meta_search/index.html:58
+#: templates/meta_search/ide.html:65 templates/meta_search/index.html:111
 msgid "Integrated Tourist Area"
-msgstr ""
+msgstr "Agbegbe ti a fi sinu agbegbe"
 
-#: templates/meta_search/index.html:58
+#: templates/meta_search/ide.html:66
 msgid "Enhancing your travel experience"
-msgstr ""
+msgstr "Imudara iriri irin-ajo rẹ"
 
-#: templates/meta_search/index.html:59
+#: templates/meta_search/ide.html:69 templates/meta_search/index.html:118
 msgid "Nature-Inspired Pool"
-msgstr ""
+msgstr "Adagun Epo"
 
-#: templates/meta_search/index.html:59
+#: templates/meta_search/ide.html:70 templates/meta_search/index.html:119
 msgid "Serene swimming pool with a touch of paradise"
-msgstr ""
+msgstr "Pool odo Serene pẹlu ifọwọkan ti paradise"
 
-#: templates/meta_search/index.html:67
-msgid "Rate Apartments"
-msgstr ""
-
-#: templates/meta_search/index.html:68
-msgid "Get to randomly rate apartments based on view and aesthetic"
-msgstr ""
-
-#: templates/meta_search/index.html:69
+#: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+#: templates/meta_search/index.html:129 templates/meta_search/index.html:142
 msgid "Get Rewarded"
-msgstr ""
+msgstr "Gba ere"
 
-#: templates/meta_search/index.html:70
-msgid "Earn rewards instantly"
-msgstr ""
+#: templates/meta_search/ide.html:85 templates/meta_search/index.html:134
+msgid "Rate Apartments"
+msgstr "Awọn ilana oṣuwọn"
 
-#: templates/meta_search/index.html:81
+#: templates/meta_search/ide.html:86 templates/meta_search/index.html:135
+#, fuzzy
+#| msgid "Get to randomly rate apartments based on view and aesthetic"
+msgid "Give random objective ratings based on view and aesthetics."
+msgstr "Gba si awọn ọna oṣuwọn laileto ti o da lori wiwo ati darapupo"
+
+#: templates/meta_search/ide.html:94 templates/meta_search/index.html:143
+msgid "Earn instant rewards from the apartments you rate."
+msgstr "Gba Awọn ere Awọn ilana lati awọn ile ti o oṣuwọn oṣuwọn."
+
+#: templates/meta_search/ide.html:102
+#, fuzzy
+#| msgid "Rate Apartments"
+msgid "Featured apartments carousel"
+msgstr "Awọn ilana oṣuwọn"
+
+#: templates/meta_search/ide.html:103 templates/meta_search/index.html:167
+msgid "Previous slide"
+msgstr "Ifaworanhan iṣaaju"
+
+#: templates/meta_search/ide.html:104 templates/meta_search/index.html:168
+msgid "Next slide"
+msgstr "IKILỌ RẸ"
+
+#: templates/meta_search/ide.html:108 templates/meta_search/index.html:159
+msgid "Modern apartment interior"
+msgstr "Iyẹwu iyẹwu igbalode"
+
+#: templates/meta_search/ide.html:111 templates/meta_search/index.html:160
+msgid "Resort pool at sunset"
+msgstr "Adagun-nla ni Iwọoorun"
+
+#: templates/meta_search/ide.html:114 templates/meta_search/index.html:161
+msgid "Scenic valley view"
+msgstr "Oju iwoye"
+
+#: templates/meta_search/ide.html:129 templates/meta_search/index.html:175
 msgid "Clients Review"
-msgstr ""
+msgstr "Atunwo Awọn alabara"
 
-#: templates/meta_search/index.html:82
+#: templates/meta_search/ide.html:130 templates/meta_search/index.html:176
 msgid "See some honest reviews from our users on the platform"
-msgstr ""
+msgstr "Wo diẹ ninu awọn atunyẹwo ooto lati awọn olumulo wa lori pẹpẹ naa"
 
-#: templates/meta_search/index.html:89
+#: templates/meta_search/ide.html:135 templates/meta_search/index.html:182
+#, fuzzy
+#| msgid "Clients Review"
+msgid "Client"
+msgstr "Atunwo Awọn alabara"
+
+#: templates/meta_search/ide.html:137
 msgid ""
 "Had a great experience using this for solid bookings. Customer service was "
 "top-notch."
 msgstr ""
+"Ni iriri nla nipa lilo eyi fun awọn iwe to lagbara. Iṣẹ Onibara jẹ oke-"
+"ogbontarigi."
 
-#: templates/meta_search/index.html:99
+#: templates/meta_search/ide.html:147
 msgid "Get your inspiration of luxury and get rewarded"
-msgstr ""
+msgstr "Gba awokoramu ti igbadun ati ki o gba ere"
 
-#: templates/meta_search/index.html:100
+#: templates/meta_search/ide.html:148
 msgid "Earn new rewards at every step you take under true luxury."
-msgstr ""
+msgstr "Gba awọn ere titun ni gbogbo igbesẹ ti o gba labẹ igbadun otitọ."
 
-#: templates/meta_search/index.html:101
+#: templates/meta_search/ide.html:149
 msgid "See More"
+msgstr "Wo diẹ sii"
+
+#: templates/meta_search/ide.html:152
+msgid "Luxury inspiration"
+msgstr "Awokose igbadun"
+
+#: templates/meta_search/includes/_header.html:60
+msgid "Get started"
+msgstr "Bẹrẹ"
+
+#: templates/meta_search/index.html:112
+#, fuzzy
+#| msgid "Enhancing your travel experience"
+msgid "Tourism integration is enhancing travel experience"
+msgstr "Imudara iriri irin-ajo rẹ"
+
+#: templates/meta_search/index.html:191
+msgid ""
+"I had a great experience working with this fantastic platform that delivers "
+"reward to users for best rating apartments. They have exceptional customer "
+"service and high-quality service."
 msgstr ""
+"Mo ni iriri nla ti o n ṣiṣẹ pẹlu pẹpẹ ikọja yii ti o fi ere silẹ fun awọn "
+"olumulo fun awọn iyẹwu ti o dara julọ. Wọn ni iṣẹ alabara alailẹgbẹ ati iṣẹ "
+"didara-didara."
+
+#: templates/meta_search/index.html:194 templates/meta_search/index.html:195
+msgid "James Lee"
+msgstr "James Lee"
+
+#: templates/meta_search/info_index.html:6
+msgid "Info Center"
+msgstr "Ile-iṣẹ Alaye"
+
+#: templates/meta_search/info_index.html:7
+msgid "Pick a section on the left, or use the quick links below."
+msgstr "Mu abala kan ni apa osi, tabi lo awọn ọna asopọ iyara ni isalẹ."
+
+#: templates/meta_search/info_index.html:19
+#: templates/meta_search/info_page.html:17
+msgid "View all announcements"
+msgstr "Wo gbogbo awọn ikede"
+
+#: templates/meta_search/language.html:9
+msgid "Select your language."
+msgstr "Yan ede rẹ."
+
+#: templates/meta_search/password_reset_phone.html:4
+msgid "Reset Password – Step 1"
+msgstr "Tun Ọrọ igbaniwọle Didei - Igbesẹ 1"
+
+#: templates/meta_search/password_reset_phone.html:6
+#: templates/meta_search/password_reset_verify.html:6
+#: templates/meta_search/password_reset_verify.html:79
+msgid "Reset Password"
+msgstr "Tun ọrọ igbaniwọle Tun"
+
+#: templates/meta_search/password_reset_phone.html:21
+msgid "Enter your phone number to get a verification code."
+msgstr "Tẹ nọmba foonu rẹ lati gba koodu ijerisi."
+
+#: templates/meta_search/password_reset_phone.html:59
+msgid "Send Code"
+msgstr "Firanṣẹ koodu"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Remembered your password?"
+msgstr "Ranti ọrọ igbaniwọle rẹ?"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Sign in"
+msgstr "wọle"
+
+#: templates/meta_search/password_reset_verify.html:4
+msgid "Reset Password – Step 2"
+msgstr "Tun Ọrọ igbaniwọle Didei - Igbese 2"
+
+#: templates/meta_search/password_reset_verify.html:21
+msgid "Enter the code sent to your phone, then choose a new password."
+msgstr ""
+"Tẹ koodu ti a firanṣẹ si foonu rẹ, lẹhinna yan ọrọ igbaniwọle tuntun kan."
+
+#: templates/meta_search/password_reset_verify.html:43
+msgid "Verification Code"
+msgstr "Kodu afimo"
+
+#: templates/meta_search/password_reset_verify.html:52
+msgid "New Password"
+msgstr "Ọrọ aṣina Tuntun"
+
+#: templates/meta_search/password_reset_verify.html:61
+#: templates/meta_search/password_reset_verify.html:74
+#: templates/meta_search/settings_change_password.html:76
+#: templates/meta_search/settings_change_password.html:93
+#: templates/meta_search/settings_change_password.html:112
+#: templates/meta_search/signin.html:94
+msgid "Show/Hide password"
+msgstr "Fihan / tọju ọrọ igbaniwọle"
+
+#: templates/meta_search/password_reset_verify.html:65
+#: templates/meta_search/signup.html:85
+msgid "Confirm Password"
+msgstr "So ni pato orukoabawole re"
+
+#: templates/meta_search/profile_settings.html:5
+msgid "Settings — Profile"
+msgstr "Eto - Profaili"
+
+#: templates/meta_search/profile_settings.html:8
+msgid "profile"
+msgstr "aworan"
+
+#: templates/meta_search/profile_settings.html:15
+msgid "Basic Info"
+msgstr "Alaye ipilẹ"
+
+#: templates/meta_search/profile_settings.html:16
+msgid "Manage your details and personal preferences here."
+msgstr "Ṣakoso awọn alaye rẹ ati awọn ayanfẹ ti ara ẹni nibi."
+
+#: templates/meta_search/profile_settings.html:33
+msgid "Avatar"
+msgstr "Avatar"
+
+#: templates/meta_search/profile_settings.html:40
+msgid "Change image"
+msgstr "Pada aworan"
+
+#: templates/meta_search/profile_settings.html:51
+msgid "Remove"
+msgstr "Yọkuro"
+
+#: templates/meta_search/profile_settings.html:55
+msgid "JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80)."
+msgstr "JPG, PG, Web tabi GIF. Apẹrẹ: 120 × 120 (min 80 × 80)."
+
+#: templates/meta_search/profile_settings.html:67
+msgid "Phone Number"
+msgstr "Nomba fonu"
+
+#: templates/meta_search/profile_settings.html:76
+msgid "LEVEL 1"
+msgstr "Ipele 1"
+
+#: templates/meta_search/profile_settings.html:83
+msgid "Nickname"
+msgstr "Sọ orukọ apeere"
+
+#: templates/meta_search/profile_settings.html:89
+msgid "Image URL (optional)"
+msgstr "URL STL (Iyan)"
+
+#: templates/meta_search/profile_settings.html:92
+msgid "Used only if no uploaded image exists."
+msgstr "Ti a lo nikan ti ko ba si aworan ti a gbe wọle nikan."
+
+#: templates/meta_search/profile_settings.html:97
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "Fi awọn ayipada pamọ"
+
+#: templates/meta_search/rewards.html:92 templates/meta_search/rewards.html:95
+#: templates/meta_search/rewards.html:116
+msgid "Deposit Bonus"
+msgstr "Ifipamọ idogo idogo"
+
+#: templates/meta_search/rewards.html:96
+msgid "Reset Amount Reward"
+msgstr "Tun ere pada"
+
+#: templates/meta_search/rewards.html:98 templates/meta_search/rewards.html:99
+#: templates/meta_search/rewards.html:100
+#: templates/meta_search/rewards.html:101
+#: templates/meta_search/rewards.html:119
+#: templates/meta_search/rewards.html:120
+#: templates/meta_search/rewards.html:121
+#: templates/meta_search/rewards.html:122
+#: templates/meta_search/rewards.html:153
+#: templates/meta_search/rewards.html:154
+#: templates/meta_search/rewards.html:155
+msgid "Get"
+msgstr "Gba"
+
+#: templates/meta_search/rewards.html:104
+msgid "Please contact customer service for reward."
+msgstr "Jọwọ kan si iṣẹ alabara fun ere."
+
+#: templates/meta_search/rewards.html:105
+msgid "You can only collect once a day; reset the reward."
+msgstr "O le gba lẹẹkan ni ọjọ; Tun ẹbun naa tun."
+
+#: templates/meta_search/rewards.html:113
+msgid "Deposit Bonus Details"
+msgstr "Awọn alaye Buwosi idogo"
+
+#: templates/meta_search/rewards.html:117
+msgid "Repeat of tiers for clarity"
+msgstr "Tun ti awọn oniyi si alaye"
+
+#: templates/meta_search/rewards.html:124
+msgid "Collect once per day."
+msgstr "Gba lẹẹkan fun ọjọ kan."
+
+#: templates/meta_search/rewards.html:131
+#: templates/meta_search/rewards.html:134
+msgid "Consecutive Days Rewards"
+msgstr "Awọn ere Awọn ọjọ itẹlera"
+
+#: templates/meta_search/rewards.html:135
+msgid "Work for consecutive days and receive a reward of:"
+msgstr "Ṣiṣẹ fun awọn ọjọ itẹlera ati gba ere ti:"
+
+#: templates/meta_search/rewards.html:137
+#: templates/meta_search/rewards.html:153
+msgid "5 days"
+msgstr "5 ọjọ"
+
+#: templates/meta_search/rewards.html:138
+#: templates/meta_search/rewards.html:154
+msgid "15 days"
+msgstr "Ọjọ 15"
+
+#: templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:155
+msgid "30 days"
+msgstr "30 ọjọ"
+
+#: templates/meta_search/rewards.html:147
+msgid "Consecutive Days Details"
+msgstr "Awọn alaye Awọn ọjọ ailopin"
+
+#: templates/meta_search/rewards.html:150
+msgid "Consecutive Days"
+msgstr "Awọn ọjọ itẹlera"
+
+#: templates/meta_search/rewards.html:151
+msgid "Maintain streaks to unlock larger rewards."
+msgstr "Ṣetọju awọn ṣiṣan ṣiṣan lati ṣii awọn ẹbun nla."
+
+#: templates/meta_search/rewards.html:163
+#: templates/meta_search/rewards.html:166
+msgid "About Gift Boxes"
+msgstr "Nipa awọn apoti ẹbun"
+
+#: templates/meta_search/rewards.html:167
+msgid "Have a chance to get 0–3 random Gift Boxes every round."
+msgstr "Ni aye lati gba awọn apoti ẹbun 0-3 awọn iyipo gbogbo."
+
+#: templates/meta_search/rewards.html:169
+msgid "Gift Boxes Cash Bonus"
+msgstr "Awọn ẹbun ẹbun ẹbun ẹbun"
+
+#: templates/meta_search/rewards.html:169
+#: templates/meta_search/rewards.html:170
+msgid "Up to"
+msgstr "To"
+
+#: templates/meta_search/rewards.html:170
+msgid "Gift Boxes Commission Bonus"
+msgstr "Ẹbun Awọn ẹbun Igbimọ Awọn apoti"
+
+#: templates/meta_search/rewards.html:170
+msgid "30× commission"
+msgstr "30 × Consion"
+
+#: templates/meta_search/rewards.html:172
+msgid "For more details, contact customer service."
+msgstr "Fun awọn alaye diẹ sii, kan si iṣẹ alabara."
+
+#: templates/meta_search/rewards.html:179
+msgid "Gift Boxes Detail"
+msgstr "Awọn alaye ẹbun ẹbun"
+
+#: templates/meta_search/rewards.html:182
+msgid "Gift Boxes"
+msgstr "Awọn apoti ẹbun"
+
+#: templates/meta_search/rewards.html:183
+msgid "Two types of Gift Boxes rewards are available."
+msgstr "Awọn oriṣi meji ti awọn ẹbun ẹbun ẹbun wa wa."
+
+#: templates/meta_search/rewards.html:185
+msgid "Daily Box"
+msgstr "Apoti ojoojumọ"
+
+#: templates/meta_search/rewards.html:185
+#: templates/meta_search/rewards.html:186
+msgid "Chance"
+msgstr "Aye"
+
+#: templates/meta_search/rewards.html:186
+msgid "Milestone Box"
+msgstr "Apoti Ibi"
+
+#: templates/meta_search/rewards.html:188
+msgid "Box odds reset weekly."
+msgstr "Apoti apoti tun wa ni sẹsẹ."
+
+#: templates/meta_search/rewards.html:195
+#: templates/meta_search/rewards.html:198
+#, fuzzy
+#| msgid "About Us"
+msgid "About Rank"
+msgstr "Nipa re"
+
+#: templates/meta_search/rewards.html:199
+msgid "Commission tiers & upgrade notes"
+msgstr "Igbimọ Tersion & igbesoke awọn akọsilẹ"
+
+#: templates/meta_search/rewards.html:201
+#: templates/meta_search/rewards.html:202
+#: templates/meta_search/rewards.html:203 templates/meta_search/wallet.html:191
+#: templates/meta_search/wallet.html:204 templates/meta_search/wallet.html:238
+#: templates/meta_search/wallet.html:251 templates/meta_search/wallet.html:282
+#: templates/meta_search/wallet.html:295 templates/meta_search/wallet.html:382
+#: templates/meta_search/wallet.html:573 templates/meta_search/wallet.html:581
+#: templates/tasks/task_detail.html:154
+msgid "Commission"
+msgstr "Ififunni"
+
+#: templates/meta_search/rewards.html:205
+msgid "Contact Customer Service for more details."
+msgstr "Kan si iṣẹ alabara fun awọn alaye diẹ sii."
+
+#: templates/meta_search/rewards.html:212
+msgid "About Rank Details"
+msgstr "Nipa awọn alaye ipo"
+
+#: templates/meta_search/rewards.html:215
+msgid "Rank Upgrade Details"
+msgstr "Ipo igbesoke ipo"
+
+#: templates/meta_search/rewards.html:216
+msgid "More constraints & upgrade hints"
+msgstr "Awọn idiwọ diẹ sii & igbesoke"
+
+#: templates/meta_search/rewards.html:218
+#: templates/meta_search/rewards.html:219
+msgid "Note"
+msgstr "Akiyesi"
+
+#: templates/meta_search/rewards.html:218
+msgid "One withdrawal/day"
+msgstr "Yi yiyọ kuro / ọjọ"
+
+#: templates/meta_search/rewards.html:219
+msgid "Two withdrawals/day"
+msgstr "Meji yiyọ kuro / ọjọ"
+
+#: templates/meta_search/rewards.html:220
+msgid "Upgrade"
+msgstr "Igbesoke"
+
+#: templates/meta_search/rewards.html:220
+msgid "Recharge"
+msgstr "Gba agbara"
+
+#: templates/meta_search/rewards.html:222
+msgid "SVIP can become an agent; subordinate commissions may apply."
+msgstr "Svip le di aṣoju kan; Awọn igbimọ asọtẹlẹ le lo."
+
+#: templates/meta_search/rewards.html:233
+msgid "Previous"
+msgstr "Ṣaaju"
+
+#: templates/meta_search/rewards.html:234
+msgid "Next"
+msgstr "Itele"
+
+#: templates/meta_search/rewards.html:236
+msgid "Slide indicators"
+msgstr "Atọka ifaworanhan"
+
+#: templates/meta_search/settings_change_password.html:4
+msgid "Settings — Change password"
+msgstr "Eto - Yi ọrọ igbaniwọle pada"
+
+#: templates/meta_search/settings_change_password.html:22
+msgid ""
+"For security, confirm your phone, pass the captcha, then set a strong "
+"password."
+msgstr ""
+"Fun aabo, jẹrisi foonu rẹ, dajade KUPSTA, lẹhinna ṣeto ọrọ igbaniwọle ti o "
+"lagbara."
+
+#: templates/meta_search/settings_change_password.html:66
+msgid "Old password"
+msgstr "Ọrọ aṣina Atijọ"
+
+#: templates/meta_search/settings_change_password.html:79
+msgid "Forgot current password?"
+msgstr "Gbagbe ọrọ igbaniwọle lọwọlọwọ?"
+
+#: templates/meta_search/settings_change_password.html:95
+msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
+msgstr "Lo awọn ohun kikọ 8+ pẹlu apopọ awọn lẹta, awọn nọmba, ati awọn aami."
+
+#: templates/meta_search/settings_change_password.html:102
+#: templates/meta_search/support_reset_password.html:94
+msgid "Confirm password"
+msgstr "So ni pato orukoabawole re"
+
+#: templates/meta_search/signin.html:4
+msgid "Sign In - Orbitpedia"
+msgstr "Wọle - Cusdia"
+
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:123
+msgid "Sign In"
+msgstr "Wọle"
+
+#: templates/meta_search/signin.html:43
+msgid "Welcome back, please sign in"
+msgstr "Kaabo pada, jọwọ wọle si"
+
+#: templates/meta_search/signin.html:128
+msgid "Don’t have an account?"
+msgstr "Ṣe o ko ni akọọlẹ kan?"
+
+#: templates/meta_search/signin.html:128
+msgid "Create one"
+msgstr "Ṣẹda ọkan"
+
+#: templates/meta_search/signin.html:130
+msgid "Forgotten password?"
+msgstr "Ọrọ igbaniwọle ti o gbagbe?"
+
+#: templates/meta_search/signup.html:4
+msgid "Sign Up - Orbitpedia"
+msgstr "Forukọsilẹ - Cussia"
+
+#: templates/meta_search/signup.html:6
+msgid "Sign Up"
+msgstr "Forukọsilẹ"
+
+#: templates/meta_search/signup.html:41
+msgid "Hello friend, let’s get you registered"
+msgstr "Hello ọrẹ, jẹ ki a forukọsilẹ fun"
+
+#: templates/meta_search/signup.html:66 templates/meta_search/signup.html:67
+#: templates/meta_search/signup.html:69 templates/meta_search/signup.html:97
+#: templates/meta_search/signup.html:98 templates/meta_search/signup.html:100
+msgid "Show password"
+msgstr "Fi ọrọ igbaniwọle han"
+
+#: templates/meta_search/signup.html:68 templates/meta_search/signup.html:99
+msgid "Hide password"
+msgstr "Tọju ọrọ igbaniwọle"
+
+#: templates/meta_search/signup.html:116
+msgid "Invitation Code"
+msgstr "Koodu ifiwepe"
+
+#: templates/meta_search/signup.html:133
+#, fuzzy
+#| msgid "Get started"
+msgid "Get Started"
+msgstr "Bẹrẹ"
+
+#: templates/meta_search/signup.html:138
+msgid "Already have an account?"
+msgstr "Tẹlẹ ni iwe ipamọ tẹlẹ?"
+
+#: templates/meta_search/signup.html:138
+msgid "Login"
+msgstr "Wo ile"
+
+#: templates/meta_search/support_reset_password.html:6
+msgid "Support – Reset Password"
+msgstr "Atilẹyin - Tun Ọrọigbaniwọle Tun"
+
+#: templates/meta_search/support_reset_password.html:38
+msgid "Reset User Password (Support)"
+msgstr "Tun ọrọ igbaniwọle olumulo (atilẹyin)"
+
+#: templates/meta_search/support_reset_password.html:39
+msgid "Enter the user’s phone and a new password. This action is logged."
+msgstr "Tẹ foonu olumulo ati ọrọ igbaniwọle titun kan. Igbese yii wọle."
+
+#: templates/meta_search/support_reset_password.html:70
+msgid ""
+"Accepts <b>E.164</b> (e.g. <code>+2348012345678</code>) or local NG like "
+"<code>080…</code>."
+msgstr ""
+"Gba [[T [[[[deken_0] n] E.64 [[[deken_1] + 23480123] - 23480123] - 23480123] "
+"- 23480123]"
+
+#: templates/meta_search/support_reset_password.html:82
+#: templates/meta_search/support_reset_password.html:84
+#: templates/meta_search/support_reset_password.html:99
+#: templates/meta_search/support_reset_password.html:101
+msgid "Show"
+msgstr "Fihan"
+
+#: templates/meta_search/support_reset_password.html:83
+#: templates/meta_search/support_reset_password.html:100
+msgid "Hide"
+msgstr "Pamọ"
+
+#: templates/meta_search/support_reset_password.html:112
+msgid "Reset password"
+msgstr "Tun ọrọ igbaniwọle Tun"
+
+#: templates/meta_search/support_reset_password.html:113
+msgid "You must be logged in as <b>staff</b>."
+msgstr "You must be logged in as <b>staff</b>."
+
+#: templates/meta_search/support_reset_password.html:118
+msgid ""
+"Tip: Use strong passwords (12+ chars, mix of letters, numbers & symbols). "
+"This operation is recorded in the Admin log."
+msgstr ""
+"Sample: Lo awọn ọrọ igbaniwọle ti o lagbara (awọn kaadi 12+, idapọpọ awọn "
+"lẹta, awọn nọmba ati awọn aami). Iṣe yii jẹ igbasilẹ ni akọsilẹ abojuto."
+
+#: templates/meta_search/support_reset_password.html:147
+msgid "Working…"
+msgstr "Ṣiṣẹ ..."
+
+#: templates/meta_search/task_dashboard.html:25
+msgid "Balances"
+msgstr "Iwọntunwọnsi"
+
+#: templates/meta_search/task_dashboard.html:38
+msgid "Tasks Promo"
+msgstr "Awọn iṣẹ-ṣiṣe iṣẹ-ṣiṣe"
+
+#: templates/meta_search/task_dashboard.html:45
+msgid "Complete Tasks"
+msgstr "Awọn iṣẹ ṣiṣe pari"
+
+#: templates/meta_search/task_dashboard.html:46
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "and get rewarded"
+msgstr "Gba ere"
+
+#: templates/meta_search/task_dashboard.html:60
+msgid "Locked:"
+msgstr "Titiipa:"
+
+#: templates/meta_search/task_dashboard.html:61
+msgid "You have completed your trial. Please contact customer care."
+msgstr "O ti pari idanwo rẹ. Jọwọ kan si itọju alabara."
+
+#: templates/meta_search/task_dashboard.html:64
+#, python-format
+msgid "Tasks available: <strong>%(n)s</strong>"
+msgstr "Awọn iṣẹ-ṣiṣe wa: [[T [[[T [[]]"
+
+#: templates/meta_search/task_dashboard.html:66
+msgid "You’re up to date. Click below to get your next task."
+msgstr "O ti wa titi di oni. Tẹ isalẹ lati gba iṣẹ rẹ atẹle."
+
+#: templates/meta_search/task_dashboard.html:78
+msgid "Locked — contact support"
+msgstr "Titiipa - atilẹyin olubasọrọ"
+
+#: templates/meta_search/task_dashboard.html:80
+#: templates/tasks/user_task_dashboard.html:254
+msgid "Click to get your task"
+msgstr "Tẹ lati gba iṣẹ rẹ"
+
+#: templates/meta_search/task_dashboard.html:90
+msgid "Filter tasks"
+msgstr "Awọn iṣẹ-ọrọ àlẹ"
+
+#: templates/meta_search/task_dashboard.html:91
+#: templates/meta_search/task_dashboard.html:105
+#: templates/meta_search/wallet.html:188 templates/meta_search/wallet.html:201
+#: templates/tasks/user_task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:300
+msgid "All"
+msgstr "Gbogbo"
+
+#: templates/meta_search/task_dashboard.html:92
+#: templates/meta_search/task_dashboard.html:106
+#: templates/tasks/task_detail.html:169
+#: templates/tasks/user_task_dashboard.html:265
+#: templates/tasks/user_task_dashboard.html:301
+msgid "Completed"
+msgstr "Pari"
+
+#: templates/meta_search/task_dashboard.html:93
+#: templates/meta_search/task_dashboard.html:107
+#: templates/tasks/user_task_dashboard.html:239
+#: templates/tasks/user_task_dashboard.html:266
+#: templates/tasks/user_task_dashboard.html:302
+msgid "Processing"
+msgstr "Iṣaayan"
+
+#: templates/meta_search/task_dashboard.html:98
+#: templates/meta_search/task_dashboard.html:101
+#: templates/meta_search/task_dashboard.html:112
+#: templates/tasks/user_task_dashboard.html:260
+msgid "Task History"
+msgstr "Itan-akọọlẹ ṣiṣe"
+
+#: templates/meta_search/task_dashboard.html:103
+#: templates/meta_search/task_dashboard.html:104
+#: templates/meta_search/task_dashboard.html:138
+#: templates/meta_search/task_dashboard.html:168
+#: templates/meta_search/task_dashboard.html:198
+#: templates/meta_search/task_dashboard.html:223
+#: templates/meta_search/withdrawal_success.html:144
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:319
+msgid "Status"
+msgstr "Ipo"
+
+#: templates/meta_search/task_dashboard.html:124
+#: templates/meta_search/task_dashboard.html:154
+#: templates/meta_search/task_dashboard.html:184
+#: templates/meta_search/task_dashboard.html:239
+#: templates/meta_search/task_dashboard.html:252
+#: templates/meta_search/task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:288
+#: templates/tasks/user_task_dashboard.html:313
+msgid "View"
+msgstr "Iwo"
+
+#: templates/meta_search/task_dashboard.html:128
+#: templates/meta_search/task_dashboard.html:158
+#: templates/meta_search/task_dashboard.html:188
+#: templates/tasks/user_task_dashboard.html:317
+msgid "Product"
+msgstr "Ọja"
+
+#: templates/meta_search/task_dashboard.html:134
+#: templates/meta_search/task_dashboard.html:164
+#: templates/meta_search/task_dashboard.html:194
+#: templates/meta_search/task_dashboard.html:221
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:318
+msgid "Price"
+msgstr "Idiyele"
+
+#: templates/meta_search/task_dashboard.html:142
+#: templates/meta_search/task_dashboard.html:172
+#: templates/meta_search/task_dashboard.html:202
+#: templates/meta_search/task_dashboard.html:222
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:320
+msgid "Comm"
+msgstr "Bẹrẹ"
+
+#: templates/meta_search/task_dashboard.html:209
+#: templates/meta_search/task_dashboard.html:269
+msgid "No Task History"
+msgstr "Ko si itan iṣẹ-ṣiṣe kan"
+
+#: templates/meta_search/task_dashboard.html:218
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Product Name"
+msgstr "Orukọ ọja"
+
+#: templates/meta_search/task_dashboard.html:219
+#: templates/tasks/task_detail.html:110
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Order ID"
+msgstr "ID aṣẹ"
+
+#: templates/meta_search/task_dashboard.html:220
+#: templates/meta_search/user_dashboard.html:101
+#: templates/tasks/task_detail.html:118
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Date"
+msgstr "Ọjọ"
+
+#: templates/meta_search/task_dashboard.html:224
+msgid "Action"
+msgstr "Iṣe"
+
+#: templates/meta_search/task_dashboard.html:233
+#: templates/meta_search/task_dashboard.html:246
+#: templates/meta_search/task_dashboard.html:258
+#, python-format
+msgid "Task #%(id)s"
+msgstr "Iṣẹ-ṣiṣe # [[[T [[[[[[[[[]]]"
+
+#: templates/meta_search/task_dashboard.html:280
+#: templates/meta_search/wallet.html:397 templates/tasks/task_detail.html:186
+#: templates/tasks/user_task_dashboard.html:350
+msgid "Close"
+msgstr "Sunmọ"
+
+#: templates/meta_search/task_dashboard.html:290
+msgid "Trial Complete"
+msgstr "Igbiwo pari"
+
+#: templates/meta_search/task_dashboard.html:291
+msgid ""
+"You’ve completed all trial tasks. Please contact customer care to continue."
+msgstr ""
+"O ti pari gbogbo awọn iṣẹ iwadii. Jọwọ kan si itọju alabara lati tẹsiwaju."
+
+#: templates/meta_search/task_dashboard.html:292
+#: templates/tasks/task_detail.html:195
+#: templates/tasks/user_task_dashboard.html:357
+msgid "Customer care"
+msgstr "Itọju Onibara"
+
+#: templates/meta_search/user_dashboard.html:6
+msgid "Dashboard — Tasks & Rewards"
+msgstr "Dasibodu - Awọn iṣẹ-ṣiṣe & Awọn ere"
+
+#: templates/meta_search/user_dashboard.html:7
+msgid "My Dashboard"
+msgstr "Dasibodu mi"
+
+#: templates/meta_search/user_dashboard.html:9
+msgid "Home / dashboard"
+msgstr "Ile / Dasibodu"
+
+#: templates/meta_search/user_dashboard.html:98
+msgid "User"
+msgstr "Aṣamulo obinrin"
+
+#: templates/meta_search/user_dashboard.html:99
+msgid "View Profile"
+msgstr "Wo Profaili"
+
+#: templates/meta_search/user_dashboard.html:100
+msgid "Location"
+msgstr "Ipo"
+
+#: templates/meta_search/user_dashboard.html:102
+#: templates/meta_search/user_dashboard.html:107
+msgid "Rating"
+msgstr "Oṣuwọn"
+
+#: templates/meta_search/user_dashboard.html:103
+msgid "Search"
+msgstr "Ṣewadii"
+
+#: templates/meta_search/user_dashboard.html:104
+#: templates/meta_search/user_dashboard.html:229
+msgid "Filters"
+msgstr "Ajọ"
+
+#: templates/meta_search/user_dashboard.html:105
+msgid "Recommended"
+msgstr "Niyanju"
+
+#: templates/meta_search/user_dashboard.html:106
+msgid "Popular"
+msgstr "Olokiki"
+
+#: templates/meta_search/user_dashboard.html:108
+msgid "Your avatar"
+msgstr "Avatar rẹ"
+
+#: templates/meta_search/user_dashboard.html:109
+#: templates/meta_search/user_dashboard.html:160
+msgid "Let’s do some task and earn reward"
+msgstr "Jẹ ki a ṣe iṣẹ diẹ ki o jo'gun ere"
+
+#: templates/meta_search/user_dashboard.html:199
+msgid "Mobile header & filters"
+msgstr "Akọsilẹ Mobile & Ajọ"
+
+#: templates/meta_search/user_dashboard.html:201
+msgid "View profile"
+msgstr "Wo Profaili"
+
+#: templates/meta_search/user_dashboard.html:215
+msgid "wave"
+msgstr "igbi"
+
+#: templates/meta_search/user_dashboard.html:284
+#, python-format
+msgid "Save %(name)s"
+msgstr "Save %(name)s"
+
+#: templates/meta_search/user_dashboard.html:311
+#, python-format
+msgid "No %(tab)s hotels available."
+msgstr "Ko si awọn ile itura]]] l]."
+
+#: templates/meta_search/wallet.html:7
+msgid "Home / my wallet"
+msgstr "Ile / apamọwọ mi"
+
+#: templates/meta_search/wallet.html:160
+msgid "Wallet Summary"
+msgstr "Lakotan apamọwọ"
+
+#: templates/meta_search/wallet.html:163
+msgid "Current Balance"
+msgstr "Iwontunws.funfun lọwọlọwọ"
+
+#: templates/meta_search/wallet.html:166 templates/meta_search/wallet.html:601
+msgid "Hide balance"
+msgstr "Tọju iwọntunwọnsi"
+
+#: templates/meta_search/wallet.html:176
+msgid "Trial Bonus"
+msgstr "Iwadii Idanwo"
+
+#: templates/meta_search/wallet.html:182 templates/meta_search/wallet.html:249
+#: templates/meta_search/wallet.html:293 templates/meta_search/wallet.html:581
+#: templates/meta_search/withdrawal.html:5
+#: templates/meta_search/withdrawal.html:157
+msgid "Withdraw"
+msgstr "Yọkuro"
+
+#: templates/meta_search/wallet.html:187
+msgid "Filter transactions (mobile)"
+msgstr "Awọn ifọrọranṣẹ Ajọ (Mobile)"
+
+#: templates/meta_search/wallet.html:190 templates/meta_search/wallet.html:203
+#: templates/meta_search/wallet.html:240 templates/meta_search/wallet.html:284
+#: templates/meta_search/wallet.html:351 templates/meta_search/wallet.html:573
+#: templates/meta_search/withdrawal.html:6
+#: templates/meta_search/withdrawal.html:199
+msgid "Withdrawal"
+msgstr "Yọ kuro"
+
+#: templates/meta_search/wallet.html:196
+msgid "Transactions"
+msgstr "Awọn iṣowo"
+
+#: templates/meta_search/wallet.html:199
+msgid "Filter transactions (desktop)"
+msgstr "Awọn iṣowo àlẹmọ (tabili)"
+
+#: templates/meta_search/wallet.html:247 templates/meta_search/wallet.html:291
+msgid "Added funds"
+msgstr "Awọn owo ti a ṣafikun"
+
+#: templates/meta_search/wallet.html:253 templates/meta_search/wallet.html:297
+#: templates/meta_search/wallet.html:581
+msgid "Adjustment"
+msgstr "Titunṣe"
+
+#: templates/meta_search/wallet.html:310
+msgid "No Transaction History"
+msgstr "Ko si itan iṣowo kan"
+
+#: templates/meta_search/wallet.html:311
+msgid "When you start using your wallet, entries will show here."
+msgstr "Nigbati o ba bẹrẹ lilo apamọwọ rẹ, awọn titẹ sii yoo ṣafihan nibi."
+
+#: templates/meta_search/wallet.html:327
+#, python-format
+msgid "Added funds • %(t.created_at|date:\"Y-m-d\")s"
+msgstr ""
+"Awọn owo ti a ṣafikun awọn owo •% (T.CRAEED_at | Ọjọ: \"Y-M-D\") S \") S"
+
+#: templates/meta_search/wallet.html:331
+msgid "No deposits yet"
+msgstr "Ko si awọn idogo sibẹsibẹ"
+
+#: templates/meta_search/wallet.html:347
+msgid "Withdrawal (Pending)"
+msgstr "Yiyọ kuro (ni isunmọ)"
+
+#: templates/meta_search/wallet.html:349
+msgid "Withdrawal (Failed)"
+msgstr "Yiyọ kuro (kuna)"
+
+#: templates/meta_search/wallet.html:356
+msgid "Requested"
+msgstr "Beere fun"
+
+#: templates/meta_search/wallet.html:358
+msgid "Request"
+msgstr "Ibeere"
+
+#: templates/meta_search/wallet.html:360
+msgid "Posted"
+msgstr "Fiwe"
+
+#: templates/meta_search/wallet.html:367
+msgid "No withdrawals yet"
+msgstr "Ko si awọn yiyọ kuro sibẹsibẹ"
+
+#: templates/meta_search/wallet.html:382
+#, python-format
+msgid "Payment • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "Isanwo •% (T.CRAEED_at | Ọjọ: \"Y-M-D\") S \") S"
+
+#: templates/meta_search/wallet.html:386
+msgid "No commissions yet"
+msgstr "Ko si awọn iṣẹ-ṣiṣe sibẹsibẹ"
+
+#: templates/meta_search/wallet.html:398
+msgid "Transaction Details"
+msgstr "Awọn alaye iṣowo"
+
+#: templates/meta_search/wallet.html:406
+msgid "Transaction ID"
+msgstr "ID irufẹ"
+
+#: templates/meta_search/wallet.html:406
+msgid "Copy ID"
+msgstr "Daakọ ID"
+
+#: templates/meta_search/wallet.html:408
+msgid "Description"
+msgstr "Isapejuwe"
+
+#: templates/meta_search/wallet.html:410
+msgid "State"
+msgstr "Ipo"
+
+#: templates/meta_search/wallet.html:581
+msgid "Added fund to wallet"
+msgstr "Fi kun inawo si apamọwọ"
+
+#: templates/meta_search/wallet.html:600
+msgid "Show balance"
+msgstr "Ṣe iwọntunwọnsi"
+
+#: templates/meta_search/withdrawal.html:8
+msgid "Home / my Wallet / Withdrawal"
+msgstr "Ile / apamọwọ mi / yiyọ kuro"
+
+#: templates/meta_search/withdrawal.html:167
+msgid "Your withdrawal method is verified."
+msgstr "Ọna yiyọ kuro rẹ ni idaniloju."
+
+#: templates/meta_search/withdrawal.html:222
+msgid "EUR (Euro)"
+msgstr "EUR (Euro)"
+
+#: templates/meta_search/withdrawal.html:227
+msgid "USD (US Dollar)"
+msgstr "USD (Dola Dola)"
+
+#: templates/meta_search/withdrawal.html:232
+msgid "GBP (Pound)"
+msgstr "GBP (iwon)"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Min"
+msgstr "Min"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Max"
+msgstr "Max"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "per request"
+msgstr "fun ibeere"
+
+#: templates/meta_search/withdrawal.html:256
+msgid "Bound wallet address"
+msgstr "Adirẹsi apamọwọ"
+
+#: templates/meta_search/withdrawal.html:257
+msgid "Update address"
+msgstr "Adirẹsi imudojuiwọn"
+
+#: templates/meta_search/withdrawal.html:264
+msgid "Network:"
+msgstr "Nẹtiwọọki:"
+
+#: templates/meta_search/withdrawal.html:278
+msgid "Bind your wallet address first"
+msgstr "Fi nkan Orukọ apamọwọ rẹ ni akọkọ"
+
+#: templates/meta_search/withdrawal.html:279
+msgid "Bind Wallet Address"
+msgstr "Adirẹsi apamọwọ BIT"
+
+#: templates/meta_search/withdrawal.html:283
+msgid ""
+"You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste "
+"your wallet address → verify (email/SMS) → the address will be saved and "
+"auto-filled here."
+msgstr ""
+"Iwọ yoo lọ si oju-iwe adirẹsi Bind → Yan Nẹtiwọọki (e.. TR TRC20) → PRLETE "
+"(Imeeli / SMS)."
+
+#: templates/meta_search/withdrawal.html:285
+msgid "Bind wallet address?"
+msgstr "Adirẹsi Wolet?"
+
+#: templates/meta_search/withdrawal.html:296
+msgid "Withdrawal Method"
+msgstr "Ọna yiyọ kuro"
+
+#: templates/meta_search/withdrawal.html:303
+msgid "ETHEREUM"
+msgstr "Etheum"
+
+#: templates/meta_search/withdrawal.html:330
+#: templates/meta_search/withdrawal.html:472
+msgid "The withdrawal requirement has yet to be fulfilled."
+msgstr "Ibeere yiyọ kuro ti tun ti ṣẹ."
+
+#: templates/meta_search/withdrawal.html:332
+msgid "WITHDRAW"
+msgstr "Yọkuro"
+
+#: templates/meta_search/withdrawal.html:339
+msgid "For security, you must set a withdrawal password first."
+msgstr "Fun aabo, o gbọdọ fi ọrọ igbaniwọle yiyọ kuro ni akọkọ."
+
+#: templates/meta_search/withdrawal.html:340
+msgid "Set withdrawal password"
+msgstr "Ṣeto ọrọ igbaniwọle yiyọ kuro"
+
+#: templates/meta_search/withdrawal.html:349
+msgid "Confirm withdrawal"
+msgstr "Jẹrisi yiyọ kuro"
+
+#: templates/meta_search/withdrawal.html:354
+msgid "Enter your 6-digit withdrawal password to continue."
+msgstr "Tẹ ọrọ igbaniwọle yiyọ kuro 6 rẹ lati tẹsiwaju."
+
+#: templates/meta_search/withdrawal.html:356
+msgid "Cancel"
+msgstr "Fagilee"
+
+#: templates/meta_search/withdrawal.html:357
+msgid "Confirm & Withdraw"
+msgstr "Jẹrisi & yọkuro"
+
+#: templates/meta_search/withdrawal.html:368
+msgid "Withdrawal policy"
+msgstr "Afihan yiyọ kuro"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "The withdrawal requirement has yet to be fulfilled"
+msgstr "Awọn ibeere yiyọ kuro ti sibẹsibẹ ṣẹ"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "COMPLETE MORE TASKS"
+msgstr "Pari awọn iṣẹ diẹ sii"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "before the next withdrawal."
+msgstr "ṣaaju ki o to tẹle."
+
+#: templates/meta_search/withdrawal.html:373
+#, python-format
+msgid ""
+"Locked: The withdrawal requirement has yet to be fulfilled "
+"%(withdraw_cycles_remaining)s"
+msgstr "Titiipa: ibeere yiyọ kuro ti sibẹsibẹ ṣẹ ([T ["
+
+#: templates/meta_search/withdrawal.html:377
+msgid "Got it"
+msgstr "Ṣe o ri"
+
+#: templates/meta_search/withdrawal.html:500
+msgid "Processing…"
+msgstr "Ṣiṣẹ ..."
+
+#: templates/meta_search/withdrawal_success.html:5
+msgid "Withdrawal Submitted"
+msgstr "Yiyọ kuro"
+
+#: templates/meta_search/withdrawal_success.html:6
+msgid "Home / my Wallet / Withdrawal / Success"
+msgstr "Ile / apamọwọ mi / yiyọ kuro / aṣeyọri"
+
+#: templates/meta_search/withdrawal_success.html:108
+msgid "Awaiting Approval"
+msgstr "Wiwa Ifọwọsi"
+
+#: templates/meta_search/withdrawal_success.html:114
+msgid "Withdrawal submitted"
+msgstr "Yiyọ kuro"
+
+#: templates/meta_search/withdrawal_success.html:121
+msgid "We’ve received your request."
+msgstr "A ti gba ibeere rẹ."
+
+#: templates/meta_search/withdrawal_success.html:122
+msgid "You’ll get an update once it’s reviewed."
+msgstr "Iwọ yoo gba imudojuiwọn ni kete ti o ṣe atunyẹwo."
+
+#: templates/meta_search/withdrawal_success.html:129
+msgid "Request ID"
+msgstr "Ibeere ID"
+
+#: templates/meta_search/withdrawal_success.html:132
+#: templates/meta_search/withdrawal_success.html:197
+msgid "Copy"
+msgstr "Ẹda"
+
+#: templates/meta_search/withdrawal_success.html:150
+#: templates/tasks/user_task_dashboard.html:312
+msgid "Submitted"
+msgstr "Silẹ"
+
+#: templates/meta_search/withdrawal_success.html:157
+msgid "To"
+msgstr "Si"
+
+#: templates/meta_search/withdrawal_success.html:166
+msgid "Your withdrawal request has been submitted."
+msgstr "A ti fi ibeere yiyọ kuro."
+
+#: templates/meta_search/withdrawal_success.html:171
+msgid "Make another withdrawal"
+msgstr "Ṣe yiyọ kuro miiran"
+
+#: templates/meta_search/withdrawal_success.html:175
+msgid ""
+"Tip: If you navigate back to the withdrawal page, it will load a fresh form "
+"so it can’t be submitted twice."
+msgstr ""
+"Imọran: Ti o ba lọ si ori ẹhin pada si oju-iwe yiyọ kuro, yoo fifuye fọọmu "
+"titun ki o le fi silẹ lẹmeeji."
+
+#: templates/tasks/task_detail.html:4
+msgid "Task Preview"
+msgstr "Awotẹlẹ iṣẹ-ṣiṣe"
+
+#: templates/tasks/task_detail.html:6
+msgid "Home / Task / Detail"
+msgstr "Ile / Iṣẹ / Apejuwe"
+
+#: templates/tasks/task_detail.html:90
+msgid "Task image"
+msgstr "Aworan iṣẹ ṣiṣe"
+
+#: templates/tasks/task_detail.html:103
+msgid "Rated"
+msgstr "Tilẹ"
+
+#: templates/tasks/task_detail.html:152
+msgid "1X commission"
+msgstr "1x igbimọ"
+
+#: templates/tasks/task_detail.html:165
+msgid "Submit"
+msgstr "Tẹriba"
+
+#: templates/tasks/task_detail.html:167
+msgid "Submitted (waiting)"
+msgstr "Silẹ (nduro)"
+
+#: templates/tasks/task_detail.html:191
+msgid "Congratulations!"
+msgstr "Oriire!"
+
+#: templates/tasks/task_detail.html:193
+msgid ""
+"You have received a platinum package. For more info please contact customer "
+"service."
+msgstr "O ti gba package kan. Fun alaye diẹ sii jọwọ kan si iṣẹ alabara."
+
+#: templates/tasks/user_task_dashboard.html:5
+#: templates/tasks/user_task_dashboard.html:6
+msgid "Tasks Dashboard"
+msgstr "Dasifers Dasibodu"
+
+#: templates/tasks/user_task_dashboard.html:213
+msgid "Home / Task"
+msgstr "Ile / Iṣẹ"
+
+#: templates/tasks/user_task_dashboard.html:227
+msgid "Total Asset"
+msgstr "Apapọ dukia"
+
+#: templates/tasks/user_task_dashboard.html:231
+msgid "Asset"
+msgstr "Dukia"
+
+#: templates/tasks/user_task_dashboard.html:235
+msgid "Dividends"
+msgstr "Pin"
+
+#: templates/tasks/user_task_dashboard.html:246
+msgid "Complete Tasks and get"
+msgstr "Awọn iṣẹ ṣiṣe pari ati gba"
+
+#: templates/tasks/user_task_dashboard.html:246
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "rewarded"
+msgstr "Gba ere"
+
+#: templates/tasks/user_task_dashboard.html:247
+msgid "Banner Image"
+msgstr "Aworan asia"
+
+#: templates/tasks/user_task_dashboard.html:249
+msgid "Order received today:"
+msgstr "Bere fun gba loni:"
+
+#: templates/tasks/user_task_dashboard.html:252
+msgid "Fetching your task…"
+msgstr "Mu iṣẹ rẹ ..."
+
+#: templates/tasks/user_task_dashboard.html:262
+msgid "Filter status"
+msgstr "Ipo Àlẹmọ"
+
+#: templates/tasks/user_task_dashboard.html:268
+msgid "Apply"
+msgstr "Fisi"
+
+#: templates/tasks/user_task_dashboard.html:293
+#: templates/tasks/user_task_dashboard.html:323
+msgid "No tasks yet."
+msgstr "Ko si awọn iṣẹ ṣiṣe sibẹsibẹ."
+
+#: templates/tasks/user_task_dashboard.html:311
+msgid "Approved"
+msgstr "Fọwọsi"
+
+#: templates/tasks/user_task_dashboard.html:335
+#: templates/tasks/user_task_dashboard.html:392
+msgid "Loading…"
+msgstr "Loading ..."
+
+#: templates/tasks/user_task_dashboard.html:336
+#: templates/tasks/user_task_dashboard.html:386
+msgid "Please wait a moment"
+msgstr "Jọwọ duro akoko kan"
+
+#: templates/tasks/user_task_dashboard.html:353
+msgid "Oh No!"
+msgstr "Oh ko si!"
+
+#: templates/tasks/user_task_dashboard.html:355
+msgid ""
+"You have completed <strong id=\"completedCount\">0</strong> orders."
+"<br>Please contact customer service for assistance."
+msgstr ""
+"O ti pari [[[[[deken_0]]]]]] 0 [T [T [T [T [T [T [T [T [Taken_1]] fun iṣẹ "
+"Onibara fun iranlọwọ."
+
+#~ msgid "FAQ"
+#~ msgstr "Faak"
+
+#~ msgid "Imprint"
+#~ msgstr "Tẹ mọ"
+
+#~ msgid "Earn rewards instantly"
+#~ msgstr "Gba awọn ere lesekese"

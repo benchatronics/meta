@@ -22,7 +22,7 @@
   <article class="info-article">
     <h3 class="info-heading">{{ page.title }}</h3>
     <div class="info-bodytext">
-      {{ page.body|linebreaks }}
+      {{ page.body|safe }}
     </div>
   </article>
 {% endblock %}

@@ -1,0 +1,631 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 16:12+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: main/admin.py:44
+msgid "Clear withdrawal PIN"
+msgstr "دبوس الانسحاب واضح"
+
+#: main/admin.py:46
+msgid ""
+"Tick to remove any existing withdrawal PIN so the user must set a new one."
+msgstr ""
+"علامة لإزالة أي دبوس سحب موجود بحيث يتعين على المستخدم تعيين جدول جديد."
+
+#: main/admin.py:49
+msgid "Set new withdrawal PIN"
+msgstr "تعيين دبوس الانسحاب الجديد"
+
+#: main/admin.py:57
+msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
+msgstr "خياري. أدخل بالضبط 6 أرقام لتعيين/إعادة تعيين الدبوس."
+
+#: main/admin.py:70
+msgid "PIN must be exactly 6 digits."
+msgstr "يجب أن يكون الدبوس بالضبط 6 أرقام."
+
+#: main/admin.py:136
+msgid "Withdrawal security"
+msgstr "أمن الانسحاب"
+
+#: main/forms.py:27
+msgid "Account password"
+msgstr "كلمة مرور الحساب"
+
+#: main/forms.py:31
+msgid "Withdrawal password (6 digits)"
+msgstr "كلمة مرور السحب (6 أرقام)"
+
+#: main/forms.py:35
+msgid "Confirm withdrawal password"
+msgstr "تأكيد كلمة مرور السحب"
+
+#: main/forms.py:46
+msgid "Incorrect account password."
+msgstr "كلمة مرور الحساب غير صحيحة."
+
+#: main/forms.py:53 main/forms.py:87
+msgid "Enter exactly 6 digits."
+msgstr "أدخل بالضبط 6 أرقام."
+
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+msgid "Passwords do not match."
+msgstr "كلمات المرور لا تتطابق."
+
+#: main/forms.py:61
+msgid "Current withdrawal password"
+msgstr "كلمة مرور السحب الحالية"
+
+#: main/forms.py:65
+msgid "New withdrawal password (6 digits)"
+msgstr "كلمة مرور سحب جديدة (6 أرقام)"
+
+#: main/forms.py:69
+msgid "Confirm new withdrawal password"
+msgstr "تأكيد كلمة مرور السحب الجديدة"
+
+#: main/forms.py:80
+msgid "Incorrect withdrawal password."
+msgstr "كلمة مرور السحب غير صحيحة."
+
+#: main/forms.py:161
+#, python-format
+msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
+msgstr "JPG/PNG/WebP/GIF ، حتى [[[[[token_0]]]] MB."
+
+#: main/forms.py:162
+msgid "Direct image URL (used only if no file is uploaded)."
+msgstr "عنوان URL المباشر للصور (يستخدم فقط إذا لم يتم تحميل أي ملف)."
+
+#: main/forms.py:180
+msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
+msgstr "نوع الصورة غير المدعوم. استخدم JPG أو PNG أو WebP أو GIF."
+
+#: main/forms.py:182
+#, python-format
+msgid "Image too large (max %(mb)s MB)."
+msgstr "صورة كبيرة جدًا (كحد أقصى [[[[[token_0]]]]] MB)."
+
+#: main/forms.py:191
+msgid "Only http/https URLs are allowed."
+msgstr "يُسمح فقط بعنوان URL HTTP/HTTPS."
+
+#: main/forms.py:206 main/forms.py:371 main/forms.py:581
+msgid "Country code"
+msgstr "رمز البلد"
+
+#: main/forms.py:211 main/forms.py:376 main/forms.py:586
+msgid "Enter your phone number"
+msgstr "أدخل رقم هاتفك"
+
+#: main/forms.py:215 main/forms.py:380 main/forms.py:590
+msgid "Phone number"
+msgstr "رقم التليفون"
+
+#: main/forms.py:220
+msgid "Enter your invitation code"
+msgstr "أدخل رمز الدعوة الخاص بك"
+
+#: main/forms.py:223
+msgid "Invitation code"
+msgstr "رمز الدعوة"
+
+#: main/forms.py:225 main/forms.py:592
+msgid "I am not a robot"
+msgstr "أنا لست روبوت"
+
+#: main/forms.py:236 main/forms.py:385 main/forms.py:615
+msgid "Enter your password"
+msgstr "أدخل كلمة المرور الخاصة بك"
+
+#: main/forms.py:240
+msgid "Re-enter your password"
+msgstr "أعد إدخال كلمة المرور الخاصة بك"
+
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+msgid "Invalid phone number format."
+msgstr "تنسيق رقم الهاتف غير صالح."
+
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+msgid "This phone number is not possible for the selected country."
+msgstr "رقم الهاتف هذا غير ممكن للبلد المحدد."
+
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+msgid "This phone number is not valid for the selected country."
+msgstr "رقم الهاتف هذا غير صالح للبلد المحدد."
+
+#: main/forms.py:281 main/forms.py:429 main/forms.py:657
+#, python-format
+msgid ""
+"Phone number length must be between %(lo)d and %(hi)d digits for "
+"%(country)s."
+msgstr ""
+"يجب أن يكون طول رقم الهاتف بين ٪ (lo) d و ٪ (hi) d لأرقام [[[[[token_0]]]]]."
+
+#: main/forms.py:293
+msgid "An account with this phone already exists."
+msgstr "يوجد حساب مع هذا الهاتف بالفعل."
+
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: main/forms.py:325
+msgid ""
+"Raw passwords are not stored, so there is no way to see this user’s "
+"password, but you can change the password using the “Change password” form."
+msgstr ""
+"لا يتم تخزين كلمات المرور الخام ، لذلك لا توجد طريقة لرؤية كلمة مرور هذا "
+"المستخدم ، ولكن يمكنك تغيير كلمة المرور باستخدام نموذج \"تغيير كلمة "
+"المرور\"."
+
+#: main/forms.py:352
+msgid "User phone (E.164 or local NG)"
+msgstr "هاتف المستخدم (E.164 أو NG المحلي)"
+
+#: main/forms.py:353
+msgid "+2348012345678 or 080..."
+msgstr "+2348012345678 أو 080 ..."
+
+#: main/forms.py:355 main/views.py:210
+#: templates/meta_search/settings_change_password.html:83
+msgid "New password"
+msgstr "كلمة المرور الجديدة"
+
+#: main/forms.py:356 main/views.py:211
+msgid "Confirm new password"
+msgstr "تأكيد كلمة مرور جديدة"
+
+#: main/forms.py:670
+msgid "Phone does not match your account."
+msgstr "الهاتف لا يتطابق مع حسابك."
+
+#: main/models.py:578 templates/base_info.html:22
+#: templates/meta_search/info_index.html:27
+msgid "About us"
+msgstr "معلومات عنا"
+
+#: main/models.py:579 templates/base_info.html:26
+#: templates/meta_search/info_index.html:31
+msgid "Contact us"
+msgstr "اتصل بنا"
+
+#: main/models.py:580 templates/base_info.html:30
+#: templates/meta_search/info_index.html:35
+msgid "Help"
+msgstr "يساعد"
+
+#: main/models.py:581 templates/base_info.html:34
+#: templates/meta_search/info_index.html:39
+msgid "Level"
+msgstr "مستوى"
+
+#: main/models.py:582 templates/base_info.html:38
+#: templates/meta_search/info_index.html:43
+msgid "Sign-in reward"
+msgstr "مكافأة تسجيل الدخول"
+
+#: main/views.py:69
+msgid "Withdrawal password set."
+msgstr "تعيين كلمة مرور السحب."
+
+#: main/views.py:79
+msgid "You don’t have a withdrawal password yet. Set one first."
+msgstr "ليس لديك كلمة مرور سحب بعد. تعيين واحد أولا."
+
+#: main/views.py:86
+msgid "Withdrawal password updated."
+msgstr "تم تحديث كلمة مرور السحب."
+
+#: main/views.py:209
+msgid "Verification code"
+msgstr "رمز التحقق"
+
+#: main/views.py:247
+msgid "No account found for that phone."
+msgstr "لم يتم العثور على حساب لهذا الهاتف."
+
+#: main/views.py:259
+#, python-format
+msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
+msgstr "رمز إعادة الضبط الخاص بك هو: [[[[[token_0]]]]]. تنتهي في 10 دقائق."
+
+#: main/views.py:263
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr "لم نتمكن من إرسال الرمز. يرجى المحاولة مرة أخرى في لحظة."
+
+#: main/views.py:267
+msgid "Unexpected error sending code. Try again later."
+msgstr "خطأ غير متوقع إرسال رمز. حاول مرة أخرى لاحقًا."
+
+#: main/views.py:272
+msgid "We sent a verification code to your phone."
+msgstr "أرسلنا رمز التحقق إلى هاتفك."
+
+#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
+#: main/views.py:1169
+msgid "Please correct the errors below."
+msgstr "الرجاء تصحيح الأخطاء أدناه."
+
+#: main/views.py:290
+msgid "Start by entering your phone number."
+msgstr "ابدأ بإدخال رقم هاتفك."
+
+#: main/views.py:298
+msgid "Invalid or expired code."
+msgstr "رمز غير صالح أو منتهي الصلاحية."
+
+#: main/views.py:304
+msgid "Account not found. Please start over."
+msgstr "الحساب لم يتم العثور عليه. من فضلك ابدأ من جديد."
+
+#: main/views.py:315
+msgid "Your password has been reset. You can now sign in."
+msgstr "تمت إعادة تعيين كلمة المرور الخاصة بك. يمكنك الآن تسجيل الدخول."
+
+#: main/views.py:341 main/views.py:392
+msgid "You're already signed in."
+msgstr "لقد وقعت بالفعل في."
+
+#: main/views.py:375
+msgid "Welcome back!"
+msgstr "مرحبًا بعودتك!"
+
+#: main/views.py:378
+msgid "Invalid phone or password."
+msgstr "هاتف غير صالح أو كلمة مرور."
+
+#: main/views.py:405
+msgid "Account created!"
+msgstr "حساب تم إنشاؤه!"
+
+#: main/views.py:421
+msgid "You have been logged out."
+msgstr "لقد قمت بتسجيل الخروج."
+
+#: main/views.py:468
+msgid "Invalid phone format. Please enter a valid number."
+msgstr "تنسيق هاتف غير صالح. الرجاء إدخال رقم صالح."
+
+#: main/views.py:474
+#, python-format
+msgid "No user found with phone %(phone)s."
+msgstr "لم يتم العثور على مستخدم بالهاتف [[[[[token_0]]]]]."
+
+#: main/views.py:490
+#, python-format
+msgid "Password reset for %(phone)s."
+msgstr "إعادة تعيين كلمة المرور لـ [[[[[token_0]]]]]."
+
+#: main/views.py:1167
+msgid "Password updated."
+msgstr "تم تحديث كلمة المرور."
+
+#: templates/base_info.html:4
+msgid "info"
+msgstr "معلومات"
+
+#: templates/meta_search/announcements.html:5
+#: templates/meta_search/announcements.html:13
+msgid "Announcements"
+msgstr "الإعلانات"
+
+#: templates/meta_search/announcements.html:26
+msgid "No announcements at the moment."
+msgstr "لا إعلانات في الوقت الحالي."
+
+#: templates/meta_search/ide.html:18
+msgid "Seaside resort at dusk"
+msgstr "منتجع شاطئ البحر عند الغسق"
+
+#: templates/meta_search/ide.html:24
+msgid "Experience The Magic Of Relaxation"
+msgstr "تجربة سحر الاسترخاء"
+
+#: templates/meta_search/ide.html:25
+msgid ""
+"Indulge in the epitome of coastal living as you discover the breathtaking "
+"beauty and tranquility of luxury."
+msgstr ""
+"تنغمس في مثال الحياة الساحلية وأنت تكتشف الجمال المذهل والهدوء من الرفاهية."
+
+#: templates/meta_search/ide.html:30
+msgid "Customer avatar 1"
+msgstr "عميل الصورة الرمزية 1"
+
+#: templates/meta_search/ide.html:31
+msgid "Customer avatar 2"
+msgstr "العميل الصورة الرمزية 2"
+
+#: templates/meta_search/ide.html:32
+msgid "Customer avatar 3"
+msgstr "العميل الصورة الرمزية 3"
+
+#: templates/meta_search/ide.html:34
+msgid "Trusted by over 25k+ people"
+msgstr "موثوق به أكثر من 25 ألف شخص"
+
+#: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+msgid "Explore Now"
+msgstr "استكشف الآن"
+
+#: templates/meta_search/ide.html:40
+msgid "Travel partners"
+msgstr "شركاء السفر"
+
+#: templates/meta_search/ide.html:58
+msgid "Premium Facilities"
+msgstr "مرافق قسط"
+
+#: templates/meta_search/ide.html:61
+msgid "Exclusive Sunset View"
+msgstr "عرض غروب الشمس الحصري"
+
+#: templates/meta_search/ide.html:62
+msgid "You witness the beauty of the world from your room"
+msgstr "أنت تشهد جمال العالم من غرفتك"
+
+#: templates/meta_search/ide.html:65
+msgid "Integrated Tourist Area"
+msgstr "منطقة سياحية متكاملة"
+
+#: templates/meta_search/ide.html:66
+msgid "Enhancing your travel experience"
+msgstr "تعزيز تجربة السفر الخاصة بك"
+
+#: templates/meta_search/ide.html:69
+msgid "Nature-Inspired Pool"
+msgstr "تجمع مستوحى من الطبيعة"
+
+#: templates/meta_search/ide.html:70
+msgid "Serene swimming pool with a touch of paradise"
+msgstr "حمام سباحة هادئ مع لمسة من الجنة"
+
+#: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+msgid "Get Rewarded"
+msgstr "الحصول على مكافأة"
+
+#: templates/meta_search/ide.html:85
+msgid "Rate Apartments"
+msgstr "قيم الشقق"
+
+#: templates/meta_search/ide.html:86
+msgid "Give random objective ratings based on view and aesthetics."
+msgstr "إعطاء تصنيفات موضوعية عشوائية على أساس العرض والجمال."
+
+#: templates/meta_search/ide.html:94
+msgid "Earn instant rewards from the apartments you rate."
+msgstr "كسب مكافآت فورية من الشقق التي تقيمها."
+
+#: templates/meta_search/ide.html:102
+msgid "Featured apartments carousel"
+msgstr "شقق مميزة كاروسيل"
+
+#: templates/meta_search/ide.html:103
+msgid "Previous slide"
+msgstr "الشريحة السابقة"
+
+#: templates/meta_search/ide.html:104
+msgid "Next slide"
+msgstr "الشريحة التالية"
+
+#: templates/meta_search/ide.html:108
+msgid "Modern apartment interior"
+msgstr "الشقة الحديثة الداخلية"
+
+#: templates/meta_search/ide.html:111
+msgid "Resort pool at sunset"
+msgstr "تجمع المنتجع عند غروب الشمس"
+
+#: templates/meta_search/ide.html:114
+msgid "Scenic valley view"
+msgstr "عرض الوادي المناظر الخلابة"
+
+#: templates/meta_search/ide.html:129
+msgid "Clients Review"
+msgstr "مراجعة العملاء"
+
+#: templates/meta_search/ide.html:130
+msgid "See some honest reviews from our users on the platform"
+msgstr "شاهد بعض المراجعات الصادقة من مستخدمينا على النظام الأساسي"
+
+#: templates/meta_search/ide.html:135
+msgid "Client"
+msgstr "عميل"
+
+#: templates/meta_search/ide.html:137
+msgid ""
+"Had a great experience using this for solid bookings. Customer service was "
+"top-notch."
+msgstr ""
+"كان لديه تجربة رائعة باستخدام هذا للحجوزات الصلبة. كانت خدمة العملاء من "
+"الدرجة الأولى."
+
+#: templates/meta_search/ide.html:147
+msgid "Get your inspiration of luxury and get rewarded"
+msgstr "احصل على مصدر إلهامك للرفاهية واحصل على مكافأة"
+
+#: templates/meta_search/ide.html:148
+msgid "Earn new rewards at every step you take under true luxury."
+msgstr "كسب مكافآت جديدة في كل خطوة تتخذها تحت الرفاهية الحقيقية."
+
+#: templates/meta_search/ide.html:149
+msgid "See More"
+msgstr "رؤية المزيد"
+
+#: templates/meta_search/ide.html:152
+msgid "Luxury inspiration"
+msgstr "إلهام فاخر"
+
+#: templates/meta_search/includes/_header.html:60
+msgid "Get started"
+msgstr "ابدأ"
+
+#: templates/meta_search/info_index.html:6
+msgid "Info Center"
+msgstr "مركز المعلومات"
+
+#: templates/meta_search/info_index.html:7
+msgid "Pick a section on the left, or use the quick links below."
+msgstr "اختر قسمًا على اليسار ، أو استخدم الروابط السريعة أدناه."
+
+#: templates/meta_search/info_index.html:19
+#: templates/meta_search/info_page.html:17
+msgid "View all announcements"
+msgstr "عرض جميع الإعلانات"
+
+#: templates/meta_search/language.html:8
+msgid "Language"
+msgstr "لغة"
+
+#: templates/meta_search/language.html:9
+msgid "Select your language."
+msgstr "حدد لغتك."
+
+#: templates/meta_search/password_reset_phone.html:4
+msgid "Reset Password – Step 1"
+msgstr "إعادة تعيين كلمة المرور - الخطوة 1"
+
+#: templates/meta_search/password_reset_phone.html:6
+#: templates/meta_search/password_reset_verify.html:6
+#: templates/meta_search/password_reset_verify.html:79
+msgid "Reset Password"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: templates/meta_search/password_reset_phone.html:21
+msgid "Enter your phone number to get a verification code."
+msgstr "أدخل رقم هاتفك للحصول على رمز التحقق."
+
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:45
+msgid "Phone"
+msgstr "هاتف"
+
+#: templates/meta_search/password_reset_phone.html:59
+msgid "Send Code"
+msgstr "إرسال الرمز"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Remembered your password?"
+msgstr "تذكرت كلمة المرور الخاصة بك؟"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Sign in"
+msgstr "تسجيل الدخول"
+
+#: templates/meta_search/password_reset_verify.html:4
+msgid "Reset Password – Step 2"
+msgstr "إعادة تعيين كلمة المرور - الخطوة 2"
+
+#: templates/meta_search/password_reset_verify.html:21
+msgid "Enter the code sent to your phone, then choose a new password."
+msgstr "أدخل الرمز المرسلة إلى هاتفك ، ثم اختر كلمة مرور جديدة."
+
+#: templates/meta_search/password_reset_verify.html:43
+msgid "Verification Code"
+msgstr "رمز التحقق"
+
+#: templates/meta_search/password_reset_verify.html:52
+msgid "New Password"
+msgstr "كلمة المرور الجديدة"
+
+#: templates/meta_search/password_reset_verify.html:61
+#: templates/meta_search/password_reset_verify.html:74
+#: templates/meta_search/settings_change_password.html:76
+#: templates/meta_search/settings_change_password.html:93
+#: templates/meta_search/settings_change_password.html:112
+#: templates/meta_search/signin.html:68
+msgid "Show/Hide password"
+msgstr "عرض/إخفاء كلمة المرور"
+
+#: templates/meta_search/password_reset_verify.html:65
+msgid "Confirm Password"
+msgstr "تأكيد كلمة المرور"
+
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "خلف"
+
+#: templates/meta_search/password_reset_verify.html:86
+msgid "Home"
+msgstr "بيت"
+
+#: templates/meta_search/settings_change_password.html:4
+msgid "Settings — Change password"
+msgstr "الإعدادات - تغيير كلمة المرور"
+
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "تغيير كلمة المرور"
+
+#: templates/meta_search/settings_change_password.html:22
+msgid ""
+"For security, confirm your phone, pass the captcha, then set a strong "
+"password."
+msgstr "للأمان ، قم بتأكيد هاتفك ، مرر Captcha ، ثم قم بتعيين كلمة مرور قوية."
+
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:73
+msgid "Captcha"
+msgstr "كابتشا"
+
+#: templates/meta_search/settings_change_password.html:66
+msgid "Old password"
+msgstr "كلمة المرور القديمة"
+
+#: templates/meta_search/settings_change_password.html:79
+msgid "Forgot current password?"
+msgstr "هل نسيت كلمة المرور الحالية؟"
+
+#: templates/meta_search/settings_change_password.html:95
+msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
+msgstr "استخدم 8+ أحرف مع مزيج من الحروف والأرقام والرموز."
+
+#: templates/meta_search/settings_change_password.html:102
+msgid "Confirm password"
+msgstr "تأكيد كلمة المرور"
+
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: templates/meta_search/signin.html:4
+msgid "Sign In - Orbitpedia"
+msgstr "تسجيل الدخول - Orbitpedia"
+
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+#: templates/meta_search/signin.html:21
+msgid "Welcome back, please sign in"
+msgstr "مرحبًا بك مرة أخرى ، يرجى تسجيل الدخول"
+
+#: templates/meta_search/signin.html:87
+msgid "Don’t have an account?"
+msgstr "ليس لديك حساب؟"
+
+#: templates/meta_search/signin.html:87
+msgid "Create one"
+msgstr "إنشاء واحد"
+
+#: templates/meta_search/signin.html:89
+msgid "Forgotten password?"
+msgstr "نسيت كلمة المرور؟"

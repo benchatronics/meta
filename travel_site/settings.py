@@ -3,7 +3,10 @@ pymysql.install_as_MySQLdb()
 
 from pathlib import Path
 import os
+#USE_I18N = True
 from .i18n import LANGUAGES, LANGUAGE_CODE
+
+
 
 # ==== Simple Captcha: senior-friendly ====
 CAPTCHA_IMAGE_SIZE = (240, 90)          # wider + taller image
@@ -85,8 +88,8 @@ USE_X_FORWARDED_HOST = True
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["scamperlinks.pythonanywhere.com/","xpediabooster.com","www.xpediabooster.com"]
-CSRF_TRUSTED_ORIGINS = ["https://scamperlinks.pythonanywhere.com/","https://xpediabooster.com","https://www.xpediabooster.com"]
+ALLOWED_HOSTS = ["scamperlinks.pythonanywhere.com","explorepiedia.com","www.explorepiedia.com"]
+CSRF_TRUSTED_ORIGINS = ["https://scamperlinks.pythonanywhere.com","https://explorepiedia.com","https://www.explorepiedia.com"]
 
 # --- Apps ---
 INSTALLED_APPS = [
@@ -117,6 +120,7 @@ RECAPTCHA_PUBLIC_KEY = "test_public_key"
 RECAPTCHA_PRIVATE_KEY = "test_private_key"
 SILENCED_SYSTEM_CHECKS = ["captcha.recaptcha_test_key_error"]
 
+
 # --- Middleware ---
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -144,8 +148,6 @@ CACHES = {
 }
 
 
-
-
 # --- Templates ---
 TEMPLATES = [
     {
@@ -158,10 +160,18 @@ TEMPLATES = [
                 "django.template.context_processors.request",  # needed for set_language 'next' and dropdown
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "main.context_processors.impersonation",
             ],
         },
     },
 ]
+ # Ensure i18n context processor is present (Option B)
+TEMPLATES[0]["OPTIONS"].setdefault("context_processors", [])
+if "django.template.context_processors.i18n" not in TEMPLATES[0]["OPTIONS"]["context_processors"]:
+    TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+        "django.template.context_processors.i18n"
+    )
+
 
 WSGI_APPLICATION = "travel_site.wsgi.application"
 
@@ -204,6 +214,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = LANGUAGE_CODE
 LANGUAGES = LANGUAGES
 LOCALE_PATHS = [BASE_DIR / "locale"]
+LANGUAGE_COOKIE_NAME = 'django_language'
 
 TIME_ZONE = "UTC"
 USE_I18N = True

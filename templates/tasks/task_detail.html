@@ -1,8 +1,9 @@
 {% extends "base_user.html" %}
+{% load i18n %}
 
-{% block title %}Task Preview{% endblock %}
-{% block page_title %} Task{% endblock %}
-{% block breadcrumb %}Home / Task / Detail{% endblock %}
+{% block title %}{% trans "Task Preview" %}{% endblock %}
+{% block page_title %} {% trans "Task" %}{% endblock %}
+{% block breadcrumb %}{% trans "Home / Task / Detail" %}{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -85,7 +86,7 @@
     {% elif task.template.cover_image_url %}
       <img class="task-img" src="{{ task.template.cover_image_url }}" alt="{{ task.template.hotel_name }}">
     {% else %}
-      <img class="task-img" src="https://images.unsplash.com/photo-1522706604294-54b45f6b3924?q=80&w=1964&auto=format&fit=crop" alt="Task image">
+      <img class="task-img" src="https://images.unsplash.com/photo-1522706604294-54b45f6b3924?q=80&w=1964&auto=format&fit=crop" alt="{% trans 'Task image' %}">
     {% endif %}
 
     <div class="task-info">
@@ -98,14 +99,14 @@
         <div class="rating">
           {% if task.template.task_score %}<span class="score">{{ task.template.task_score }}</span>{% endif %}
           <!-- rating star icon -->
-          <span>{{ task.template.get_task_label_display|default:"Rated" }}</span>
+          <span>{{ task.template.get_task_label_display|default:_("Rated") }}</span>
         </div>
       {% endif %}
 
       <div class="row">
         <div class="label">
           <!-- task icon -->
-          Order ID
+          {% trans "Order ID" %}
         </div>
         <div class="value">{{ task.template.task_id }}</div>
       </div>
@@ -113,7 +114,7 @@
       <div class="row">
         <div class="label">
           <!-- calendar icon -->
-          Date
+          {% trans "Date" %}
         </div>
         <div class="value">{{ task.created_at|date:"d/m/Y" }}</div>
       </div>
@@ -134,7 +135,7 @@
         <div class="info-item">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M13 5C13 6.10457 10.5376 7 7.5 7C4.46243 7 2 6.10457 2 5M13 5C13 3.89543 10.5376 3 7.5 3C4.46243 3 2 3.89543 2 5M13 5V9.45715C11.7785 9.82398 11 10.3789 11 11M2 5V17C2 18.1046 4.46243 19 7.5 19C8.82963 19 10.0491 18.8284 11 18.5429V11M2 9C2 10.1046 4.46243 11 7.5 11C8.82963 11 10.0491 10.8284 11 10.5429M2 13C2 14.1046 4.46243 15 7.5 15C8.82963 15 10.0491 14.8284 11 14.5429M22 11C22 12.1046 19.5376 13 16.5 13C13.4624 13 11 12.1046 11 11M22 11C22 9.89543 19.5376 9 16.5 9C13.4624 9 11 9.89543 11 11M22 11V19C22 20.1046 19.5376 21 16.5 21C13.4624 21 11 20.1046 11 19V11M22 15C22 16.1046 19.5376 17 16.5 17C13.4624 17 11 16.1046 11 15" stroke="#1B1B1B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>    <span class="hint">€{{ task.price_used }}X5</span>
+</svg>    <span class="hint">€{{ task.price_used }}</span>
         </div>
 
         <!-- commission icon -->
@@ -147,9 +148,9 @@
 
       <div class="commission">
         {% if task.task_kind == task.Kind.ADMIN %}
-          1X commission: €{{ task.commission_used }}
+          {% trans "1X commission" %}: €{{ task.commission_used }}
         {% else %}
-          Commission: €{{ task.commission_used }}
+          {% trans "Commission" %}: €{{ task.commission_used }}
         {% endif %}
       </div>
 
@@ -160,11 +161,11 @@
                 name="submit_task"
                 {% if task.status != task.Status.IN_PROGRESS %}disabled{% endif %}>
           {% if task.status == task.Status.IN_PROGRESS %}
-            Submit
+            {% trans "Submit" %}
           {% elif task.status == task.Status.SUBMITTED %}
-            Submitted (waiting)
+            {% trans "Submitted (waiting)" %}
           {% elif task.status == task.Status.APPROVED %}
-            Completed
+            {% trans "Completed" %}
           {% else %}
             {{ task.get_status_display }}
           {% endif %}
@@ -181,16 +182,16 @@ Shown automatically on first visit (per task) using localStorage.
 {% if task.task_kind == task.Kind.ADMIN %}
 <div class="modal-overlay" id="adminCongrats" role="dialog" aria-modal="true" aria-labelledby="admTitle" aria-describedby="admBody" hidden>
   <div class="modal-card">
-    <button class="modal-x" type="button" aria-label="Close">×</button>
+    <button class="modal-x" type="button" aria-label="{% trans 'Close' %}">×</button>
     <div class="modal-hero">
       <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
     <div class="modal-body">
-      <h3 id="admTitle" class="modal-title">Congratulations!</h3>
+      <h3 id="admTitle" class="modal-title">{% trans "Congratulations!" %}</h3>
       <p id="admBody" class="modal-text">
-        You have received a platinum package. For more info please contact customer service.
+        {% trans "You have received a platinum package. For more info please contact customer service." %}
       </p>
-      <a class="modal-btn" href="{% url 'info_index' %}#support">Customer care</a>
+      <a class="modal-btn" href="{% url 'info_index' %}#support">{% trans "Customer care" %}</a>
     </div>
   </div>
 </div>

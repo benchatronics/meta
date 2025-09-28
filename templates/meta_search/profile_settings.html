@@ -1,18 +1,19 @@
 {% extends "base_settings.html" %}
-{% load static greetings form_utils %}
+{% load static greetings form_utils i18n %}
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-{% block title %}Settings — Profile{% endblock %}
+
+{% block title %}{% trans "Settings — Profile" %}{% endblock %}
 {% block page_title %} <span class="gear-icon" role="img" aria-label="settings">⚙️</span>
- Settings{% endblock %}
-{% block breadcrumb %}Home / setting / profile{% endblock %}
+ {% trans "Settings" %}{% endblock %}
+{% block breadcrumb %}{% trans "Home" %} / {% trans "setting" %} / {% trans "profile" %}{% endblock %}
 
 {% block settings_content %}
 
 <section class="profile-settings">
   <div class="card">
     <header class="card__header">
-      <h3>Basic Info</h3>
-      <p class="sub">Manage your details and personal preferences here.</p>
+      <h3>{% trans "Basic Info" %}</h3>
+      <p class="sub">{% trans "Manage your details and personal preferences here." %}</p>
     </header>
 
     <form method="post"
@@ -29,14 +30,14 @@
           <img id="avatarPreview"
                class="avatar__img"
                src="{{ avatar_src }}"
-               alt="Avatar">
+               alt="{% trans 'Avatar' %}">
         </div>
 
         <div class="avatar__controls">
           <div class="btn-row">
             <!-- Mobile-safe: input is inside label and overlayed -->
             <label class="btn outline file-btn" role="button">
-              <span class="btn__text">Change image</span>
+              <span class="btn__text">{% trans "Change image" %}</span>
               <input
                 type="file"
                 name="avatar"
@@ -47,11 +48,11 @@
             </label>
 
             <button class="btn danger ghost" type="submit" name="delete_avatar" value="1" formnovalidate>
-              Remove
+              {% trans "Remove" %}
             </button>
           </div>
 
-          <div class="hint">JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80).</div>
+          <div class="hint">{% trans "JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80)." %}</div>
           {% if form.avatar.errors %}<div class="error">{{ form.avatar.errors.0 }}</div>{% endif %}
         </div>
       </div>
@@ -59,47 +60,50 @@
       <!-- Info grid (read-only stats) -->
       <div class="info-grid">
         <div class="stat">
-          <div class="stat__label">User ID</div>
+          <div class="stat__label">{% trans "User ID" %}</div>
           <div class="stat__value">{{ user_id_value }}</div>
         </div>
         <div class="stat">
-          <div class="stat__label">Phone Number</div>
+          <div class="stat__label">{% trans "Phone Number" %}</div>
           <div class="stat__value">{{ phone_value }}</div>
         </div>
         <div class="stat">
-          <div class="stat__label">Language</div>
+          <div class="stat__label">{% trans "Language" %}</div>
           <div class="stat__value">{{ language_value }}</div>
         </div>
         <div class="stat">
-          <div class="stat__label">Level</div>
-          <div class="stat__value">LEVEL 1</div>
+          <div class="stat__label">{% trans "Level" %}</div>
+          <div class="stat__value">{% trans "LEVEL 1" %}</div>
         </div>
       </div>
 
       <!-- Editable fields -->
       <div class="edit-grid">
         <div class="field">
-          <label class="label" for="id_nickname">Nickname</label>
+          <label class="label" for="id_nickname">{% trans "Nickname" %}</label>
           {{ form.nickname }}
           {% if form.nickname.errors %}<div class="error">{{ form.nickname.errors.0 }}</div>{% endif %}
         </div>
 
         <div class="field">
-          <label class="label" for="id_avatar_url">Image URL (optional)</label>
+          <label class="label" for="id_avatar_url">{% trans "Image URL (optional)" %}</label>
           {{ form.avatar_url }}
           {% if form.avatar_url.errors %}<div class="error">{{ form.avatar_url.errors.0 }}</div>{% endif %}
-          <div class="hint">Used only if no uploaded image exists.</div>
+          <div class="hint">{% trans "Used only if no uploaded image exists." %}</div>
         </div>
       </div>
 
       <div class="actions">
-        <button class="btn primary" type="submit">Save Changes</button>
+        <button class="btn primary" type="submit">{% trans "Save Changes" %}</button>
       </div>
     </form>
   </div>
 </section>
 
+{# your CSS and JS remain unchanged #}
+
 <style>
+
 
 /* ===== Scoped design system (no bleed) ===== */
 .profile-settings{

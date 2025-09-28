@@ -1,0 +1,326 @@
+{% extends "base_user.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Pay Deposit" %}{% endblock %}
+{% block breadcrumb %}{% trans "Home" %} / {% trans "My Wallet" %} / {% trans "Deposit" %} / {% trans "Pay" %}{% endblock %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'meta_search/deposit_pay.css' %}">
+{% endblock %}
+
+{% block content %}
+  <!-- Page header (mobile-only back arrow + title) -->
+  <div class="page-with-mobile-back">
+    <div class="page-header">
+      <a
+        class="back-link"
+        href="{% url 'deposit' %}"
+        aria-label="{% trans 'Go back' %}"
+        onclick="if (history.length > 1) { history.back(); return false; }">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+      <h1 class="page-title">{% trans "Payment details" %}</h1>
+    </div>
+
+    <!-- rest of your page content here... -->
+  </div>
+
+  <!-- Scoped, page-only CSS -->
+  <style>
+    /* scope all rules to this page only */
+    .page-with-mobile-back .page-header{
+      display:flex; align-items:center; gap:10px;
+      margin:0 0 14px;
+    }
+    .page-with-mobile-back .page-title{
+      margin:0; font-weight:700; font-size:22px;
+      color:var(--text, #0f172a);
+    }
+    .page-with-mobile-back .back-link{
+      display:none;
+      align-items:center; justify-content:center;
+      width:36px; height:36px;
+      border-radius:10px;
+      border:1px solid var(--border, #e5e7eb);
+      background:#fff;
+      color:var(--primary, #2451FF);
+      text-decoration:none;
+      box-shadow:0 1px 0 rgba(16,24,40,.02);
+    }
+    .page-with-mobile-back .back-link:hover{
+      box-shadow:0 8px 20px rgba(16,24,40,.08);
+    }
+    @media (max-width: 900px){
+      .page-with-mobile-back .back-link{ display:inline-flex; }
+      .page-with-mobile-back .page-title{ font-size:20px; }
+      .page-with-mobile-back .back-link svg{ width:18px; height:18px; }
+    }
+  </style>
+
+  <section class="pay-scope">
+    <div class="shell">
+      {% if messages %}
+        <div class="alerts" role="status" aria-live="polite">
+          {% for message in messages %}
+            <div class="alert {{ message.tags|default:'info' }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <section class="pay-card">
+        <header class="pay-head">
+          <h2>{% trans "Payment details" %}</h2>
+          <div class="center-row">
+            <a
+              class="change-method"
+              href="{% url 'deposit' %}"
+              style="display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;border:1px solid var(--border, #e5e7eb);background:#fff;color:var(--primary, #2451FF);font-weight:600;text-decoration:none;white-space:nowrap;position:relative;left:50%;transform:translateX(-50%);">
+              {% trans "Change payment method" %}
+            </a>
+          </div>
+        </header>
+
+        <div class="pay-body">
+          <div class="row-top">
+            <div class="asset">
+              {% if dep.network == "TRC20" %}
+                <span class="token usdt">T</span><span class="asset-name">USDT</span>
+              {% elif dep.network == "ETH" %}
+                <span class="token eth" aria-label="{% trans 'Ethereum' %}">Ξ</span><span class="asset-name">{% trans "Ethereum" %}</span>
+              {% else %}
+                <span class="token eth">Ξ</span><span class="asset-name">{{ dep.get_network_display }}</span>
+              {% endif %}
+            </div>
+
+            <div class="amount-wrap">
+              <span id="amountText">{{ symbol }} {{ dep.amount|floatformat:2 }}</span>
+              <button class="copy" type="button" data-copy="#amountText" aria-label="{% trans 'Copy amount' %}">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="grid">
+            <div>
+              <div class="qr-box">
+                {% if qr_data_uri %}
+                  <img src="{{ qr_data_uri }}" alt="{% trans 'QR code' %}">
+                {% else %}
+                  <div id="qrcode"></div>
+                {% endif %}
+              </div>
+              <div class="qr-hint">{% blocktrans %}Scan to pay · {{ dep.get_network_display }}{% endblocktrans %}</div>
+            </div>
+
+            <div class="right"
+                 data-ttl-sec="{{ telegram_ttl_seconds|default:20 }}"
+                 {% if dep.verified_at %}data-verified-at="{{ dep.verified_at|date:'c' }}"{% endif %}
+                 data-symbol="{{ symbol }}"
+                 data-amount="{{ dep.amount|floatformat:2 }}"
+                 data-ref="{{ dep.reference }}"
+                 data-network="{{ dep.get_network_display }}"
+                 data-tg-url="{{ support_telegram_url }}"
+                 data-i18n-verifying="{% trans 'Verifying…' %}"
+                 data-i18n-verifying-left="{% trans 'Verifying… ({time} left)' %}"
+                 data-i18n-verify-hint="{% trans 'You can use “Verify now” for quick help.' %}"
+                 data-i18n-qr-error="{% trans 'QR error' %}"
+            >
+
+              <div class="pair"><div class="label">{% trans "Network" %}</div><div class="value">{{ dep.get_network_display }}</div></div>
+              <div class="pair"><div class="label">{% trans "Amount" %}</div><div class="value" id="amountText2">{{ symbol }} {{ dep.amount|floatformat:2 }}</div></div>
+
+              <div class="pair" style="align-items:start">
+                <div class="label" style="padding-top:4px">{% trans "Address" %}</div>
+                <div style="display:flex;gap:8px;align-items:flex-start">
+                  <div id="addr" class="mono">{{ dep.pay_to.address }}</div>
+                  <button class="copy" type="button" data-copy="#addr" aria-label="{% trans 'Copy address' %}">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="pair">
+                <div class="label">{% trans "Reference" %}</div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div id="refText" class="value mono">#{{ dep.reference }}</div>
+                  <button class="copy" type="button" data-copy="#refText" aria-label="{% trans 'Copy reference' %}">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              {% if dep.status == "awaiting_payment" %}
+                <form id="verifyForm" method="post" action="{% url 'deposit_verify' dep.id %}" novalidate>
+                  {% csrf_token %}
+                  <button class="pay-btn" id="verifyBtn" type="submit">{% trans "I’ve Paid — Verify" %}</button>
+                </form>
+                <div class="eta">{% trans "We’ll check the network and update your balance when confirmed." %}</div>
+
+              {% elif dep.status == "awaiting_review" %}
+                {% if show_telegram_now %}
+                  <a id="verifyNowLink"
+                     class="pay-btn"
+                     href="{{ support_telegram_url }}"
+                     target="_blank" rel="noopener noreferrer"
+                     data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me.">{% trans "Verify now" %}</a>
+                  <div class="quick-hint">{% blocktrans %}Need quick approval? Use <strong>Verify now</strong>.{% endblocktrans %}</div>
+                {% else %}
+                  <button class="pay-btn" type="button" id="verifyingBtn" disabled><span class="spinner" aria-hidden="true"></span>{% trans "Verifying…" %}</button>
+                  <a id="verifyNowLink"
+                     class="pay-btn"
+                     href="{{ support_telegram_url }}"
+                     target="_blank" rel="noopener noreferrer"
+                     data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me."
+                     style="display:none;">{% trans "Verify now" %}</a>
+                  <div class="eta" id="eta"></div>
+                  <div class="quick-hint" id="quickHint">{% blocktrans %}Need quick approval? You can use <strong>Verify now</strong>.{% endblocktrans %}</div>
+                {% endif %}
+
+              {% elif dep.status == "failed" %}
+                <div class="alert error">{% trans "Payment failed" %}{% if dep.failure_reason %}: {{ dep.failure_reason }}{% endif %}.</div>
+                <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">{% trans "Try again" %}</a>
+
+              {% elif dep.status == "draft" %}
+                <div class="alert info">{% trans "This deposit is a draft." %}</div>
+                <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">{% trans "Continue to deposit" %}</a>
+
+              {% elif dep.status == "completed" or dep.status == "confirmed" or dep.status == "credited" or dep.status == "success" %}
+                <div class="alert success">{% trans "Thanks! Recieved We’ll verify the payment shortly." %}</div>
+                <a href="{% url 'wallet' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">{% trans "Go to Wallet" %}</a>
+
+              {% else %}
+                <div class="alert info">{% blocktrans %}Status: {{ dep.status }}{% endblocktrans %}</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast">{% trans "Copied" %}</div>
+  </section>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+  // Scope root
+  const scope = document.querySelector('.pay-scope');
+
+  // Copy + toast
+  function copyFrom(selector){
+    const el = scope.querySelector(selector); if(!el) return;
+    const text = (el.textContent||el.innerText).trim();
+    navigator.clipboard.writeText(text).then(()=>{
+      const t = scope.querySelector('#toast');
+      t.classList.add('show'); clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=>t.classList.remove('show'),1400);
+    });
+  }
+  scope.querySelectorAll('.copy').forEach(btn=>{
+    btn.addEventListener('click',()=> copyFrom(btn.getAttribute('data-copy')));
+  });
+
+  // Verify (awaiting_payment) UX
+  (function(){
+    const f = scope.querySelector('#verifyForm'); const b = scope.querySelector('#verifyBtn');
+    const right = scope.querySelector('.right');
+    const i18nVerifying = right ? (right.dataset.i18nVerifying || 'Verifying…') : 'Verifying…';
+    if(f&&b){ f.addEventListener('submit', ()=>{
+      b.disabled = true; b.innerHTML = '<span class="spinner" aria-hidden="true"></span>' + i18nVerifying; b.setAttribute('aria-busy','true');
+    }, {passive:true}); }
+  })();
+
+  // Local QR fallback if server QR missing
+  (function(){
+    const box = scope.querySelector('#qrcode'); if(!box) return;
+    const right = scope.querySelector('.right');
+    const i18nQrError = right ? (right.dataset.i18nQrError || 'QR error') : 'QR error';
+    function QRBitBuffer(){this.buffer=[];this.length=0;}
+    QRBitBuffer.prototype.put=function(num,len){for(let i=0;i<len;i++) this.putBit(((num>>(len-i-1))&1)==1)};
+    QRBitBuffer.prototype.putBit=function(b){this.buffer.push(b?1:0);this.length++};
+    function QRSimple(data){this.data=unescape(encodeURIComponent(data));this.size=29;this.modules=Array(this.size).fill(0).map(()=>Array(this.size).fill(null));this._finders();this._timing();this._data();}
+    QRSimple.prototype._finders=function(){const pts=[[0,0],[this.size-7,0],[0,this.size-7]];for(const [x,y] of pts){for(let r=-1;r<=7;r++)for(let c=-1;c<=7;c++){const xx=x+c,yy=y+r;if(xx<0||yy<0||xx>=this.size||yy>=this.size) continue;const on=(r===0||r===6||c===0||c===6)||(r>=2&&r<=4&&c>=2&&c<=4);this.modules[yy][xx]=on;}}};
+    QRSimple.prototype._timing=function(){for(let i=8;i<this.size-8;i++){this.modules[6][i]=(i%2===0);this.modules[i][6]=(i%2===0);}};
+    QRSimple.prototype._data=function(){const buf=new QRBitBuffer();buf.put(4,4);buf.put(this.data.length,8);for(let i=0;i<this.data.length;i++) buf.put(this.data.charCodeAt(i),8);for(let t=0;t<4;t++) buf.put(0,1);let dir=-1,bit=0;for(let col=this.size-1; col>0; col-=2){if(col===6) col--;for(let r0=0;r0<this.size;r0++){const r=dir>0?r0:(this.size-1-r0);for(let c=0;c<2;c++){if(this.modules[r][col-c]!==null) continue;this.modules[r][col-c]=(buf.buffer[bit++]||0)?1:0;}}dir*=-1;}};
+    QRSimple.prototype.renderTo=function(el,scale){scale=4;const n=this.size,s=n*scale;const cvs=document.createElement('canvas');cvs.width=cvs.height=s;const ctx=cvs.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,s,s);ctx.fillStyle='#000';for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(this.modules[r][c]) ctx.fillRect(c*scale,r*scale,scale,scale);el.innerHTML='';el.appendChild(cvs);};
+    const addr=(scope.querySelector('#addr')?.textContent||'').trim();
+    if(addr) try{ new QRSimple(addr).renderTo(box,4); }catch(e){ box.innerHTML='<small style="color:#d00">'+ i18nQrError +'</small>'; }
+  })();
+
+  // Awaiting_review: countdown + JSON polling + swap + new-tab open + persistent hint
+  (function(){
+    const right = scope.querySelector('.right'); if(!right) return;
+    const verifyingBtn  = scope.querySelector('#verifyingBtn');
+    const verifyNowLink = scope.querySelector('#verifyNowLink');
+    const eta           = scope.querySelector('#eta');
+
+    const ttlSec = parseInt(right.dataset.ttlSec||'20',10);
+    const sinceMs = Date.parse(right.dataset.verifiedAt||'')||Date.now();
+    const leftSec = ()=>Math.max(0, ttlSec - Math.floor((Date.now()-sinceMs)/1000));
+    const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+    const i18nVerifyingLeft = right.dataset.i18nVerifyingLeft || 'Verifying… ({time} left)';
+    const i18nVerifyHint = right.dataset.i18nVerifyHint || 'You can use “Verify now” for quick help.';
+
+    if(eta && verifyingBtn){
+      const tick=()=>{ const l=leftSec(); eta.textContent = l ? i18nVerifyingLeft.replace('{time}', fmt(l)) : i18nVerifyHint; };
+      tick(); var etaTimer = setInterval(tick,1000);
+    }
+
+    async function pollStatus(){
+      if(document.visibilityState!=='visible') return;
+      if(leftSec()<=0) return;
+      try{
+        const r=await fetch("{% url 'deposit_status' dep.id %}",{headers:{'X-Requested-With':'fetch'}});
+        if(!r.ok) return; const j=await r.json();
+        if(j.status && j.status!=="awaiting_review"){ location.reload(); }
+      }catch(e){}
+    }
+    if(verifyingBtn){ var pollTimer=setInterval(pollStatus,5000); }
+
+    function maybeSwap(){
+      if(!verifyingBtn || !verifyNowLink) return;
+      if(verifyNowLink.style.display!=='none') return;
+      if(leftSec()<=0){
+        verifyingBtn.remove();
+        verifyNowLink.style.display='inline-flex';
+        verifyNowLink.focus();
+        if(pollTimer) clearInterval(pollTimer);
+        if(etaTimer) clearInterval(etaTimer);
+      }
+    }
+    if(verifyingBtn){ var swapTimer=setInterval(maybeSwap,500); maybeSwap(); }
+
+    if(verifyNowLink){
+      verifyNowLink.addEventListener('click',function(e){
+        e.preventDefault();
+        const symbol=right.dataset.symbol||'', amount=right.dataset.amount||'',
+              ref=right.dataset.ref||'', network=right.dataset.network||'',
+              tgUrl=right.dataset.tgUrl||this.href,
+              tmpl=this.getAttribute('data-msg-template')||'I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me.';
+        const msg=tmpl.replace('{symbol}',symbol).replace('{amount}',amount).replace('{network}',network).replace('{ref}',ref);
+
+        if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(msg).catch(()=>{}); }
+
+        const m=tgUrl.match(/t\.me\/([^/?#]+)/i)||tgUrl.match(/telegram\.me\/([^/?#]+)/i);
+        const handle=m?m[1]:'';
+        const deep=handle?`tg://resolve?domain=${encodeURIComponent(handle)}&text=${encodeURIComponent(msg)}`:null;
+
+        let opened=false;
+        if(deep){ const w=window.open(deep,'_blank','noopener'); opened=!!w; }
+        setTimeout(()=>{ if(!opened){ window.open(tgUrl||(handle?`https://t.me/${handle}`:''),'_blank','noopener'); } },400);
+      });
+    }
+  })();
+</script>
+{% endblock %}

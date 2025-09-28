@@ -1,0 +1,643 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 16:12+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: main/admin.py:44
+msgid "Clear withdrawal PIN"
+msgstr "Чистая штифта снятия"
+
+#: main/admin.py:46
+msgid ""
+"Tick to remove any existing withdrawal PIN so the user must set a new one."
+msgstr ""
+"Тик для удаления любого существующего вывода снятия, чтобы пользователь "
+"должен установить новый."
+
+#: main/admin.py:49
+msgid "Set new withdrawal PIN"
+msgstr "Установить новую штифт"
+
+#: main/admin.py:57
+msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
+msgstr ""
+"Необязательный. Введите ровно 6 цифр, чтобы установить/сбросить штифт."
+
+#: main/admin.py:70
+msgid "PIN must be exactly 6 digits."
+msgstr "PIN -код должен быть ровно 6 цифр."
+
+#: main/admin.py:136
+msgid "Withdrawal security"
+msgstr "Безопасность вывода"
+
+#: main/forms.py:27
+msgid "Account password"
+msgstr "Пароль учетной записи"
+
+#: main/forms.py:31
+msgid "Withdrawal password (6 digits)"
+msgstr "Пароль снятия (6 цифр)"
+
+#: main/forms.py:35
+msgid "Confirm withdrawal password"
+msgstr "Подтвердите пароль отмены"
+
+#: main/forms.py:46
+msgid "Incorrect account password."
+msgstr "Неправильный пароль учетной записи."
+
+#: main/forms.py:53 main/forms.py:87
+msgid "Enter exactly 6 digits."
+msgstr "Введите ровно 6 цифр."
+
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+msgid "Passwords do not match."
+msgstr "Пароли не совпадают."
+
+#: main/forms.py:61
+msgid "Current withdrawal password"
+msgstr "Текущий пароль отмены"
+
+#: main/forms.py:65
+msgid "New withdrawal password (6 digits)"
+msgstr "Новый пароль снятия (6 цифр)"
+
+#: main/forms.py:69
+msgid "Confirm new withdrawal password"
+msgstr "Подтвердите новый пароль отмены"
+
+#: main/forms.py:80
+msgid "Incorrect withdrawal password."
+msgstr "Неправильный пароль снятия."
+
+#: main/forms.py:161
+#, python-format
+msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
+msgstr "Jpg/png/webp/gif, до [[[[[token_0]]]] Mb."
+
+#: main/forms.py:162
+msgid "Direct image URL (used only if no file is uploaded)."
+msgstr ""
+"Прямой URL -адрес изображения (используется только в случае загрузки файла)."
+
+#: main/forms.py:180
+msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
+msgstr "Неподдерживаемый тип изображения. Используйте JPG, PNG, WEBP или GIF."
+
+#: main/forms.py:182
+#, python-format
+msgid "Image too large (max %(mb)s MB)."
+msgstr "Изображение слишком большое (max [[[[token_0]]] Mb)."
+
+#: main/forms.py:191
+msgid "Only http/https URLs are allowed."
+msgstr "Разрешены только URL -адреса HTTP/HTTPS."
+
+#: main/forms.py:206 main/forms.py:371 main/forms.py:581
+msgid "Country code"
+msgstr "Код страны"
+
+#: main/forms.py:211 main/forms.py:376 main/forms.py:586
+msgid "Enter your phone number"
+msgstr "Введите свой номер телефона"
+
+#: main/forms.py:215 main/forms.py:380 main/forms.py:590
+msgid "Phone number"
+msgstr "Номер телефона"
+
+#: main/forms.py:220
+msgid "Enter your invitation code"
+msgstr "Введите свой код приглашения"
+
+#: main/forms.py:223
+msgid "Invitation code"
+msgstr "Приглашение код"
+
+#: main/forms.py:225 main/forms.py:592
+msgid "I am not a robot"
+msgstr "Я не робот"
+
+#: main/forms.py:236 main/forms.py:385 main/forms.py:615
+msgid "Enter your password"
+msgstr "Введите свой пароль"
+
+#: main/forms.py:240
+msgid "Re-enter your password"
+msgstr "Повторно введите свой пароль"
+
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+msgid "Invalid phone number format."
+msgstr "Неверный формат номера телефона."
+
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+msgid "This phone number is not possible for the selected country."
+msgstr "Этот номер телефона невозможен для выбранной страны."
+
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+msgid "This phone number is not valid for the selected country."
+msgstr "Этот номер телефона не действителен для выбранной страны."
+
+#: main/forms.py:281 main/forms.py:429 main/forms.py:657
+#, python-format
+msgid ""
+"Phone number length must be between %(lo)d and %(hi)d digits for "
+"%(country)s."
+msgstr ""
+"Длина номера телефона должна быть между %(lo) d и %(Hi) D цифр для "
+"[[[[[token_0]]]]."
+
+#: main/forms.py:293
+msgid "An account with this phone already exists."
+msgstr "Учетная запись с этим телефоном уже существует."
+
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+msgid "Password"
+msgstr "Пароль"
+
+#: main/forms.py:325
+msgid ""
+"Raw passwords are not stored, so there is no way to see this user’s "
+"password, but you can change the password using the “Change password” form."
+msgstr ""
+"Необработанные пароли не хранятся, поэтому невозможно увидеть пароль этого "
+"пользователя, но вы можете изменить пароль, используя форму «Изменение "
+"пароля»."
+
+#: main/forms.py:352
+msgid "User phone (E.164 or local NG)"
+msgstr "Пользовательский телефон (E.164 или локальный NG)"
+
+#: main/forms.py:353
+msgid "+2348012345678 or 080..."
+msgstr "+2348012345678 или 080 ..."
+
+#: main/forms.py:355 main/views.py:210
+#: templates/meta_search/settings_change_password.html:83
+msgid "New password"
+msgstr "Новый пароль"
+
+#: main/forms.py:356 main/views.py:211
+msgid "Confirm new password"
+msgstr "Подтвердите новый пароль"
+
+#: main/forms.py:670
+msgid "Phone does not match your account."
+msgstr "Телефон не соответствует вашей учетной записи."
+
+#: main/models.py:578 templates/base_info.html:22
+#: templates/meta_search/info_index.html:27
+msgid "About us"
+msgstr "О нас"
+
+#: main/models.py:579 templates/base_info.html:26
+#: templates/meta_search/info_index.html:31
+msgid "Contact us"
+msgstr "Связаться с нами"
+
+#: main/models.py:580 templates/base_info.html:30
+#: templates/meta_search/info_index.html:35
+msgid "Help"
+msgstr "Помощь"
+
+#: main/models.py:581 templates/base_info.html:34
+#: templates/meta_search/info_index.html:39
+msgid "Level"
+msgstr "Уровень"
+
+#: main/models.py:582 templates/base_info.html:38
+#: templates/meta_search/info_index.html:43
+msgid "Sign-in reward"
+msgstr "Вознаграждение вхождения"
+
+#: main/views.py:69
+msgid "Withdrawal password set."
+msgstr "Установка пароля."
+
+#: main/views.py:79
+msgid "You don’t have a withdrawal password yet. Set one first."
+msgstr "У вас еще нет пароля отмены. Сначала установите один."
+
+#: main/views.py:86
+msgid "Withdrawal password updated."
+msgstr "Установка пароля обновляется."
+
+#: main/views.py:209
+msgid "Verification code"
+msgstr "Проверочный код"
+
+#: main/views.py:247
+msgid "No account found for that phone."
+msgstr "Для этого телефона не было найдено учетной записи."
+
+#: main/views.py:259
+#, python-format
+msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
+msgstr "Ваш код сброса: [[[[token_0]]]. Срок действия истекает за 10 минут."
+
+#: main/views.py:263
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr ""
+"Мы не могли отправить код. Пожалуйста, попробуйте еще раз через мгновение."
+
+#: main/views.py:267
+msgid "Unexpected error sending code. Try again later."
+msgstr "Неожиданная ошибка отправки кода. Попробуйте еще раз позже."
+
+#: main/views.py:272
+msgid "We sent a verification code to your phone."
+msgstr "Мы отправили код проверки на ваш телефон."
+
+#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
+#: main/views.py:1169
+msgid "Please correct the errors below."
+msgstr "Пожалуйста, исправьте ошибки ниже."
+
+#: main/views.py:290
+msgid "Start by entering your phone number."
+msgstr "Начните с ввода вашего номера телефона."
+
+#: main/views.py:298
+msgid "Invalid or expired code."
+msgstr "Неверный или истекший код."
+
+#: main/views.py:304
+msgid "Account not found. Please start over."
+msgstr "Учетная запись не найдена. Пожалуйста, начните все сначала."
+
+#: main/views.py:315
+msgid "Your password has been reset. You can now sign in."
+msgstr "Ваш пароль был сброшен. Теперь вы можете войти в систему."
+
+#: main/views.py:341 main/views.py:392
+msgid "You're already signed in."
+msgstr "Вы уже вошли."
+
+#: main/views.py:375
+msgid "Welcome back!"
+msgstr "Добро пожаловать!"
+
+#: main/views.py:378
+msgid "Invalid phone or password."
+msgstr "Неверный телефон или пароль."
+
+#: main/views.py:405
+msgid "Account created!"
+msgstr "Создана учетная запись!"
+
+#: main/views.py:421
+msgid "You have been logged out."
+msgstr "Вы были зарегистрированы."
+
+#: main/views.py:468
+msgid "Invalid phone format. Please enter a valid number."
+msgstr "Неверный формат телефона. Пожалуйста, введите действительный номер."
+
+#: main/views.py:474
+#, python-format
+msgid "No user found with phone %(phone)s."
+msgstr "Пользователь не найден с телефоном [[[[token_0]]]."
+
+#: main/views.py:490
+#, python-format
+msgid "Password reset for %(phone)s."
+msgstr "Сброс пароля для [[[[[token_0]]]."
+
+#: main/views.py:1167
+msgid "Password updated."
+msgstr "Пароль обновлен."
+
+#: templates/base_info.html:4
+msgid "info"
+msgstr "информация"
+
+#: templates/meta_search/announcements.html:5
+#: templates/meta_search/announcements.html:13
+msgid "Announcements"
+msgstr "Объявления"
+
+#: templates/meta_search/announcements.html:26
+msgid "No announcements at the moment."
+msgstr "Нет объявлений на данный момент."
+
+#: templates/meta_search/ide.html:18
+msgid "Seaside resort at dusk"
+msgstr "Приморский курорт в сумерках"
+
+#: templates/meta_search/ide.html:24
+msgid "Experience The Magic Of Relaxation"
+msgstr "Испытать магию расслабления"
+
+#: templates/meta_search/ide.html:25
+msgid ""
+"Indulge in the epitome of coastal living as you discover the breathtaking "
+"beauty and tranquility of luxury."
+msgstr ""
+"Побалуйте себя воплощением прибрежной жизни, когда вы обнаружите "
+"захватывающую дух красоту и спокойствие роскоши."
+
+#: templates/meta_search/ide.html:30
+msgid "Customer avatar 1"
+msgstr "Аватар клиента 1"
+
+#: templates/meta_search/ide.html:31
+msgid "Customer avatar 2"
+msgstr "Аватар клиента 2"
+
+#: templates/meta_search/ide.html:32
+msgid "Customer avatar 3"
+msgstr "Аватар клиента 3"
+
+#: templates/meta_search/ide.html:34
+msgid "Trusted by over 25k+ people"
+msgstr "Доверяют более 25 тысячам+ люди"
+
+#: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+msgid "Explore Now"
+msgstr "Исследуйте сейчас"
+
+#: templates/meta_search/ide.html:40
+msgid "Travel partners"
+msgstr "Партнеры по путешествиям"
+
+#: templates/meta_search/ide.html:58
+msgid "Premium Facilities"
+msgstr "Премиальные объекты"
+
+#: templates/meta_search/ide.html:61
+msgid "Exclusive Sunset View"
+msgstr "Эксклюзивный вид заката"
+
+#: templates/meta_search/ide.html:62
+msgid "You witness the beauty of the world from your room"
+msgstr "Вы свидетельствуете о красоте мира из вашей комнаты"
+
+#: templates/meta_search/ide.html:65
+msgid "Integrated Tourist Area"
+msgstr "Интегрированная туристическая зона"
+
+#: templates/meta_search/ide.html:66
+msgid "Enhancing your travel experience"
+msgstr "Улучшение вашего путешествия"
+
+#: templates/meta_search/ide.html:69
+msgid "Nature-Inspired Pool"
+msgstr "Вдохновленный природой бассейн"
+
+#: templates/meta_search/ide.html:70
+msgid "Serene swimming pool with a touch of paradise"
+msgstr "Безмятежный бассейн с оттенком рая"
+
+#: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+msgid "Get Rewarded"
+msgstr "Получите вознаграждение"
+
+#: templates/meta_search/ide.html:85
+msgid "Rate Apartments"
+msgstr "Оцените квартиры"
+
+#: templates/meta_search/ide.html:86
+msgid "Give random objective ratings based on view and aesthetics."
+msgstr "Дайте случайные объективные рейтинги на основе вида и эстетики."
+
+#: templates/meta_search/ide.html:94
+msgid "Earn instant rewards from the apartments you rate."
+msgstr ""
+"Заработайте мгновенные вознаграждения из квартир, которые вы оцениваете."
+
+#: templates/meta_search/ide.html:102
+msgid "Featured apartments carousel"
+msgstr "Избранные квартиры карусель"
+
+#: templates/meta_search/ide.html:103
+msgid "Previous slide"
+msgstr "Предыдущий слайд"
+
+#: templates/meta_search/ide.html:104
+msgid "Next slide"
+msgstr "Следующий слайд"
+
+#: templates/meta_search/ide.html:108
+msgid "Modern apartment interior"
+msgstr "Современная квартира"
+
+#: templates/meta_search/ide.html:111
+msgid "Resort pool at sunset"
+msgstr "Курортный бассейн на закате"
+
+#: templates/meta_search/ide.html:114
+msgid "Scenic valley view"
+msgstr "Живописная долина"
+
+#: templates/meta_search/ide.html:129
+msgid "Clients Review"
+msgstr "Клиенты обзор"
+
+#: templates/meta_search/ide.html:130
+msgid "See some honest reviews from our users on the platform"
+msgstr "Смотрите некоторые честные отзывы от наших пользователей на платформе"
+
+#: templates/meta_search/ide.html:135
+msgid "Client"
+msgstr "Клиент"
+
+#: templates/meta_search/ide.html:137
+msgid ""
+"Had a great experience using this for solid bookings. Customer service was "
+"top-notch."
+msgstr ""
+"Был отличный опыт, используя это для солидных бронирований. Обслуживание "
+"клиентов было первоклассным."
+
+#: templates/meta_search/ide.html:147
+msgid "Get your inspiration of luxury and get rewarded"
+msgstr "Получите вдохновение в роскоши и получите вознаграждение"
+
+#: templates/meta_search/ide.html:148
+msgid "Earn new rewards at every step you take under true luxury."
+msgstr ""
+"Заработайте новые награды на каждом шаге, который вы делаете под истинной "
+"роскошью."
+
+#: templates/meta_search/ide.html:149
+msgid "See More"
+msgstr "Увидеть больше"
+
+#: templates/meta_search/ide.html:152
+msgid "Luxury inspiration"
+msgstr "Роскошное вдохновение"
+
+#: templates/meta_search/includes/_header.html:60
+msgid "Get started"
+msgstr "Начните"
+
+#: templates/meta_search/info_index.html:6
+msgid "Info Center"
+msgstr "Информационный центр"
+
+#: templates/meta_search/info_index.html:7
+msgid "Pick a section on the left, or use the quick links below."
+msgstr "Выберите раздел слева или используйте быстрые ссылки ниже."
+
+#: templates/meta_search/info_index.html:19
+#: templates/meta_search/info_page.html:17
+msgid "View all announcements"
+msgstr "Просмотреть все объявления"
+
+#: templates/meta_search/language.html:8
+msgid "Language"
+msgstr "Язык"
+
+#: templates/meta_search/language.html:9
+msgid "Select your language."
+msgstr "Выберите свой язык."
+
+#: templates/meta_search/password_reset_phone.html:4
+msgid "Reset Password – Step 1"
+msgstr "Сбросить пароль - шаг 1"
+
+#: templates/meta_search/password_reset_phone.html:6
+#: templates/meta_search/password_reset_verify.html:6
+#: templates/meta_search/password_reset_verify.html:79
+msgid "Reset Password"
+msgstr "Сбросить пароль"
+
+#: templates/meta_search/password_reset_phone.html:21
+msgid "Enter your phone number to get a verification code."
+msgstr "Введите свой номер телефона, чтобы получить код проверки."
+
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:45
+msgid "Phone"
+msgstr "Телефон"
+
+#: templates/meta_search/password_reset_phone.html:59
+msgid "Send Code"
+msgstr "Отправить код"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Remembered your password?"
+msgstr "Запомнили ваш пароль?"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Sign in"
+msgstr "Войти"
+
+#: templates/meta_search/password_reset_verify.html:4
+msgid "Reset Password – Step 2"
+msgstr "Сбросить пароль - шаг 2"
+
+#: templates/meta_search/password_reset_verify.html:21
+msgid "Enter the code sent to your phone, then choose a new password."
+msgstr ""
+"Введите код, отправленный на ваш телефон, затем выберите новый пароль."
+
+#: templates/meta_search/password_reset_verify.html:43
+msgid "Verification Code"
+msgstr "Проверочный код"
+
+#: templates/meta_search/password_reset_verify.html:52
+msgid "New Password"
+msgstr "Новый пароль"
+
+#: templates/meta_search/password_reset_verify.html:61
+#: templates/meta_search/password_reset_verify.html:74
+#: templates/meta_search/settings_change_password.html:76
+#: templates/meta_search/settings_change_password.html:93
+#: templates/meta_search/settings_change_password.html:112
+#: templates/meta_search/signin.html:68
+msgid "Show/Hide password"
+msgstr "Показать/скрыть пароль"
+
+#: templates/meta_search/password_reset_verify.html:65
+msgid "Confirm Password"
+msgstr "Подтвердите пароль"
+
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "Назад"
+
+#: templates/meta_search/password_reset_verify.html:86
+msgid "Home"
+msgstr "Дом"
+
+#: templates/meta_search/settings_change_password.html:4
+msgid "Settings — Change password"
+msgstr "Настройки - изменить пароль"
+
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: templates/meta_search/settings_change_password.html:22
+msgid ""
+"For security, confirm your phone, pass the captcha, then set a strong "
+"password."
+msgstr ""
+"Для безопасности подтвердите свой телефон, пропустите CAPTCHA, затем "
+"установите сильный пароль."
+
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:73
+msgid "Captcha"
+msgstr "Капча"
+
+#: templates/meta_search/settings_change_password.html:66
+msgid "Old password"
+msgstr "Старый пароль"
+
+#: templates/meta_search/settings_change_password.html:79
+msgid "Forgot current password?"
+msgstr "Забыли текущий пароль?"
+
+#: templates/meta_search/settings_change_password.html:95
+msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
+msgstr "Используйте 8+ символов с сочетанием букв, чисел и символов."
+
+#: templates/meta_search/settings_change_password.html:102
+msgid "Confirm password"
+msgstr "Подтвердите пароль"
+
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: templates/meta_search/signin.html:4
+msgid "Sign In - Orbitpedia"
+msgstr "Войдите - Orbitpedia"
+
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+msgid "Sign In"
+msgstr "Войти"
+
+#: templates/meta_search/signin.html:21
+msgid "Welcome back, please sign in"
+msgstr "Добро пожаловать, пожалуйста, войдите в систему"
+
+#: templates/meta_search/signin.html:87
+msgid "Don’t have an account?"
+msgstr "У вас нет учетной записи?"
+
+#: templates/meta_search/signin.html:87
+msgid "Create one"
+msgstr "Создайте один"
+
+#: templates/meta_search/signin.html:89
+msgid "Forgotten password?"
+msgstr "Забытый пароль?"

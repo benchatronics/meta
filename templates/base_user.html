@@ -1,9 +1,10 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>{% block title %}My Wallet{% endblock %}</title>
+  <title>{% block title %}{% trans "My Wallet" %}{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <!-- Fonts (optional) -->
@@ -41,7 +42,7 @@
 
     <!-- rewards -->
     <symbol id="i-reward" viewBox="0 0 24 24">
-      <path d="M12 6V22M12 6H8.46429C7.94332 6 7.4437 5.78929 7.07533 5.41421C6.70695 5.03914 6.5 4.53043 6.5 4C6.5 3.46957 6.70695 2.96086 7.07533 2.58579C7.4437 2.21071 7.94332 2 8.46429 2C11.2143 2 12 6 12 6ZM12 6H15.5357C16.0567 6 16.5563 5.78929 16.9247 5.41421C17.293 5.03914 17.5 4.53043 17.5 4C17.5 3.46957 17.293 2.96086 16.9247 2.58579C16.5563 2.21071 16.0567 2 15.5357 2C12.7857 2 12 6 12 6ZM20 11V18.8C20 19.9201 20 20.4802 19.782 20.908C19.5903 21.2843 19.2843 21.5903 18.908 21.782C18.4802 22 17.9201 22 16.8 22L7.2 22C6.07989 22 5.51984 22 5.09202 21.782C4.71569 21.5903 4.40973 21.2843 4.21799 20.908C4 20.4802 4 19.9201 4 18.8V11M2 7.6L2 9.4C2 9.96005 2 10.2401 2.10899 10.454C2.20487 10.6422 2.35785 10.7951 2.54601 10.891C2.75992 11 3.03995 11 3.6 11L20.4 11C20.9601 11 21.2401 11 21.454 10.891C21.6422 10.7951 21.7951 10.6422 21.891 10.454C22 10.2401 22 9.96005 22 9.4V7.6C22 7.03995 22 6.75992 21.891 6.54601C21.7951 6.35785 21.6422 6.20487 21.454 6.10899C21.2401 6 20.9601 6 20.4 6L3.6 6C3.03995 6 2.75992 6 2.54601 6.10899C2.35785 6.20487 2.20487 6.35785 2.10899 6.54601C2 6.75992 2 7.03995 2 7.6Z"
+      <path d="M12 6V22M12 6H8.46429C7.94332 6 7.4437 5.78929 7.07533 5.41421C6.70695 5.03914 6.5 4.53043 6.5 4C6.5 3.46957 6.70695 2.96086 7.07533 2.58579C7.4437 2.21071 7.94332 2 8.46429 2C11.2143 2 12 6 12 6ZM12 6H15.5357C16.0567 6 16.5563 5.78929 16.9247 5.41421C17.293 5.03914 17.5 4.53043 17.5 4C17.5 3.46957 17.293 2.96086 16.9247 2.58579C16.5563 2.21071 16.0567 2 15.5357 2C12.7857 2 12 6 12 6ZM20 11V18.8C20 19.9201 20 20.4802 19.782 20.908C19.5903 21.2843 19.2843 21.5903 18.908 21.782C18.4802 22 17.9201 22 16.8 22L7.2 22C6.07989 22 5.51984 22 5.09202 21.782C4.71569 21.5903 4.40973 21.2843 4.21799 20.908C4 20.4802 4 19.9201 4 18.8V11M2 7.6L2 9.4C2 9.96005 2 10.2401 2.10899 10.454C2.20487 10.6422 2.35785 10.7951 2.54601 10.891C2.75992 11 3.03995 11 3.6 11H20.4C20.9601 11 21.2401 11 21.454 10.891C21.6422 10.7951 21.7951 10.6422 21.891 10.454C22 10.2401 22 9.96005 22 9.4V7.6C22 7.03995 22 6.75992 21.891 6.54601C21.7951 6.35785 21.6422 6.20487 21.454 6.10899C21.2401 6 20.9601 6 20.4 6H3.6C3.03995 6 2.75992 6 2.54601 6.10899C2.35785 6.20487 2.20487 6.35785 2.10899 6.54601C2 6.75992 2 7.03995 2 7.6Z"
             fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
 
@@ -65,6 +66,22 @@
             fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
 
+    <!--signinreward-->
+    <svg width="0" height="0" style="position:absolute">
+      <symbol id="i-signinreward" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <!-- bow loops -->
+        <path d="M12 7C10.2 4 7 4.5 7.2 6.3c.2 1.7 2.3 2.2 4.8.7"/>
+        <path d="M12 7c1.8-3 5-2.5 4.8-.7-.2 1.7-2.3 2.2-4.8.7"/>
+        <!-- lid -->
+        <rect x="3" y="9.5" width="18" height="3" rx=".6"/>
+        <!-- box -->
+        <rect x="4" y="12.5" width="16" height="8.5" rx="1.2"/>
+        <!-- vertical ribbon -->
+        <path d="M12 9.5v11.5"/>
+      </symbol>
+    </svg>
+
     <!-- logout -->
     <symbol id="i-logout" viewBox="0 0 24 24">
       <path d="M16 17L21 12M21 12L16 7M21 12H9M12 17C12 17.2956 12 17.4434 11.989 17.5714C11.8748 18.902 10.8949 19.9968 9.58503 20.2573C9.45903 20.2823 9.31202 20.2987 9.01835 20.3313L7.99694 20.4448C6.46248 20.6153 5.69521 20.7005 5.08566 20.5055C4.27293 20.2454 3.60942 19.6515 3.26118 18.8725C3 18.2882 3 17.5162 3 15.9723V8.0277C3 6.48377 3 5.7118 3.26118 5.12752C3.60942 4.34848 4.27293 3.7546 5.08566 3.49453C5.69521 3.29947 6.46246 3.38472 7.99694 3.55522L9.01835 3.66871C9.31212 3.70135 9.45901 3.71767 9.58503 3.74273C10.8949 4.00316 11.8748 5.09804 11.989 6.42861C12 6.55663 12 6.70442 12 7"
@@ -76,6 +93,19 @@
       <path d="M14.9997 19C14.9997 20.6569 13.6566 22 11.9997 22C10.3429 22 8.99972 20.6569 8.99972 19M13.7962 6.23856C14.2317 5.78864 14.4997 5.17562 14.4997 4.5C14.4997 3.11929 13.3804 2 11.9997 2C10.619 2 9.49972 3.11929 9.49972 4.5C9.49972 5.17562 9.76772 5.78864 10.2032 6.23856M17.9997 11.2C17.9997 9.82087 17.3676 8.49823 16.2424 7.52304C15.1171 6.54786 13.591 6 11.9997 6C10.4084 6 8.8823 6.54786 7.75708 7.52304C6.63186 8.49823 5.99972 9.82087 5.99972 11.2C5.99972 13.4818 5.43385 15.1506 4.72778 16.3447C3.92306 17.7056 3.5207 18.3861 3.53659 18.5486C3.55476 18.7346 3.58824 18.7933 3.73906 18.9036C3.87089 19 4.53323 19 5.85791 19H18.1415C19.4662 19 20.1286 19 20.2604 18.9036C20.4112 18.7933 20.4447 18.7346 20.4629 18.5486C20.4787 18.3861 20.0764 17.7056 19.2717 16.3447C18.5656 15.1506 17.9997 13.4818 17.9997 11.2Z"
             fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
+
+    <!-- Impersonation icon -->
+     <symbol id="i-impe" viewBox="0 0 24 24">
+      <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M3 21v-1a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v1"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16 9h5m0 0-2-2m2 2-2 2"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 15H3m0 0 2-2m-2 2 2 2"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+     </symbol>
+
+
 
     <!-- side menu (hamburger) -->
     <symbol id="i-menu" viewBox="0 0 24 24">
@@ -90,12 +120,12 @@
     <aside class="sidebar" id="sidebar" style="overflow-y:auto; -webkit-overflow-scrolling:touch;">
 
       <div class="brand">
-        <a class="brand-button" href="{% url 'user_dashboard' %}" title="Dashboard">
-          <img src="{% static 'meta_search/images/logo_emoji.png' %}" alt="Dashboard" style="width:20px; height:20px; vertical-align:middle;">
+        <a class="brand-button" href="{% url 'user_dashboard' %}" title="{% trans 'Dashboard' %}">
+          <img src="{% static 'meta_search/logos/logo 2.png' %}" alt="{% trans 'Dashboard' %}" style="width:120px; height:50px; vertical-align:middle;">
         </a>
         <div class="brand-name"></div>
         <!-- Desktop-only toggle lives in the sidebar -->
-        <button class="sb-toggle sb-toggle-desktop" id="sbToggleDesktop" aria-label="Collapse menu" title="Collapse">«</button>
+        <button class="sb-toggle sb-toggle-desktop" id="sbToggleDesktop" aria-label="{% trans 'Collapse menu' %}" title="{% trans 'Collapse' %}">«</button>
       </div>
 
       {% static 'meta_search/images/avatar-placeholder.png' as avatar_placeholder %}
@@ -103,71 +133,84 @@
            title="{{ request.user.nickname|default:request.user.get_full_name|default:request.user.username }}">
         <div class="avatar">
           {% if request.user.avatar %}
-            <img src="{{ request.user.avatar.url }}" alt="User avatar" width="48" height="48" loading="lazy" onerror="this.src='{{ avatar_placeholder }}'">
+            <img src="{{ request.user.avatar.url }}" alt="{% trans 'User avatar' %}" width="48" height="48" loading="lazy" onerror="this.src='{{ avatar_placeholder }}'">
           {% elif request.user.avatar_url %}
-            <img src="{{ request.user.avatar_url }}" alt="User avatar" width="48" height="48" loading="lazy" onerror="this.src='{{ avatar_placeholder }}'">
+            <img src="{{ request.user.avatar_url }}" alt="{% trans 'User avatar' %}" width="48" height="48" loading="lazy" onerror="this.src='{{ avatar_placeholder }}'">
           {% else %}
-            <img src="{{ avatar_placeholder }}" alt="User avatar" width="48" height="48" loading="lazy">
+            <img src="{{ avatar_placeholder }}" alt="{% trans 'User avatar' %}" width="48" height="48" loading="lazy">
           {% endif %}
           <span class="status-dot"></span>
         </div>
         <div class="meta">
-          <div class="id">User ID: {{ request.user.id }}</div>
-          <div class="phone">Phone: {{ request.user.phone|default:'-' }}</div>
+          <div class="id">{% trans "User ID" %}: {{ request.user.id }}</div>
+          <div class="phone">{% trans "Phone" %}: {{ request.user.phone|default:'-' }}</div>
         </div>
       </div>
 
-      <nav class="nav" aria-label="Sidebar">
-        <a class="link {% if active_page == 'home' %}active{% endif %}" href="{% url 'user_dashboard' %}" title="Home">
+      <nav class="nav" aria-label="{% trans 'Sidebar' %}">
+        <a class="link {% if active_page == 'home' %}active{% endif %}" href="{% url 'user_dashboard' %}" title="{% trans 'Home' %}">
           <svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>
-          <span class="label">Home</span>
+          <span class="label">{% trans "Home" %}</span>
         </a>
-        <a class="link {% if active_page == 'task' %}active{% endif %}" href="{% url 'task_dashboard' %}" title="Task">
+         {% if request.user.is_authenticated and request.user.is_superuser %}
+
+         <a class="link" href="{% url 'impersonate_release' %}" title="{% trans 'Home' %}">
+          <svg class="icon" aria-hidden="true"><use href="#i-impe"/></svg>
+          <span class="label">{% trans "impersonation" %}</span>
+        </a>
+        {% endif %}
+        <a class="link {% if active_page == 'task' %}active{% endif %}" href="{% url 'task_dashboard' %}" title="{% trans 'Task' %}">
           <svg class="icon" aria-hidden="true"><use href="#i-task"/></svg>
-          <span class="label">Task</span>
+          <span class="label">{% trans "Tasks" %}</span>
         </a>
-        <a class="link {% if active_page == 'rewards' %}active{% endif %}" href="{% url 'rewards' %}" title="Rewards">
+
+         <a class="link {% if active_page == 'signinreward' %}active{% endif %}" href="{% url 'signinreward' %}" title="{% trans  signinreward %}">
+          <svg class="icon" aria-hidden="true"><use href="#i-signinreward"/></svg>
+          <span class="label">{% trans "Signin Reward" %}</span>
+        </a>
+
+        <a class="link {% if active_page == 'rewards' %}active{% endif %}" href="{% url 'rewards' %}" title="{% trans 'Rewards' %}">
           <svg class="icon" aria-hidden="true"><use href="#i-reward"/></svg>
-          <span class="label">Rewards</span>
+          <span class="label">{% trans "Reward" %}</span>
         </a>
 
-        <h6>Account</h6>
+        <h6>{% trans "Account" %}</h6>
 
-        <a class="link {% if active_page == 'wallet' %}active{% endif %}" href="{% url 'wallet' %}" title="My Wallet">
+        <a class="link {% if active_page == 'wallet' %}active{% endif %}" href="{% url 'wallet' %}" title="{% trans 'My Wallet' %}">
           <svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg>
-          <span class="label">My Wallet</span>
+          <span class="label">{% trans "Wallet" %}</span>
         </a>
-        <a class="link {% if active_page == 'settings' %}active{% endif %}" href="{% url 'profile_settings' %}" title="Settings">
+        <a class="link {% if active_page == 'settings' %}active{% endif %}" href="{% url 'profile_settings' %}" title="{% trans 'Settings' %}">
           <svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>
-          <span class="label">Settings</span>
+          <span class="label">{% trans "Settings" %}</span>
         </a>
-        <a class="link {% if active_page == 'info' %}active{% endif %}" href="{% url 'info_index' %}" title="Info">
+        <a class="link {% if active_page == 'info' %}active{% endif %}" href="{% url 'info_index' %}" title="{% trans 'Info' %}">
           <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
-          <span class="label">Info</span>
+          <span class="label">{% trans "Info" %}</span>
         </a>
 
         <div class="bottom">
           {% if request.user.is_authenticated and request.user.is_superuser %}
-            <a class="link {% if active_page == 'admin' %}active{% endif %}" href="{% url 'admin_dashboard' %}" title="Admin Panel">
+            <a class="link {% if active_page == 'admin' %}active{% endif %}" href="{% url 'admin_dashboard' %}" title="{% trans 'Admin Panel' %}">
               <!-- Using lock as Admin Panel icon -->
               <svg class="icon" aria-hidden="true">
                 <use href="#i-settings"></use>
               </svg>
-              <span class="label">Admin Panel</span>
+              <span class="label">{% trans "Admin Panel" %}</span>
             </a>
           {% endif %}
 
           {# Built-in Django Admin (staff access) #}
           {% if request.user.is_authenticated and request.user.is_staff %}
-            <a class="link" href="{% url 'admin:index' %}" title="Admin settings">
+            <a class="link" href="{% url 'admin:index' %}" title="{% trans 'Admin settings' %}">
               <svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>
-              <span class="label">Admin settings</span>
+              <span class="label">{% trans "Admin settings" %}</span>
             </a>
           {% endif %}
 
-          <a class="link" href="{% url 'signout' %}" title="Logout">
+          <a class="link" href="{% url 'signout' %}" title="{% trans 'Logout' %}">
             <svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>
-            <span class="label">Logout</span>
+            <span class="label">{% trans "Logout" %}</span>
           </a>
         </div>
       </nav>
@@ -180,7 +223,7 @@
         <!-- Left: breadcrumb / menu -->
         <div class="breadcrumb">
           <!-- MOBILE-ONLY TOGGLE (drawer) -->
-          <button class="sb-toggle sb-toggle-mobile" id="sbToggleMobile" aria-label="Menu" title="Menu">☰</button>
+          <button class="sb-toggle sb-toggle-mobile" id="sbToggleMobile" aria-label="{% trans 'Menu' %}" title="{% trans 'Menu' %}">☰</button>
           <!-- (Optional) text trail on large screens -->
           <span class="crumb-home" aria-hidden="true">
             <svg class="icon sm" aria-hidden="true"><use href="#i-home"/></svg>
@@ -193,8 +236,8 @@
         </div>
 
         <!-- Right: bell -->
-        <div class="bell" title="Announcements">
-          <a href="{% url 'announcements' %}" aria-label="Announcements">
+        <div class="bell" title="{% trans 'Announcements' %}">
+          <a href="{% url 'announcements' %}" aria-label="{% trans 'Announcements' %}">
             <svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg>
           </a>
           {# Optional badge: <span class="badge">3</span> #}
@@ -219,7 +262,7 @@
       appEl.classList.toggle('collapsed', !!collapsed);
       if (sbToggleDesktop){
         sbToggleDesktop.textContent = '☰';
-        sbToggleDesktop.setAttribute('title', collapsed ? 'Expand' : 'Collapse');
+        sbToggleDesktop.setAttribute('title', collapsed ? '{% filter escapejs %}{% trans "Expand" %}{% endfilter %}' : '{% filter escapejs %}{% trans "Collapse" %}{% endfilter %}');
       }
       try { localStorage.setItem('sb_collapsed', collapsed ? '1' : '0'); } catch(e){}
     }
@@ -273,27 +316,27 @@
   </script>
 
   <!-- ======== MOBILE BOTTOM NAV ======== -->
-  <nav class="mobile-bottom-nav" role="tablist" aria-label="Primary">
-    <a class="{% if active_page == 'home' %}active{% endif %}" href="{% url 'user_dashboard' %}" title="Home" role="tab" aria-selected="{% if active_page == 'home' %}true{% else %}false{% endif %}">
+  <nav class="mobile-bottom-nav" role="tablist" aria-label="{% trans 'Primary' %}">
+    <a class="{% if active_page == 'home' %}active{% endif %}" href="{% url 'user_dashboard' %}" title="{% trans 'Home' %}" role="tab" aria-selected="{% if active_page == 'home' %}true{% else %}false{% endif %}">
       <svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>
-      <span>Home</span>
+      <span>{% trans "Home" %}</span>
       <span class="dot" aria-hidden="true"></span>
     </a>
-    <a class="{% if active_page == 'task' %}active{% endif %}" href="{% url 'task_dashboard' %}" title="Tasks" role="tab" aria-selected="{% if active_page == 'task' %}true{% else %}false{% endif %}">
+    <a class="{% if active_page == 'task' %}active{% endif %}" href="{% url 'task_dashboard' %}" title="{% trans 'Tasks' %}" role="tab" aria-selected="{% if active_page == 'task' %}true{% else %}false{% endif %}">
       <svg class="icon" aria-hidden="true"><use href="#i-task"/></svg>
-      <span>Tasks</span>
+      <span>{% trans "Tasks" %}</span>
       <span class="dot" aria-hidden="true"></span>
     </a>
 
-    <a class="{% if active_page == 'rewards' %}active{% endif %}" href="{% url 'rewards' %}" title="Reward" role="tab" aria-selected="{% if active_page == 'rewards' %}true{% else %}false{% endif %}">
+    <a class="{% if active_page == 'rewards' %}active{% endif %}" href="{% url 'rewards' %}" title="{% trans 'Reward' %}" role="tab" aria-selected="{% if active_page == 'rewards' %}true{% else %}false{% endif %}">
       <svg class="icon" aria-hidden="true"><use href="#i-reward"/></svg>
-      <span>Reward</span>
+      <span>{% trans "Reward" %}</span>
       <span class="dot" aria-hidden="true"></span>
     </a>
 
-    <a class="{% if active_page == 'wallet' %}active{% endif %}" href="{% url 'wallet' %}" title="Wallet" role="tab" aria-selected="{% if active_page == 'wallet' %}true{% else %}false{% endif %}">
+    <a class="{% if active_page == 'wallet' %}active{% endif %}" href="{% url 'wallet' %}" title="{% trans 'Wallet' %}" role="tab" aria-selected="{% if active_page == 'wallet' %}true{% else %}false{% endif %}">
       <svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg>
-      <span>Wallet</span>
+      <span>{% trans "Wallet" %}</span>
       <span class="dot" aria-hidden="true"></span>
     </a>
   </nav>

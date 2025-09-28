@@ -74,7 +74,7 @@ body{
 
 .brand{ display:flex; align-items:center; gap:10px; margin-bottom:22px; }
 .brand-button{
-  height:32px; width:32px; border-radius:8px; background:#ffd54a;
+  height:50px; width:50px; border-radius:8px; background:none;
   display:grid; place-items:center; font-weight:700; color:#111; text-decoration:none;
 }
 .brand-name{ font-weight:700; }

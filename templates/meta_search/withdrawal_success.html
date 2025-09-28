@@ -1,8 +1,9 @@
 {% extends "base_user.html" %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Withdrawal Submitted{% endblock %}
-{% block breadcrumb %}Home / my Wallet / Withdrawal / Success{% endblock %}
+{% block title %}{% trans "Withdrawal Submitted" %}{% endblock %}
+{% block breadcrumb %}{% trans "Home / my Wallet / Withdrawal / Success" %}{% endblock %}
 
 {% block extra_head %}
   {# Your stylesheet (keep if you use it) #}
@@ -97,63 +98,63 @@
   <!-- Page header (mobile-only back arrow + title) -->
   <div class="page-with-mobile-back">
     <div class="page-header">
-      <a class="back-link" href="{% url 'wallet' %}" aria-label="Go back"
+      <a class="back-link" href="{% url 'wallet' %}" aria-label="{% trans 'Go back' %}"
          onclick="if (history.length > 1) { history.back(); return false; }">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
-      <h1 class="page-title">Awaiting Approval</h1>
+      <h1 class="page-title">{% trans "Awaiting Approval" %}</h1>
     </div>
   </div>
 
   <section class="succ-scope">
     <div class="shell">
-      <h1>Withdrawal submitted</h1>
+      <h1>{% trans "Withdrawal submitted" %}</h1>
 
       <div class="card" aria-live="polite">
         <div class="inner">
           <div class="lead">
             <div class="ic" aria-hidden="true">✓</div>
             <div>
-              <div style="font-weight:700;">We’ve received your request.</div>
-              <div style="font-size:13px;">You’ll get an update once it’s reviewed.</div>
+              <div style="font-weight:700;">{% trans "We’ve received your request." %}</div>
+              <div style="font-size:13px;">{% trans "You’ll get an update once it’s reviewed." %}</div>
             </div>
           </div>
 
           {% if wr %}
             <div class="details">
               <div class="pair">
-                <div class="label">Request ID</div>
+                <div class="label">{% trans "Request ID" %}</div>
                 <div class="value">
                   <span id="reqId">#{{ wr.id }}</span>
-                  <button class="copy" type="button" data-copy="#reqId">Copy</button>
+                  <button class="copy" type="button" data-copy="#reqId">{% trans "Copy" %}</button>
                 </div>
               </div>
 
               <div class="pair">
-                <div class="label">Amount</div>
+                <div class="label">{% trans "Amount" %}</div>
                 <div class="value">
                   {{ wr.amount|floatformat:2 }} {{ wr.currency }}
                 </div>
               </div>
 
               <div class="pair">
-                <div class="label">Status</div>
+                <div class="label">{% trans "Status" %}</div>
                 <div class="value">{{ wr.status|title }}</div>
               </div>
 
               {% if wr.created_at %}
               <div class="pair">
-                <div class="label">Submitted</div>
+                <div class="label">{% trans "Submitted" %}</div>
                 <div class="value">{{ wr.created_at|date:"M j, Y, g:i a" }}</div>
               </div>
               {% endif %}
 
               {% if wr.address %}
               <div class="pair">
-                <div class="label">To</div>
+                <div class="label">{% trans "To" %}</div>
                 <div class="value">
                   {{ wr.address.address|default:"—" }}
                   {% if wr.address.network %} · {{ wr.address.network }}{% endif %}
@@ -162,16 +163,16 @@
               {% endif %}
             </div>
           {% else %}
-            <p>Your withdrawal request has been submitted.</p>
+            <p>{% trans "Your withdrawal request has been submitted." %}</p>
           {% endif %}
 
           <div class="actions">
-            <a href="{% url 'wallet' %}" class="btn primary">Go to Wallet</a>
-            <a href="{% url 'withdrawal' %}" class="btn ghost">Make another withdrawal</a>
+            <a href="{% url 'wallet' %}" class="btn primary">{% trans "Go to Wallet" %}</a>
+            <a href="{% url 'withdrawal' %}" class="btn ghost">{% trans "Make another withdrawal" %}</a>
           </div>
 
           <div class="hint">
-            Tip: If you navigate back to the withdrawal page, it will load a fresh form so it can’t be submitted twice.
+            {% trans "Tip: If you navigate back to the withdrawal page, it will load a fresh form so it can’t be submitted twice." %}
           </div>
         </div>
       </div>
@@ -192,8 +193,8 @@
         if (!el) return;
         const text = (el.textContent || el.innerText || '').trim();
         navigator.clipboard?.writeText(text).then(()=>{
-          btn.textContent = 'Copied';
-          setTimeout(()=>{ btn.textContent = 'Copy'; }, 1200);
+          btn.textContent = {% filter escapejs %}{% trans "Copied" %}{% endfilter %};
+          setTimeout(()=>{ btn.textContent = {% filter escapejs %}{% trans "Copy" %}{% endfilter %}; }, 1200);
         }).catch(()=>{ /* ignore */ });
       });
     });

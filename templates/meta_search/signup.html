@@ -1,16 +1,13 @@
 {% extends "base_auth.html" %}
 
-{% block title %}Sign Up - Expedia{% endblock %}
-{% block body_class %}signup-page{% endblock %}
+{% block title %}Sign Up Orbitpedia{% endblock %}
+{% block body_class %}signup-Orbitpedia{% endblock %}
 {% block left_title %}Sign Up{% endblock %}
 
 {% block extra_css %}
 <style>
-
   .captcha-wrap img { height: 72px; width: auto; }   /* big display */
-  .captcha-wrap input[type="text"] {
-      font-size: 22px; padding: 10px 12px; width: 220px;
-  }
+  .captcha-wrap input[type="text"] { font-size: 22px; padding: 10px 12px; width: 220px; }
   .captcha-reload { font-size:14px; margin-top:6px; display:inline-block; }
 
   /* Signup-specific background with gradient fallback under the image */
@@ -20,19 +17,57 @@
       linear-gradient(160deg, #173B88 0%, #0b4da3 100%);
     background-color: #0b4da3;
   }
+
   /* Ensure the eye swap works even without site-wide CSS */
-  .eye-btn{ width:32px;height:32px;border-radius:50%;border:1px solid #e5e7eb;background:#f3f6fd;cursor:pointer;display:inline-grid;place-items:center;padding:0;flex:0 0 auto; }
+  .eye-btn{
+    width:32px;height:32px;border-radius:50%;
+    border:1px solid #e5e7eb;background:#f3f6fd;cursor:pointer;
+    display:inline-grid;place-items:center;padding:0;flex:0 0 auto;
+  }
   .eye-btn .alt{ display:none; }
   .eye-btn.on .alt{ display:inline; }
   .eye-btn.on svg:not(.alt){ display:none; }
   .field.has-left-ic{ padding-left:40px; position:relative; }
-  .field .left-ic{ position:absolute; left:12px; top:50%; transform:translateY(-50%); width:18px; height:18px; color:#6b7280; opacity:.85; pointer-events:none; }
+  .field .left-ic{
+    position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width:18px; height:18px; color:#6b7280; opacity:.85; pointer-events:none;
+  }
+
+  /*---Selector for laptop*/
+  /* === Ensure emoji flags render inside the country <select> === */
+.phone_number_field select,
+.phone_number_field option {
+  /* Allow system emoji fonts to be used even if a global font-family is forced */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+               "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important;
+  line-height: 1.25;          /* avoid clipping tall emoji glyphs */
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "colr";
+}
+
+/* The visible selected value (some browsers style the control itself separately) */
+.phone_number_field select {
+  /* in case a very tight line-height or custom font size was set globally */
+  line-height: 1.25;
+}
+
+/* If you have a global * { font-family: ... !important; } somewhere,
+   this neutralizes it for the phone row entirely */
+.phone_number_field {
+  font-family: inherit !important;
+}
+
 </style>
 {% endblock %}
 
-{% block intro %}<p class="intro">Hello friend, let’s get you registered</p>{% endblock %}
+{% block intro %}
+  <p class="intro">Hello friend, let’s get you registered</p>
+{% endblock %}
 
 {% block form_fields %}
+  {# Show any non-field errors (e.g., invitation code race condition) #}
+  {{ form.non_field_errors }}
+
   {# PHONE #}
   <label for="{{ form.phone_number.id_for_label }}">Phone</label>
   {{ form.phone_number.errors }}
@@ -95,11 +130,11 @@
   <label for="{{ form.invitation_code.id_for_label }}">Invitation Code</label>
   {{ form.invitation_code.errors }}
   <div class="field">
-    {{ form.invitation_code }}
+    {{ form.invitation_code }} {# placeholder is defined in the form widget: "Enter your invitation link" #}
   </div>
 
   {# CAPTCHA #}
- <label for="{#{ form.captcha.id_for_label }#}">Captcha</label>
+  <label for="{{ form.captcha.id_for_label }}">Captcha</label>
   {{ form.captcha.errors }}
   <div class="captcha-field">
     {{ form.captcha }}
@@ -119,8 +154,6 @@
 {% block extra_scripts %}
 {{ block.super }}
 
-
-
 <script>
   // Reusable toggler for all eye buttons on the page
   document.querySelectorAll('.eye-btn').forEach(function(btn){
@@ -138,5 +171,16 @@
       btn.title = btn.getAttribute('aria-label');
     });
   });
+
+  // Optional small UX polish: normalize invitation code (trim + uppercase, remove spaces)
+  (function(){
+    const invId = "{{ form.invitation_code.id_for_label }}";
+    const el = document.getElementById(invId);
+    if (!el) return;
+    el.setAttribute('maxlength', '64');
+    el.setAttribute('autocomplete', 'one-time-code');
+    function norm(v){ return (v||'').replace(/\s+/g,'').toUpperCase(); }
+    el.addEventListener('blur', function(){ this.value = norm(this.value); });
+  })();
 </script>
 {% endblock %}

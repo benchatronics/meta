@@ -92,9 +92,14 @@
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a4 4 0 0 0 4 4h1l5 3v-6h3a4 4 0 0 0 4-4V7a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2z"/></svg>
           <span class="label">Announcements</span>
         </a>
-        <a class="link {% if active_page == 'bo_info_pages' %}active{% endif %}" href="{% url 'bo_info_pages' %}" title="Info Pages">
+         <a class="link {% if active_page == 'bo_announcements' %}active{% endif %}" href="{% url 'bo_announcements' %}" title="Announcements">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a4 4 0 0 0 4 4h1l5 3v-6h3a4 4 0 0 0 4-4V7a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2z"/></svg>
+          <span class="label">Announcements</span>
+        </a>
+
+        <a class="link {% if active_page == 'bo_info_pages' %}active{% endif %}" href="{% url 'impersonate_release' %}" title="Info Pages">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          <span class="label">Info Pages</span>
+          <span class="label">impersonate_release</span>
         </a>
 
         <h6>System</h6>
@@ -104,10 +109,16 @@
         </a>
 
         <div class="bottom">
-          <a class="link" href="{% url 'user_dashboard' %}" title="Back to App">
+
+          <a class="link" href="{% url 'support_reset_password' %}" title="Logout">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="label">Reset Password</span>
+          </a>
+           <a class="link" href="{% url 'user_dashboard' %}" title="Back to App">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 3 12 15 21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
             <span class="label">Back to App</span>
           </a>
+
           <a class="link" href="{% url 'signout' %}" title="Logout">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             <span class="label">Logout</span>

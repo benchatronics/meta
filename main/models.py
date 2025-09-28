@@ -23,6 +23,78 @@ from .task_currency import to_cents
 from datetime import timedelta
 from django.contrib.auth.hashers import make_password, check_password
 
+
+from django.db import models
+from django.db.models import Q
+from django.utils import timezone
+from django.utils.crypto import get_random_string
+from django.contrib.auth import get_user_model
+
+User = settings.AUTH_USER_MODEL
+
+class InvitationLink(models.Model):
+    """
+    A single-use invitation code (typed by the user).
+    Admins create these in the admin. Codes can be suspended/expired.
+    """
+    code = models.CharField(max_length=32, unique=True, db_index=True)
+    owner = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="invites_created"
+    )
+    label = models.CharField(max_length=120, blank=True)
+
+    # Lifecycle
+    is_active = models.BooleanField(default=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+
+    # Single-use control
+    claimed = models.BooleanField(default=False)  # flipped atomically
+    used_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="invite_used"
+    )
+    used_at = models.DateTimeField(null=True, blank=True)
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        status = "ACTIVE"
+        if not self.is_active:
+            status = "SUSPENDED"
+        if self.is_expired:
+            status = "EXPIRED"
+        if self.used_by_id:
+            status = f"USED by {self.used_by_id}"
+        return f"{self.code} [{status}]"
+
+    @property
+    def is_expired(self) -> bool:
+        return bool(self.expires_at and timezone.now() > self.expires_at)
+
+    @property
+    def is_valid_now(self) -> bool:
+        return self.is_active and not self.is_expired and not self.used_by_id and not self.claimed
+
+    @staticmethod
+    def generate_code(length: int = 12) -> str:
+        # No confusing chars like I/O/0/1
+        return get_random_string(length=length, allowed_chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789")
+
+    @classmethod
+    def can_be_used(cls, code: str) -> bool:
+        now = timezone.now()
+        return cls.objects.filter(
+            code__iexact=code,
+            is_active=True,
+            claimed=False,
+            used_by__isnull=True,
+        ).filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now)).exists()
+
+
+
 # ---------- Custom User ----------
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
@@ -1603,9 +1675,7 @@ class UserTaskProgress(models.Model):
         super().save(*args, **kwargs)
 
 
-
 #spawn code
-
 def spawn_next_task_for_user(user) -> "UserTask":
     """
     Start (or return) the user's next task.
@@ -1719,7 +1789,31 @@ def spawn_next_task_for_user(user) -> "UserTask":
     count = tpl_qs.count()
     if count == 0:
         raise ValidationError("No active regular task templates available.")
-    tpl = tpl_qs[random.randrange(count)]
+
+    # --- NEW: wallet (cash + bonus) solvency gate for REGULAR tasks (no deduction) ---
+    wallet = getattr(user, "wallet", None)
+    wallet_cash_cents  = int(getattr(wallet, "balance_cents", 0) or 0)
+    wallet_bonus_cents = int(getattr(wallet, "bonus_cents", 0) or 0)
+    wallet_total_cents = wallet_cash_cents + wallet_bonus_cents  # CASH + BONUS
+
+    from .models import tasksettngs
+    s = tasksettngs.load()
+
+    def _price_cents_for(tpl_obj):
+        # Use explicit template price if set, else fallback to TaskSettings.task_price
+        price_dec = tpl_obj.task_price if tpl_obj.task_price is not None else s.task_price
+        return to_cents(price_dec)
+
+    # Keep your randomness but limit pool to templates with price <= wallet TOTAL
+    templates = list(tpl_qs.only("id", "task_price"))
+    eligible = [t for t in templates if _price_cents_for(t) <= wallet_total_cents]
+
+    if not eligible:
+        raise ValidationError("No regular tasks match your current WALLET (cash + bonus). Please deposit to unlock more tasks.")
+    # -----------------------------------------------------------------------------
+
+    # Preserve existing random behavior among eligible templates
+    tpl = random.choice(eligible)
 
     price = tpl.effective_price()
     commission = tpl.effective_commission()
@@ -1739,7 +1833,6 @@ def spawn_next_task_for_user(user) -> "UserTask":
     # keep dashboard in normal state for regular/trial
     prog.set_state_normal()
     return task
-
 
 
 #force durectuve task

@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block title %}{% trans "info" %}{% endblock %}
-{% block breadcrumb %}Home / info{% endblock %}
+{% block breadcrumb %}{% trans "Home" %} / {% trans "info" %}{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'meta_search/settings.css' %}">
@@ -11,7 +11,7 @@
 
 {% block content %}
 <section class="settings-page">
-  <h1>Info</h1>
+  <h1>{% trans "Info" %}</h1>
 
   <div class="settings-grid">
     <!-- Left: Info under-cover (tabs) -->
@@ -31,12 +31,14 @@
         </li>
         <li class="tab-item {% if current_info == 'level' %}active{% endif %}">
           <i class="fa-solid fa-trophy"></i>
-          <a href="{% url 'info_page' 'level' %}">{% trans "Level" %}</a>
+          <a href="{% url 'level' %}">{% trans "Level" %}</a>
         </li>
+        <!--
+        /* david said i should remove sign in reward here */
         <li class="tab-item {% if current_info == 'signin_reward' %}active{% endif %}">
           <i class="fa-solid fa-gift"></i>
           <a href="{% url 'info_page' 'signin_reward' %}">{% trans "Sign-in reward" %}</a>
-        </li>
+        </li> --->
       </ul>
     </aside>
 

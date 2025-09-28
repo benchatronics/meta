@@ -1,10 +1,11 @@
 {% extends "base_user.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Rewards{% endblock %}
-{% block page_title %} 🎁 Rewards{% endblock %}
+{% block title %}{% trans "Rewards" %}{% endblock %}
+{% block page_title %} 🎁 {% trans "Rewards" %}{% endblock %}
 
 {% block extra_head %}
+
 <style>
   /* ===== Rewards — Single Carousel, Desktop-first, Responsive, Autoplay ===== */
   .rw-scope{--rw-blue:#0a63ff;--rw-ink:#0f172a;--rw-muted:#6b7280;--rw-border:#e5e7eb}
@@ -76,11 +77,12 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="rw-scope" id="rwRewards">
   <section class="rw-wrap">
 
     <!-- ======== CAROUSEL: START ======== -->
-    <div class="rw-card" aria-roledescription="carousel" aria-label="Rewards">
+    <div class="rw-card" aria-roledescription="carousel" aria-label="{% trans 'Rewards' %}">
       <div class="rw-carousel">
         <div class="rw-track" aria-live="polite">
 
@@ -89,20 +91,20 @@
           <!-- Slide 1 — Deposit Bonus (overview) -->
           <article class="rw-slide">
             <div class="rw-imgbox">
-              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal3.png' %}" alt="Deposit Bonus">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal3.png' %}" alt="{% trans 'Deposit Bonus' %}">
             </div>
             <div class="rw-copy">
-              <h3 class="rw-title">Deposit Bonus</h3>
-              <p class="rw-sub">Reset Amount Reward</p>
+              <h3 class="rw-title">{% trans "Deposit Bonus" %}</h3>
+              <p class="rw-sub">{% trans "Reset Amount Reward" %}</p>
               <ol class="rw-list">
-                <li><span class="rw-num">1.</span><span style="flex:1">300 EUR</span><span class="rw-get">Get</span><span class="rw-accent">50 EUR</span></li>
-                <li><span class="rw-num">2.</span><span style="flex:1">500 EUR</span><span class="rw-get">Get</span><span class="rw-accent">120 EUR</span></li>
-                <li><span class="rw-num">3.</span><span style="flex:1">1000 EUR</span><span class="rw-get">Get</span><span class="rw-accent">250 EUR</span></li>
-                <li><span class="rw-num">4.</span><span style="flex:1">1500 EUR</span><span class="rw-get">Get</span><span class="rw-accent">350 EUR</span></li>
+                <li><span class="rw-num">1.</span><span style="flex:1">300 EUR</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">50 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">500 EUR</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">120 EUR</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">1000 EUR</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">250 EUR</span></li>
+                <li><span class="rw-num">4.</span><span style="flex:1">1500 EUR</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">350 EUR</span></li>
               </ol>
               <div class="rw-fine">
-                <div>Please contact customer service for reward.</div>
-                <div>You can only collect once a day; reset the reward.</div>
+                <div>{% trans "Please contact customer service for reward." %}</div>
+                <div>{% trans "You can only collect once a day; reset the reward." %}</div>
               </div>
             </div>
           </article>
@@ -110,33 +112,33 @@
           <!-- Slide 2 — Deposit Bonus (detail) -->
           <article class="rw-slide">
             <div class="rw-imgbox">
-              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal5.png' %}" alt="Deposit Bonus Details">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal5.png' %}" alt="{% trans 'Deposit Bonus Details' %}">
             </div>
             <div class="rw-copy">
-              <h3 class="rw-title">Deposit Bonus</h3>
-              <p class="rw-sub">Repeat of tiers for clarity</p>
+              <h3 class="rw-title">{% trans "Deposit Bonus" %}</h3>
+              <p class="rw-sub">{% trans "Repeat of tiers for clarity" %}</p>
               <ol class="rw-list">
-                <li><span class="rw-num">1.</span><span style="flex:1">300 EUR</span><span class="rw-get">Get</span><span class="rw-accent">50 EUR</span></li>
-                <li><span class="rw-num">2.</span><span style="flex:1">500 EUR</span><span class="rw-get">Get</span><span class="rw-accent">120 EUR</span></li>
-                <li><span class="rw-num">3.</span><span style="flex:1">1000 EUR</span><span class="rw-get">Get</span><span class="rw-accent">250 EUR</span></li>
-                <li><span class="rw-num">4.</span><span style="flex:1">1500 EUR</span><span class="rw-get">Get</span><span class="rw-accent">350 EUR</span></li>
+                <li><span class="rw-num">1.</span><span style="flex:1">300 EUR</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">50 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">500 EUR</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">120 EUR</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">1000 EUR</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">250 EUR</span></li>
+                <li><span class="rw-num">4.</span><span style="flex:1">1500 EUR</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">350 EUR</span></li>
               </ol>
-              <div class="rw-fine"><div>Collect once per day.</div></div>
+              <div class="rw-fine"><div>{% trans "Collect once per day." %}</div></div>
             </div>
           </article>
 
           <!-- Slide 3 — Consecutive Days (overview) -->
           <article class="rw-slide">
             <div class="rw-imgbox">
-              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal4.png' %}" alt="Consecutive Days Rewards">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal4.png' %}" alt="{% trans 'Consecutive Days Rewards' %}">
             </div>
             <div class="rw-copy">
-              <h3 class="rw-title">Consecutive Days Rewards</h3>
-              <p class="rw-sub">Work for consecutive days and receive a reward of:</p>
+              <h3 class="rw-title">{% trans "Consecutive Days Rewards" %}</h3>
+              <p class="rw-sub">{% trans "Work for consecutive days and receive a reward of:" %}</p>
               <ol class="rw-list">
-                <li><span class="rw-num">1.</span><span style="flex:1">5 days</span><span class="rw-get">Reward</span><span class="rw-accent">300 EUR</span></li>
-                <li><span class="rw-num">2.</span><span style="flex:1">15 days</span><span class="rw-get">Reward</span><span class="rw-accent">700 EUR</span></li>
-                <li><span class="rw-num">3.</span><span style="flex:1">30 days</span><span class="rw-get">Reward</span><span class="rw-accent">1,500 EUR</span></li>
+                <li><span class="rw-num">1.</span><span style="flex:1">{% trans "5 days" %}</span><span class="rw-get">{% trans "Reward" %}</span><span class="rw-accent">300 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">{% trans "15 days" %}</span><span class="rw-get">{% trans "Reward" %}</span><span class="rw-accent">700 EUR</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">{% trans "30 days" %}</span><span class="rw-get">{% trans "Reward" %}</span><span class="rw-accent">1,500 EUR</span></li>
               </ol>
             </div>
           </article>
@@ -144,15 +146,15 @@
           <!-- Slide 4 — Consecutive Days (detail) -->
           <article class="rw-slide">
             <div class="rw-imgbox">
-              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="Consecutive Days Details">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="{% trans 'Consecutive Days Details' %}">
             </div>
             <div class="rw-copy">
-              <h3 class="rw-title">Consecutive Days</h3>
-              <p class="rw-sub">Maintain streaks to unlock larger rewards.</p>
+              <h3 class="rw-title">{% trans "Consecutive Days" %}</h3>
+              <p class="rw-sub">{% trans "Maintain streaks to unlock larger rewards." %}</p>
               <ol class="rw-list">
-                <li><span class="rw-num">1.</span><span style="flex:1">5 days</span><span class="rw-get">Get</span><span class="rw-accent">300 EUR</span></li>
-                <li><span class="rw-num">2.</span><span style="flex:1">15 days</span><span class="rw-get">Get</span><span class="rw-accent">700 EUR</span></li>
-                <li><span class="rw-num">3.</span><span style="flex:1">30 days</span><span class="rw-get">Get</span><span class="rw-accent">1,500 EUR</span></li>
+                <li><span class="rw-num">1.</span><span style="flex:1">{% trans "5 days" %}</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">300 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">{% trans "15 days" %}</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">700 EUR</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">{% trans "30 days" %}</span><span class="rw-get">{% trans "Get" %}</span><span class="rw-accent">1,500 EUR</span></li>
               </ol>
             </div>
           </article>
@@ -160,66 +162,66 @@
           <!-- Slide 5 — About Gift Boxes (overview) -->
           <article class="rw-slide">
             <div class="rw-imgbox">
-              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="About Gift Boxes">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="{% trans 'About Gift Boxes' %}">
             </div>
             <div class="rw-copy">
-              <h3 class="rw-title">About Gift Boxes</h3>
-              <p class="rw-sub">Have a chance to get 0–3 random Gift Boxes every round.</p>
+              <h3 class="rw-title">{% trans "About Gift Boxes" %}</h3>
+              <p class="rw-sub">{% trans "Have a chance to get 0–3 random Gift Boxes every round." %}</p>
               <ol class="rw-list">
-                <li><span class="rw-num">1.</span><span style="flex:1">Gift Boxes Cash Bonus</span><span class="rw-get">Up to</span><span class="rw-accent">2,000 EUR</span></li>
-                <li><span class="rw-num">2.</span><span style="flex:1">Gift Boxes Commission Bonus</span><span class="rw-get">Up to</span><span class="rw-accent">30× commission</span></li>
+                <li><span class="rw-num">1.</span><span style="flex:1">{% trans "Gift Boxes Cash Bonus" %}</span><span class="rw-get">{% trans "Up to" %}</span><span class="rw-accent">2,000 EUR</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">{% trans "Gift Boxes Commission Bonus" %}</span><span class="rw-get">{% trans "Up to" %}</span><span class="rw-accent">{% trans "30× commission" %}</span></li>
               </ol>
-              <div class="rw-fine"><div>For more details, contact customer service.</div></div>
+              <div class="rw-fine"><div>{% trans "For more details, contact customer service." %}</div></div>
             </div>
           </article>
 
           <!-- Slide 6 — Gift Boxes (detail) -->
           <article class="rw-slide">
             <div class="rw-imgbox">
-              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal3.png' %}" alt="Gift Boxes Detail">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal3.png' %}" alt="{% trans 'Gift Boxes Detail' %}">
             </div>
             <div class="rw-copy">
-              <h3 class="rw-title">Gift Boxes</h3>
-              <p class="rw-sub">Two types of Gift Boxes rewards are available.</p>
+              <h3 class="rw-title">{% trans "Gift Boxes" %}</h3>
+              <p class="rw-sub">{% trans "Two types of Gift Boxes rewards are available." %}</p>
               <ol class="rw-list">
-                <li><span class="rw-num">1.</span><span style="flex:1">Daily Box</span><span class="rw-get">Chance</span><span class="rw-accent">€5–€50</span></li>
-                <li><span class="rw-num">2.</span><span style="flex:1">Milestone Box</span><span class="rw-get">Chance</span><span class="rw-accent">€20–€150</span></li>
+                <li><span class="rw-num">1.</span><span style="flex:1">{% trans "Daily Box" %}</span><span class="rw-get">{% trans "Chance" %}</span><span class="rw-accent">€5–€50</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">{% trans "Milestone Box" %}</span><span class="rw-get">{% trans "Chance" %}</span><span class="rw-accent">€20–€150</span></li>
               </ol>
-              <div class="rw-fine"><div>Box odds reset weekly.</div></div>
+              <div class="rw-fine"><div>{% trans "Box odds reset weekly." %}</div></div>
             </div>
           </article>
 
           <!-- Slide 7 — About Rank (overview) -->
           <article class="rw-slide">
             <div class="rw-imgbox">
-              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal5.png' %}" alt="About Rank">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal5.png' %}" alt="{% trans 'About Rank' %}">
             </div>
             <div class="rw-copy">
-              <h3 class="rw-title">About Rank</h3>
-              <p class="rw-sub">Commission tiers & upgrade notes</p>
+              <h3 class="rw-title">{% trans "About Rank" %}</h3>
+              <p class="rw-sub">{% trans "Commission tiers & upgrade notes" %}</p>
               <ol class="rw-list">
-                <li><span class="rw-num">1.</span><span style="flex:1">VIP</span><span class="rw-get">Commission</span><span class="rw-accent">8–10%</span></li>
-                <li><span class="rw-num">2.</span><span style="flex:1">VVIP</span><span class="rw-get">Commission</span><span class="rw-accent">10–12%</span></li>
-                <li><span class="rw-num">3.</span><span style="flex:1">SVIP</span><span class="rw-get">Commission</span><span class="rw-accent">12–13%</span></li>
+                <li><span class="rw-num">1.</span><span style="flex:1">VIP</span><span class="rw-get">{% trans "Commission" %}</span><span class="rw-accent">8–10%</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">VVIP</span><span class="rw-get">{% trans "Commission" %}</span><span class="rw-accent">10–12%</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">SVIP</span><span class="rw-get">{% trans "Commission" %}</span><span class="rw-accent">12–13%</span></li>
               </ol>
-              <div class="rw-fine"><div>Contact Customer Service for more details.</div></div>
+              <div class="rw-fine"><div>{% trans "Contact Customer Service for more details." %}</div></div>
             </div>
           </article>
 
           <!-- Slide 8 — About Rank (detail) -->
           <article class="rw-slide">
             <div class="rw-imgbox">
-              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="About Rank Details">
+              <img loading="lazy" decoding="async" src="{% static 'meta_search/images/carousal2.png' %}" alt="{% trans 'About Rank Details' %}">
             </div>
             <div class="rw-copy">
-              <h3 class="rw-title">Rank Upgrade Details</h3>
-              <p class="rw-sub">More constraints & upgrade hints</p>
+              <h3 class="rw-title">{% trans "Rank Upgrade Details" %}</h3>
+              <p class="rw-sub">{% trans "More constraints & upgrade hints" %}</p>
               <ol class="rw-list">
-                <li><span class="rw-num">1.</span><span style="flex:1">VIP</span><span class="rw-get">Note</span><span class="rw-accent">One withdrawal/day</span></li>
-                <li><span class="rw-num">2.</span><span style="flex:1">VVIP</span><span class="rw-get">Note</span><span class="rw-accent">Two withdrawals/day</span></li>
-                <li><span class="rw-num">3.</span><span style="flex:1">Upgrade</span><span class="rw-get">Recharge</span><span class="rw-accent">300 EUR</span></li>
+                <li><span class="rw-num">1.</span><span style="flex:1">VIP</span><span class="rw-get">{% trans "Note" %}</span><span class="rw-accent">{% trans "One withdrawal/day" %}</span></li>
+                <li><span class="rw-num">2.</span><span style="flex:1">VVIP</span><span class="rw-get">{% trans "Note" %}</span><span class="rw-accent">{% trans "Two withdrawals/day" %}</span></li>
+                <li><span class="rw-num">3.</span><span style="flex:1">{% trans "Upgrade" %}</span><span class="rw-get">{% trans "Recharge" %}</span><span class="rw-accent">300 EUR</span></li>
               </ol>
-              <div class="rw-fine"><div>SVIP can become an agent; subordinate commissions may apply.</div></div>
+              <div class="rw-fine"><div>{% trans "SVIP can become an agent; subordinate commissions may apply." %}</div></div>
             </div>
           </article>
 
@@ -230,10 +232,10 @@
 
       <div class="rw-controls">
         <div class="rw-nav">
-          <button class="rw-btn" type="button" data-rw-dir="-1" aria-label="Previous">◀</button>
-          <button class="rw-btn" type="button" data-rw-dir="1"  aria-label="Next">▶</button>
+          <button class="rw-btn" type="button" data-rw-dir="-1" aria-label="{% trans 'Previous' %}">◀</button>
+          <button class="rw-btn" type="button" data-rw-dir="1"  aria-label="{% trans 'Next' %}">▶</button>
         </div>
-        <div class="rw-dots" role="tablist" aria-label="Slide indicators"></div>
+        <div class="rw-dots" role="tablist" aria-label="{% trans 'Slide indicators' %}"></div>
       </div>
     </div>
     <!-- ======== CAROUSEL: END ======== -->

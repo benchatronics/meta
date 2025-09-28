@@ -1,11 +1,12 @@
 {% extends "base_user.html" %}
 {% load static %}
 {% load greetings %}
+{% load i18n lang_extras %}
 
-{% block title %}Dashboard — Tasks & Rewards{% endblock %}
-{% block page_title %}My Dashboard{% endblock %}
+{% block title %}{% trans "Dashboard — Tasks & Rewards" %}{% endblock %}
+{% block page_title %}{% trans "My Dashboard" %}{% endblock %}
 
-{% block breadcrumb %}Home / dashboard{% endblock %}
+{% block breadcrumb %}{% trans "Home / dashboard" %}{% endblock %}
 
 {% block extra_head %}
   {# FA left in place globally in case other templates still use it; not used here #}
@@ -94,6 +95,18 @@
 
 {% block content %}
   {% static 'meta_search/images/avatar-placeholder.png' as avatar_placeholder %}
+  {% trans "User" as default_user %}
+  {% trans "View Profile" as view_profile %}
+  {% trans "Location" as t_location %}
+  {% trans "Date" as t_date %}
+  {% trans "Rating" as t_rating %}
+  {% trans "Search" as t_search %}
+  {% trans "Filters" as t_filters %}
+  {% trans "Recommended" as t_recommended %}
+  {% trans "Popular" as t_popular %}
+  {% trans "Rating" as t_tab_rating %}
+  {% trans "Your avatar" as t_avatar_alt %}
+  {% trans "Let’s do some task and earn reward" as t_sub_greet %}
 
   <!-- ===== Inline SVG sprite: all icons used on this page ===== -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
@@ -135,18 +148,30 @@
   </svg>
   <!-- ===== /sprite ===== -->
 
+  {% if request.user.is_authenticated %}
+  {% if request.impersonating %}
+    <a href="{% url 'impersonate_release' %}" style="color:red; font-weight:bold; margin-left:10px;">
+      Release Impersonation
+    </a>
+  {% endif %}
+{% endif %}
+
   <!-- CONTENT ONLY (inherits sidebar/topbar from base) -->
   <div class="ud">
     <!-- Desktop greeting -->
     <div class="greet">
-      <h1>
-         {% time_greeting %},
-        {% firstof request.user.nickname request.user.phone "User" %}
-        <span>👋</span>
-      </h1>
-      <p>Let’s do some task and earn reward</p>
+      <h1 class="greeting">
+  <span id="greet"
+        data-m="{% trans 'Good morning' %}"
+        data-a="{% trans 'Good afternoon' %}"
+        data-e="{% trans 'Good evening' %}"></span>,
+  {% firstof request.user.nickname request.user.phone _("User") %}
+  <span>👋</span>
+</h1>
+
+      <p>{% trans "Let’s do some task and earn reward" %}</p>
       <a href="{% url 'profile_settings' %}" class="mxp-profile-link">
-        {{ profile_cta|default:"View Profile" }}
+        {{ profile_cta|default:view_profile }}
       </a>
     </div>
 
@@ -154,7 +179,7 @@
     <form method="get" class="filters" id="ratingForm">
       <div class="pill">
         <svg class="icon text-ink" aria-hidden="true"><use href="#i-location"/></svg>
-        <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
+        <input type="text" name="location" placeholder="{{ t_location }}" value="{{ request.GET.location }}">
       </div>
 
       <div class="pill">
@@ -165,7 +190,7 @@
       <div class="pill pill-select">
         <svg class="icon text-ink" aria-hidden="true"><use href="#i-star"/></svg>
         <select id="ratingFilter" name="rating" onchange="document.getElementById('ratingForm').submit()">
-          <option value="">Rating</option>
+          <option value="">{{ t_rating }}</option>
           <option value="3"   {% if request.GET.rating == '3' %}selected{% endif %}>3+</option>
           <option value="3.5" {% if request.GET.rating == '3.5' %}selected{% endif %}>3.5+</option>
           <option value="4"   {% if request.GET.rating == '4' %}selected{% endif %}>4+</option>
@@ -178,32 +203,32 @@
       <!-- Desktop search button with SVG -->
       <button type="submit" class="search-btn">
         <svg class="icon text-ink" aria-hidden="true"><use href="#i-search"/></svg>
-        <span>Search</span>
+        <span>{{ t_search }}</span>
       </button>
     </form>
 
     {# ==== MOBILE-ONLY greeting + avatar + filters ==== #}
-    <div class="mxp-mobile-only" aria-label="Mobile header & filters">
+    <div class="mxp-mobile-only" aria-label="{% trans 'Mobile header & filters' %}">
       <section class="mxp-greeting">
-        <a href="{% url 'profile_settings' %}" class="mxp-avatar-link" aria-label="View profile">
+        <a href="{% url 'profile_settings' %}" class="mxp-avatar-link" aria-label="{% trans 'View profile' %}">
           <img
             class="mxp-avatar"
             src="{% if user_avatar %}{{ user_avatar }}
                  {% elif request.user.avatar %}{{ request.user.avatar.url }}
                  {% elif request.user.avatar_url %}{{ request.user.avatar_url }}
                  {% else %}{{ avatar_placeholder }}{% endif %}"
-            alt="Your avatar"
+            alt="{{ t_avatar_alt }}"
             onerror="this.src='{{ avatar_placeholder }}'">
         </a>
         <div class="mxp-greet-text">
           <h1 class="mxp-hello">
             {% time_greeting %},
-            {% firstof request.user.nickname request.user.phone "User" %}
-            <span class="mxp-wave" role="img" aria-label="wave">👋</span>
+            {% firstof request.user.nickname request.user.phone default_user %}
+            <span class="mxp-wave" role="img" aria-label="{% trans 'wave' %}">👋</span>
           </h1>
-          <p class="mxp-sub">Let’s do some task and earn reward</p>
+          <p class="mxp-sub">{{ t_sub_greet }}</p>
           <a href="{% url 'profile_settings' %}" class="mxp-profile-link">
-            {{ profile_cta|default:"View Profile" }}
+            {{ profile_cta|default:view_profile }}
           </a>
         </div>
       </section>
@@ -213,12 +238,12 @@
         <button id="mxpFilterToggle" type="button" class="mxp-filters-pill" aria-expanded="false" aria-controls="mxpTaskFilterForm">
           <span class="left">
             <svg class="icon text-ink" aria-hidden="true"><use href="#i-filter"/></svg>
-            Filters
+            {% trans "Filters" %}
           </span>
           <span class="emoji-caret" aria-hidden="true">▾</span>
         </button>
         <!-- Search SVG -->
-        <button class="mxp-search-btn" type="submit" form="mxpTaskFilterForm" aria-label="Search">
+        <button class="mxp-search-btn" type="submit" form="mxpTaskFilterForm" aria-label="{{ t_search }}">
           <svg class="icon text-ink" aria-hidden="true"><use href="#i-search"/></svg>
         </button>
       </section>
@@ -226,7 +251,7 @@
       <form id="mxpTaskFilterForm" class="mxp-filter-panel" method="get" action="">
         <div class="pill">
           <svg class="icon text-ink" aria-hidden="true"><use href="#i-location"/></svg>
-          <input type="text" name="location" placeholder="Location" value="{{ request.GET.location|default:'' }}">
+          <input type="text" name="location" placeholder="{{ t_location }}" value="{{ request.GET.location|default:'' }}">
         </div>
         <div class="pill">
           <svg class="icon text-ink" aria-hidden="true"><use href="#i-calendar"/></svg>
@@ -235,7 +260,7 @@
         <div class="pill pill-select">
           <svg class="icon text-ink" aria-hidden="true"><use href="#i-star"/></svg>
           <select name="rating" id="mxp_rating" onchange="this.form.submit()">
-            <option value="">Rating</option>
+            <option value="">{{ t_rating }}</option>
             <option value="3"   {% if request.GET.rating == '3' %}selected{% endif %}>3+</option>
             <option value="3.5" {% if request.GET.rating == '3.5' %}selected{% endif %}>3.5+</option>
             <option value="4"   {% if request.GET.rating == '4' %}selected{% endif %}>4+</option>
@@ -249,9 +274,9 @@
 
     <!-- TABS -->
     <div class="tabs" id="tabs">
-      <div class="tab {% if active_tab == 'recommended' %}active{% endif %}" data-tab="recommended">Recommended</div>
-      <div class="tab {% if active_tab == 'popular' %}active{% endif %}" data-tab="popular">Popular</div>
-      <div class="tab {% if active_tab == 'rating' %}active{% endif %}" data-tab="rating">Rating</div>
+      <div class="tab {% if active_tab == 'recommended' %}active{% endif %}" data-tab="recommended">{{ t_recommended }}</div>
+      <div class="tab {% if active_tab == 'popular' %}active{% endif %}" data-tab="popular">{{ t_popular }}</div>
+      <div class="tab {% if active_tab == 'rating' %}active{% endif %}" data-tab="rating">{{ t_tab_rating }}</div>
     </div>
 
     <!-- GRID SECTIONS -->
@@ -268,7 +293,7 @@
             <!-- SVG favourite with toggle state -->
             <button class="save-btn"
                     type="button"
-                    aria-label="Save {{ hotel.name }}"
+                    aria-label="{% blocktrans with name=hotel.name %}Save {{ name }}{% endblocktrans %}"
                     data-slug="{{ hotel.slug }}"
                     aria-pressed="{{ hotel.is_favorited|yesno:'true,false' }}">
               <svg class="icon fav-icon" aria-hidden="true">
@@ -295,7 +320,7 @@
         </div>
       </article>
       {% empty %}
-      <p>No {{ tab }} hotels available.</p>
+      {% blocktrans with tab=tab %}No {{ tab }} hotels available.{% endblocktrans %}
       {% endfor %}
     </section>
     {% endfor %}
@@ -304,6 +329,18 @@
 
 {% block extra_scripts %}
 {{ block.super }}
+<!--greetings-->
+<script>
+(function(){
+  var el = document.getElementById('greet');
+  if(!el) return;
+  var h = new Date().getHours();
+  var text = h < 12 ? el.dataset.m : (h < 17 ? el.dataset.a : el.dataset.e);
+  el.textContent = text || "Good day";
+})();
+</script>
+
+
 <script>
   // Tabs (client-side switching; server sets initial active_tab)
   const tabs = document.querySelectorAll('.tab');

@@ -1,9 +1,9 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>{% block title %}Auth{% endblock %}</title>
+  <title>{% block title %}{% trans "Auth" %}{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{% static 'meta_search/signup.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -15,7 +15,7 @@
   <!-- LEFT HALF -->
   <aside class="left">
     <div class="brand">
-      <img src="{% static 'meta_search/logos/arrow-icon.png' %}" alt="Expedia">
+      <img src="{% static 'meta_search/logos/logo 1 (2).png' %}" alt="Orbitpedia">
       <span></span>
     </div>
 
@@ -26,10 +26,19 @@
 
     <div class="home-area">
       <!-- Rectangular primary back button -->
-      <a href="javascript:history.back()" class="back-btn-rect" aria-label="Go back">
-        <i class="fa-solid fa-arrow-left"></i>
+      <a href="javascript:history.back()" class="back-btn-rect" aria-label="{% trans 'Go back' %}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+       xmlns="http://www.w3.org/2000/svg" style="display:block">
+    <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
       </a>
-      <a href="/" class="home-link">Home</a>
+      <a href="/" style="text-decoration:none; color:#fff; font-weight:500;"
+   onmouseover="this.style.opacity='0.8'"
+   onmouseout="this.style.opacity='1'">
+  {% trans "Home" %}
+</a>
+
+
     </div>
   </aside>
 

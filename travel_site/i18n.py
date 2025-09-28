@@ -6,7 +6,7 @@ from django.conf.locale import LANG_INFO
 
 LANGUAGE_CODE = "en"
 
-# --- 1) Candidate list (non-African). Use 'fil' (Tagalog) instead of 'tl'. ---
+# --- 1) Candidate list (non-African). ---
 _CANDIDATES = [
     # Europe
     ("en", "English"), ("fr", "Français"), ("es", "Español"), ("de", "Deutsch"),
@@ -52,25 +52,31 @@ _CANDIDATES = [
     ("la", "Latina"), ("ia", "Interlingua"),
 ]
 
-# --- 2) Normalize/patch: replace deprecated or unknown codes, mark RTL ---
-_REPLACEMENTS = {
-    "tl": "fil",  # Tagalog → Filipino code used by Django
-}
-# Right-to-left language codes (affects templates if you set dir="rtl")
+# --- 2) Normalize/patch ---
 _RTL = {"ar", "he", "fa", "ur", "ps", "sd", "ks"}
 
+_REPLACEMENTS = {
+    "fr-fr": "fr",
+    "fr_fr": "fr",
+    "tl": "fil",
+    "sr_latn": "sr-latn",
+    "sr-latn": "sr-latn",
+    "zh_hans": "zh-hans",
+    "zh_Hans": "zh-hans",
+    "zh_hant": "zh-hant",
+    "zh_Hant": "zh-hant",
+}
+
 def _ensure_langinfo(code: str, label: str):
-    """Register minimal LANG_INFO for a code so get_language_info never KeyErrors."""
     if code in LANG_INFO:
         return
     LANG_INFO[code] = {
         "bidi": code in _RTL,
         "code": code,
         "name": label,
-        "name_local": label,  # fallback: use same label for local name
+        "name_local": label,
     }
 
-# Apply replacements and register everything in LANG_INFO
 _NORMALIZED = []
 for code, label in _CANDIDATES:
     code = _REPLACEMENTS.get(code, code)

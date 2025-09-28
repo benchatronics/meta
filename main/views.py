@@ -74,6 +74,7 @@ from .models import (
     AddressType, Currency,
     DepositAddress, DepositRequest, Network,
     Hotel, Favorite, InfoPage, Announcement,
+
 )
 from .services import confirm_deposit
 
@@ -90,6 +91,18 @@ from .services import confirm_deposit
     #vip_deposit_shortfall_cents,
 #)
 
+def signinreward(request):
+    ctx = {
+        "active_page": "signinreward",
+        }
+    return render(request, "meta_search/signinreward.html", ctx)
+
+
+def level(request):
+    ctx = {
+        "active_page": "level",
+    }
+    return render(request, "meta_search/level.html", ctx)
 
 def _get_next_url(request, default_name="task_take"):
     nxt = request.GET.get("next") or request.POST.get("next")
@@ -440,29 +453,50 @@ def signin(request):
         'next': redirect_to,
     })
 
+
 @never_cache
 @ratelimit(key='ip', rate='5/m', block=True)
 def signup_view(request):
     if request.user.is_authenticated:
         messages.info(request, _("You're already signed in."))
         return redirect('user_dashboard')
+
     """
     Signup view passing request into the form (for IP & country capture).
     Auto-logs in after successful signup.
+    Invitation code is required and claimed atomically inside form.save().
     """
+
     redirect_to = request.GET.get('next') or request.POST.get('next') or 'user_dashboard'
 
     if request.method == 'POST':
         form = SignupForm(request.POST, request=request)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, _("Account created!"))
-            return redirect(redirect_to)
+            try:
+                # save() will atomically claim the invite; it may raise ValidationError
+                user = form.save()
+            except forms.ValidationError as e:
+                # Attach error to the invitation_code field (or as non-field if no field message)
+                msg = getattr(e, "message", None) or getattr(e, "messages", None) or [_("Invalid invitation code.")]
+                if isinstance(msg, (list, tuple)):
+                    for m in msg:
+                        form.add_error('invitation_code', m)
+                else:
+                    form.add_error('invitation_code', msg)
+                messages.error(request, _("Please correct the errors below."))
+            else:
+                login(request, user)
+                messages.success(request, _("Account created!"))
+                return redirect(redirect_to)
         else:
             messages.error(request, _("Please correct the errors below."))
     else:
-        form = SignupForm(request=request)
+        # Pre-fill invitation code from URL if present
+        code_from_url = request.GET.get('code') or request.GET.get('invite') or request.GET.get('invitation')
+        initial = {}
+        if code_from_url:
+            initial['invitation_code'] = code_from_url
+        form = SignupForm(initial=initial, request=request)
 
     return render(request, 'meta_search/signup.html', {
         'form': form,
@@ -547,8 +581,8 @@ def support_reset_password(request):
 
     return render(request, "meta_search/support_reset_password.html", {"form": form})
 
-# user_dashboard
 
+# user_dashboard
 @login_required
 @never_cache
 def user_dashboard(request):
@@ -599,11 +633,20 @@ def user_dashboard(request):
             rating_qs = rating_qs.filter(score__gte=rating_value)
         except ValueError:
             pass
-
+    """
     # Build tabs
-    recommended_hotels = base.filter(is_recommended=True).order_by("-created_at", "-score", "name")[:12]
-    popular_hotels     = base.order_by("-popularity", "-created_at", "name")[:12]
-    rating_hotels      = rating_qs.order_by("-score", "-created_at", "name")[:12]
+    recommended_hotels = base.filter(is_recommended=True).order_by("-created_at", "-score", "name")[:50]
+    popular_hotels     = base.order_by("-popularity", "-created_at", "name")[:50]
+    rating_hotels      = rating_qs.order_by("-score", "-created_at", "name")[:50]
+    """
+    PAGE_SIZE = int(request.GET.get("limit", 50))  # default 24; override via ?limit=48
+
+    recommended_hotels = (
+        base.filter(is_recommended=True)
+        .order_by("-created_at", "-score", "name")[:PAGE_SIZE]  # or drop [:PAGE_SIZE] entirely
+        )
+    popular_hotels = base.order_by("-popularity", "-created_at", "name")[:PAGE_SIZE]
+    rating_hotels  = rating_qs.order_by("-score", "-created_at", "name")[:PAGE_SIZE]
 
     # --- Dashboard header helpers ---
     nickname = (getattr(user, "nickname", "") or "").strip()
@@ -635,7 +678,6 @@ def user_dashboard(request):
         "user_avatar": avatar_url,  # handy for templates that expect it
     }
     return render(request, "meta_search/user_dashboard.html", {**context, "active_page":  "home"})
-
 
 # -----------------------------
 # Favorites (AJAX)
@@ -1238,11 +1280,11 @@ def deposit(request):
         {"form": form, "symbol": symbol, "presets": presets},
     )
 
-
+"""
 @login_required
 @never_cache
 def deposit_pay(request, pk):
-    """Payment page with 20s TTL + Telegram escalation."""
+    #Payment page with 20s TTL + Telegram escalation.
     dep = get_object_or_404(DepositRequest, pk=pk, user=request.user)
     payload = dep.pay_to.address
 
@@ -1277,6 +1319,105 @@ def deposit_pay(request, pk):
         "telegram_ttl_seconds": ttl_seconds,  # JS reads this
         "show_telegram_now": show_telegram_now,
     })
+"""
+# --- imports you need at the top of your views.py ---
+import base64
+from io import BytesIO
+
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
+from django.views.decorators.cache import never_cache
+
+# If not already imported:
+# from .models import DepositRequest
+# from .utils import _symbol  # if you keep using your existing helper
+
+try:
+    import qrcode
+    from qrcode.constants import ERROR_CORRECT_M
+except Exception:  # qrcode not installed or import issue
+    qrcode = None
+    ERROR_CORRECT_M = None
+
+
+def _make_qr_data_uri(text: str) -> str | None:
+    """
+    Create a proper QR code PNG data URI for the given text.
+    Returns None if text is empty or qrcode lib is unavailable.
+    """
+    if not text or not qrcode:
+        return None
+    qr = qrcode.QRCode(
+        version=None,                  # auto select size
+        error_correction=ERROR_CORRECT_M,
+        box_size=6,                    # pixel size of each module
+        border=2,                      # quiet zone
+    )
+    qr.add_data(text)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    buf = BytesIO()
+    img.save(buf, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
+
+
+@login_required
+@never_cache
+def deposit_pay(request, pk):
+    """
+    Payment page with 20s TTL + Telegram escalation.
+    Generates a wallet-friendly QR payload:
+      - ETH / ERC20:  'ethereum:<address>'   (simple; widely supported)
+      - TRC20 (USDT): '<address>'            (raw Tron address)
+    """
+    dep = get_object_or_404(DepositRequest, pk=pk, user=request.user)
+
+    addr = (getattr(dep.pay_to, "address", "") or "").strip()
+    net_code = (dep.network or "").upper()  # expected 'ETH' or 'TRC20'
+
+    # --- Build QR payload per network ---
+    if net_code == "ETH":
+        # For ERC20 deposits, most wallets accept ethereum:<address>
+        # If you WANT to include an ETH amount via EIP-681, append:
+        #   ?value=<wei>   where wei = int(dep.amount * 10**18)
+        payload = f"ethereum:{addr}" if addr else ""
+    elif net_code == "TRC20":
+        # TRC20 wallets expect the raw TRON address
+        payload = addr
+    else:
+        # Fallback: just the address
+        payload = addr
+
+    # --- QR code as data URI (reliable server-side PNG) ---
+    qr_data_uri = _make_qr_data_uri(payload)
+
+    support_telegram_url = getattr(
+        settings, "SUPPORT_TELEGRAM_URL", "https://t.me/benchatronics"
+    )
+
+    # ---- TTL: force 20 seconds ----
+    ttl_seconds = 20
+    waited_seconds = None
+    show_telegram_now = False
+    if dep.status == "awaiting_review" and dep.verified_at:
+        delta = timezone.now() - dep.verified_at
+        waited_seconds = int(delta.total_seconds())
+        show_telegram_now = waited_seconds >= ttl_seconds
+
+    return render(
+        request,
+        "meta_search/deposit_pay.html",
+        {
+            "dep": dep,
+            "symbol": _symbol(dep.currency),  # keep your existing currency symbol helper
+            "qr_data_uri": qr_data_uri,
+            "support_telegram_url": support_telegram_url,
+            "telegram_ttl_seconds": ttl_seconds,  # JS reads this
+            "show_telegram_now": show_telegram_now,
+        },
+    )
 
 
 @login_required

@@ -1,8 +1,8 @@
 {% extends "base_user.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Deposit{% endblock %}
-{% block breadcrumb %}Home / my Wallet / Deposit{% endblock %}
+{% block title %}{% trans "Deposit" %}{% endblock %}
+{% block breadcrumb %}{% trans "Home" %} / {% trans "My Wallet" %} / {% trans "Deposit" %}{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'meta_search/deposit.css' %}">
@@ -17,7 +17,7 @@
       <a
         class="back-link"
         href="{% url 'wallet' %}"
-        aria-label="Go back"
+        aria-label="{% trans 'Go back' %}"
         onclick="if (history.length > 1) { history.back(); return false; }">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -25,7 +25,7 @@
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
-      <h1 class="page-title">Deposit</h1>
+      <h1 class="page-title">{% trans "Deposit" %}</h1>
     </div>
   </div>
 
@@ -116,7 +116,7 @@
 
           <!-- Amount (currency selector moved below) -->
           <div class="group">
-            <div class="section-title">Amount</div>
+            <div class="section-title">{% trans "Amount" %}</div>
 
             <div class="ctrl {% if form.amount.errors %}error{% endif %}">
               <span class="prefix" id="currSymbol">{{ symbol }}</span>
@@ -128,7 +128,7 @@
 
             <!-- Currency BELOW the amount -->
             <div class="select-row">
-              <div class="label">Currency</div>
+              <div class="label">{% trans "Currency" %}</div>
               <div class="select {% if form.currency.errors %}error{% endif %}">
                 {{ form.currency }}
               </div>
@@ -144,23 +144,23 @@
               {% endfor %}
             </div>
 
-            <div class="muted">Minimum 10. Choose a preset or enter an amount.</div>
+            <div class="muted">{% trans "Minimum 10. Choose a preset or enter an amount." %}</div>
           </div>
 
           <!-- Network / Payment method -->
           <div class="group">
-            <div class="section-title" style="margin-top:10px">Payment Method</div>
+            <div class="section-title" style="margin-top:10px">{% trans "Payment Method" %}</div>
             <div class="method">
               <label class="opt {% if form.network.value == 'ETH' %}active{% endif %}" data-net="ETH">
                 <input type="radio" name="network" value="ETH" class="sr-only" {% if form.network.value == 'ETH' or not form.network.value %}checked{% endif %}>
                 <span class="bullet"><i class="fa-brands fa-ethereum"></i></span>
-                <span>Ethereum (ERC20)</span>
+                <span>{% trans "Ethereum (ERC20)" %}</span>
               </label>
 
               <label class="opt {% if form.network.value == 'TRC20' %}active{% endif %}" data-net="TRC20">
                 <input type="radio" name="network" value="TRC20" class="sr-only" {% if form.network.value == 'TRC20' %}checked{% endif %}>
                 <span class="bullet usdt">T</span>
-                <span>USDT (TRC20)</span>
+                <span>{% trans "USDT (TRC20)" %}</span>
               </label>
             </div>
 
@@ -171,7 +171,7 @@
 
           <!-- Submit -->
           <div class="group">
-            <button class="submit" type="submit">Proceed to Pay →</button>
+            <button class="submit" type="submit">{% trans "Proceed to Pay →" %}</button>
           </div>
         </form>
       </div>

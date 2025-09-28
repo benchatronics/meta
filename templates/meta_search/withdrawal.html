@@ -1,10 +1,11 @@
 {% extends "base_user.html" %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Withdraw{% endblock %}
-{% block page_title %}Withdrawal{% endblock %}
+{% block title %}{% trans "Withdraw" %}{% endblock %}
+{% block page_title %}{% trans "Withdrawal" %}{% endblock %}
 
-{% block breadcrumb %}Home / my Wallet / Withdrawal{% endblock %}
+{% block breadcrumb %}{% trans "Home / my Wallet / Withdrawal" %}{% endblock %}
 
 {% block extra_head %}
   <meta name="viewport"
@@ -146,14 +147,14 @@
 {% block content %}
   <div class="page-with-mobile-back">
     <div class="page-header">
-      <a class="back-link" href="{% url 'wallet' %}" aria-label="Go back"
+      <a class="back-link" href="{% url 'wallet' %}" aria-label="{% trans 'Go back' %}"
          onclick="if (history.length > 1) { history.back(); return false; }">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
-      <h1 class="page-title">Withdraw</h1>
+      <h1 class="page-title">{% trans "Withdraw" %}</h1>
     </div>
   </div>
 
@@ -163,7 +164,7 @@
       {% if method_verified %}
         <div class="banner">
           <i class="fa-solid fa-circle-check"></i>
-          Your withdrawal method is verified.
+          {% trans "Your withdrawal method is verified." %}
         </div>
       {% endif %}
 
@@ -195,8 +196,8 @@
 
             <!-- Amount -->
             <div class="group">
-              <div class="section-title">Withdrawal</div>
-              <div class="muted" style="margin-bottom:10px">Amount</div>
+              <div class="section-title">{% trans "Withdrawal" %}</div>
+              <div class="muted" style="margin-bottom:10px">{% trans "Amount" %}</div>
 
               <div class="amount-wrap">
                 <div class="ctrl">
@@ -211,24 +212,24 @@
                   <div class="btns">
                     {# REMOVED eye toggle button here #}
                     <div class="currency-wrap">
-                      <button type="button" class="iconbtn" id="currencyBtn" aria-haspopup="true" aria-expanded="false" title="Currency">
+                      <button type="button" class="iconbtn" id="currencyBtn" aria-haspopup="true" aria-expanded="false" title="{% trans 'Currency' %}">
                         <i id="currencyIcon" class="fa-solid {% if form.currency.value == 'USD' %}fa-dollar-sign{% elif form.currency.value == 'GBP' %}fa-sterling-sign{% else %}fa-euro-sign{% endif %}"></i>
                       </button>
                       <div class="currency-menu" id="currencyMenu" role="menu" aria-hidden="true">
                         <label class="choice {% if form.currency.value == 'EUR' or not form.currency.value %}selected{% endif %}" data-symbol="€" data-code="EUR">
                           <input type="radio" name="currency" value="EUR"
                                  {% if form.currency.value == "EUR" or not form.currency.value %}checked{% endif %}
-                                 {% if withdraw_locked %}disabled{% endif %}> EUR (Euro)
+                                 {% if withdraw_locked %}disabled{% endif %}> {% trans "EUR (Euro)" %}
                         </label>
                         <label class="choice {% if form.currency.value == 'USD' %}selected{% endif %}" data-symbol="$" data-code="USD">
                           <input type="radio" name="currency" value="USD"
                                  {% if form.currency.value == "USD" %}checked{% endif %}
-                                 {% if withdraw_locked %}disabled{% endif %}> USD (US Dollar)
+                                 {% if withdraw_locked %}disabled{% endif %}> {% trans "USD (US Dollar)" %}
                         </label>
                         <label class="choice {% if form.currency.value == 'GBP' %}selected{% endif %}" data-symbol="£" data-code="GBP">
                           <input type="radio" name="currency" value="GBP"
                                  {% if form.currency.value == "GBP" %}checked{% endif %}
-                                 {% if withdraw_locked %}disabled{% endif %}> GBP (Pound)
+                                 {% if withdraw_locked %}disabled{% endif %}> {% trans "GBP (Pound)" %}
                         </label>
                       </div>
                     </div>
@@ -236,7 +237,7 @@
                 </div>
               </div>
 
-              <div class="muted" id="minMax" style="margin-top:8px">Min €10 • Max €5,000 per request</div>
+              <div class="muted" id="minMax" style="margin-top:8px">{% trans "Min" %} €10 • {% trans "Max" %} €5,000 {% trans "per request" %}</div>
 
               {% if form.non_field_errors %}
                 <div class="err-row" style="margin-top:8px"><i class="fa-solid fa-circle-exclamation"></i>{{ form.non_field_errors|striptags }}</div>
@@ -248,19 +249,19 @@
 
             <!-- Address -->
             <div class="group addr-wrap">
-              <div class="muted">Address</div>
+              <div class="muted">{% trans "Address" %}</div>
 
               {% if selected %}
                 <div class="addr">
-                  <input type="text" value="{{ selected.address }}" readonly aria-label="Bound wallet address">
-                  <a href="{% url 'withdraw_add_address' %}" class="update-link">Update address</a>
+                  <input type="text" value="{{ selected.address }}" readonly aria-label="{% trans 'Bound wallet address' %}">
+                  <a href="{% url 'withdraw_add_address' %}" class="update-link">{% trans "Update address" %}</a>
                 </div>
 
                 {# === FIX: show accurate network using selected.address_type (no default to TRC20) === #}
                 {% with net_raw=selected.address_type|default_if_none:"" %}
                   {% with net_up=net_raw|upper %}
                     <div class="muted" style="margin-top:4px">
-                      Network:
+                      {% trans "Network:" %}
                       {% if net_up == "ETH" %}
                         ERC20
                       {% elif net_up == "TRC20" %}
@@ -274,14 +275,14 @@
 
               {% else %}
                 <div class="addr {% if address_error %}error{% endif %}">
-                  <input type="text" name="address" value="" placeholder="Bind your wallet address first" disabled>
-                  <a href="{% url 'withdraw_add_address' %}" class="bind-link">Bind Wallet Address</a>
+                  <input type="text" name="address" value="" placeholder="{% trans 'Bind your wallet address first' %}" disabled>
+                  <a href="{% url 'withdraw_add_address' %}" class="bind-link">{% trans "Bind Wallet Address" %}</a>
                 </div>
                 <div class="addr-actions">
                   <a class="bind-help tooltip" tabindex="0"
-                     data-tip="You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste your wallet address → verify (email/SMS) → the address will be saved and auto-filled here.">
+                     data-tip="{% trans 'You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste your wallet address → verify (email/SMS) → the address will be saved and auto-filled here.' %}">
                     <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
-                    Bind wallet address?
+                    {% trans "Bind wallet address?" %}
                   </a>
                 </div>
                 {% if address_error %}
@@ -292,14 +293,14 @@
 
             <!-- Methods -->
             <div class="group">
-              <div class="section-title">Withdrawal Method</div>
+              <div class="section-title">{% trans "Withdrawal Method" %}</div>
               <div class="method">
                 <label class="opt {% if method == 'crypto' %}active{% endif %}">
                   <input type="radio" name="method" value="crypto" class="sr-only"
                          {% if method == 'crypto' or not method %}checked{% endif %}
                          {% if withdraw_locked %}disabled{% endif %}>
                   <span class="bullet eth"><i class="fa-brands fa-ethereum" aria-hidden="true"></i></span>
-                  <span>ETHEREUM</span>
+                  <span>{% trans "ETHEREUM" %}</span>
                 </label>
 
                 <label class="opt usdt {% if method == 'usdt_trc20' %}active{% endif %}">
@@ -312,7 +313,7 @@
                       <path fill="#FFFFFF" d="M26 9.9c0-1-4.5-1.9-10-1.9S6 8.9 6 9.9c0 .8 2.7 1.5 6.5 1.8v2.7c-3.7.3-6.2 1-6.2 1.8 0 .8 2.5 1.5 6.2 1.8V24h4.9v-5.9c3.8-.3 6.6-1 6.6-1.9 0-.8-2.8-1.6-6.6-1.9V11.7C23.3 11.4 26 10.7 26 9.9z"/>
                     </svg>
                   </span>
-                  <span>USDT (TRC20)</span>
+                  <span>{% trans "USDT (TRC20)" %}</span>
                 </label>
               </div>
             </div>
@@ -326,17 +327,17 @@
                 data-need-pin="{% if has_tx_pin %}0{% else %}1{% endif %}"
                 data-set-pin-url="{% url 'set_tx_pin' %}"
                 data-locked="{% if withdraw_locked %}1{% else %}0{% endif %}"
-                data-locked-msg="{{ withdraw_reason|default:'The withdrawal requirement has yet to be fulfilled.' }}">
+                data-locked-msg="{{ withdraw_reason|default:_('The withdrawal requirement has yet to be fulfilled.') }}">
                 {% if withdraw_locked %}<i class="fa-solid fa-lock" aria-hidden="true"></i> {% endif %}
-                WITHDRAW
+                {% trans "WITHDRAW" %}
               </button>
 
               {% if not has_tx_pin %}
                 <div class="tx-callout" role="note">
                   <i class="fa-solid fa-key" aria-hidden="true"></i>
                   <div>
-                    For security, you must set a withdrawal password first.
-                    <a href="{% url 'set_tx_pin' %}">Set withdrawal password</a>.
+                    {% trans "For security, you must set a withdrawal password first." %}
+                    <a href="{% url 'set_tx_pin' %}">{% trans "Set withdrawal password" %}</a>.
                   </div>
                 </div>
               {% endif %}
@@ -345,15 +346,15 @@
             <!-- PIN modal -->
             <dialog id="txDialog" class="tx-modal" aria-labelledby="txDialogTitle" aria-modal="true">
               <div class="tx-modal-card">
-                <h3 id="txDialogTitle">Confirm withdrawal</h3>
-                <label for="tx_pin">Withdrawal password (6 digits)</label>
+                <h3 id="txDialogTitle">{% trans "Confirm withdrawal" %}</h3>
+                <label for="tx_pin">{% trans "Withdrawal password (6 digits)" %}</label>
                 <input type="password" name="tx_pin" id="tx_pin" required inputmode="numeric"
                        pattern="\d{6}" maxlength="6" autocomplete="one-time-code"
                        class="tx-input" placeholder="••••••" />
-                <div class="tx-hint">Enter your 6-digit withdrawal password to continue.</div>
+                <div class="tx-hint">{% trans "Enter your 6-digit withdrawal password to continue." %}</div>
                 <div class="tx-actions">
-                  <button type="button" class="btn ghost" data-close>Cancel</button>
-                  <button type="submit" class="btn primary">Confirm & Withdraw</button>
+                  <button type="button" class="btn ghost" data-close>{% trans "Cancel" %}</button>
+                  <button type="submit" class="btn primary">{% trans "Confirm & Withdraw" %}</button>
                 </div>
               </div>
             </dialog>
@@ -364,16 +365,16 @@
               <div class="policy-card">
                 <div class="policy-head">
                   <div class="ic"><i class="fa-solid fa-flag-checkered" aria-hidden="true"></i></div>
-                  <h3 id="policyTitle">Withdrawal policy</h3>
+                  <h3 id="policyTitle">{% trans "Withdrawal policy" %}</h3>
                 </div>
                 <div class="policy-body">
-                  "The withdrawal requirement has yet to be fulfilled" <strong> COMPLETE MORE TASKS </strong> before the next withdrawal.
+                  “{% trans "The withdrawal requirement has yet to be fulfilled" %}” <strong>{% trans "COMPLETE MORE TASKS" %}</strong> {% trans "before the next withdrawal." %}
                   {% if withdraw_cycles_remaining %}
-                    <span class="policy-chip"><i class="fa-solid fa-lock"></i> Locked:The withdrawal requirement has yet to be fulfilled {{ withdraw_cycles_remaining }} </span>
+                    <span class="policy-chip"><i class="fa-solid fa-lock"></i> {% blocktrans %}Locked: The withdrawal requirement has yet to be fulfilled {{ withdraw_cycles_remaining }}{% endblocktrans %} </span>
                   {% endif %}
                 </div>
                 <div class="policy-actions">
-                  <button type="button" class="btn primary" data-close-policy>Got it</button>
+                  <button type="button" class="btn primary" data-close-policy>{% trans "Got it" %}</button>
                 </div>
               </div>
             </dialog>
@@ -417,7 +418,7 @@
       const meta = CURRENCY_META[code] || CURRENCY_META.EUR;
       prefix.textContent = meta.symbol;
       icon.className = 'fa-solid ' + meta.icon;
-      minMax.textContent = `Min ${meta.symbol}${meta.min.toLocaleString()} • Max ${meta.symbol}${meta.max.toLocaleString()} per request`;
+      minMax.textContent = `{% trans "Min" %} ${meta.symbol}${meta.min.toLocaleString()} • {% trans "Max" %} ${meta.symbol}${meta.max.toLocaleString()} {% trans "per request" %}`;
       amt.min = meta.min; amt.max = meta.max; amt.placeholder = `${meta.symbol}0.00`;
     }
 
@@ -468,7 +469,7 @@
     const needPin = openBtn?.getAttribute('data-need-pin') === '1';
     const setPinUrl = openBtn?.getAttribute('data-set-pin-url') || '#';
     const locked = openBtn?.getAttribute('data-locked') === '1';
-    const lockedMsg = openBtn?.getAttribute('data-locked-msg') || 'The withdrawal requirement has yet to be fulfilled.';
+    const lockedMsg = openBtn?.getAttribute('data-locked-msg') || '{% trans "The withdrawal requirement has yet to be fulfilled." %}';
 
     function openModal(){
       if (locked) { alert(lockedMsg); return; }
@@ -496,7 +497,7 @@
         btn.disabled = true;
         btn.setAttribute('aria-busy','true');
         if (!btn.dataset.originalText) btn.dataset.originalText = btn.textContent;
-        btn.textContent = 'Processing…';
+        btn.textContent = '{% trans "Processing…" %}';
       });
     }, {once:true});
   })();

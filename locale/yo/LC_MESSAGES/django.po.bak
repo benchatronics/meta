@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-09 14:12+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: yo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/meta_search/includes/_footer.html:13
+msgid "Home"
+msgstr "Ile"
+
+#: templates/meta_search/includes/_footer.html:14
+msgid "Contact Us"
+msgstr "Pe wa"
+
+#: templates/meta_search/includes/_footer.html:15
+msgid "About Us"
+msgstr "Nipa re"
+
+#: templates/meta_search/includes/_footer.html:16
+msgid "FAQ"
+msgstr "Faak"
+
+#: templates/meta_search/includes/_footer.html:17
+msgid "Level"
+msgstr "Ipele"
+
+#: templates/meta_search/includes/_footer.html:20
+msgid "Imprint"
+msgstr "Tẹ mọ"
+
+#: templates/meta_search/includes/_footer.html:21
+msgid "Privacy"
+msgstr "Ibi aṣiri"
+
+#: templates/meta_search/includes/_header.html:50
+msgid "Get started"
+msgstr "Bẹrẹ"
+
+#: templates/meta_search/index.html:24
+msgid "Experience The Magic Of Relaxation"
+msgstr "Ni iriri idan ti isinmi"
+
+#: templates/meta_search/index.html:25
+msgid ""
+"Indulge in the epitome of coastal living as you discover the breathtaking "
+"beauty and tranquility of luxury."
+msgstr ""
+"Indulge ni apapo ti eti okun gbigbe bi o ṣe ṣe awari ẹwa ẹmi ati idakẹjẹ ti "
+"igbadun."
+
+#: templates/meta_search/index.html:34
+msgid "Trusted by over 25k+ people"
+msgstr "Gbẹkẹle nipasẹ 25k + eniyan"
+
+#: templates/meta_search/index.html:35 templates/meta_search/index.html:71
+msgid "Explore Now"
+msgstr "Ṣawari bayi"
+
+#: templates/meta_search/index.html:55
+msgid "Premium Facilities"
+msgstr "Awọn ohun elo Ere"
+
+#: templates/meta_search/index.html:57
+msgid "Exclusive Sunset View"
+msgstr "Wiwo oorun"
+
+#: templates/meta_search/index.html:57
+msgid "You witness the beauty of the world from your room"
+msgstr "O jẹri ẹwa ti agbaye lati yara rẹ"
+
+#: templates/meta_search/index.html:58
+msgid "Integrated Tourist Area"
+msgstr "Agbegbe ti a fi sinu agbegbe"
+
+#: templates/meta_search/index.html:58
+msgid "Enhancing your travel experience"
+msgstr "Imudara iriri irin-ajo rẹ"
+
+#: templates/meta_search/index.html:59
+msgid "Nature-Inspired Pool"
+msgstr "Adagun Epo"
+
+#: templates/meta_search/index.html:59
+msgid "Serene swimming pool with a touch of paradise"
+msgstr "Pool odo Serene pẹlu ifọwọkan ti paradise"
+
+#: templates/meta_search/index.html:67
+msgid "Rate Apartments"
+msgstr "Awọn ilana oṣuwọn"
+
+#: templates/meta_search/index.html:68
+msgid "Get to randomly rate apartments based on view and aesthetic"
+msgstr "Gba si awọn ọna oṣuwọn laileto ti o da lori wiwo ati darapupo"
+
+#: templates/meta_search/index.html:69
+msgid "Get Rewarded"
+msgstr "Gba ere"
+
+#: templates/meta_search/index.html:70
+msgid "Earn rewards instantly"
+msgstr "Gba awọn ere lesekese"
+
+#: templates/meta_search/index.html:81
+msgid "Clients Review"
+msgstr "Atunwo Awọn alabara"
+
+#: templates/meta_search/index.html:82
+msgid "See some honest reviews from our users on the platform"
+msgstr "Wo diẹ ninu awọn atunyẹwo ooto lati awọn olumulo wa lori pẹpẹ naa"
+
+#: templates/meta_search/index.html:89
+msgid ""
+"Had a great experience using this for solid bookings. Customer service was "
+"top-notch."
+msgstr ""
+"Ni iriri nla nipa lilo eyi fun awọn iwe to lagbara. Iṣẹ Onibara jẹ oke-"
+"ogbontarigi."
+
+#: templates/meta_search/index.html:99
+msgid "Get your inspiration of luxury and get rewarded"
+msgstr "Gba awokoramu ti igbadun ati ki o gba ere"
+
+#: templates/meta_search/index.html:100
+msgid "Earn new rewards at every step you take under true luxury."
+msgstr "Gba awọn ere titun ni gbogbo igbesẹ ti o gba labẹ igbadun otitọ."
+
+#: templates/meta_search/index.html:101
+msgid "See More"
+msgstr "Wo diẹ sii"

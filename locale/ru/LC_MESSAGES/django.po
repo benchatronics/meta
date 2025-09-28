@@ -8,617 +8,2317 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 16:12+0000\n"
+"POT-Creation-Date: 2025-09-23 16:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: main/admin.py:44
+#: main/admin.py:392
 msgid "Clear withdrawal PIN"
-msgstr ""
+msgstr "Чистая штифта снятия"
 
-#: main/admin.py:46
+#: main/admin.py:394
 msgid ""
 "Tick to remove any existing withdrawal PIN so the user must set a new one."
 msgstr ""
+"Тик для удаления любого существующего вывода снятия, чтобы пользователь "
+"должен установить новый."
 
-#: main/admin.py:49
+#: main/admin.py:397
 msgid "Set new withdrawal PIN"
-msgstr ""
+msgstr "Установить новую штифт"
 
-#: main/admin.py:57
+#: main/admin.py:405
 msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
-msgstr ""
+msgstr "Необязательный. Введите ровно 6 цифр, чтобы установить/сбросить штифт."
 
-#: main/admin.py:70
+#: main/admin.py:418
 msgid "PIN must be exactly 6 digits."
-msgstr ""
+msgstr "PIN -код должен быть ровно 6 цифр."
 
-#: main/admin.py:136
+#: main/admin.py:483
 msgid "Withdrawal security"
-msgstr ""
+msgstr "Безопасность вывода"
 
 #: main/forms.py:27
 msgid "Account password"
-msgstr ""
+msgstr "Пароль учетной записи"
 
-#: main/forms.py:31
+#: main/forms.py:31 templates/meta_search/withdrawal.html:350
 msgid "Withdrawal password (6 digits)"
-msgstr ""
+msgstr "Пароль снятия (6 цифр)"
 
 #: main/forms.py:35
 msgid "Confirm withdrawal password"
-msgstr ""
+msgstr "Подтвердите пароль отмены"
 
 #: main/forms.py:46
 msgid "Incorrect account password."
-msgstr ""
+msgstr "Неправильный пароль учетной записи."
 
 #: main/forms.py:53 main/forms.py:87
 msgid "Enter exactly 6 digits."
-msgstr ""
+msgstr "Введите ровно 6 цифр."
 
-#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:268
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Пароли не совпадают."
 
 #: main/forms.py:61
 msgid "Current withdrawal password"
-msgstr ""
+msgstr "Текущий пароль отмены"
 
 #: main/forms.py:65
 msgid "New withdrawal password (6 digits)"
-msgstr ""
+msgstr "Новый пароль снятия (6 цифр)"
 
 #: main/forms.py:69
 msgid "Confirm new withdrawal password"
-msgstr ""
+msgstr "Подтвердите новый пароль отмены"
 
 #: main/forms.py:80
 msgid "Incorrect withdrawal password."
-msgstr ""
+msgstr "Неправильный пароль снятия."
 
 #: main/forms.py:161
 #, python-format
 msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
-msgstr ""
+msgstr "Jpg/png/webp/gif, до %(mb)s Mb."
 
 #: main/forms.py:162
 msgid "Direct image URL (used only if no file is uploaded)."
 msgstr ""
+"Прямой URL -адрес изображения (используется только в случае загрузки файла)."
 
 #: main/forms.py:180
 msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
-msgstr ""
+msgstr "Неподдерживаемый тип изображения. Используйте JPG, PNG, WEBP или GIF."
 
 #: main/forms.py:182
 #, python-format
 msgid "Image too large (max %(mb)s MB)."
-msgstr ""
+msgstr "Изображение слишком большое (max %(mb)s Mb)."
 
 #: main/forms.py:191
 msgid "Only http/https URLs are allowed."
-msgstr ""
+msgstr "Разрешены только URL -адреса HTTP/HTTPS."
 
 #: main/forms.py:206 main/forms.py:371 main/forms.py:581
 msgid "Country code"
-msgstr ""
+msgstr "Код страны"
 
 #: main/forms.py:211 main/forms.py:376 main/forms.py:586
 msgid "Enter your phone number"
-msgstr ""
+msgstr "Введите свой номер телефона"
 
 #: main/forms.py:215 main/forms.py:380 main/forms.py:590
 msgid "Phone number"
-msgstr ""
+msgstr "Номер телефона"
 
 #: main/forms.py:220
 msgid "Enter your invitation code"
-msgstr ""
+msgstr "Введите свой код приглашения"
 
 #: main/forms.py:223
 msgid "Invitation code"
-msgstr ""
+msgstr "Приглашение код"
 
 #: main/forms.py:225 main/forms.py:592
 msgid "I am not a robot"
-msgstr ""
+msgstr "Я не робот"
 
 #: main/forms.py:236 main/forms.py:385 main/forms.py:615
 msgid "Enter your password"
-msgstr ""
+msgstr "Введите свой пароль"
 
 #: main/forms.py:240
 msgid "Re-enter your password"
-msgstr ""
+msgstr "Повторно введите свой пароль"
 
-#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:233
 msgid "Invalid phone number format."
-msgstr ""
+msgstr "Неверный формат номера телефона."
 
-#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:235
 msgid "This phone number is not possible for the selected country."
-msgstr ""
+msgstr "Этот номер телефона невозможен для выбранной страны."
 
-#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:237
 msgid "This phone number is not valid for the selected country."
-msgstr ""
+msgstr "Этот номер телефона не действителен для выбранной страны."
 
 #: main/forms.py:281 main/forms.py:429 main/forms.py:657
 #, python-format
 msgid ""
 "Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
 msgstr ""
+"Длина номера телефона должна быть от %(lo)d до %(hi)d цифр для %(country)s"
 
 #: main/forms.py:293
 msgid "An account with this phone already exists."
-msgstr ""
+msgstr "Учетная запись с этим телефоном уже существует."
 
-#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:80
+#: templates/meta_search/signup.html:54
 msgid "Password"
-msgstr ""
+msgstr "Пароль"
 
 #: main/forms.py:325
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user’s "
 "password, but you can change the password using the “Change password” form."
 msgstr ""
+"Необработанные пароли не хранятся, поэтому невозможно увидеть пароль этого "
+"пользователя, но вы можете изменить пароль, используя форму «Изменение "
+"пароля»."
 
 #: main/forms.py:352
 msgid "User phone (E.164 or local NG)"
-msgstr ""
+msgstr "Пользовательский телефон (E.164 или локальный NG)"
 
 #: main/forms.py:353
 msgid "+2348012345678 or 080..."
-msgstr ""
+msgstr "+2348012345678 или 080 ..."
 
-#: main/forms.py:355 main/views.py:210
+#: main/forms.py:355 main/views.py:262
 #: templates/meta_search/settings_change_password.html:83
+#: templates/meta_search/support_reset_password.html:77
 msgid "New password"
-msgstr ""
+msgstr "Новый пароль"
 
-#: main/forms.py:356 main/views.py:211
+#: main/forms.py:356 main/views.py:263
 msgid "Confirm new password"
-msgstr ""
+msgstr "Подтвердите новый пароль"
 
 #: main/forms.py:670
 msgid "Phone does not match your account."
-msgstr ""
+msgstr "Телефон не соответствует вашей учетной записи."
 
-#: main/models.py:578 templates/base_info.html:22
+#: main/models.py:672 templates/base_info.html:22
 #: templates/meta_search/info_index.html:27
 msgid "About us"
-msgstr ""
+msgstr "О нас"
 
-#: main/models.py:579 templates/base_info.html:26
+#: main/models.py:673 templates/base_info.html:26
 #: templates/meta_search/info_index.html:31
 msgid "Contact us"
-msgstr ""
+msgstr "Связаться с нами"
 
-#: main/models.py:580 templates/base_info.html:30
+#: main/models.py:674 templates/base_info.html:30
 #: templates/meta_search/info_index.html:35
 msgid "Help"
-msgstr ""
+msgstr "Помощь"
 
-#: main/models.py:581 templates/base_info.html:34
+#: main/models.py:675 templates/base_info.html:34
 #: templates/meta_search/info_index.html:39
+#: templates/meta_search/profile_settings.html:75
 msgid "Level"
-msgstr ""
+msgstr "Уровень"
 
-#: main/models.py:582 templates/base_info.html:38
+#: main/models.py:676 templates/base_info.html:38
 #: templates/meta_search/info_index.html:43
 msgid "Sign-in reward"
-msgstr ""
+msgstr "Вознаграждение вхождения"
 
-#: main/views.py:69
+#: main/views.py:121
 msgid "Withdrawal password set."
-msgstr ""
+msgstr "Установка пароля."
 
-#: main/views.py:79
+#: main/views.py:131
 msgid "You don’t have a withdrawal password yet. Set one first."
-msgstr ""
+msgstr "У вас еще нет пароля отмены. Сначала установите один."
 
-#: main/views.py:86
+#: main/views.py:138
 msgid "Withdrawal password updated."
-msgstr ""
+msgstr "Установка пароля обновляется."
 
-#: main/views.py:209
+#: main/views.py:261
 msgid "Verification code"
-msgstr ""
+msgstr "Проверочный код"
 
-#: main/views.py:247
+#: main/views.py:299
 msgid "No account found for that phone."
-msgstr ""
+msgstr "Для этого телефона не было найдено учетной записи."
 
-#: main/views.py:259
+#: main/views.py:311
 #, python-format
 msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
-msgstr ""
-
-#: main/views.py:263
-msgid "We couldn’t send the code. Please try again in a moment."
-msgstr ""
-
-#: main/views.py:267
-msgid "Unexpected error sending code. Try again later."
-msgstr ""
-
-#: main/views.py:272
-msgid "We sent a verification code to your phone."
-msgstr ""
-
-#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
-#: main/views.py:1169
-msgid "Please correct the errors below."
-msgstr ""
-
-#: main/views.py:290
-msgid "Start by entering your phone number."
-msgstr ""
-
-#: main/views.py:298
-msgid "Invalid or expired code."
-msgstr ""
-
-#: main/views.py:304
-msgid "Account not found. Please start over."
-msgstr ""
+msgstr "Ваш код сброса: %(otp)s . Срок действия истекает за 10 минут."
 
 #: main/views.py:315
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr ""
+"Мы не могли отправить код. Пожалуйста, попробуйте еще раз через мгновение."
+
+#: main/views.py:319
+msgid "Unexpected error sending code. Try again later."
+msgstr "Неожиданная ошибка отправки кода. Попробуйте еще раз позже."
+
+#: main/views.py:324
+msgid "We sent a verification code to your phone."
+msgstr "Мы отправили код проверки на ваш телефон."
+
+#: main/views.py:327 main/views.py:374 main/views.py:434 main/views.py:463
+#: main/views.py:1421
+msgid "Please correct the errors below."
+msgstr "Пожалуйста, исправьте ошибки ниже."
+
+#: main/views.py:342
+msgid "Start by entering your phone number."
+msgstr "Начните с ввода вашего номера телефона."
+
+#: main/views.py:350
+msgid "Invalid or expired code."
+msgstr "Неверный или истекший код."
+
+#: main/views.py:356
+msgid "Account not found. Please start over."
+msgstr "Учетная запись не найдена. Пожалуйста, начните все сначала."
+
+#: main/views.py:367
 msgid "Your password has been reset. You can now sign in."
-msgstr ""
+msgstr "Ваш пароль был сброшен. Теперь вы можете войти в систему."
 
-#: main/views.py:341 main/views.py:392
+#: main/views.py:395 main/views.py:447
 msgid "You're already signed in."
-msgstr ""
+msgstr "Вы уже вошли."
 
-#: main/views.py:375
+#: main/views.py:429
 msgid "Welcome back!"
-msgstr ""
+msgstr "Добро пожаловать!"
 
-#: main/views.py:378
+#: main/views.py:432
 msgid "Invalid phone or password."
-msgstr ""
+msgstr "Неверный телефон или пароль."
 
-#: main/views.py:405
+#: main/views.py:460
 msgid "Account created!"
-msgstr ""
+msgstr "Создана учетная запись!"
 
-#: main/views.py:421
+#: main/views.py:476
 msgid "You have been logged out."
-msgstr ""
+msgstr "Вы были зарегистрированы."
 
-#: main/views.py:468
+#: main/views.py:523
 msgid "Invalid phone format. Please enter a valid number."
-msgstr ""
+msgstr "Неверный формат телефона. Пожалуйста, введите действительный номер."
 
-#: main/views.py:474
+#: main/views.py:529
 #, python-format
 msgid "No user found with phone %(phone)s."
-msgstr ""
+msgstr "Пользователь не найден с телефоном %(phone)s."
 
-#: main/views.py:490
+#: main/views.py:545
 #, python-format
 msgid "Password reset for %(phone)s."
-msgstr ""
+msgstr "Сброс пароля для %(phone)s."
 
-#: main/views.py:1167
+#: main/views.py:1419
 msgid "Password updated."
-msgstr ""
+msgstr "Пароль обновлен."
 
-#: templates/base_info.html:4
-msgid "info"
-msgstr ""
+#: templates/base_auth.html:6
+msgid "Auth"
+msgstr "Аут"
 
-#: templates/meta_search/announcements.html:5
+#: templates/base_auth.html:18
+msgid "Orbitpedia"
+msgstr "Orbitpedia"
+
+#: templates/base_auth.html:29 templates/meta_search/address_add.html:22
+#: templates/meta_search/deposit.html:20
+#: templates/meta_search/deposit_pay.html:21
+#: templates/meta_search/withdrawal.html:150
+#: templates/meta_search/withdrawal_success.html:101
+#, fuzzy
+#| msgid "Welcome back!"
+msgid "Go back"
+msgstr "Добро пожаловать!"
+
+#: templates/base_auth.html:32 templates/base_info.html:5
+#: templates/base_settings.html:6 templates/base_user.html:122
+#: templates/base_user.html:124 templates/base_user.html:128
+#: templates/base_user.html:285 templates/base_user.html:287
+#: templates/meta_search/address_add.html:7
 #: templates/meta_search/announcements.html:13
-msgid "Announcements"
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/password_reset_verify.html:86
+#: templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "Home"
+msgstr "Дом"
+
+#: templates/base_info.html:4 templates/base_info.html:5
+msgid "info"
+msgstr "информация"
+
+#: templates/base_info.html:14 templates/base_user.html:152
+#: templates/base_user.html:154 templates/meta_search/announcements.html:10
+#: templates/meta_search/announcements.html:13
+msgid "Info"
+msgstr "Информация"
+
+#: templates/base_settings.html:5 templates/base_user.html:148
+#: templates/base_user.html:150 templates/meta_search/admin_dashboard.html:99
+#: templates/meta_search/profile_settings.html:7
+msgid "Settings"
+msgstr "Настройки"
+
+#: templates/base_settings.html:6 templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "setting"
+msgstr "параметр"
+
+#: templates/base_settings.html:15
+msgid "Setting"
+msgstr "Параметр"
+
+#: templates/base_settings.html:23
+msgid "Profile"
+msgstr "Профиль"
+
+#: templates/base_settings.html:27 templates/meta_search/language.html:8
+#: templates/meta_search/profile_settings.html:71
+msgid "Language"
+msgstr "Язык"
+
+#: templates/base_settings.html:31
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: templates/base_settings.html:35
+#, fuzzy
+#| msgid "Withdrawal password set."
+msgid "Withdrawal password"
+msgstr "Установка пароля."
+
+#: templates/base_user.html:7 templates/base_user.html:144
+#: templates/meta_search/address_add.html:7
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5 templates/meta_search/wallet.html:5
+msgid "My Wallet"
+msgstr "Мой кошелек"
+
+#: templates/base_user.html:94 templates/base_user.html:95
+msgid "Dashboard"
+msgstr "Приборная панель"
+
+#: templates/base_user.html:99
+msgid "Collapse menu"
+msgstr "Меню обрушения"
+
+#: templates/base_user.html:99 templates/base_user.html:230
+msgid "Collapse"
+msgstr "Крах"
+
+#: templates/base_user.html:107 templates/base_user.html:109
+#: templates/base_user.html:111
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "User avatar"
+msgstr "Аватар клиента 1"
+
+#: templates/base_user.html:116 templates/meta_search/profile_settings.html:63
+msgid "User ID"
+msgstr "ID пользователя"
+
+#: templates/base_user.html:117
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:67 templates/meta_search/signup.html:46
+#: templates/meta_search/support_reset_password.html:62
+msgid "Phone"
+msgstr "Телефон"
+
+#: templates/base_user.html:121
+msgid "Sidebar"
+msgstr "Боковая панель"
+
+#: templates/base_user.html:130
+msgid "impersonation"
 msgstr ""
 
-#: templates/meta_search/announcements.html:26
-msgid "No announcements at the moment."
+#: templates/base_user.html:133 templates/meta_search/task_dashboard.html:4
+#: templates/meta_search/task_dashboard.html:5
+#: templates/meta_search/task_dashboard.html:14
+#: templates/tasks/task_detail.html:5
+msgid "Task"
+msgstr "Задача"
+
+#: templates/base_user.html:135 templates/base_user.html:290
+#: templates/base_user.html:292 templates/meta_search/admin_dashboard.html:87
+msgid "Tasks"
+msgstr "Задачи"
+
+#: templates/base_user.html:137 templates/meta_search/rewards.html:4
+#: templates/meta_search/rewards.html:5 templates/meta_search/rewards.html:85
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Rewards"
+msgstr "Получите вознаграждение"
+
+#: templates/base_user.html:139 templates/base_user.html:296
+#: templates/base_user.html:298 templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/task_dashboard.html:52
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Reward"
+msgstr "Получите вознаграждение"
+
+#: templates/base_user.html:142
+#, fuzzy
+#| msgid "Account password"
+msgid "Account"
+msgstr "Пароль учетной записи"
+
+#: templates/base_user.html:146 templates/base_user.html:302
+#: templates/base_user.html:304 templates/meta_search/wallet.html:6
+msgid "Wallet"
+msgstr "Кошелек"
+
+#: templates/base_user.html:159 templates/base_user.html:164
+msgid "Admin Panel"
+msgstr "Панель администратора"
+
+#: templates/base_user.html:170 templates/base_user.html:172
+msgid "Admin settings"
+msgstr "Настройки администратора"
+
+#: templates/base_user.html:176 templates/base_user.html:178
+msgid "Logout"
+msgstr "Выход"
+
+#: templates/base_user.html:191
+msgid "Menu"
+msgstr "Меню"
+
+#: templates/base_user.html:204 templates/base_user.html:205
+#: templates/meta_search/admin_dashboard.html:80
+#: templates/meta_search/announcements.html:6
+#: templates/meta_search/announcements.html:13
+#: templates/meta_search/announcements.html:21
+msgid "Announcements"
+msgstr "Объявления"
+
+#: templates/base_user.html:230
+msgid "Expand"
+msgstr "Расширять"
+
+#: templates/base_user.html:284
+msgid "Primary"
+msgstr "Начальный"
+
+#: templates/captcha/custom_widget.html:3
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:114 templates/meta_search/signup.html:124
+msgid "Captcha"
+msgstr "Капча"
+
+#: templates/captcha/custom_widget.html:6
+#, fuzzy
+#| msgid "Enter your password"
+msgid "Enter answer"
+msgstr "Введите свой пароль"
+
+#: templates/captcha/custom_widget.html:7
+msgid "Reload image"
+msgstr "Перезагрузить изображение"
+
+#: templates/meta_search/address_add.html:4
+#: templates/meta_search/address_add.html:31
+#: templates/meta_search/address_add.html:37
+msgid "Add Payout Address"
+msgstr "Добавьте адрес выплаты"
+
+#: templates/meta_search/address_add.html:5
+msgid "Wallet Address"
+msgstr "Адрес кошелька"
+
+#: templates/meta_search/address_add.html:7
+msgid "Add Address"
+msgstr "Добавить адрес"
+
+#: templates/meta_search/address_add.html:65
+msgid "Address Type"
+msgstr "Тип адреса"
+
+#: templates/meta_search/address_add.html:81
+#: templates/meta_search/deposit.html:157
+msgid "Ethereum (ERC20)"
+msgstr "Ethereum (ERC20)"
+
+#: templates/meta_search/address_add.html:89
+#: templates/meta_search/deposit.html:163
+#: templates/meta_search/withdrawal.html:316
+msgid "USDT (TRC20)"
+msgstr "USDT (TRC20)"
+
+#: templates/meta_search/address_add.html:106
+#: templates/meta_search/deposit_pay.html:142
+#: templates/meta_search/withdrawal.html:252
+msgid "Address"
+msgstr "Адрес"
+
+#: templates/meta_search/address_add.html:112
+msgid "Select a network to see the required format."
+msgstr "Выберите сеть, чтобы увидеть требуемый формат."
+
+#: templates/meta_search/address_add.html:129
+msgid "Label (optional)"
+msgstr "Метка (необязательно)"
+
+#: templates/meta_search/address_add.html:141
+msgid "Save Address"
+msgstr "Сохранить адрес"
+
+#: templates/meta_search/address_add.html:142
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "Назад"
+
+#: templates/meta_search/address_add.html:156
+msgid ""
+"Ethereum address must start with 0x and be 42 characters total (0x + 40 hex)."
 msgstr ""
+"Адрес Ethereum должен начинаться с 0x и составлять 42 символа (0x + 40 Hex)."
+
+#: templates/meta_search/address_add.html:157
+msgid "TRC20 address must start with T and be 34 characters (Base58)."
+msgstr "Адрес TRC20 должен начинаться с T и быть 34 символами (Base58)."
+
+#: templates/meta_search/admin_dashboard.html:5
+msgid "Admin Office"
+msgstr "Административный офис"
+
+#: templates/meta_search/admin_dashboard.html:6
+msgid "Admin"
+msgstr "Администратор"
+
+#: templates/meta_search/admin_dashboard.html:36
+msgid "Users"
+msgstr "Пользователи"
+
+#: templates/meta_search/admin_dashboard.html:39
+msgid "Browse users"
+msgstr "Просмотрите пользователей"
+
+#: templates/meta_search/admin_dashboard.html:40
+msgid "Blocked users"
+msgstr "Заблокировали пользователей"
+
+#: templates/meta_search/admin_dashboard.html:46
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawals"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/admin_dashboard.html:49
+#: templates/meta_search/wallet.html:578
+msgid "Pending"
+msgstr "В ожидании"
+
+#: templates/meta_search/admin_dashboard.html:52
+#: templates/meta_search/admin_dashboard.html:71
+#: templates/meta_search/wallet.html:404 templates/meta_search/wallet.html:578
+#, fuzzy
+#| msgid "Confirm Password"
+msgid "Confirmed"
+msgstr "Подтвердите пароль"
+
+#: templates/meta_search/admin_dashboard.html:55
+#: templates/meta_search/wallet.html:578
+msgid "Failed"
+msgstr "Неуспешный"
+
+#: templates/meta_search/admin_dashboard.html:62
+msgid "Deposits"
+msgstr "Депозиты"
+
+#: templates/meta_search/admin_dashboard.html:65
+msgid "Awaiting Payment"
+msgstr "В ожидании оплаты"
+
+#: templates/meta_search/admin_dashboard.html:68
+#, fuzzy
+#| msgid "Clients Review"
+msgid "Awaiting Review"
+msgstr "Клиенты обзор"
+
+#: templates/meta_search/admin_dashboard.html:78
+msgid "Content"
+msgstr "Содержание"
+
+#: templates/meta_search/admin_dashboard.html:81
+msgid "Info pages"
+msgstr "Информационные страницы"
+
+#: templates/meta_search/admin_dashboard.html:89
+msgid "User tasks"
+msgstr "Пользовательские задачи"
+
+#: templates/meta_search/admin_dashboard.html:90
+msgid "Task templates"
+msgstr "Шаблоны задачи"
+
+#: templates/meta_search/admin_dashboard.html:91
+msgid "Forced directives"
+msgstr "Принудительные директивы"
+
+#: templates/meta_search/admin_dashboard.html:97
+msgid "System"
+msgstr "Система"
+
+#: templates/meta_search/admin_dashboard.html:109
+msgid "Pending withdrawals (latest 10)"
+msgstr "В ожидании вывода (последние 10)"
+
+#: templates/meta_search/admin_dashboard.html:110
+msgid "View all"
+msgstr "Просмотреть все"
+
+#: templates/meta_search/admin_dashboard.html:123
+msgid "Open"
+msgstr "Открыть"
+
+#: templates/meta_search/admin_dashboard.html:128
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "No pending withdrawals."
+msgstr "Подтвердите пароль отмены"
+
+#: templates/meta_search/admin_dashboard.html:137
+msgid "Recent activity"
+msgstr "Недавняя деятельность"
+
+#: templates/meta_search/admin_dashboard.html:153
+msgid "Nothing yet."
+msgstr "Пока ничего."
+
+#: templates/meta_search/announcements.html:9
+msgid "information"
+msgstr "информация"
+
+#: templates/meta_search/announcements.html:34
+msgid "No announcements at the moment."
+msgstr "Нет объявлений на данный момент."
+
+#: templates/meta_search/deposit.html:4 templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit.html:28
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/wallet.html:181 templates/meta_search/wallet.html:189
+#: templates/meta_search/wallet.html:202 templates/meta_search/wallet.html:327
+msgid "Deposit"
+msgstr "Депозитный"
+
+#: templates/meta_search/deposit.html:119
+#: templates/meta_search/deposit_pay.html:139
+#: templates/meta_search/withdrawal.html:200
+#: templates/meta_search/withdrawal_success.html:137
+msgid "Amount"
+msgstr "Количество"
+
+#: templates/meta_search/deposit.html:131
+#: templates/meta_search/withdrawal.html:215
+msgid "Currency"
+msgstr "Валюта"
+
+#: templates/meta_search/deposit.html:147
+msgid "Minimum 10. Choose a preset or enter an amount."
+msgstr "Минимум 10. Выберите предустановку или введите сумму."
+
+#: templates/meta_search/deposit.html:152
+msgid "Payment Method"
+msgstr "Способ оплаты"
+
+#: templates/meta_search/deposit.html:174
+msgid "Proceed to Pay →"
+msgstr "Идти на оплату →"
+
+#: templates/meta_search/deposit_pay.html:4
+msgid "Pay Deposit"
+msgstr "Оплачивать депозит"
+
+#: templates/meta_search/deposit_pay.html:5
+msgid "Pay"
+msgstr "Платить"
+
+#: templates/meta_search/deposit_pay.html:29
+#: templates/meta_search/deposit_pay.html:79
+msgid "Payment details"
+msgstr "Детали платежа"
+
+#: templates/meta_search/deposit_pay.html:85
+#, fuzzy
+#| msgid "Change password"
+msgid "Change payment method"
+msgstr "Изменить пароль"
+
+#: templates/meta_search/deposit_pay.html:96
+msgid "Ethereum"
+msgstr "Ethereum"
+
+#: templates/meta_search/deposit_pay.html:104
+msgid "Copy amount"
+msgstr "Сумма копии"
+
+#: templates/meta_search/deposit_pay.html:116
+msgid "QR code"
+msgstr "QR -код"
+
+#: templates/meta_search/deposit_pay.html:121
+#, python-format
+msgid "Scan to pay · %(dep.get_network_display)s"
+msgstr "Сканирование на оплату · %(dep.get_network_display) s"
+
+#: templates/meta_search/deposit_pay.html:132
+#: templates/meta_search/deposit_pay.html:177
+msgid "Verifying…"
+msgstr "Проверка…"
+
+#: templates/meta_search/deposit_pay.html:133
+#, python-brace-format
+msgid "Verifying… ({time} left)"
+msgstr "Проверка… ([[[[token_0]]] слева)"
+
+#: templates/meta_search/deposit_pay.html:134
+msgid "You can use “Verify now” for quick help."
+msgstr "Вы можете использовать «Проверьте сейчас» для быстрой помощи."
+
+#: templates/meta_search/deposit_pay.html:135
+msgid "QR error"
+msgstr "QR -ошибка"
+
+#: templates/meta_search/deposit_pay.html:138
+msgid "Network"
+msgstr "Сеть"
+
+#: templates/meta_search/deposit_pay.html:145
+msgid "Copy address"
+msgstr "Копия адрес"
+
+#: templates/meta_search/deposit_pay.html:152
+msgid "Reference"
+msgstr "Ссылка"
+
+#: templates/meta_search/deposit_pay.html:155
+msgid "Copy reference"
+msgstr "Ссылка на копию"
+
+#: templates/meta_search/deposit_pay.html:164
+msgid "I’ve Paid — Verify"
+msgstr "Я заплатил - проверить"
+
+#: templates/meta_search/deposit_pay.html:166
+msgid "We’ll check the network and update your balance when confirmed."
+msgstr "Мы проверим сеть и обновим ваш баланс при подтверждении."
+
+#: templates/meta_search/deposit_pay.html:174
+#: templates/meta_search/deposit_pay.html:183
+msgid "Verify now"
+msgstr "Проверьте сейчас"
+
+#: templates/meta_search/deposit_pay.html:175
+msgid "Need quick approval? Use <strong>Verify now</strong>."
+msgstr ""
+"Нужно быстрое одобрение? Используйте [[[[[token_0]]]] проверить сейчас "
+"[[[[token_1]]]]."
+
+#: templates/meta_search/deposit_pay.html:185
+msgid "Need quick approval? You can use <strong>Verify now</strong>."
+msgstr ""
+"Нужно быстрое одобрение? Вы можете использовать [[[[[token_0]]]] проверить "
+"сейчас [[[[[token_1]]]]."
+
+#: templates/meta_search/deposit_pay.html:189
+msgid "Payment failed"
+msgstr "Оплата не удалась"
+
+#: templates/meta_search/deposit_pay.html:190
+msgid "Try again"
+msgstr "Попробуйте еще раз"
+
+#: templates/meta_search/deposit_pay.html:193
+msgid "This deposit is a draft."
+msgstr "Этот депозит является проектом."
+
+#: templates/meta_search/deposit_pay.html:194
+msgid "Continue to deposit"
+msgstr "Продолжить депозит"
+
+#: templates/meta_search/deposit_pay.html:197
+msgid "Thanks! Recieved We’ll verify the payment shortly."
+msgstr "Спасибо! Получили в ближайшее время мы проверим платеж."
+
+#: templates/meta_search/deposit_pay.html:198
+#: templates/meta_search/withdrawal_success.html:170
+msgid "Go to Wallet"
+msgstr "Перейти к кошельку"
+
+#: templates/meta_search/deposit_pay.html:201
+#, python-format
+msgid "Status: %(dep.status)s"
+msgstr "Статус: %(dep.status) s"
+
+#: templates/meta_search/deposit_pay.html:209
+#: templates/meta_search/withdrawal_success.html:196
+msgid "Copied"
+msgstr "Скопированный"
 
 #: templates/meta_search/ide.html:18
 msgid "Seaside resort at dusk"
-msgstr ""
+msgstr "Приморский курорт в сумерках"
 
 #: templates/meta_search/ide.html:24
 msgid "Experience The Magic Of Relaxation"
-msgstr ""
+msgstr "Испытать магию расслабления"
 
 #: templates/meta_search/ide.html:25
 msgid ""
 "Indulge in the epitome of coastal living as you discover the breathtaking "
 "beauty and tranquility of luxury."
 msgstr ""
+"Побалуйте себя воплощением прибрежной жизни, когда вы обнаружите "
+"захватывающую дух красоту и спокойствие роскоши."
 
 #: templates/meta_search/ide.html:30
 msgid "Customer avatar 1"
-msgstr ""
+msgstr "Аватар клиента 1"
 
 #: templates/meta_search/ide.html:31
 msgid "Customer avatar 2"
-msgstr ""
+msgstr "Аватар клиента 2"
 
 #: templates/meta_search/ide.html:32
 msgid "Customer avatar 3"
-msgstr ""
+msgstr "Аватар клиента 3"
 
 #: templates/meta_search/ide.html:34
 msgid "Trusted by over 25k+ people"
-msgstr ""
+msgstr "Доверяют более 25 тысячам+ люди"
 
 #: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+#: templates/meta_search/index.html:148
 msgid "Explore Now"
-msgstr ""
+msgstr "Исследуйте сейчас"
 
 #: templates/meta_search/ide.html:40
 msgid "Travel partners"
-msgstr ""
+msgstr "Партнеры по путешествиям"
 
-#: templates/meta_search/ide.html:58
+#: templates/meta_search/ide.html:58 templates/meta_search/index.html:98
 msgid "Premium Facilities"
-msgstr ""
+msgstr "Премиальные объекты"
 
-#: templates/meta_search/ide.html:61
+#: templates/meta_search/ide.html:61 templates/meta_search/index.html:104
 msgid "Exclusive Sunset View"
-msgstr ""
+msgstr "Эксклюзивный вид заката"
 
-#: templates/meta_search/ide.html:62
+#: templates/meta_search/ide.html:62 templates/meta_search/index.html:105
 msgid "You witness the beauty of the world from your room"
-msgstr ""
+msgstr "Вы свидетельствуете о красоте мира из вашей комнаты"
 
-#: templates/meta_search/ide.html:65
+#: templates/meta_search/ide.html:65 templates/meta_search/index.html:111
 msgid "Integrated Tourist Area"
-msgstr ""
+msgstr "Интегрированная туристическая зона"
 
 #: templates/meta_search/ide.html:66
 msgid "Enhancing your travel experience"
-msgstr ""
+msgstr "Улучшение вашего путешествия"
 
-#: templates/meta_search/ide.html:69
+#: templates/meta_search/ide.html:69 templates/meta_search/index.html:118
 msgid "Nature-Inspired Pool"
-msgstr ""
+msgstr "Вдохновленный природой бассейн"
 
-#: templates/meta_search/ide.html:70
+#: templates/meta_search/ide.html:70 templates/meta_search/index.html:119
 msgid "Serene swimming pool with a touch of paradise"
-msgstr ""
+msgstr "Безмятежный бассейн с оттенком рая"
 
 #: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+#: templates/meta_search/index.html:129 templates/meta_search/index.html:142
 msgid "Get Rewarded"
-msgstr ""
+msgstr "Получите вознаграждение"
 
-#: templates/meta_search/ide.html:85
+#: templates/meta_search/ide.html:85 templates/meta_search/index.html:134
 msgid "Rate Apartments"
-msgstr ""
+msgstr "Оцените квартиры"
 
-#: templates/meta_search/ide.html:86
+#: templates/meta_search/ide.html:86 templates/meta_search/index.html:135
 msgid "Give random objective ratings based on view and aesthetics."
-msgstr ""
+msgstr "Дайте случайные объективные рейтинги на основе вида и эстетики."
 
-#: templates/meta_search/ide.html:94
+#: templates/meta_search/ide.html:94 templates/meta_search/index.html:143
 msgid "Earn instant rewards from the apartments you rate."
 msgstr ""
+"Заработайте мгновенные вознаграждения из квартир, которые вы оцениваете."
 
 #: templates/meta_search/ide.html:102
 msgid "Featured apartments carousel"
-msgstr ""
+msgstr "Избранные квартиры карусель"
 
-#: templates/meta_search/ide.html:103
+#: templates/meta_search/ide.html:103 templates/meta_search/index.html:167
 msgid "Previous slide"
-msgstr ""
+msgstr "Предыдущий слайд"
 
-#: templates/meta_search/ide.html:104
+#: templates/meta_search/ide.html:104 templates/meta_search/index.html:168
 msgid "Next slide"
-msgstr ""
+msgstr "Следующий слайд"
 
-#: templates/meta_search/ide.html:108
+#: templates/meta_search/ide.html:108 templates/meta_search/index.html:159
 msgid "Modern apartment interior"
-msgstr ""
+msgstr "Современная квартира"
 
-#: templates/meta_search/ide.html:111
+#: templates/meta_search/ide.html:111 templates/meta_search/index.html:160
 msgid "Resort pool at sunset"
-msgstr ""
+msgstr "Курортный бассейн на закате"
 
-#: templates/meta_search/ide.html:114
+#: templates/meta_search/ide.html:114 templates/meta_search/index.html:161
 msgid "Scenic valley view"
-msgstr ""
+msgstr "Живописная долина"
 
-#: templates/meta_search/ide.html:129
+#: templates/meta_search/ide.html:129 templates/meta_search/index.html:175
 msgid "Clients Review"
-msgstr ""
+msgstr "Клиенты обзор"
 
-#: templates/meta_search/ide.html:130
+#: templates/meta_search/ide.html:130 templates/meta_search/index.html:176
 msgid "See some honest reviews from our users on the platform"
-msgstr ""
+msgstr "Смотрите некоторые честные отзывы от наших пользователей на платформе"
 
-#: templates/meta_search/ide.html:135
+#: templates/meta_search/ide.html:135 templates/meta_search/index.html:182
 msgid "Client"
-msgstr ""
+msgstr "Клиент"
 
 #: templates/meta_search/ide.html:137
 msgid ""
 "Had a great experience using this for solid bookings. Customer service was "
 "top-notch."
 msgstr ""
+"Был отличный опыт, используя это для солидных бронирований. Обслуживание "
+"клиентов было первоклассным."
 
 #: templates/meta_search/ide.html:147
 msgid "Get your inspiration of luxury and get rewarded"
-msgstr ""
+msgstr "Получите вдохновение в роскоши и получите вознаграждение"
 
 #: templates/meta_search/ide.html:148
 msgid "Earn new rewards at every step you take under true luxury."
 msgstr ""
+"Заработайте новые награды на каждом шаге, который вы делаете под истинной "
+"роскошью."
 
 #: templates/meta_search/ide.html:149
 msgid "See More"
-msgstr ""
+msgstr "Увидеть больше"
 
 #: templates/meta_search/ide.html:152
 msgid "Luxury inspiration"
-msgstr ""
+msgstr "Роскошное вдохновение"
 
 #: templates/meta_search/includes/_header.html:60
 msgid "Get started"
+msgstr "Начните"
+
+#: templates/meta_search/index.html:112
+#, fuzzy
+#| msgid "Enhancing your travel experience"
+msgid "Tourism integration is enhancing travel experience"
+msgstr "Улучшение вашего путешествия"
+
+#: templates/meta_search/index.html:191
+msgid ""
+"I had a great experience working with this fantastic platform that delivers "
+"reward to users for best rating apartments. They have exceptional customer "
+"service and high-quality service."
 msgstr ""
+"У меня был отличный опыт работы с этой фантастической платформой, которая "
+"обеспечивает вознаграждение пользователям за лучшие рейтинговые квартиры. "
+"Они имеют исключительное обслуживание клиентов и высококачественные услуги."
+
+#: templates/meta_search/index.html:194 templates/meta_search/index.html:195
+msgid "James Lee"
+msgstr "Джеймс Ли"
 
 #: templates/meta_search/info_index.html:6
 msgid "Info Center"
-msgstr ""
+msgstr "Информационный центр"
 
 #: templates/meta_search/info_index.html:7
 msgid "Pick a section on the left, or use the quick links below."
-msgstr ""
+msgstr "Выберите раздел слева или используйте быстрые ссылки ниже."
 
 #: templates/meta_search/info_index.html:19
 #: templates/meta_search/info_page.html:17
 msgid "View all announcements"
-msgstr ""
-
-#: templates/meta_search/language.html:8
-msgid "Language"
-msgstr ""
+msgstr "Просмотреть все объявления"
 
 #: templates/meta_search/language.html:9
 msgid "Select your language."
-msgstr ""
+msgstr "Выберите свой язык."
 
 #: templates/meta_search/password_reset_phone.html:4
 msgid "Reset Password – Step 1"
-msgstr ""
+msgstr "Сбросить пароль - шаг 1"
 
 #: templates/meta_search/password_reset_phone.html:6
 #: templates/meta_search/password_reset_verify.html:6
 #: templates/meta_search/password_reset_verify.html:79
 msgid "Reset Password"
-msgstr ""
+msgstr "Сбросить пароль"
 
 #: templates/meta_search/password_reset_phone.html:21
 msgid "Enter your phone number to get a verification code."
-msgstr ""
-
-#: templates/meta_search/password_reset_phone.html:41
-#: templates/meta_search/settings_change_password.html:42
-#: templates/meta_search/signin.html:45
-msgid "Phone"
-msgstr ""
+msgstr "Введите свой номер телефона, чтобы получить код проверки."
 
 #: templates/meta_search/password_reset_phone.html:59
 msgid "Send Code"
-msgstr ""
+msgstr "Отправить код"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Remembered your password?"
-msgstr ""
+msgstr "Запомнили ваш пароль?"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Sign in"
-msgstr ""
+msgstr "Войти"
 
 #: templates/meta_search/password_reset_verify.html:4
 msgid "Reset Password – Step 2"
-msgstr ""
+msgstr "Сбросить пароль - шаг 2"
 
 #: templates/meta_search/password_reset_verify.html:21
 msgid "Enter the code sent to your phone, then choose a new password."
-msgstr ""
+msgstr "Введите код, отправленный на ваш телефон, затем выберите новый пароль."
 
 #: templates/meta_search/password_reset_verify.html:43
 msgid "Verification Code"
-msgstr ""
+msgstr "Проверочный код"
 
 #: templates/meta_search/password_reset_verify.html:52
 msgid "New Password"
-msgstr ""
+msgstr "Новый пароль"
 
 #: templates/meta_search/password_reset_verify.html:61
 #: templates/meta_search/password_reset_verify.html:74
 #: templates/meta_search/settings_change_password.html:76
 #: templates/meta_search/settings_change_password.html:93
 #: templates/meta_search/settings_change_password.html:112
-#: templates/meta_search/signin.html:68
+#: templates/meta_search/signin.html:94
 msgid "Show/Hide password"
-msgstr ""
+msgstr "Показать/скрыть пароль"
 
 #: templates/meta_search/password_reset_verify.html:65
+#: templates/meta_search/signup.html:85
 msgid "Confirm Password"
-msgstr ""
+msgstr "Подтвердите пароль"
 
-#: templates/meta_search/password_reset_verify.html:84
-msgid "Back"
-msgstr ""
+#: templates/meta_search/profile_settings.html:5
+msgid "Settings — Profile"
+msgstr "Настройки - профиль"
 
-#: templates/meta_search/password_reset_verify.html:86
-msgid "Home"
+#: templates/meta_search/profile_settings.html:8
+msgid "profile"
+msgstr "профиль"
+
+#: templates/meta_search/profile_settings.html:15
+msgid "Basic Info"
+msgstr "Основная информация"
+
+#: templates/meta_search/profile_settings.html:16
+msgid "Manage your details and personal preferences here."
+msgstr "Управляйте своими данными и личными предпочтениями здесь."
+
+#: templates/meta_search/profile_settings.html:33
+msgid "Avatar"
+msgstr "Аватар"
+
+#: templates/meta_search/profile_settings.html:40
+msgid "Change image"
+msgstr "Изменить изображение"
+
+#: templates/meta_search/profile_settings.html:51
+msgid "Remove"
+msgstr "Удалять"
+
+#: templates/meta_search/profile_settings.html:55
+msgid "JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80)."
+msgstr "JPG, PNG, WEBP или GIF. Идеально: 120 × 120 (мин 80 × 80)."
+
+#: templates/meta_search/profile_settings.html:67
+#, fuzzy
+#| msgid "Phone number"
+msgid "Phone Number"
+msgstr "Номер телефона"
+
+#: templates/meta_search/profile_settings.html:76
+msgid "LEVEL 1"
+msgstr "Уровень 1"
+
+#: templates/meta_search/profile_settings.html:83
+msgid "Nickname"
+msgstr "Прозвище"
+
+#: templates/meta_search/profile_settings.html:89
+msgid "Image URL (optional)"
+msgstr "URL изображения (необязательно)"
+
+#: templates/meta_search/profile_settings.html:92
+msgid "Used only if no uploaded image exists."
 msgstr ""
+"Используется только в том случае, если загруженное изображение не существует."
+
+#: templates/meta_search/profile_settings.html:97
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: templates/meta_search/rewards.html:94 templates/meta_search/rewards.html:97
+#: templates/meta_search/rewards.html:118
+msgid "Deposit Bonus"
+msgstr "Депозитный бонус"
+
+#: templates/meta_search/rewards.html:98
+msgid "Reset Amount Reward"
+msgstr "Сбросить сумму вознаграждения"
+
+#: templates/meta_search/rewards.html:100
+#: templates/meta_search/rewards.html:101
+#: templates/meta_search/rewards.html:102
+#: templates/meta_search/rewards.html:103
+#: templates/meta_search/rewards.html:121
+#: templates/meta_search/rewards.html:122
+#: templates/meta_search/rewards.html:123
+#: templates/meta_search/rewards.html:124
+#: templates/meta_search/rewards.html:155
+#: templates/meta_search/rewards.html:156
+#: templates/meta_search/rewards.html:157
+msgid "Get"
+msgstr "Получать"
+
+#: templates/meta_search/rewards.html:106
+#, fuzzy
+#| msgid "Please correct the errors below."
+msgid "Please contact customer service for reward."
+msgstr "Пожалуйста, исправьте ошибки ниже."
+
+#: templates/meta_search/rewards.html:107
+msgid "You can only collect once a day; reset the reward."
+msgstr "Вы можете собирать только один раз в день; сбросить награду."
+
+#: templates/meta_search/rewards.html:115
+msgid "Deposit Bonus Details"
+msgstr "Депозитный бонус сведения о бонусе"
+
+#: templates/meta_search/rewards.html:119
+msgid "Repeat of tiers for clarity"
+msgstr "Повторение уровней для ясности"
+
+#: templates/meta_search/rewards.html:126
+msgid "Collect once per day."
+msgstr "Собирать один раз в день."
+
+#: templates/meta_search/rewards.html:133
+#: templates/meta_search/rewards.html:136
+msgid "Consecutive Days Rewards"
+msgstr "Последовательные дни награды"
+
+#: templates/meta_search/rewards.html:137
+msgid "Work for consecutive days and receive a reward of:"
+msgstr "Работать в течение последовательных дней и получить вознаграждение:"
+
+#: templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:155
+msgid "5 days"
+msgstr "5 дней"
+
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:156
+msgid "15 days"
+msgstr "15 дней"
+
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/rewards.html:157
+msgid "30 days"
+msgstr "30 дней"
+
+#: templates/meta_search/rewards.html:149
+msgid "Consecutive Days Details"
+msgstr "Последовательные дни детали"
+
+#: templates/meta_search/rewards.html:152
+msgid "Consecutive Days"
+msgstr "Последовательные дни"
+
+#: templates/meta_search/rewards.html:153
+msgid "Maintain streaks to unlock larger rewards."
+msgstr "Поддерживайте полосы, чтобы разблокировать большие награды."
+
+#: templates/meta_search/rewards.html:165
+#: templates/meta_search/rewards.html:168
+msgid "About Gift Boxes"
+msgstr "О подарочных коробках"
+
+#: templates/meta_search/rewards.html:169
+msgid "Have a chance to get 0–3 random Gift Boxes every round."
+msgstr "Имейте шанс получить 0–3 случайных подарочных коробок каждый раунд."
+
+#: templates/meta_search/rewards.html:171
+msgid "Gift Boxes Cash Bonus"
+msgstr "Подарочные коробки Денежный бонус"
+
+#: templates/meta_search/rewards.html:171
+#: templates/meta_search/rewards.html:172
+msgid "Up to"
+msgstr "До"
+
+#: templates/meta_search/rewards.html:172
+msgid "Gift Boxes Commission Bonus"
+msgstr "Бонус комиссии по подарочным коробкам"
+
+#: templates/meta_search/rewards.html:172
+msgid "30× commission"
+msgstr "30 × комиссия"
+
+#: templates/meta_search/rewards.html:174
+msgid "For more details, contact customer service."
+msgstr ""
+"Для получения более подробной информации свяжитесь с обслуживанием клиентов."
+
+#: templates/meta_search/rewards.html:181
+msgid "Gift Boxes Detail"
+msgstr "Подарочные коробки детали"
+
+#: templates/meta_search/rewards.html:184
+msgid "Gift Boxes"
+msgstr "Подарочные коробки"
+
+#: templates/meta_search/rewards.html:185
+msgid "Two types of Gift Boxes rewards are available."
+msgstr "Доступны два типа подарочных коробок."
+
+#: templates/meta_search/rewards.html:187
+msgid "Daily Box"
+msgstr "Ежедневная коробка"
+
+#: templates/meta_search/rewards.html:187
+#: templates/meta_search/rewards.html:188
+msgid "Chance"
+msgstr "Шанс"
+
+#: templates/meta_search/rewards.html:188
+msgid "Milestone Box"
+msgstr "Веха коробка"
+
+#: templates/meta_search/rewards.html:190
+msgid "Box odds reset weekly."
+msgstr "Шансы коробки сбрасываются еженедельно."
+
+#: templates/meta_search/rewards.html:197
+#: templates/meta_search/rewards.html:200
+#, fuzzy
+#| msgid "About us"
+msgid "About Rank"
+msgstr "О нас"
+
+#: templates/meta_search/rewards.html:201
+msgid "Commission tiers & upgrade notes"
+msgstr "Комиссия Установки и обновления."
+
+#: templates/meta_search/rewards.html:203
+#: templates/meta_search/rewards.html:204
+#: templates/meta_search/rewards.html:205 templates/meta_search/wallet.html:191
+#: templates/meta_search/wallet.html:204 templates/meta_search/wallet.html:238
+#: templates/meta_search/wallet.html:251 templates/meta_search/wallet.html:282
+#: templates/meta_search/wallet.html:295 templates/meta_search/wallet.html:382
+#: templates/meta_search/wallet.html:573 templates/meta_search/wallet.html:581
+#: templates/tasks/task_detail.html:154
+msgid "Commission"
+msgstr "Комиссия"
+
+#: templates/meta_search/rewards.html:207
+msgid "Contact Customer Service for more details."
+msgstr ""
+"Свяжитесь с обслуживанием клиентов для получения более подробной информации."
+
+#: templates/meta_search/rewards.html:214
+msgid "About Rank Details"
+msgstr "О деталях ранга"
+
+#: templates/meta_search/rewards.html:217
+msgid "Rank Upgrade Details"
+msgstr "Детали обновления ранга"
+
+#: templates/meta_search/rewards.html:218
+msgid "More constraints & upgrade hints"
+msgstr "Больше ограничений и обновлений подсказки"
+
+#: templates/meta_search/rewards.html:220
+#: templates/meta_search/rewards.html:221
+msgid "Note"
+msgstr "Примечание"
+
+#: templates/meta_search/rewards.html:220
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "One withdrawal/day"
+msgstr "Установить новую штифт"
+
+#: templates/meta_search/rewards.html:221
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Two withdrawals/day"
+msgstr "Подтвердите пароль отмены"
+
+#: templates/meta_search/rewards.html:222
+msgid "Upgrade"
+msgstr "Обновление"
+
+#: templates/meta_search/rewards.html:222
+msgid "Recharge"
+msgstr "Перезарядка"
+
+#: templates/meta_search/rewards.html:224
+msgid "SVIP can become an agent; subordinate commissions may apply."
+msgstr "SVIP может стать агентом; Подчиненные комиссии могут применяться."
+
+#: templates/meta_search/rewards.html:235
+#, fuzzy
+#| msgid "Previous slide"
+msgid "Previous"
+msgstr "Предыдущий слайд"
+
+#: templates/meta_search/rewards.html:236
+msgid "Next"
+msgstr "Следующий"
+
+#: templates/meta_search/rewards.html:238
+msgid "Slide indicators"
+msgstr "Слайд -индикаторы"
 
 #: templates/meta_search/settings_change_password.html:4
 msgid "Settings — Change password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:20
-msgid "Change password"
-msgstr ""
+msgstr "Настройки - изменить пароль"
 
 #: templates/meta_search/settings_change_password.html:22
 msgid ""
 "For security, confirm your phone, pass the captcha, then set a strong "
 "password."
 msgstr ""
-
-#: templates/meta_search/settings_change_password.html:55
-#: templates/meta_search/signin.html:73
-msgid "Captcha"
-msgstr ""
+"Для безопасности подтвердите свой телефон, пропустите CAPTCHA, затем "
+"установите сильный пароль."
 
 #: templates/meta_search/settings_change_password.html:66
 msgid "Old password"
-msgstr ""
+msgstr "Старый пароль"
 
 #: templates/meta_search/settings_change_password.html:79
 msgid "Forgot current password?"
-msgstr ""
+msgstr "Забыли текущий пароль?"
 
 #: templates/meta_search/settings_change_password.html:95
 msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
-msgstr ""
+msgstr "Используйте 8+ символов с сочетанием букв, чисел и символов."
 
 #: templates/meta_search/settings_change_password.html:102
+#: templates/meta_search/support_reset_password.html:94
 msgid "Confirm password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:116
-msgid "Save Changes"
-msgstr ""
+msgstr "Подтвердите пароль"
 
 #: templates/meta_search/signin.html:4
-msgid "Sign In - Expedia"
-msgstr ""
+msgid "Sign In - Orbitpedia"
+msgstr "Войдите - Orbitpedia"
 
-#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:123
 msgid "Sign In"
-msgstr ""
+msgstr "Войти"
 
-#: templates/meta_search/signin.html:21
+#: templates/meta_search/signin.html:43
 msgid "Welcome back, please sign in"
-msgstr ""
+msgstr "Добро пожаловать, пожалуйста, войдите в систему"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Don’t have an account?"
-msgstr ""
+msgstr "У вас нет учетной записи?"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Create one"
-msgstr ""
+msgstr "Создайте один"
 
-#: templates/meta_search/signin.html:89
+#: templates/meta_search/signin.html:130
 msgid "Forgotten password?"
+msgstr "Забытый пароль?"
+
+#: templates/meta_search/signup.html:4
+#, fuzzy
+#| msgid "Sign In - Orbitpedia"
+msgid "Sign Up - Orbitpedia"
+msgstr "Войдите - Orbitpedia"
+
+#: templates/meta_search/signup.html:6
+#, fuzzy
+#| msgid "Sign in"
+msgid "Sign Up"
+msgstr "Войти"
+
+#: templates/meta_search/signup.html:41
+msgid "Hello friend, let’s get you registered"
+msgstr "Привет, друг, давай зарегистрируем тебя"
+
+#: templates/meta_search/signup.html:66 templates/meta_search/signup.html:67
+#: templates/meta_search/signup.html:69 templates/meta_search/signup.html:97
+#: templates/meta_search/signup.html:98 templates/meta_search/signup.html:100
+#, fuzzy
+#| msgid "Show/Hide password"
+msgid "Show password"
+msgstr "Показать/скрыть пароль"
+
+#: templates/meta_search/signup.html:68 templates/meta_search/signup.html:99
+#, fuzzy
+#| msgid "Show/Hide password"
+msgid "Hide password"
+msgstr "Показать/скрыть пароль"
+
+#: templates/meta_search/signup.html:116
+#, fuzzy
+#| msgid "Invitation code"
+msgid "Invitation Code"
+msgstr "Приглашение код"
+
+#: templates/meta_search/signup.html:133
+#, fuzzy
+#| msgid "Get started"
+msgid "Get Started"
+msgstr "Начните"
+
+#: templates/meta_search/signup.html:138
+#, fuzzy
+#| msgid "Don’t have an account?"
+msgid "Already have an account?"
+msgstr "У вас нет учетной записи?"
+
+#: templates/meta_search/signup.html:138
+msgid "Login"
+msgstr "Авторизоваться"
+
+#: templates/meta_search/support_reset_password.html:6
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Support – Reset Password"
+msgstr "Сбросить пароль"
+
+#: templates/meta_search/support_reset_password.html:38
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset User Password (Support)"
+msgstr "Сбросить пароль"
+
+#: templates/meta_search/support_reset_password.html:39
+msgid "Enter the user’s phone and a new password. This action is logged."
 msgstr ""
+"Введите телефон пользователя и новый пароль. Это действие зарегистрировано."
+
+#: templates/meta_search/support_reset_password.html:70
+msgid ""
+"Accepts <b>E.164</b> (e.g. <code>+2348012345678</code>) or local NG like "
+"<code>080…</code>."
+msgstr ""
+"Принимает [[[[[token_0]]]] E.164 [[[[[token_1]]] (например, "
+"[[[[token_2]]]]+2348012345678 [[[[token_3]]]] или локальный NG, как "
+"[[[[token_4]]]] 080… [[[[token_5]]]]]."
+
+#: templates/meta_search/support_reset_password.html:82
+#: templates/meta_search/support_reset_password.html:84
+#: templates/meta_search/support_reset_password.html:99
+#: templates/meta_search/support_reset_password.html:101
+msgid "Show"
+msgstr "Показывать"
+
+#: templates/meta_search/support_reset_password.html:83
+#: templates/meta_search/support_reset_password.html:100
+msgid "Hide"
+msgstr "Скрывать"
+
+#: templates/meta_search/support_reset_password.html:112
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset password"
+msgstr "Сбросить пароль"
+
+#: templates/meta_search/support_reset_password.html:113
+msgid "You must be logged in as <b>staff</b>."
+msgstr "Вы должны войти в систему как [[[[[token_0]]] персонал [[[[token_1]]]."
+
+#: templates/meta_search/support_reset_password.html:118
+msgid ""
+"Tip: Use strong passwords (12+ chars, mix of letters, numbers & symbols). "
+"This operation is recorded in the Admin log."
+msgstr ""
+"Совет: используйте сильные пароли (12+ Chars, сочетание букв, номеров и "
+"символов). Эта операция записана в журнале администратора."
+
+#: templates/meta_search/support_reset_password.html:147
+msgid "Working…"
+msgstr "Работающий…"
+
+#: templates/meta_search/task_dashboard.html:25
+msgid "Balances"
+msgstr "Баланс"
+
+#: templates/meta_search/task_dashboard.html:38
+msgid "Tasks Promo"
+msgstr "Задачи промо"
+
+#: templates/meta_search/task_dashboard.html:45
+msgid "Complete Tasks"
+msgstr "Полные задачи"
+
+#: templates/meta_search/task_dashboard.html:46
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "and get rewarded"
+msgstr "Получите вознаграждение"
+
+#: templates/meta_search/task_dashboard.html:60
+msgid "Locked:"
+msgstr "Заперт:"
+
+#: templates/meta_search/task_dashboard.html:61
+msgid "You have completed your trial. Please contact customer care."
+msgstr ""
+"Вы завершили судебное разбирательство. Пожалуйста, свяжитесь с клиентами."
+
+#: templates/meta_search/task_dashboard.html:64
+#, python-format
+msgid "Tasks available: <strong>%(n)s</strong>"
+msgstr ""
+"Доступные задачи: [[[[token_0]]] [[[[[token_2]]]] [[[[token_1]]]]]]]]]]"
+
+#: templates/meta_search/task_dashboard.html:66
+msgid "You’re up to date. Click below to get your next task."
+msgstr "Вы в курсе. Нажмите ниже, чтобы получить следующую задачу."
+
+#: templates/meta_search/task_dashboard.html:78
+msgid "Locked — contact support"
+msgstr "Заблокирован - контактная поддержка"
+
+#: templates/meta_search/task_dashboard.html:80
+#: templates/tasks/user_task_dashboard.html:254
+msgid "Click to get your task"
+msgstr "Нажмите, чтобы получить свою задачу"
+
+#: templates/meta_search/task_dashboard.html:90
+msgid "Filter tasks"
+msgstr "Фильтруя задачи"
+
+#: templates/meta_search/task_dashboard.html:91
+#: templates/meta_search/task_dashboard.html:105
+#: templates/meta_search/wallet.html:188 templates/meta_search/wallet.html:201
+#: templates/tasks/user_task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:300
+msgid "All"
+msgstr "Все"
+
+#: templates/meta_search/task_dashboard.html:92
+#: templates/meta_search/task_dashboard.html:106
+#: templates/tasks/task_detail.html:169
+#: templates/tasks/user_task_dashboard.html:265
+#: templates/tasks/user_task_dashboard.html:301
+msgid "Completed"
+msgstr "Завершенный"
+
+#: templates/meta_search/task_dashboard.html:93
+#: templates/meta_search/task_dashboard.html:107
+#: templates/tasks/user_task_dashboard.html:239
+#: templates/tasks/user_task_dashboard.html:266
+#: templates/tasks/user_task_dashboard.html:302
+msgid "Processing"
+msgstr "Обработка"
+
+#: templates/meta_search/task_dashboard.html:98
+#: templates/meta_search/task_dashboard.html:101
+#: templates/meta_search/task_dashboard.html:112
+#: templates/tasks/user_task_dashboard.html:260
+msgid "Task History"
+msgstr "История задач"
+
+#: templates/meta_search/task_dashboard.html:103
+#: templates/meta_search/task_dashboard.html:104
+#: templates/meta_search/task_dashboard.html:138
+#: templates/meta_search/task_dashboard.html:168
+#: templates/meta_search/task_dashboard.html:198
+#: templates/meta_search/task_dashboard.html:223
+#: templates/meta_search/withdrawal_success.html:144
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:319
+msgid "Status"
+msgstr "Статус"
+
+#: templates/meta_search/task_dashboard.html:124
+#: templates/meta_search/task_dashboard.html:154
+#: templates/meta_search/task_dashboard.html:184
+#: templates/meta_search/task_dashboard.html:239
+#: templates/meta_search/task_dashboard.html:252
+#: templates/meta_search/task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:288
+#: templates/tasks/user_task_dashboard.html:313
+msgid "View"
+msgstr "Вид"
+
+#: templates/meta_search/task_dashboard.html:128
+#: templates/meta_search/task_dashboard.html:158
+#: templates/meta_search/task_dashboard.html:188
+#: templates/tasks/user_task_dashboard.html:317
+msgid "Product"
+msgstr "Продукт"
+
+#: templates/meta_search/task_dashboard.html:134
+#: templates/meta_search/task_dashboard.html:164
+#: templates/meta_search/task_dashboard.html:194
+#: templates/meta_search/task_dashboard.html:221
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:318
+msgid "Price"
+msgstr "Цена"
+
+#: templates/meta_search/task_dashboard.html:142
+#: templates/meta_search/task_dashboard.html:172
+#: templates/meta_search/task_dashboard.html:202
+#: templates/meta_search/task_dashboard.html:222
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:320
+msgid "Comm"
+msgstr "Коммуникация"
+
+#: templates/meta_search/task_dashboard.html:209
+#: templates/meta_search/task_dashboard.html:269
+msgid "No Task History"
+msgstr "Нет истории задач"
+
+#: templates/meta_search/task_dashboard.html:218
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Product Name"
+msgstr "Название продукта"
+
+#: templates/meta_search/task_dashboard.html:219
+#: templates/tasks/task_detail.html:110
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Order ID"
+msgstr "Идентификатор заказа"
+
+#: templates/meta_search/task_dashboard.html:220
+#: templates/meta_search/user_dashboard.html:101
+#: templates/tasks/task_detail.html:118
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Date"
+msgstr "Дата"
+
+#: templates/meta_search/task_dashboard.html:224
+msgid "Action"
+msgstr "Действие"
+
+#: templates/meta_search/task_dashboard.html:233
+#: templates/meta_search/task_dashboard.html:246
+#: templates/meta_search/task_dashboard.html:258
+#, python-format
+msgid "Task #%(id)s"
+msgstr "Задача #[[[[[token_0]]]]]]"
+
+#: templates/meta_search/task_dashboard.html:280
+#: templates/meta_search/wallet.html:397 templates/tasks/task_detail.html:186
+#: templates/tasks/user_task_dashboard.html:350
+msgid "Close"
+msgstr "Закрывать"
+
+#: templates/meta_search/task_dashboard.html:290
+msgid "Trial Complete"
+msgstr "Испытание завершено"
+
+#: templates/meta_search/task_dashboard.html:291
+msgid ""
+"You’ve completed all trial tasks. Please contact customer care to continue."
+msgstr ""
+"Вы выполнили все пробные задачи. Пожалуйста, свяжитесь с клиентом, чтобы "
+"продолжить."
+
+#: templates/meta_search/task_dashboard.html:292
+#: templates/tasks/task_detail.html:195
+#: templates/tasks/user_task_dashboard.html:357
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "Customer care"
+msgstr "Аватар клиента 1"
+
+#: templates/meta_search/user_dashboard.html:6
+msgid "Dashboard — Tasks & Rewards"
+msgstr "Панель инструментов - задачи и награды"
+
+#: templates/meta_search/user_dashboard.html:7
+msgid "My Dashboard"
+msgstr "Моя приборная панель"
+
+#: templates/meta_search/user_dashboard.html:9
+msgid "Home / dashboard"
+msgstr "Главная / Панельная панель"
+
+#: templates/meta_search/user_dashboard.html:98
+#: templates/meta_search/user_dashboard.html:164
+msgid "User"
+msgstr "Пользователь"
+
+#: templates/meta_search/user_dashboard.html:99
+msgid "View Profile"
+msgstr "Просмотреть профиль"
+
+#: templates/meta_search/user_dashboard.html:100
+msgid "Location"
+msgstr "Расположение"
+
+#: templates/meta_search/user_dashboard.html:102
+#: templates/meta_search/user_dashboard.html:107
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: templates/meta_search/user_dashboard.html:103
+msgid "Search"
+msgstr "Поиск"
+
+#: templates/meta_search/user_dashboard.html:104
+#: templates/meta_search/user_dashboard.html:238
+msgid "Filters"
+msgstr "Фильтры"
+
+#: templates/meta_search/user_dashboard.html:105
+msgid "Recommended"
+msgstr "Рекомендуется"
+
+#: templates/meta_search/user_dashboard.html:106
+msgid "Popular"
+msgstr "Популярный"
+
+#: templates/meta_search/user_dashboard.html:108
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "Your avatar"
+msgstr "Аватар клиента 1"
+
+#: templates/meta_search/user_dashboard.html:109
+#: templates/meta_search/user_dashboard.html:169
+msgid "Let’s do some task and earn reward"
+msgstr "Давайте сделаем какую -то задачу и получим награду"
+
+#: templates/meta_search/user_dashboard.html:208
+msgid "Mobile header & filters"
+msgstr "Мобильный заголовок и фильтры"
+
+#: templates/meta_search/user_dashboard.html:210
+msgid "View profile"
+msgstr "Просмотреть профиль"
+
+#: templates/meta_search/user_dashboard.html:224
+msgid "wave"
+msgstr "волна"
+
+#: templates/meta_search/user_dashboard.html:293
+#, fuzzy, python-format
+#| msgid "Save Changes"
+msgid "Save %(name)s"
+msgstr "Сохранить изменения"
+
+#: templates/meta_search/user_dashboard.html:320
+#, python-format
+msgid "No %(tab)s hotels available."
+msgstr "Нет [[[[[token_0]]]] Доступны отели."
+
+#: templates/meta_search/wallet.html:7
+msgid "Home / my wallet"
+msgstr "Главная / мой кошелек"
+
+#: templates/meta_search/wallet.html:160
+msgid "Wallet Summary"
+msgstr "Краткое изложение кошелька"
+
+#: templates/meta_search/wallet.html:163
+msgid "Current Balance"
+msgstr "Текущий баланс"
+
+#: templates/meta_search/wallet.html:166 templates/meta_search/wallet.html:601
+msgid "Hide balance"
+msgstr "Скрыть баланс"
+
+#: templates/meta_search/wallet.html:176
+msgid "Trial Bonus"
+msgstr "Пробный бонус"
+
+#: templates/meta_search/wallet.html:182 templates/meta_search/wallet.html:249
+#: templates/meta_search/wallet.html:293 templates/meta_search/wallet.html:581
+#: templates/meta_search/withdrawal.html:5
+#: templates/meta_search/withdrawal.html:157
+msgid "Withdraw"
+msgstr "Отзывать"
+
+#: templates/meta_search/wallet.html:187
+msgid "Filter transactions (mobile)"
+msgstr "Фильтрующие транзакции (мобильные)"
+
+#: templates/meta_search/wallet.html:190 templates/meta_search/wallet.html:203
+#: templates/meta_search/wallet.html:240 templates/meta_search/wallet.html:284
+#: templates/meta_search/wallet.html:351 templates/meta_search/wallet.html:573
+#: templates/meta_search/withdrawal.html:6
+#: templates/meta_search/withdrawal.html:199
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/wallet.html:196
+msgid "Transactions"
+msgstr "Транзакции"
+
+#: templates/meta_search/wallet.html:199
+msgid "Filter transactions (desktop)"
+msgstr "Транзакции фильтров (настольный компьютер)"
+
+#: templates/meta_search/wallet.html:247 templates/meta_search/wallet.html:291
+msgid "Added funds"
+msgstr "Добавлены средства"
+
+#: templates/meta_search/wallet.html:253 templates/meta_search/wallet.html:297
+#: templates/meta_search/wallet.html:581
+msgid "Adjustment"
+msgstr "Корректирование"
+
+#: templates/meta_search/wallet.html:310
+msgid "No Transaction History"
+msgstr "Нет истории транзакций"
+
+#: templates/meta_search/wallet.html:311
+msgid "When you start using your wallet, entries will show here."
+msgstr "Когда вы начнете использовать свой кошелек, записи покажут здесь."
+
+#: templates/meta_search/wallet.html:327
+#, python-format
+msgid "Added funds • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "Добавлены средства • %(t.created_at | Дата: \"y-m-d\") s"
+
+#: templates/meta_search/wallet.html:331
+msgid "No deposits yet"
+msgstr "Пока нет депозитов"
+
+#: templates/meta_search/wallet.html:347
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal (Pending)"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/wallet.html:349
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal (Failed)"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/wallet.html:356
+msgid "Requested"
+msgstr "Запрошен"
+
+#: templates/meta_search/wallet.html:358
+msgid "Request"
+msgstr "Запрос"
+
+#: templates/meta_search/wallet.html:360
+msgid "Posted"
+msgstr "Опубликовано"
+
+#: templates/meta_search/wallet.html:367
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "No withdrawals yet"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/wallet.html:382
+#, python-format
+msgid "Payment • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "Оплата • %(t.created_at | Дата: \"Y-M-D\") s"
+
+#: templates/meta_search/wallet.html:386
+msgid "No commissions yet"
+msgstr "Пока нет комиссий"
+
+#: templates/meta_search/wallet.html:398
+msgid "Transaction Details"
+msgstr "Детали транзакции"
+
+#: templates/meta_search/wallet.html:406
+msgid "Transaction ID"
+msgstr "Идентификатор транзакции"
+
+#: templates/meta_search/wallet.html:406
+msgid "Copy ID"
+msgstr "Копия идентификатор"
+
+#: templates/meta_search/wallet.html:408
+msgid "Description"
+msgstr "Описание"
+
+#: templates/meta_search/wallet.html:410
+msgid "State"
+msgstr "Состояние"
+
+#: templates/meta_search/wallet.html:581
+msgid "Added fund to wallet"
+msgstr "Добавлен фонд в кошелек"
+
+#: templates/meta_search/wallet.html:600
+msgid "Show balance"
+msgstr "Показать баланс"
+
+#: templates/meta_search/withdrawal.html:8
+msgid "Home / my Wallet / Withdrawal"
+msgstr "Главная / мой кошелек / снятие средств"
+
+#: templates/meta_search/withdrawal.html:167
+msgid "Your withdrawal method is verified."
+msgstr "Ваш метод отмены проверен."
+
+#: templates/meta_search/withdrawal.html:222
+msgid "EUR (Euro)"
+msgstr "Евро (евро)"
+
+#: templates/meta_search/withdrawal.html:227
+msgid "USD (US Dollar)"
+msgstr "Доллар США (доллар США)"
+
+#: templates/meta_search/withdrawal.html:232
+msgid "GBP (Pound)"
+msgstr "GBP (фунт)"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Min"
+msgstr "Мин"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Max"
+msgstr "Максимум"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "per request"
+msgstr "по запросу"
+
+#: templates/meta_search/withdrawal.html:256
+msgid "Bound wallet address"
+msgstr "Связанный адрес кошелька"
+
+#: templates/meta_search/withdrawal.html:257
+msgid "Update address"
+msgstr "Обновление адреса"
+
+#: templates/meta_search/withdrawal.html:264
+msgid "Network:"
+msgstr "Сеть:"
+
+#: templates/meta_search/withdrawal.html:278
+msgid "Bind your wallet address first"
+msgstr "Сначала свяжите адрес своего кошелька"
+
+#: templates/meta_search/withdrawal.html:279
+msgid "Bind Wallet Address"
+msgstr "Привязать адрес кошелька"
+
+#: templates/meta_search/withdrawal.html:283
+msgid ""
+"You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste "
+"your wallet address → verify (email/SMS) → the address will be saved and "
+"auto-filled here."
+msgstr ""
+"Вы перейдете на страницу адреса Bind → Выберите Network (например, TRC20) → "
+"вставьте адрес вашего кошелька → проверка (электронная почта/SMS) → Адрес "
+"будет сохранен и заполнен здесь."
+
+#: templates/meta_search/withdrawal.html:285
+msgid "Bind wallet address?"
+msgstr "Привязать адрес кошелька?"
+
+#: templates/meta_search/withdrawal.html:296
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal Method"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/withdrawal.html:303
+msgid "ETHEREUM"
+msgstr "Ethereum"
+
+#: templates/meta_search/withdrawal.html:330
+#: templates/meta_search/withdrawal.html:472
+msgid "The withdrawal requirement has yet to be fulfilled."
+msgstr "Требование о выводе еще не выполнено."
+
+#: templates/meta_search/withdrawal.html:332
+msgid "WITHDRAW"
+msgstr "ОТЗЫВАТЬ"
+
+#: templates/meta_search/withdrawal.html:339
+#, fuzzy
+#| msgid "You don’t have a withdrawal password yet. Set one first."
+msgid "For security, you must set a withdrawal password first."
+msgstr "У вас еще нет пароля отмены. Сначала установите один."
+
+#: templates/meta_search/withdrawal.html:340
+#, fuzzy
+#| msgid "Current withdrawal password"
+msgid "Set withdrawal password"
+msgstr "Текущий пароль отмены"
+
+#: templates/meta_search/withdrawal.html:349
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Confirm withdrawal"
+msgstr "Подтвердите пароль отмены"
+
+#: templates/meta_search/withdrawal.html:354
+#, fuzzy
+#| msgid "Incorrect withdrawal password."
+msgid "Enter your 6-digit withdrawal password to continue."
+msgstr "Неправильный пароль снятия."
+
+#: templates/meta_search/withdrawal.html:356
+msgid "Cancel"
+msgstr "Отмена"
+
+#: templates/meta_search/withdrawal.html:357
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Confirm & Withdraw"
+msgstr "Подтвердите пароль отмены"
+
+#: templates/meta_search/withdrawal.html:368
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal policy"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "The withdrawal requirement has yet to be fulfilled"
+msgstr "Требование о выводе еще не выполнено"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "COMPLETE MORE TASKS"
+msgstr "Выполнить больше задач"
+
+#: templates/meta_search/withdrawal.html:371
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "before the next withdrawal."
+msgstr "Установить новую штифт"
+
+#: templates/meta_search/withdrawal.html:373
+#, python-format
+msgid ""
+"Locked: The withdrawal requirement has yet to be fulfilled "
+"%(withdraw_cycles_remaining)s"
+msgstr ""
+"Заблокировано: требование о выводе еще предстоит выполнить "
+"[[[[[token_0]]]]]]]"
+
+#: templates/meta_search/withdrawal.html:377
+msgid "Got it"
+msgstr "Понятно"
+
+#: templates/meta_search/withdrawal.html:500
+msgid "Processing…"
+msgstr "Обработка…"
+
+#: templates/meta_search/withdrawal_success.html:5
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal Submitted"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/withdrawal_success.html:6
+msgid "Home / my Wallet / Withdrawal / Success"
+msgstr "Главная / мой кошелек / уход / успех"
+
+#: templates/meta_search/withdrawal_success.html:108
+msgid "Awaiting Approval"
+msgstr "В ожидании утверждения"
+
+#: templates/meta_search/withdrawal_success.html:114
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal submitted"
+msgstr "Безопасность вывода"
+
+#: templates/meta_search/withdrawal_success.html:121
+msgid "We’ve received your request."
+msgstr "Мы получили ваш запрос."
+
+#: templates/meta_search/withdrawal_success.html:122
+msgid "You’ll get an update once it’s reviewed."
+msgstr "Вы получите обновление после того, как оно будет рассмотрено."
+
+#: templates/meta_search/withdrawal_success.html:129
+msgid "Request ID"
+msgstr "Запрос идентификатор"
+
+#: templates/meta_search/withdrawal_success.html:132
+#: templates/meta_search/withdrawal_success.html:197
+msgid "Copy"
+msgstr "Копия"
+
+#: templates/meta_search/withdrawal_success.html:150
+#: templates/tasks/user_task_dashboard.html:312
+msgid "Submitted"
+msgstr "Поданный"
+
+#: templates/meta_search/withdrawal_success.html:157
+msgid "To"
+msgstr "К"
+
+#: templates/meta_search/withdrawal_success.html:166
+msgid "Your withdrawal request has been submitted."
+msgstr "Ваш запрос на снятие средств был представлен."
+
+#: templates/meta_search/withdrawal_success.html:171
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "Make another withdrawal"
+msgstr "Установить новую штифт"
+
+#: templates/meta_search/withdrawal_success.html:175
+msgid ""
+"Tip: If you navigate back to the withdrawal page, it will load a fresh form "
+"so it can’t be submitted twice."
+msgstr ""
+"Совет: если вы перейдете обратно на страницу снятия, он загрузит свежую "
+"форму, чтобы ее не было отправлено дважды."
+
+#: templates/tasks/task_detail.html:4
+msgid "Task Preview"
+msgstr "Предварительный просмотр задачи"
+
+#: templates/tasks/task_detail.html:6
+msgid "Home / Task / Detail"
+msgstr "Главная / Задача / Деталь"
+
+#: templates/tasks/task_detail.html:90
+msgid "Task image"
+msgstr "Изображение задачи"
+
+#: templates/tasks/task_detail.html:103
+msgid "Rated"
+msgstr "Рейтинг"
+
+#: templates/tasks/task_detail.html:152
+msgid "1X commission"
+msgstr "1x комиссия"
+
+#: templates/tasks/task_detail.html:165
+msgid "Submit"
+msgstr "Представлять на рассмотрение"
+
+#: templates/tasks/task_detail.html:167
+msgid "Submitted (waiting)"
+msgstr "Отправлен (ожидание)"
+
+#: templates/tasks/task_detail.html:191
+msgid "Congratulations!"
+msgstr "Поздравляю!"
+
+#: templates/tasks/task_detail.html:193
+msgid ""
+"You have received a platinum package. For more info please contact customer "
+"service."
+msgstr ""
+"Вы получили платиновый пакет. Для получения дополнительной информации, "
+"пожалуйста, свяжитесь с обслуживанием клиентов."
+
+#: templates/tasks/user_task_dashboard.html:5
+#: templates/tasks/user_task_dashboard.html:6
+msgid "Tasks Dashboard"
+msgstr "Задачи приборной панели"
+
+#: templates/tasks/user_task_dashboard.html:213
+msgid "Home / Task"
+msgstr "Главная / Задача"
+
+#: templates/tasks/user_task_dashboard.html:227
+msgid "Total Asset"
+msgstr "Общий актив"
+
+#: templates/tasks/user_task_dashboard.html:231
+msgid "Asset"
+msgstr "Объект"
+
+#: templates/tasks/user_task_dashboard.html:235
+msgid "Dividends"
+msgstr "Дивиденды"
+
+#: templates/tasks/user_task_dashboard.html:246
+msgid "Complete Tasks and get"
+msgstr "Выполнить задачи и получить"
+
+#: templates/tasks/user_task_dashboard.html:246
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "rewarded"
+msgstr "Получите вознаграждение"
+
+#: templates/tasks/user_task_dashboard.html:247
+msgid "Banner Image"
+msgstr "Баннер изображение"
+
+#: templates/tasks/user_task_dashboard.html:249
+msgid "Order received today:"
+msgstr "Заказ получен сегодня:"
+
+#: templates/tasks/user_task_dashboard.html:252
+msgid "Fetching your task…"
+msgstr "Принесите вашу задачу ..."
+
+#: templates/tasks/user_task_dashboard.html:262
+msgid "Filter status"
+msgstr "Статус фильтра"
+
+#: templates/tasks/user_task_dashboard.html:268
+msgid "Apply"
+msgstr "Применять"
+
+#: templates/tasks/user_task_dashboard.html:293
+#: templates/tasks/user_task_dashboard.html:323
+msgid "No tasks yet."
+msgstr "Пока нет задач."
+
+#: templates/tasks/user_task_dashboard.html:311
+msgid "Approved"
+msgstr "Одобренный"
+
+#: templates/tasks/user_task_dashboard.html:335
+#: templates/tasks/user_task_dashboard.html:392
+msgid "Loading…"
+msgstr "Загрузка ..."
+
+#: templates/tasks/user_task_dashboard.html:336
+#: templates/tasks/user_task_dashboard.html:386
+msgid "Please wait a moment"
+msgstr "Пожалуйста, подождите мгновение"
+
+#: templates/tasks/user_task_dashboard.html:353
+msgid "Oh No!"
+msgstr "О, нет!"
+
+#: templates/tasks/user_task_dashboard.html:355
+msgid ""
+"You have completed <strong id=\"completedCount\">0</strong> orders."
+"<br>Please contact customer service for assistance."
+msgstr "Вы завершили [[[[[token_0]]]] 0 [[[[[token_1]]] заказы."

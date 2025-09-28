@@ -1,142 +1,13 @@
 {% extends "base_user.html" %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Tasks Dashboard{% endblock %}
-{% block page_title %}Tasks Dashboard{% endblock %}
+{% block title %}{% trans "Tasks Dashboard" %}{% endblock %}
+{% block page_title %}{% trans "Tasks Dashboard" %}{% endblock %}
 
 {% block extra_head %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'meta_search/task_dashboard.css' %}">
-
-<!--<style>
-
-
-/* ======================
-   GLOBAL helpers (all screens)
-   ====================== */
-.desktop-only{ display:block; }
-@media (max-width: 768px){ .desktop-only{ display:none; } }
-@media (min-width: 769px){ .mobile-only{ display:none; } }
-
-/* Overlays & modal — available on ALL screens so desktop doesn’t show raw text */
-.loader-overlay{
-  position:fixed; inset:0;
-  display:grid; place-items:center;
-  background:rgba(15,23,42,.35);
-  backdrop-filter:saturate(140%) blur(1.5px);
-  opacity:0; pointer-events:none;
-  transition:opacity .18s ease;
-  z-index:5000;
-}
-.loader-overlay.on{ opacity:1; pointer-events:auto; }
-.loader-card{
-  width:min(440px, 92vw);
-  background:#fff; border-radius:16px;
-  box-shadow:0 10px 30px rgba(2,6,23,.15);
-  padding:22px 20px 18px; text-align:center;
-}
-.loader-dots{ display:flex; gap:16px; justify-content:center; margin:6px 0 12px; }
-.loader-dot{ width:16px; height:16px; border-radius:999px; animation:pop 1.1s infinite ease-in-out; }
-.loader-dot:nth-child(1){ background:#2563eb; animation-delay:0s; }
-.loader-dot:nth-child(2){ background:#f59e0b; animation-delay:.12s; }
-.loader-dot:nth-child(3){ background:#16a34a; animation-delay:.24s; }
-.loader-dot:nth-child(4){ background:#ef4444; animation-delay:.36s; }
-@keyframes pop{ 0%,80%,100%{ transform:scale(.6); opacity:.65; } 40%{ transform:scale(1); opacity:1; } }
-.loader-text{ font-weight:800; font-size:18px; color:#0f172a; }
-.loader-sub{ margin-top:2px; font-size:13px; color:#64748b; }
-
-.limit-overlay{
-  position:fixed; inset:0; z-index:6000;
-  display:none; place-items:center;
-  background:rgba(15,23,42,.45);
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
-}
-.limit-overlay.on{ display:grid; }
-.limit-card{
-  width:min(460px,94vw);
-  background:#fff; border-radius:16px; overflow:hidden;
-  box-shadow:0 12px 34px rgba(2,6,23,.24);
-}
-.limit-top{
-  background:#dc2626; height:160px; position:relative;
-  display:grid; place-items:center;
-}
-.limit-x{
-  width:86px; height:86px; border-radius:999px;
-  border:3px solid #fff; display:grid; place-items:center; color:#fff; font-size:44px; line-height:1;
-}
-.limit-body{ padding:20px; text-align:center; }
-.limit-title{ font-size:24px; font-weight:800; color:#0f172a; margin:6px 0 6px; }
-.limit-text{ color:#6b7280; font-size:15px; line-height:1.45; }
-.limit-btn{
-  margin:16px auto 8px; display:inline-flex; align-items:center; justify-content:center;
-  padding:14px 18px; border-radius:12px; border:none; cursor:pointer;
-  background:#dc2626; color:#fff; font-weight:800; width:min(320px,76vw);
-}
-.limit-close{
-  position:absolute; right:10px; top:10px; width:30px; height:30px;
-  border-radius:999px; background:#111; color:#fff; border:none; cursor:pointer; font-size:16px;
-  display:grid; place-items:center;
-}
-
-/* ===== Your MOBILE styles (kept exactly, scoped to <=768px) ===== */
-@media screen and (max-width: 768px){
-  :root{
-    --blue:#0a63ff; --blue2:#0052cc; --bg:#f5f7fa; --text:#0f172a;
-    --muted:#6b7280; --card:#ffffff; --ring:rgba(10,99,255,.10);
-    --green:#10b981; --shadow:0 6px 22px rgba(15,23,42,.06);
-  }
-  .wrap{max-width:480px;margin:0 auto;padding:16px}
-  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0 18px}
-  .card{background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
-  .card .top{display:flex;align-items:center;justify-content:space-between}
-  .card .label{font-size:14px;color:#8b95a5;font-weight:600}
-  .badge{width:38px;height:38px;border-radius:999px;background:#f4f7ff;color:#3b82f6;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px var(--ring)}
-  .badge svg{width:22px;height:22px}
-  .value{margin-top:16px;font-size:28px;font-weight:800;letter-spacing:.3px}
-  .banner{
-    background:linear-gradient(135deg,var(--blue2),var(--blue));
-    border-radius:12px;color:#fff;text-align:center;padding:26px 16px 0;margin:6px 0 8px;position:relative;overflow:hidden;
-  }
-  .banner h2{margin:0 0 10px;font-weight:700}
-  .hero-img{display:block;margin:12px auto -1px;max-width:260px;width:70%;height:auto;box-shadow:0 6px 18px var(--ring)}
-  .today{margin:10px 0 12px;text-align:center;color:#6b7280;font-size:14px}
-  .btn{display:block;width:100%;text-align:center;background:#0a63ff;color:#fff;text-decoration:none;padding:14px 16px;border-radius:10px;font-weight:700;box-shadow:0 10px 20px var(--ring)}
-  .btn[aria-disabled="true"]{opacity:.6;pointer-events:none}
-  .tabs{display:flex;gap:24px;align-items:center;border-bottom:1px solid #e5e7eb;margin:22px 0 8px}
-  .tab{padding:12px 0;font-weight:600;color:#a3aab6;text-decoration:none}
-  .tab.active{color:#2563eb;position:relative}
-  .tab.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:#2563eb;border-radius:999px}
-  .task{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px;margin-top:10px}
-  .task .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .task .code{font-weight:800;letter-spacing:.4px}
-  .view{background:#1e40af;color:#fff;border:none;border-radius:12px;padding:10px 18px;font-weight:700;cursor:pointer}
-  .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eef1f5;color:#6b7280}
-  .row:last-child{border-bottom:none}
-  .ok{color:#059669;font-weight:700}
-  .comm{color:#2563eb;font-weight:800}
-
-  /* mobile spacing tweaks */
-  .wrap{padding-left:max(16px, env(safe-area-inset-left)); padding-right:calc(34px + env(safe-area-inset-right));}
-  .cards{grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px;}
-  .card .value{font-weight:700;font-size:clamp(15px, 4.4vw, 20px);line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:0;white-space:nowrap;overflow:visible;text-overflow:clip;}
-  @media (max-width:360px){ .cards .card .badge{width:36px;height:36px} .cards .card .badge svg{width:20px;height:20px} }
-  @media (min-width:520px){ .wrap{ padding-right: calc(40px + env(safe-area-inset-right)); } .card .value{ font-size: 20px; } }
-}
-
-/* ======================
-   LIGHT desktop helpers (non-destructive)
-   ====================== */
-@media (min-width: 769px){
-  .wrap{max-width:1100px;margin:24px auto;padding:0 12px}
-  .table-head{display:flex;align-items:center;justify-content:space-between}
-  .desk-filter select{min-width:180px}
-  .thead, .drow{display:grid;grid-template-columns:2.2fr 1.2fr .9fr 1fr .8fr 1.1fr;gap:14px;align-items:center}
-  .thead{font-weight:700}
-  .drow .status-dot{margin-right:.35rem}
-}
-</style>-->
 
 <style>
 /* ======================
@@ -228,7 +99,7 @@
   .cards{
     display:grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;                  /* a touch tighter to gain width */
+    gap: 12px;
     margin:10px 0 18px;
   }
 
@@ -252,7 +123,6 @@
     white-space:nowrap;
   }
 
-  /* banner spans edge-to-edge of mobile viewport */
   .banner{
     background:linear-gradient(135deg,var(--blue2),var(--blue));
     border-radius:12px;
@@ -309,21 +179,17 @@
   .ok{color:#059669;font-weight:700}
   .comm{color:#2563eb;font-weight:800}
 
-  /* ensure edge-to-edge feel across common sections */
   .banner, .today, .tabs, .task{ margin-left:0; margin-right:0; }
 
-  /* safety: prevent accidental horizontal scroll from any child */
   html, body { overflow-x: hidden; }
   img, svg{ max-width:100%; height:auto; }
 
-  /* tiny phones */
   @media (max-width: 360px){
     .cards .card .badge{ width:36px; height:36px; }
     .cards .card .badge svg{ width:20px; height:20px; }
     .tabs{ gap:14px; }
   }
 
-  /* large phones */
   @media (min-width:520px){
     .wrap{ padding-left: clamp(14px, 4vw, 22px); padding-right: clamp(14px, 4vw, 22px); }
   }
@@ -340,12 +206,11 @@
   .thead{font-weight:700}
   .drow .status-dot{margin-right:.35rem}
 }
-
 </style>
 
 {% endblock %}
 
-{% block breadcrumb %}Home / Task{% endblock %}
+{% block breadcrumb %}{% trans "Home / Task" %}{% endblock %}
 
 {% block content %}
 <!-- inline sprite -->
@@ -359,83 +224,82 @@
   <!-- Stats -->
   <div class="cards">
     <div class="card">
-      <div class="top"><span class="label">Total Asset</span><span class="badge"><svg><use href="#i-asset-total"/></svg></span></div>
+      <div class="top"><span class="label">{% trans "Total Asset" %}</span><span class="badge"><svg><use href="#i-asset-total"/></svg></span></div>
       <div class="value">{{ total_asset_eur }}</div>
     </div>
     <div class="card">
-      <div class="top"><span class="label">Asset</span><span class="badge"><svg><use href="#i-asset"/></svg></span></div>
+      <div class="top"><span class="label">{% trans "Asset" %}</span><span class="badge"><svg><use href="#i-asset"/></svg></span></div>
       <div class="value">{{ asset_eur }}</div>
     </div>
     <div class="card">
-      <div class="top"><span class="label">Dividends</span><span class="badge"><svg><use href="#i-dividend"/></svg></span></div>
+      <div class="top"><span class="label">{% trans "Dividends" %}</span><span class="badge"><svg><use href="#i-dividend"/></svg></span></div>
       <div class="value">{{ dividends_eur }}</div>
     </div>
     <div class="card">
-      <div class="top"><span class="label">Processing</span><span class="badge"><svg><use href="#i-settings"/></svg></span></div>
+      <div class="top"><span class="label">{% trans "Processing" %}</span><span class="badge"><svg><use href="#i-settings"/></svg></span></div>
       <div class="value">{{ processing_eur }}</div>
     </div>
   </div>
 
   <!-- Banner + CTA -->
   <div class="banner">
-    <h2>Complete Tasks and get<br/>rewarded</h2>
-    <img class="hero-img" src="{% static 'meta_search/logos/task_reward.png' %}" alt="Banner Image" />
+    <h2>{% trans "Complete Tasks and get" %}<br/>{% trans "rewarded" %}</h2>
+    <img class="hero-img" src="{% static 'meta_search/logos/task_reward.png' %}" alt="{% trans 'Banner Image' %}" />
   </div>
-  <div class="today">Order received today: <strong>{{ next_visible }}/{{ limit }}</strong></div>
+  <div class="today">{% trans "Order received today:" %} <strong>{{ next_visible }}/{{ limit }}</strong></div>
 
   <a id="getTaskBtn" class="btn" href="{% url 'do_task' %}"
-     data-loader="Fetching your task…"
+     data-loader="{% trans 'Fetching your task…' %}"
      {% if not can_get_task %}aria-disabled="true"{% endif %}>
-    Click to get your task
+    {% trans "Click to get your task" %}
   </a>
 
   <!-- DESKTOP table -->
   <div class="desktop-only">
     <div class="table-head">
-      <h3 class="th-title">Task History</h3>
+      <h3 class="th-title">{% trans "Task History" %}</h3>
       <form class="desk-filter" method="get">
-        <label class="sr-only" for="statusFilter">Filter status</label>
+        <label class="sr-only" for="statusFilter">{% trans "Filter status" %}</label>
         <select id="statusFilter" name="tab">
-          <option value="all" {% if tab == 'all' %}selected{% endif %}>All</option>
-          <option value="completed" {% if tab == 'completed' %}selected{% endif %}>Completed</option>
-          <option value="processing" {% if tab == 'processing' %}selected{% endif %}>Processing</option>
+          <option value="all" {% if tab == 'all' %}selected{% endif %}>{% trans "All" %}</option>
+          <option value="completed" {% if tab == 'completed' %}selected{% endif %}>{% trans "Completed" %}</option>
+          <option value="processing" {% if tab == 'processing' %}selected{% endif %}>{% trans "Processing" %}</option>
         </select>
-        <noscript><button type="submit">Apply</button></noscript>
+        <noscript><button type="submit">{% trans "Apply" %}</button></noscript>
       </form>
     </div>
 
     <div class="thead">
-      <div>Product Name</div><div>Order ID</div><div>Date</div>
-      <div>Price</div><div>Comm</div><div>Status</div>
+      <div>{% trans "Product Name" %}</div><div>{% trans "Order ID" %}</div><div>{% trans "Date" %}</div>
+      <div>{% trans "Price" %}</div><div>{% trans "Comm" %}</div><div>{% trans "Status" %}</div>
     </div>
 
     {% for t in tasks %}
       <div class="task drow">
         <div><strong>{{ t.template.hotel_name }}</strong>{% if t.template.description %}<div class="muted">{{ t.template.description }}</div>{% endif %}</div>
         <div>{{ t.template.task_id }}</div>
-       <!-- In the desktop table row -->
         <div>{{ t.created_at|date:"d/m/Y" }}</div>
-         <div>€{{ t.price_used }}{% if t.quantity %}×{{ t.quantity }}{% endif %}</div>
+        <div>€{{ t.price_used }}{% if t.quantity %}×{{ t.quantity }}{% endif %}</div>
         <div>+€{{ t.commission_used }}</div>
         <div>
           <span class="status-dot">●</span>{{ t.get_status_display }}
           &nbsp;&nbsp;
           <form method="get" action="{% url 'task_detail' pk=t.pk %}" style="display:inline">
-            <button class="view" type="submit">View</button>
+            <button class="view" type="submit">{% trans "View" %}</button>
           </form>
         </div>
       </div>
     {% empty %}
-      <div class="task drow"><div>No tasks yet.</div><div></div><div></div><div></div><div></div><div></div></div>
+      <div class="task drow"><div>{% trans "No tasks yet." %}</div><div></div><div></div><div></div><div></div><div></div></div>
     {% endfor %}
   </div>
 
   <!-- MOBILE list (wrapped so it won’t appear on desktop) -->
   <div class="mobile-only">
     <div class="tabs">
-      <a class="tab {% if tab == 'all' %}active{% endif %}" href="?tab=all">All</a>
-      <a class="tab {% if tab == 'completed' %}active{% endif %}" href="?tab=completed">Completed</a>
-      <a class="tab {% if tab == 'processing' %}active{% endif %}" href="?tab=processing">Processing</a>
+      <a class="tab {% if tab == 'all' %}active{% endif %}" href="?tab=all">{% trans "All" %}</a>
+      <a class="tab {% if tab == 'completed' %}active{% endif %}" href="?tab=completed">{% trans "Completed" %}</a>
+      <a class="tab {% if tab == 'processing' %}active{% endif %}" href="?tab=processing">{% trans "Processing" %}</a>
     </div>
 
     {% for t in tasks %}
@@ -444,17 +308,19 @@
           <div class="code">{{ t.template.task_id }}</div>
           <form method="get" action="{% url 'task_detail' pk=t.pk %}">
             <button class="view" type="submit">
-              {% if t.status == t.Status.APPROVED %}Approved{% elif t.status == t.Status.SUBMITTED %}Submitted{% else %}View{% endif %}
+              {% if t.status == t.Status.APPROVED %}{% trans "Approved" %}
+              {% elif t.status == t.Status.SUBMITTED %}{% trans "Submitted" %}
+              {% else %}{% trans "View" %}{% endif %}
             </button>
           </form>
         </div>
-        <div class="row"><span>Product</span><span>{{ t.template.hotel_name }}</span></div>
-        <div class="row"><span>Price</span><span>€{{ t.price_used }}</span></div>
-        <div class="row"><span>Status</span><span class="{% if t.status == t.Status.APPROVED %}ok{% endif %}">● {{ t.get_status_display }}</span></div>
-        <div class="row"><span>Comm</span><span class="comm">+€{{ t.commission_used }}</span></div>
+        <div class="row"><span>{% trans "Product" %}</span><span>{{ t.template.hotel_name }}</span></div>
+        <div class="row"><span>{% trans "Price" %}</span><span>€{{ t.price_used }}</span></div>
+        <div class="row"><span>{% trans "Status" %}</span><span class="{% if t.status == t.Status.APPROVED %}ok{% endif %}">● {{ t.get_status_display }}</span></div>
+        <div class="row"><span>{% trans "Comm" %}</span><span class="comm">+€{{ t.commission_used }}</span></div>
       </div>
     {% empty %}
-      <p style="color:#6b7280;margin-top:10px;">No tasks yet.</p>
+      <p style="color:#6b7280;margin-top:10px;">{% trans "No tasks yet." %}</p>
     {% endfor %}
   </div>
 </div>
@@ -466,8 +332,8 @@
       <span class="loader-dot"></span><span class="loader-dot"></span>
       <span class="loader-dot"></span><span class="loader-dot"></span>
     </div>
-    <div class="loader-text" id="loaderText">Loading…</div>
-    <div class="loader-sub" id="loaderSub">Please wait a moment</div>
+    <div class="loader-text" id="loaderText">{% trans "Loading…" %}</div>
+    <div class="loader-sub" id="loaderSub">{% trans "Please wait a moment" %}</div>
   </div>
 </div>
 
@@ -475,21 +341,20 @@
      data-next="{{ next_visible|default:0 }}"
      data-limit="{{ limit|default:0 }}"
      data-can="{% if can_get_task %}1{% else %}0{% endif %}"
-     data-support-url="{% url 'info_index' %}"></div>
+     data-support-url="https://t.me/Internal_CSAgent"></div>
 
 <div class="limit-overlay" id="limitModal" aria-hidden="true">
   <div class="limit-card" role="dialog" aria-modal="true" aria-labelledby="limitTitle" aria-describedby="limitText">
     <div class="limit-top">
       <div class="limit-x">×</div>
-      <button class="limit-close" type="button" aria-label="Close">✕</button>
+      <button class="limit-close" type="button" aria-label="{% trans 'Close' %}">✕</button>
     </div>
     <div class="limit-body">
-      <div class="limit-title" id="limitTitle">Oh No!</div>
+      <div class="limit-title" id="limitTitle">{% trans "Oh No!" %}</div>
       <p class="limit-text" id="limitText">
-        You have completed <strong id="completedCount">0</strong> orders.<br>
-        Please contact customer service for assistance.
+        {% blocktrans %}You have completed <strong id="completedCount">0</strong> orders.<br>Please contact customer service for assistance.{% endblocktrans %}
       </p>
-      <button class="limit-btn" type="button" id="supportBtn">Customer care</button>
+      <button class="limit-btn" type="button" id="supportBtn">{% trans "Customer care" %}</button>
     </div>
   </div>
 </div>
@@ -497,6 +362,11 @@
 
 {% block extra_scripts %}
 {{ block.super }}
+
+<script>
+document.getElementById('supportBtn')?.addEventListener('click',()=>window.open(document.getElementById('blockData')?.dataset.supportUrl,'_blank','noopener'));
+</script>
+
 <script>
   // Auto-submit desktop filter
   (function(){
@@ -510,9 +380,17 @@
     const textEl=document.getElementById('loaderText');
     const subEl=document.getElementById('loaderSub');
     const btn=document.getElementById('getTaskBtn');
-    function showLoader(msg,sub){ if(!overlay) return; if(msg) textEl.textContent=msg; subEl.textContent=sub||'Please wait a moment'; overlay.classList.add('on'); overlay.removeAttribute('aria-hidden'); }
+    function showLoader(msg,sub){
+      if(!overlay) return;
+      if(msg) textEl.textContent=msg;
+      subEl.textContent=sub||'{% trans "Please wait a moment" %}';
+      overlay.classList.add('on'); overlay.removeAttribute('aria-hidden');
+    }
     function hideLoader(){ overlay?.classList.remove('on'); overlay?.setAttribute('aria-hidden','true'); }
-    btn?.addEventListener('click',function(e){ if(this.getAttribute('aria-disabled')==='true'){ e.preventDefault(); return; } showLoader(this.dataset.loader||'Loading…'); });
+    btn?.addEventListener('click',function(e){
+      if(this.getAttribute('aria-disabled')==='true'){ e.preventDefault(); return; }
+      showLoader(this.dataset.loader||'{% trans "Loading…" %}');
+    });
     window.addEventListener('pageshow',e=>{ if(e.persisted) hideLoader(); });
   })();
 
@@ -535,7 +413,6 @@
     const can=(dataEl?.dataset.can==='1');
     const completed=Math.max(0,next-1);
 
-    // Keep X/Y consistent
     try{
       const displayCompleted=(isFinite(limit)&&limit>0)?Math.min(completed,limit):completed;
       const todayCounter=document.querySelector('.today strong');

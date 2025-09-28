@@ -1,7 +1,10 @@
 from __future__ import annotations
 import csv
+from django.contrib import messages
+from django.shortcuts import redirect
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional
+from django.middleware.csrf import get_token
 
 from django import forms
 from django.apps import apps
@@ -17,6 +20,10 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+from django.shortcuts import redirect
+from .models import CustomUser
+#from .models import InvitationCode, InvitationUsage
 
 # ---- Models you actually have (per your models.py) ----
 from .models import (
@@ -32,11 +39,32 @@ from .models import (
 
 
 #Change admin names
-admin.site.site_header = "Expedia Administration"
-admin.site.site_title = "Expedia Admin"
-admin.site.index_title = "Welcome to Expedia Administration"
+admin.site.site_header = "Orbitpedia Administration"
+admin.site.site_title = "Orbitpedia Admin"
+admin.site.index_title = "Welcome to Orbitpedia Administration"
 
+from .models import InvitationLink
 
+@admin.register(InvitationLink)
+class InvitationLinkAdmin(admin.ModelAdmin):
+    list_display = ("code", "owner", "is_active", "expires_at", "claimed", "used_by", "used_at", "created_at")
+    list_filter = ("is_active", "claimed", "expires_at", "created_at")
+    search_fields = ("code", "owner__username", "owner__email", "label")
+    actions = ["activate_links", "suspend_links"]
+
+    def activate_links(self, request, queryset):
+        queryset.update(is_active=True)
+    activate_links.short_description = "Activate selected invitations"
+
+    def suspend_links(self, request, queryset):
+        queryset.update(is_active=False)
+    suspend_links.short_description = "Suspend selected invitations"
+
+    def save_model(self, request, obj, form, change):
+        if not obj.code:
+            obj.code = InvitationLink.generate_code()
+        obj.code = obj.code.upper()
+        super().save_model(request, obj, form, change)
 
 
 # in admin.py
@@ -456,6 +484,7 @@ class CustomUserAdmin(UserAdmin):
         "signup_ip", "signup_country", "last_login_ip", "last_login_country",
         "invitation_code",
         "is_active", "is_staff", "date_joined",
+
     )
     list_display_links = ("id", "phone")
     list_filter = ("is_active", "is_staff", "is_superuser", "groups")
@@ -488,6 +517,15 @@ class CustomUserAdmin(UserAdmin):
         "signup_ip", "signup_country", "last_login_ip", "last_login_country",
         "avatar_preview",
     )
+    @admin.action(description="Impersonate selected user")
+    def impersonate_selected(self, request, queryset):
+        if queryset.count() != 1:
+            messages.error(request, "Select exactly ONE user.")
+            return
+        user = queryset.first()
+        return redirect(reverse("impersonate", args=[user.pk]))
+
+    actions = ["impersonate_selected"]
 
 
 # ======================

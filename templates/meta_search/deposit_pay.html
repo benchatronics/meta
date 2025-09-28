@@ -1,8 +1,8 @@
 {% extends "base_user.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Pay Deposit{% endblock %}
-{% block breadcrumb %}Home / my Wallet / Deposit / Pay{% endblock %}
+{% block title %}{% trans "Pay Deposit" %}{% endblock %}
+{% block breadcrumb %}{% trans "Home" %} / {% trans "My Wallet" %} / {% trans "Deposit" %} / {% trans "Pay" %}{% endblock %}
 
 {% block extra_head %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
       <a
         class="back-link"
         href="{% url 'deposit' %}"
-        aria-label="Go back"
+        aria-label="{% trans 'Go back' %}"
         onclick="if (history.length > 1) { history.back(); return false; }">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -26,7 +26,7 @@
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
-      <h1 class="page-title">Payment details</h1>
+      <h1 class="page-title">{% trans "Payment details" %}</h1>
     </div>
 
     <!-- rest of your page content here... -->
@@ -76,14 +76,19 @@
 
       <section class="pay-card">
         <header class="pay-head">
-          <h2>{# Payment details #}</h2>
+          <h2>{% trans "Payment details" %}</h2>
           <div class="center-row">
             <a
-              class="change-method"
-              href="{% url 'deposit' %}"
-              style="display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;border:1px solid var(--border, #e5e7eb);background:#fff;color:var(--primary, #2451FF);font-weight:600;text-decoration:none;white-space:nowrap;position:relative;left:50%;transform:translateX(-50%);">
-              Change payment method
-            </a>
+  class="change-method"
+  href="{% url 'deposit' %}"
+  style="display:inline-flex;align-items:center;justify-content:center;
+         padding:4px 8px;border-radius:10px;border:1px solid var(--border, #e5e7eb);
+         background:#fff;color:var(--primary, #2451FF);font-weight:600;text-decoration:none;
+         white-space:nowrap;position:relative;left:50%;transform:translateX(-50%);
+         font-size:10px; line-height:1.1;">
+  {% trans "Change payment method" %}
+</a>
+
           </div>
         </header>
 
@@ -93,7 +98,7 @@
               {% if dep.network == "TRC20" %}
                 <span class="token usdt">T</span><span class="asset-name">USDT</span>
               {% elif dep.network == "ETH" %}
-                <span class="token eth" aria-label="Ethereum">Ξ</span><span class="asset-name">Ethereum</span>
+                <span class="token eth" aria-label="{% trans 'Ethereum' %}">Ξ</span><span class="asset-name">{% trans "Ethereum" %}</span>
               {% else %}
                 <span class="token eth">Ξ</span><span class="asset-name">{{ dep.get_network_display }}</span>
               {% endif %}
@@ -101,7 +106,7 @@
 
             <div class="amount-wrap">
               <span id="amountText">{{ symbol }} {{ dep.amount|floatformat:2 }}</span>
-              <button class="copy" type="button" data-copy="#amountText" aria-label="Copy amount">
+              <button class="copy" type="button" data-copy="#amountText" aria-label="{% trans 'Copy amount' %}">
                 <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
               </button>
             </div>
@@ -111,14 +116,18 @@
 
           <div class="grid">
             <div>
-              <div class="qr-box">
-                {% if qr_data_uri %}
-                  <img src="{{ qr_data_uri }}" alt="QR code">
-                {% else %}
-                  <div id="qrcode"></div>
-                {% endif %}
-              </div>
-              <div class="qr-hint">Scan to pay · {{ dep.get_network_display }}</div>
+              <div class="qr-box"
+     data-net="{{ dep.network }}"                     {# ETH or TRC20 (stable code) #}
+     data-addr="{{ dep.pay_to.address|default_if_none:'' }}"
+     data-amt="{{ dep.amount|floatformat:2 }}">
+  {% if qr_data_uri %}
+    <img src="{{ qr_data_uri }}" alt="{% trans 'QR code' %}">
+  {% else %}
+    <div id="qrcode"></div>
+  {% endif %}
+</div>
+<div class="qr-hint">{% blocktrans %}Scan to pay · {{ dep.get_network_display }}{% endblocktrans %}</div>
+
             </div>
 
             <div class="right"
@@ -128,26 +137,31 @@
                  data-amount="{{ dep.amount|floatformat:2 }}"
                  data-ref="{{ dep.reference }}"
                  data-network="{{ dep.get_network_display }}"
-                 data-tg-url="{{ support_telegram_url }}">
+                 data-tg-url="{{ support_telegram_url }}"
+                 data-i18n-verifying="{% trans 'Verifying…' %}"
+                 data-i18n-verifying-left="{% trans 'Verifying… ({time} left)' %}"
+                 data-i18n-verify-hint="{% trans 'You can use “Verify now” for quick help.' %}"
+                 data-i18n-qr-error="{% trans 'QR error' %}"
+            >
 
-              <div class="pair"><div class="label">Network</div><div class="value">{{ dep.get_network_display }}</div></div>
-              <div class="pair"><div class="label">Amount</div><div class="value" id="amountText2">{{ symbol }} {{ dep.amount|floatformat:2 }}</div></div>
+              <div class="pair"><div class="label">{% trans "Network" %}</div><div class="value">{{ dep.get_network_display }}</div></div>
+              <div class="pair"><div class="label">{% trans "Amount" %}</div><div class="value" id="amountText2">{{ symbol }} {{ dep.amount|floatformat:2 }}</div></div>
 
               <div class="pair" style="align-items:start">
-                <div class="label" style="padding-top:4px">Address</div>
+                <div class="label" style="padding-top:4px">{% trans "Address" %}</div>
                 <div style="display:flex;gap:8px;align-items:flex-start">
                   <div id="addr" class="mono">{{ dep.pay_to.address }}</div>
-                  <button class="copy" type="button" data-copy="#addr" aria-label="Copy address">
+                  <button class="copy" type="button" data-copy="#addr" aria-label="{% trans 'Copy address' %}">
                     <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
                   </button>
                 </div>
               </div>
 
               <div class="pair">
-                <div class="label">Reference</div>
+                <div class="label">{% trans "Reference" %}</div>
                 <div style="display:flex;gap:8px;align-items:center">
                   <div id="refText" class="value mono">#{{ dep.reference }}</div>
-                  <button class="copy" type="button" data-copy="#refText" aria-label="Copy reference">
+                  <button class="copy" type="button" data-copy="#refText" aria-label="{% trans 'Copy reference' %}">
                     <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5"/></svg>
                   </button>
                 </div>
@@ -156,9 +170,9 @@
               {% if dep.status == "awaiting_payment" %}
                 <form id="verifyForm" method="post" action="{% url 'deposit_verify' dep.id %}" novalidate>
                   {% csrf_token %}
-                  <button class="pay-btn" id="verifyBtn" type="submit">I’ve Paid — Verify</button>
+                  <button class="pay-btn" id="verifyBtn" type="submit">{% trans "I’ve Paid — Verify" %}</button>
                 </form>
-                <div class="eta">We’ll check the network and update your balance when confirmed.</div>
+                <div class="eta">{% trans "We’ll check the network and update your balance when confirmed." %}</div>
 
               {% elif dep.status == "awaiting_review" %}
                 {% if show_telegram_now %}
@@ -166,34 +180,34 @@
                      class="pay-btn"
                      href="{{ support_telegram_url }}"
                      target="_blank" rel="noopener noreferrer"
-                     data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me.">Verify now</a>
-                  <div class="quick-hint">Need quick approval? Use <strong>Verify now</strong>.</div>
+                     data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me.">{% trans "Verify now" %}</a>
+                  <div class="quick-hint">{% blocktrans %}Need quick approval? Use <strong>Verify now</strong>.{% endblocktrans %}</div>
                 {% else %}
-                  <button class="pay-btn" type="button" id="verifyingBtn" disabled><span class="spinner" aria-hidden="true"></span>Verifying…</button>
+                  <button class="pay-btn" type="button" id="verifyingBtn" disabled><span class="spinner" aria-hidden="true"></span>{% trans "Verifying…" %}</button>
                   <a id="verifyNowLink"
                      class="pay-btn"
                      href="{{ support_telegram_url }}"
                      target="_blank" rel="noopener noreferrer"
                      data-msg-template="I made a payment of {symbol}{amount} on {network} with reference #{ref}. Please verify me."
-                     style="display:none;">Verify now</a>
+                     style="display:none;">{% trans "Verify now" %}</a>
                   <div class="eta" id="eta"></div>
-                  <div class="quick-hint" id="quickHint">Need quick approval? You can use <strong>Verify now</strong>.</div>
+                  <div class="quick-hint" id="quickHint">{% blocktrans %}Need quick approval? You can use <strong>Verify now</strong>.{% endblocktrans %}</div>
                 {% endif %}
 
               {% elif dep.status == "failed" %}
-                <div class="alert error">Payment failed{% if dep.failure_reason %}: {{ dep.failure_reason }}{% endif %}.</div>
-                <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Try again</a>
+                <div class="alert error">{% trans "Payment failed" %}{% if dep.failure_reason %}: {{ dep.failure_reason }}{% endif %}.</div>
+                <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">{% trans "Try again" %}</a>
 
               {% elif dep.status == "draft" %}
-                <div class="alert info">This deposit is a draft.</div>
-                <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Continue to deposit</a>
+                <div class="alert info">{% trans "This deposit is a draft." %}</div>
+                <a href="{% url 'deposit' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">{% trans "Continue to deposit" %}</a>
 
               {% elif dep.status == "completed" or dep.status == "confirmed" or dep.status == "credited" or dep.status == "success" %}
-                <div class="alert success">Thanks! Recieved We’ll verify the payment shortly.</div>
-                <a href="{% url 'wallet' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">Go to Wallet</a>
+                <div class="alert success">{% trans "Thanks! Recieved We’ll verify the payment shortly." %}</div>
+                <a href="{% url 'wallet' %}" class="pay-btn" style="text-decoration:none;display:inline-flex;justify-content:center;">{% trans "Go to Wallet" %}</a>
 
               {% else %}
-                <div class="alert info">Status: {{ dep.status }}</div>
+                <div class="alert info">{% blocktrans %}Status: {{ dep.status }}{% endblocktrans %}</div>
               {% endif %}
             </div>
           </div>
@@ -201,7 +215,7 @@
       </section>
     </div>
 
-    <div class="toast" id="toast">Copied</div>
+    <div class="toast" id="toast">{% trans "Copied" %}</div>
   </section>
 {% endblock %}
 
@@ -228,25 +242,75 @@
   // Verify (awaiting_payment) UX
   (function(){
     const f = scope.querySelector('#verifyForm'); const b = scope.querySelector('#verifyBtn');
+    const right = scope.querySelector('.right');
+    const i18nVerifying = right ? (right.dataset.i18nVerifying || 'Verifying…') : 'Verifying…';
     if(f&&b){ f.addEventListener('submit', ()=>{
-      b.disabled = true; b.innerHTML = '<span class="spinner" aria-hidden="true"></span>Verifying…'; b.setAttribute('aria-busy','true');
+      b.disabled = true; b.innerHTML = '<span class="spinner" aria-hidden="true"></span>' + i18nVerifying; b.setAttribute('aria-busy','true');
     }, {passive:true}); }
   })();
 
-  // Local QR fallback if server QR missing
-  (function(){
-    const box = scope.querySelector('#qrcode'); if(!box) return;
-    function QRBitBuffer(){this.buffer=[];this.length=0;}
-    QRBitBuffer.prototype.put=function(num,len){for(let i=0;i<len;i++) this.putBit(((num>>(len-i-1))&1)==1)};
-    QRBitBuffer.prototype.putBit=function(b){this.buffer.push(b?1:0);this.length++};
-    function QRSimple(data){this.data=unescape(encodeURIComponent(data));this.size=29;this.modules=Array(this.size).fill(0).map(()=>Array(this.size).fill(null));this._finders();this._timing();this._data();}
-    QRSimple.prototype._finders=function(){const pts=[[0,0],[this.size-7,0],[0,this.size-7]];for(const [x,y] of pts){for(let r=-1;r<=7;r++)for(let c=-1;c<=7;c++){const xx=x+c,yy=y+r;if(xx<0||yy<0||xx>=this.size||yy>=this.size) continue;const on=(r===0||r===6||c===0||c===6)||(r>=2&&r<=4&&c>=2&&c<=4);this.modules[yy][xx]=on;}}};
-    QRSimple.prototype._timing=function(){for(let i=8;i<this.size-8;i++){this.modules[6][i]=(i%2===0);this.modules[i][6]=(i%2===0);}};
-    QRSimple.prototype._data=function(){const buf=new QRBitBuffer();buf.put(4,4);buf.put(this.data.length,8);for(let i=0;i<this.data.length;i++) buf.put(this.data.charCodeAt(i),8);for(let t=0;t<4;t++) buf.put(0,1);let dir=-1,bit=0;for(let col=this.size-1; col>0; col-=2){if(col===6) col--;for(let r0=0;r0<this.size;r0++){const r=dir>0?r0:(this.size-1-r0);for(let c=0;c<2;c++){if(this.modules[r][col-c]!==null) continue;this.modules[r][col-c]=(buf.buffer[bit++]||0)?1:0;}}dir*=-1;}};
-    QRSimple.prototype.renderTo=function(el,scale){scale=4;const n=this.size,s=n*scale;const cvs=document.createElement('canvas');cvs.width=cvs.height=s;const ctx=cvs.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,s,s);ctx.fillStyle='#000';for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(this.modules[r][c]) ctx.fillRect(c*scale,r*scale,scale,scale);el.innerHTML='';el.appendChild(cvs);};
-    const addr=(scope.querySelector('#addr')?.textContent||'').trim();
-    if(addr) try{ new QRSimple(addr).renderTo(box,4); }catch(e){ box.innerHTML='<small style="color:#d00">QR error</small>'; }
-  })();
+// Local QR fallback if server QR missing
+(function(){
+  const box = scope.querySelector('.qr-box'); if(!box) return;
+  const imgEl = box.querySelector('img');
+  const target = box.querySelector('#qrcode');
+  if(imgEl) return; // server already gave QR image
+
+  const addr = (box.dataset.addr || '').trim();
+  const net  = (box.dataset.net || '').trim().toUpperCase(); // now ETH or TRC20
+  const amt  = parseFloat(box.dataset.amt || '0');
+
+  let payload = '';
+  if (net === 'ETH') {
+    // ERC20 deposits still scan fine with ethereum:<address>
+    payload = addr ? `ethereum:${addr}` : '';
+    // If you later want to include amount (EIP-681): uncomment next two lines
+    // const wei = (typeof BigInt!=='undefined') ? (BigInt(Math.round(amt * 1e18))).toString() : '';
+    // if (wei) payload += `?value=${wei}`;
+  } else if (net === 'TRC20') {
+    payload = addr; // TRC20 wallets expect raw TRON address in QR
+  } else {
+    payload = addr; // fallback
+  }
+
+  if(!payload){
+    if(target) target.innerHTML = '<small style="color:#d00">QR error: missing address</small>';
+    return;
+  }
+
+  // Minimal QR generator
+  function SimpleQR(data){
+    this.data = unescape(encodeURIComponent(data));
+    this.size = 29;
+    this.modules = Array(this.size).fill(0).map(()=>Array(this.size).fill(null));
+    this._finders(); this._timing(); this._data();
+  }
+  SimpleQR.prototype._finders=function(){const pts=[[0,0],[this.size-7,0],[0,this.size-7]];
+    for(const [x,y] of pts){for(let r=-1;r<=7;r++)for(let c=-1;c<=7;c++){
+      const xx=x+c,yy=y+r;if(xx<0||yy<0||xx>=this.size||yy>=this.size) continue;
+      const on=(r===0||r===6||c===0||c===6)||(r>=2&&r<=4&&c>=2&&c<=4);
+      this.modules[yy][xx]=on;}}};
+  SimpleQR.prototype._timing=function(){for(let i=8;i<this.size-8;i++){
+    this.modules[6][i]=(i%2===0); this.modules[i][6]=(i%2===0);}};
+  function BitBuf(){this.b=[];}
+  BitBuf.prototype.put=function(num,len){for(let i=0;i<len;i++) this.b.push(((num>>(len-i-1))&1)===1?1:0);};
+  SimpleQR.prototype._data=function(){const buf=new BitBuf();buf.put(4,4);buf.put(this.data.length,8);
+    for(let i=0;i<this.data.length;i++) buf.put(this.data.charCodeAt(i),8);
+    for(let t=0;t<4;t++) buf.put(0,1);
+    let dir=-1,bit=0;for(let col=this.size-1; col>0; col-=2){if(col===6) col--;
+      for(let r0=0;r0<this.size;r0++){const r=dir>0?r0:(this.size-1-r0);
+        for(let c=0;c<2;c++){if(this.modules[r][col-c]!==null) continue;
+          this.modules[r][col-c]=(buf.b[bit++]||0)?1:0;}}dir*=-1;}};
+  SimpleQR.prototype.render=function(el,scale){scale=4;
+    const n=this.size,s=n*scale,cvs=document.createElement('canvas');cvs.width=cvs.height=s;
+    const ctx=cvs.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,s,s);ctx.fillStyle='#000';
+    for(let r=0;r<n;r++) for(let c=0;c<n;c++) if(this.modules[r][c]) ctx.fillRect(c*scale,r*scale,scale,scale);
+    el.innerHTML=''; el.appendChild(cvs);
+  };
+
+  try { if(target) new SimpleQR(payload).render(target,4); }
+  catch(e){ if(target) target.innerHTML = '<small style="color:#d00">QR error</small>'; }
+})();
 
   // Awaiting_review: countdown + JSON polling + swap + new-tab open + persistent hint
   (function(){
@@ -260,8 +324,11 @@
     const leftSec = ()=>Math.max(0, ttlSec - Math.floor((Date.now()-sinceMs)/1000));
     const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
 
+    const i18nVerifyingLeft = right.dataset.i18nVerifyingLeft || 'Verifying… ({time} left)';
+    const i18nVerifyHint = right.dataset.i18nVerifyHint || 'You can use “Verify now” for quick help.';
+
     if(eta && verifyingBtn){
-      const tick=()=>{ const l=leftSec(); eta.textContent = l ? `Verifying… (${fmt(l)} left)` : `You can use “Verify now” for quick help.`; };
+      const tick=()=>{ const l=leftSec(); eta.textContent = l ? i18nVerifyingLeft.replace('{time}', fmt(l)) : i18nVerifyHint; };
       tick(); var etaTimer = setInterval(tick,1000);
     }
 

@@ -1,4 +1,5 @@
 # main/forms.py
+from __future__ import annotations
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
@@ -15,6 +16,199 @@ from .models import CustomUser
 from .country_codes import COUNTRY_CODES  # (dial, display, min_len, max_len)
 from django.core.exceptions import ValidationError
 import re
+
+
+from django import forms
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import UserCreationForm
+from django.db import transaction
+from django.db.models import Q, F
+from django.utils import timezone
+import phonenumbers
+from .models import InvitationLink
+
+
+class SignupForm(UserCreationForm):
+    country_code = forms.ChoiceField(
+        choices=[(dial, disp) for dial, disp, _, _ in COUNTRY_CODES],
+        widget=forms.Select(attrs={'class': 'country-select'}),
+        label=_("Country code"),
+    )
+    phone_number = forms.CharField(
+        max_length=20,
+        widget=forms.TextInput(attrs={
+            'placeholder': _("Enter your phone number"),
+            'autocomplete': 'tel',
+            'class': 'cc-input'
+        }),
+        label=_("Phone number"),
+    )
+
+    # REQUIRED now; placeholder says "Enter your invitation link" as requested
+    invitation_code = forms.CharField(
+        required=True,
+        widget=forms.TextInput(attrs={
+            'placeholder': _("Enter your invitation link"),
+            'class': 'text-input'
+        }),
+        label=_("Invitation code"),
+    )
+
+    captcha = CaptchaField(label=_("I am not a robot"))
+
+    # stash normalized code string
+    invite_code_str: str | None = None
+
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+        fields = ('country_code', 'phone_number', 'invitation_code', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        # accept request so we can capture signup IP + country
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].widget.attrs.update({
+            'placeholder': _("Enter your password"),
+            'class': 'pwd-input'
+        })
+        self.fields['password2'].widget.attrs.update({
+            'placeholder': _("Re-enter your password"),
+            'class': 'pwd-input'
+        })
+
+    # ---------- Phone helpers ----------
+    def _normalize_to_e164(self, country_dial: str, raw: str) -> str:
+        cleaned = []
+        for ch in raw.strip():
+            if ch.isdigit():
+                cleaned.append(ch)
+            elif ch == '+' and not cleaned:
+                cleaned.append(ch)
+        number = ''.join(cleaned)
+
+        if not number.startswith('+'):
+            number = f"{country_dial}{number.lstrip('0')}"
+        if number.startswith(country_dial + '0'):
+            number = country_dial + number[len(country_dial):].lstrip('0')
+
+        try:
+            parsed = phonenumbers.parse(number, None)
+        except phonenumbers.NumberParseException:
+            raise forms.ValidationError(_("Invalid phone number format."))
+
+        if not phonenumbers.is_possible_number(parsed):
+            raise forms.ValidationError(_("This phone number is not possible for the selected country."))
+        if not phonenumbers.is_valid_number(parsed):
+            raise forms.ValidationError(_("This phone number is not valid for the selected country."))
+
+        return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)
+
+    # ---------- Invitation code validation (precheck ONLY) ----------
+    def clean_invitation_code(self):
+        raw = (self.cleaned_data.get("invitation_code") or "").strip()
+        if not raw:
+            raise forms.ValidationError(_("Invitation code is required."))
+
+        code_str = raw.replace(" ", "").upper()  # normalize (no spaces, case-insensitive)
+
+        # Use your model’s helper for a light precheck (no locks)
+        if not InvitationLink.can_be_used(code_str):
+            raise forms.ValidationError(_("Invalid, used, expired, or suspended invitation code."))
+
+        self.invite_code_str = code_str
+        return raw  # keep original text in the input
+
+    # ---------- Cross-field clean (phone) ----------
+    def clean(self):
+        cleaned_data = super().clean()
+        dial = cleaned_data.get("country_code")
+        raw = cleaned_data.get("phone_number")
+
+        if not dial or not raw:
+            return cleaned_data
+
+        disp, lo, hi = _DIAL_RULES.get(dial, (None, None, None))
+        local_digits = ''.join(ch for ch in raw if ch.isdigit())
+        if lo and hi and not (lo <= len(local_digits) <= hi):
+            self.add_error(
+                'phone_number',
+                _("Phone number length must be between %(lo)d and %(hi)d digits for %(country)s.")
+                % {"lo": lo, "hi": hi, "country": disp}
+            )
+            return cleaned_data
+
+        try:
+            normalized = self._normalize_to_e164(dial, raw)
+        except forms.ValidationError as e:
+            self.add_error('phone_number', e)
+            return cleaned_data
+
+        cleaned_data["phone"] = normalized
+
+        if CustomUser.objects.filter(phone=normalized).exists():
+            self.add_error('phone_number', _("An account with this phone already exists."))
+
+        return cleaned_data
+
+    # ---------- Save (atomic single-use claim) ----------
+    @transaction.atomic
+    def save(self, commit=True):
+        """
+        1) Atomically mark the invitation as claimed (single use).
+        2) Create the user.
+        3) Attach invite, set used_by/used_at.
+        If anything fails, the transaction rolls back (claim is undone).
+        """
+        code = (self.invite_code_str or (self.cleaned_data.get('invitation_code') or '')).replace(" ", "").upper()
+        now = timezone.now()
+
+        # Step 1: Claim atomically (single-use)
+        claimed = (InvitationLink.objects
+                   .filter(
+                       code__iexact=code,
+                       is_active=True,
+                       claimed=False,
+                       used_by__isnull=True,
+                   )
+                   .filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now))
+                   .update(claimed=True))
+        if claimed == 0:
+            # Another request took it, or it got invalidated between clean() and save()
+            raise ValidationError(_("This invitation code is no longer available. Please contact support."))
+
+        # Load the invite row we just claimed
+        invite = InvitationLink.objects.select_for_update().get(code__iexact=code)
+
+        # Step 2: Create user (your existing behavior)
+        user = super().save(commit=False)
+        user.phone = self.cleaned_data.get('phone') or f"{self.cleaned_data['country_code']}{''.join(ch for ch in self.cleaned_data['phone_number'] if ch.isdigit())}"
+        user.username = user.phone
+
+        # If your CustomUser has a place to store the raw code, keep it
+        if hasattr(user, "invitation_code"):
+            user.invitation_code = invite.code
+
+        # If you track who invited them
+        if hasattr(user, "invited_by") and invite.owner_id:
+            user.invited_by = invite.owner
+
+        # Capture signup IP & country (your existing helpers)
+        ip = _client_ip_from_request(self.request)
+        if ip:
+            if hasattr(user, "signup_ip"):
+                user.signup_ip = ip
+            if hasattr(user, "signup_country"):
+                user.signup_country = _country_from_ip(ip)
+
+        if commit:
+            user.save()
+
+        # Step 3: Mark as used by this user
+        invite.used_by = user
+        invite.used_at = now
+        invite.save(update_fields=["used_by", "used_at"])
+
+        return user
 
 
 
@@ -197,118 +391,6 @@ class ProfileUpdateForm(forms.ModelForm):
         if isinstance(cleaned.get("avatar"), UploadedFile) and cleaned.get("avatar_url"):
             cleaned["avatar_url"] = ""
         return cleaned
-
-
-class SignupForm(UserCreationForm):
-    country_code = forms.ChoiceField(
-        choices=[(dial, disp) for dial, disp, _, _ in COUNTRY_CODES],
-        widget=forms.Select(attrs={'class': 'country-select'}),
-        label=_("Country code"),
-    )
-    phone_number = forms.CharField(
-        max_length=20,
-        widget=forms.TextInput(attrs={
-            'placeholder': _("Enter your phone number"),
-            'autocomplete': 'tel',
-            'class': 'cc-input'
-        }),
-        label=_("Phone number"),
-    )
-    invitation_code = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={
-            'placeholder': _("Enter your invitation code"),
-            'class': 'text-input'
-        }),
-        label=_("Invitation code"),
-    )
-    captcha = CaptchaField(label=_("I am not a robot"))
-
-    class Meta(UserCreationForm.Meta):
-        model = CustomUser
-        fields = ('country_code', 'phone_number', 'invitation_code', 'password1', 'password2')
-
-    def __init__(self, *args, **kwargs):
-        # accept request so we can capture signup IP + country
-        self.request = kwargs.pop('request', None)
-        super().__init__(*args, **kwargs)
-        self.fields['password1'].widget.attrs.update({
-            'placeholder': _("Enter your password"),
-            'class': 'pwd-input'
-        })
-        self.fields['password2'].widget.attrs.update({
-            'placeholder': _("Re-enter your password"),
-            'class': 'pwd-input'
-        })
-
-    def _normalize_to_e164(self, country_dial: str, raw: str) -> str:
-        cleaned = []
-        for ch in raw.strip():
-            if ch.isdigit():
-                cleaned.append(ch)
-            elif ch == '+' and not cleaned:
-                cleaned.append(ch)
-        number = ''.join(cleaned)
-
-        if not number.startswith('+'):
-            number = f"{country_dial}{number.lstrip('0')}"
-        if number.startswith(country_dial + '0'):
-            number = country_dial + number[len(country_dial):].lstrip('0')
-
-        try:
-            parsed = phonenumbers.parse(number, None)
-        except phonenumbers.NumberParseException:
-            raise forms.ValidationError(_("Invalid phone number format."))
-
-        if not phonenumbers.is_possible_number(parsed):
-            raise forms.ValidationError(_("This phone number is not possible for the selected country."))
-        if not phonenumbers.is_valid_number(parsed):
-            raise forms.ValidationError(_("This phone number is not valid for the selected country."))
-
-        return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)
-
-    def clean(self):
-        cleaned_data = super().clean()
-        dial = cleaned_data.get("country_code")
-        raw = cleaned_data.get("phone_number")
-
-        if not dial or not raw:
-            return cleaned_data
-
-        disp, lo, hi = _DIAL_RULES.get(dial, (None, None, None))
-        local_digits = ''.join(ch for ch in raw if ch.isdigit())
-        if lo and hi and not (lo <= len(local_digits) <= hi):
-            self.add_error('phone_number', _("Phone number length must be between %(lo)d and %(hi)d digits for %(country)s.") % {"lo": lo, "hi": hi, "country": disp})
-            return cleaned_data
-
-        try:
-            normalized = self._normalize_to_e164(dial, raw)
-        except forms.ValidationError as e:
-            self.add_error('phone_number', e)
-            return cleaned_data
-
-        cleaned_data["phone"] = normalized
-
-        if CustomUser.objects.filter(phone=normalized).exists():
-            self.add_error('phone_number', _("An account with this phone already exists."))
-
-        return cleaned_data
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.phone = self.cleaned_data.get('phone') or f"{self.cleaned_data['country_code']}{''.join(ch for ch in self.cleaned_data['phone_number'] if ch.isdigit())}"
-        user.username = user.phone
-        user.invitation_code = self.cleaned_data.get('invitation_code', '')
-
-        # Capture signup IP & country (free API)
-        ip = _client_ip_from_request(self.request)
-        if ip:
-            user.signup_ip = ip
-            user.signup_country = _country_from_ip(ip)
-
-        if commit:
-            user.save()
-        return user
 
 
 # ===== Admin forms (updated) =====

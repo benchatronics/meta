@@ -1,0 +1,625 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 16:12+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: main/admin.py:44
+msgid "Clear withdrawal PIN"
+msgstr "철수 핀을 지우십시오"
+
+#: main/admin.py:46
+msgid ""
+"Tick to remove any existing withdrawal PIN so the user must set a new one."
+msgstr "기존 인출 핀을 제거하려면 틱을 제거하여 사용자가 새 인출 핀을 새로 설정해야합니다."
+
+#: main/admin.py:49
+msgid "Set new withdrawal PIN"
+msgstr "새 인출 핀을 설정하십시오"
+
+#: main/admin.py:57
+msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
+msgstr "선택 과목. 정확히 6 자리를 입력하여 핀을 설정/재설정하십시오."
+
+#: main/admin.py:70
+msgid "PIN must be exactly 6 digits."
+msgstr "핀은 정확히 6 자리 여야합니다."
+
+#: main/admin.py:136
+msgid "Withdrawal security"
+msgstr "철수 보안"
+
+#: main/forms.py:27
+msgid "Account password"
+msgstr "계정 비밀번호"
+
+#: main/forms.py:31
+msgid "Withdrawal password (6 digits)"
+msgstr "철수 비밀번호 (6 자리)"
+
+#: main/forms.py:35
+msgid "Confirm withdrawal password"
+msgstr "인출 비밀번호를 확인하십시오"
+
+#: main/forms.py:46
+msgid "Incorrect account password."
+msgstr "잘못된 계정 비밀번호."
+
+#: main/forms.py:53 main/forms.py:87
+msgid "Enter exactly 6 digits."
+msgstr "정확히 6 자리를 입력하십시오."
+
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+msgid "Passwords do not match."
+msgstr "암호는 일치하지 않습니다."
+
+#: main/forms.py:61
+msgid "Current withdrawal password"
+msgstr "현재 철수 비밀번호"
+
+#: main/forms.py:65
+msgid "New withdrawal password (6 digits)"
+msgstr "새로운 철수 비밀번호 (6 자리)"
+
+#: main/forms.py:69
+msgid "Confirm new withdrawal password"
+msgstr "새 인출 비밀번호를 확인하십시오"
+
+#: main/forms.py:80
+msgid "Incorrect withdrawal password."
+msgstr "잘못된 인출 비밀번호."
+
+#: main/forms.py:161
+#, python-format
+msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
+msgstr "jpg/png/webp/gif, 최대 [[[token_0]]] mb."
+
+#: main/forms.py:162
+msgid "Direct image URL (used only if no file is uploaded)."
+msgstr "직접 이미지 URL (파일이 업로드되지 않은 경우에만 사용)."
+
+#: main/forms.py:180
+msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
+msgstr "지원되지 않는 이미지 유형. JPG, PNG, Webp 또는 GIF를 사용하십시오."
+
+#: main/forms.py:182
+#, python-format
+msgid "Image too large (max %(mb)s MB)."
+msgstr "이미지가 너무 큽니다 (max [[[[token_0]]]] mb)."
+
+#: main/forms.py:191
+msgid "Only http/https URLs are allowed."
+msgstr "HTTP/HTTPS URL 만 허용됩니다."
+
+#: main/forms.py:206 main/forms.py:371 main/forms.py:581
+msgid "Country code"
+msgstr "국가 코드"
+
+#: main/forms.py:211 main/forms.py:376 main/forms.py:586
+msgid "Enter your phone number"
+msgstr "전화 번호를 입력하십시오"
+
+#: main/forms.py:215 main/forms.py:380 main/forms.py:590
+msgid "Phone number"
+msgstr "전화 번호"
+
+#: main/forms.py:220
+msgid "Enter your invitation code"
+msgstr "초대장 코드를 입력하십시오"
+
+#: main/forms.py:223
+msgid "Invitation code"
+msgstr "초대장 코드"
+
+#: main/forms.py:225 main/forms.py:592
+msgid "I am not a robot"
+msgstr "나는 로봇이 아닙니다"
+
+#: main/forms.py:236 main/forms.py:385 main/forms.py:615
+msgid "Enter your password"
+msgstr "비밀번호를 입력하십시오"
+
+#: main/forms.py:240
+msgid "Re-enter your password"
+msgstr "비밀번호를 다시 입력하십시오"
+
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+msgid "Invalid phone number format."
+msgstr "잘못된 전화 번호 형식."
+
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+msgid "This phone number is not possible for the selected country."
+msgstr "이 전화 번호는 선택된 국가에서는 불가능합니다."
+
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+msgid "This phone number is not valid for the selected country."
+msgstr "이 전화 번호는 선택된 국가에 유효하지 않습니다."
+
+#: main/forms.py:281 main/forms.py:429 main/forms.py:657
+#, python-format
+msgid ""
+"Phone number length must be between %(lo)d and %(hi)d digits for "
+"%(country)s."
+msgstr "전화 번호 길이는 [[[[token_0]]]의 %(lo) d와 %(hi) d 숫자 사이 여야합니다."
+
+#: main/forms.py:293
+msgid "An account with this phone already exists."
+msgstr "이 전화기의 계정이 이미 존재합니다."
+
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+msgid "Password"
+msgstr "비밀번호"
+
+#: main/forms.py:325
+msgid ""
+"Raw passwords are not stored, so there is no way to see this user’s "
+"password, but you can change the password using the “Change password” form."
+msgstr ""
+"원시 비밀번호는 저장되지 않으므로이 사용자의 비밀번호를 볼 수있는 방법이 없지만 \"비밀번호 변경\"양식을 사용하여 암호를 변경할 수 "
+"있습니다."
+
+#: main/forms.py:352
+msgid "User phone (E.164 or local NG)"
+msgstr "사용자 전화 (E.164 또는 로컬 NG)"
+
+#: main/forms.py:353
+msgid "+2348012345678 or 080..."
+msgstr "+2348012345678 또는 080 ..."
+
+#: main/forms.py:355 main/views.py:210
+#: templates/meta_search/settings_change_password.html:83
+msgid "New password"
+msgstr "새 비밀번호"
+
+#: main/forms.py:356 main/views.py:211
+msgid "Confirm new password"
+msgstr "새 비밀번호를 확인하십시오"
+
+#: main/forms.py:670
+msgid "Phone does not match your account."
+msgstr "전화는 귀하의 계정과 일치하지 않습니다."
+
+#: main/models.py:578 templates/base_info.html:22
+#: templates/meta_search/info_index.html:27
+msgid "About us"
+msgstr "우리에 대해"
+
+#: main/models.py:579 templates/base_info.html:26
+#: templates/meta_search/info_index.html:31
+msgid "Contact us"
+msgstr "저희에게 연락하십시오"
+
+#: main/models.py:580 templates/base_info.html:30
+#: templates/meta_search/info_index.html:35
+msgid "Help"
+msgstr "돕다"
+
+#: main/models.py:581 templates/base_info.html:34
+#: templates/meta_search/info_index.html:39
+msgid "Level"
+msgstr "수준"
+
+#: main/models.py:582 templates/base_info.html:38
+#: templates/meta_search/info_index.html:43
+msgid "Sign-in reward"
+msgstr "로그인 보상"
+
+#: main/views.py:69
+msgid "Withdrawal password set."
+msgstr "철수 비밀번호 세트."
+
+#: main/views.py:79
+msgid "You don’t have a withdrawal password yet. Set one first."
+msgstr "아직 인출 비밀번호가 없습니다. 먼저 하나를 설정하십시오."
+
+#: main/views.py:86
+msgid "Withdrawal password updated."
+msgstr "철수 비밀번호 업데이트."
+
+#: main/views.py:209
+msgid "Verification code"
+msgstr "확인 코드"
+
+#: main/views.py:247
+msgid "No account found for that phone."
+msgstr "해당 전화에 대한 계정이 없습니다."
+
+#: main/views.py:259
+#, python-format
+msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
+msgstr "재설정 코드는 다음과 같습니다. [[[Token_0]]]. 10 분 안에 만료됩니다."
+
+#: main/views.py:263
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr "코드를 보낼 수 없었습니다. 잠시 후 다시 시도하십시오."
+
+#: main/views.py:267
+msgid "Unexpected error sending code. Try again later."
+msgstr "예상치 못한 오류 전송 코드. 나중에 다시 시도하십시오."
+
+#: main/views.py:272
+msgid "We sent a verification code to your phone."
+msgstr "우리는 귀하의 전화로 확인 코드를 보냈습니다."
+
+#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
+#: main/views.py:1169
+msgid "Please correct the errors below."
+msgstr "아래 오류를 수정하십시오."
+
+#: main/views.py:290
+msgid "Start by entering your phone number."
+msgstr "전화 번호를 입력하여 시작하십시오."
+
+#: main/views.py:298
+msgid "Invalid or expired code."
+msgstr "유효하지 않거나 만료 된 코드."
+
+#: main/views.py:304
+msgid "Account not found. Please start over."
+msgstr "계정을 찾을 수 없습니다. 다시 시작하십시오."
+
+#: main/views.py:315
+msgid "Your password has been reset. You can now sign in."
+msgstr "비밀번호가 재설정되었습니다. 이제 로그인 할 수 있습니다."
+
+#: main/views.py:341 main/views.py:392
+msgid "You're already signed in."
+msgstr "당신은 이미 로그인되었습니다."
+
+#: main/views.py:375
+msgid "Welcome back!"
+msgstr "다시 오신 것을 환영합니다!"
+
+#: main/views.py:378
+msgid "Invalid phone or password."
+msgstr "잘못된 전화 또는 비밀번호."
+
+#: main/views.py:405
+msgid "Account created!"
+msgstr "생성 된 계정!"
+
+#: main/views.py:421
+msgid "You have been logged out."
+msgstr "당신은 로그 아웃되었습니다."
+
+#: main/views.py:468
+msgid "Invalid phone format. Please enter a valid number."
+msgstr "잘못된 전화 형식. 유효한 번호를 입력하십시오."
+
+#: main/views.py:474
+#, python-format
+msgid "No user found with phone %(phone)s."
+msgstr "전화로 찾은 사용자는 없습니다 [[[Token_0]]]."
+
+#: main/views.py:490
+#, python-format
+msgid "Password reset for %(phone)s."
+msgstr "[[[token_0]]]에 대한 비밀번호 재설정."
+
+#: main/views.py:1167
+msgid "Password updated."
+msgstr "비밀번호 업데이트."
+
+#: templates/base_info.html:4
+msgid "info"
+msgstr "정보"
+
+#: templates/meta_search/announcements.html:5
+#: templates/meta_search/announcements.html:13
+msgid "Announcements"
+msgstr "공지 사항"
+
+#: templates/meta_search/announcements.html:26
+msgid "No announcements at the moment."
+msgstr "현재 발표가 없습니다."
+
+#: templates/meta_search/ide.html:18
+msgid "Seaside resort at dusk"
+msgstr "황혼에 해변 리조트"
+
+#: templates/meta_search/ide.html:24
+msgid "Experience The Magic Of Relaxation"
+msgstr "휴식의 마법을 경험하십시오"
+
+#: templates/meta_search/ide.html:25
+msgid ""
+"Indulge in the epitome of coastal living as you discover the breathtaking "
+"beauty and tranquility of luxury."
+msgstr "숨막히는 아름다움과 사치의 평온함을 발견하면서 해안 생활의 전형에 빠지십시오."
+
+#: templates/meta_search/ide.html:30
+msgid "Customer avatar 1"
+msgstr "고객 아바타 1"
+
+#: templates/meta_search/ide.html:31
+msgid "Customer avatar 2"
+msgstr "고객 아바타 2"
+
+#: templates/meta_search/ide.html:32
+msgid "Customer avatar 3"
+msgstr "고객 아바타 3"
+
+#: templates/meta_search/ide.html:34
+msgid "Trusted by over 25k+ people"
+msgstr "25K 이상의 사람들이 신뢰합니다"
+
+#: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+msgid "Explore Now"
+msgstr "지금 탐색하십시오"
+
+#: templates/meta_search/ide.html:40
+msgid "Travel partners"
+msgstr "여행 파트너"
+
+#: templates/meta_search/ide.html:58
+msgid "Premium Facilities"
+msgstr "프리미엄 시설"
+
+#: templates/meta_search/ide.html:61
+msgid "Exclusive Sunset View"
+msgstr "독점적 인 일몰보기"
+
+#: templates/meta_search/ide.html:62
+msgid "You witness the beauty of the world from your room"
+msgstr "당신은 당신의 방에서 세상의 아름다움을 목격합니다"
+
+#: templates/meta_search/ide.html:65
+msgid "Integrated Tourist Area"
+msgstr "통합 관광 지역"
+
+#: templates/meta_search/ide.html:66
+msgid "Enhancing your travel experience"
+msgstr "여행 경험을 향상시킵니다"
+
+#: templates/meta_search/ide.html:69
+msgid "Nature-Inspired Pool"
+msgstr "자연에서 영감을 얻은 수영장"
+
+#: templates/meta_search/ide.html:70
+msgid "Serene swimming pool with a touch of paradise"
+msgstr "낙원을 만질 수있는 고요한 수영장"
+
+#: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+msgid "Get Rewarded"
+msgstr "보상을 받으십시오"
+
+#: templates/meta_search/ide.html:85
+msgid "Rate Apartments"
+msgstr "아파트를 평가합니다"
+
+#: templates/meta_search/ide.html:86
+msgid "Give random objective ratings based on view and aesthetics."
+msgstr "관점과 미학에 따라 임의의 객관적인 평가를 제공하십시오."
+
+#: templates/meta_search/ide.html:94
+msgid "Earn instant rewards from the apartments you rate."
+msgstr "당신이 평가하는 아파트에서 즉각적인 보상을 받으십시오."
+
+#: templates/meta_search/ide.html:102
+msgid "Featured apartments carousel"
+msgstr "특집 아파트 회전 목마"
+
+#: templates/meta_search/ide.html:103
+msgid "Previous slide"
+msgstr "이전 슬라이드"
+
+#: templates/meta_search/ide.html:104
+msgid "Next slide"
+msgstr "다음 슬라이드"
+
+#: templates/meta_search/ide.html:108
+msgid "Modern apartment interior"
+msgstr "현대 아파트 인테리어"
+
+#: templates/meta_search/ide.html:111
+msgid "Resort pool at sunset"
+msgstr "일몰에 리조트 풀"
+
+#: templates/meta_search/ide.html:114
+msgid "Scenic valley view"
+msgstr "경치 좋은 계곡 전망"
+
+#: templates/meta_search/ide.html:129
+msgid "Clients Review"
+msgstr "클라이언트 검토"
+
+#: templates/meta_search/ide.html:130
+msgid "See some honest reviews from our users on the platform"
+msgstr "플랫폼에서 사용자의 정직한 리뷰보기"
+
+#: templates/meta_search/ide.html:135
+msgid "Client"
+msgstr "고객"
+
+#: templates/meta_search/ide.html:137
+msgid ""
+"Had a great experience using this for solid bookings. Customer service was "
+"top-notch."
+msgstr "탄탄한 예약을 위해 이것을 사용하는 훌륭한 경험이있었습니다. 고객 서비스는 최고였습니다."
+
+#: templates/meta_search/ide.html:147
+msgid "Get your inspiration of luxury and get rewarded"
+msgstr "사치에 대한 영감을 얻고 보상을 받으십시오"
+
+#: templates/meta_search/ide.html:148
+msgid "Earn new rewards at every step you take under true luxury."
+msgstr "진정한 사치하에 취하는 모든 단계에서 새로운 보상을 받으십시오."
+
+#: templates/meta_search/ide.html:149
+msgid "See More"
+msgstr "더보십시오"
+
+#: templates/meta_search/ide.html:152
+msgid "Luxury inspiration"
+msgstr "고급 영감"
+
+#: templates/meta_search/includes/_header.html:60
+msgid "Get started"
+msgstr "시작하세요"
+
+#: templates/meta_search/info_index.html:6
+msgid "Info Center"
+msgstr "정보 센터"
+
+#: templates/meta_search/info_index.html:7
+msgid "Pick a section on the left, or use the quick links below."
+msgstr "왼쪽의 섹션을 선택하거나 아래의 빠른 링크를 사용하십시오."
+
+#: templates/meta_search/info_index.html:19
+#: templates/meta_search/info_page.html:17
+msgid "View all announcements"
+msgstr "모든 공지 사항을보십시오"
+
+#: templates/meta_search/language.html:8
+msgid "Language"
+msgstr "언어"
+
+#: templates/meta_search/language.html:9
+msgid "Select your language."
+msgstr "언어를 선택하십시오."
+
+#: templates/meta_search/password_reset_phone.html:4
+msgid "Reset Password – Step 1"
+msgstr "비밀번호 재설정 - 1 단계"
+
+#: templates/meta_search/password_reset_phone.html:6
+#: templates/meta_search/password_reset_verify.html:6
+#: templates/meta_search/password_reset_verify.html:79
+msgid "Reset Password"
+msgstr "비밀번호를 재설정하십시오"
+
+#: templates/meta_search/password_reset_phone.html:21
+msgid "Enter your phone number to get a verification code."
+msgstr "확인 코드를 받으려면 전화 번호를 입력하십시오."
+
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:45
+msgid "Phone"
+msgstr "핸드폰"
+
+#: templates/meta_search/password_reset_phone.html:59
+msgid "Send Code"
+msgstr "코드를 보내십시오"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Remembered your password?"
+msgstr "비밀번호를 기억하십니까?"
+
+#: templates/meta_search/password_reset_phone.html:64
+msgid "Sign in"
+msgstr "로그인"
+
+#: templates/meta_search/password_reset_verify.html:4
+msgid "Reset Password – Step 2"
+msgstr "비밀번호 재설정 - 2 단계"
+
+#: templates/meta_search/password_reset_verify.html:21
+msgid "Enter the code sent to your phone, then choose a new password."
+msgstr "전화로 전송 된 코드를 입력 한 다음 새 비밀번호를 선택하십시오."
+
+#: templates/meta_search/password_reset_verify.html:43
+msgid "Verification Code"
+msgstr "확인 코드"
+
+#: templates/meta_search/password_reset_verify.html:52
+msgid "New Password"
+msgstr "새 비밀번호"
+
+#: templates/meta_search/password_reset_verify.html:61
+#: templates/meta_search/password_reset_verify.html:74
+#: templates/meta_search/settings_change_password.html:76
+#: templates/meta_search/settings_change_password.html:93
+#: templates/meta_search/settings_change_password.html:112
+#: templates/meta_search/signin.html:68
+msgid "Show/Hide password"
+msgstr "비밀번호 표시/숨기기"
+
+#: templates/meta_search/password_reset_verify.html:65
+msgid "Confirm Password"
+msgstr "비밀번호를 확인하십시오"
+
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "뒤쪽에"
+
+#: templates/meta_search/password_reset_verify.html:86
+msgid "Home"
+msgstr "집"
+
+#: templates/meta_search/settings_change_password.html:4
+msgid "Settings — Change password"
+msgstr "설정 - 비밀번호 변경"
+
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "비밀번호를 변경하십시오"
+
+#: templates/meta_search/settings_change_password.html:22
+msgid ""
+"For security, confirm your phone, pass the captcha, then set a strong "
+"password."
+msgstr "보안을 위해 전화를 확인하고 보안 문자를 통과 한 다음 강력한 비밀번호를 설정하십시오."
+
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:73
+msgid "Captcha"
+msgstr "CARTCHA"
+
+#: templates/meta_search/settings_change_password.html:66
+msgid "Old password"
+msgstr "오래된 비밀번호"
+
+#: templates/meta_search/settings_change_password.html:79
+msgid "Forgot current password?"
+msgstr "현재 비밀번호를 잊으 셨나요?"
+
+#: templates/meta_search/settings_change_password.html:95
+msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
+msgstr "글자, 숫자 및 기호가 혼합 된 8 개 이상의 문자를 사용하십시오."
+
+#: templates/meta_search/settings_change_password.html:102
+msgid "Confirm password"
+msgstr "비밀번호를 확인하십시오"
+
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "변경 사항을 저장하십시오"
+
+#: templates/meta_search/signin.html:4
+msgid "Sign In - orbitpedia"
+msgstr "로그인 - orbitpedia"
+
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+msgid "Sign In"
+msgstr "로그인"
+
+#: templates/meta_search/signin.html:21
+msgid "Welcome back, please sign in"
+msgstr "다시 오신 것을 환영합니다. 로그인하십시오"
+
+#: templates/meta_search/signin.html:87
+msgid "Don’t have an account?"
+msgstr "계정이 없습니까?"
+
+#: templates/meta_search/signin.html:87
+msgid "Create one"
+msgstr "하나를 만듭니다"
+
+#: templates/meta_search/signin.html:89
+msgid "Forgotten password?"
+msgstr "잊어 버린 비밀번호?"

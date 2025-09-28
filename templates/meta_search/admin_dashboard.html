@@ -1,9 +1,9 @@
 {# templates/meta_search/admin_dashboard.html #}
 {% extends "base_admin.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %} Admin Office  {% endblock %}
-{% block page_title %} Admin {% endblock %}
+{% block title %}{% trans "Admin Office" %}{% endblock %}
+{% block page_title %}{% trans "Admin" %}{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -33,70 +33,70 @@
 <div class="dash-grid">
   <!-- Users -->
   <div class="card pane">
-    <div class="muted">Users</div>
+    <div class="muted">{% trans "Users" %}</div>
     <div class="stat">{{ users_total|default:0 }}</div>
     <div class="list" style="margin-top:8px">
-      <a class="btn" href="{% url 'bo_users' %}">Browse users</a>
-      <a class="btn" href="{% url 'bo_users' %}?blocked=1">Blocked users</a>
+      <a class="btn" href="{% url 'bo_users' %}">{% trans "Browse users" %}</a>
+      <a class="btn" href="{% url 'bo_users' %}?blocked=1">{% trans "Blocked users" %}</a>
     </div>
   </div>
 
   <!-- Withdrawals -->
   <div class="card pane">
-    <div class="muted">Withdrawals</div>
+    <div class="muted">{% trans "Withdrawals" %}</div>
     <div class="list" style="margin-top:8px">
       <a class="item" href="{% url 'bo_withdrawals' %}?status=pending">
-        <span>Pending</span><span class="badge">{{ w_pending|default:0 }}</span>
+        <span>{% trans "Pending" %}</span><span class="badge">{{ w_pending|default:0 }}</span>
       </a>
       <a class="item" href="{% url 'bo_withdrawals' %}?status=confirmed">
-        <span>Confirmed</span><span class="badge">{{ w_confirmed|default:0 }}</span>
+        <span>{% trans "Confirmed" %}</span><span class="badge">{{ w_confirmed|default:0 }}</span>
       </a>
       <a class="item" href="{% url 'bo_withdrawals' %}?status=failed">
-        <span>Failed</span><span class="badge">{{ w_failed|default:0 }}</span>
+        <span>{% trans "Failed" %}</span><span class="badge">{{ w_failed|default:0 }}</span>
       </a>
     </div>
   </div>
 
   <!-- Deposits -->
   <div class="card pane">
-    <div class="muted">Deposits</div>
+    <div class="muted">{% trans "Deposits" %}</div>
     <div class="list" style="margin-top:8px">
       <a class="item" href="{% url 'bo_deposits' %}?status=awaiting_payment">
-        <span>Awaiting Payment</span><span class="badge">{{ d_pending|default:0 }}</span>
+        <span>{% trans "Awaiting Payment" %}</span><span class="badge">{{ d_pending|default:0 }}</span>
       </a>
       <a class="item" href="{% url 'bo_deposits' %}?status=awaiting_review">
-        <span>Awaiting Review</span><span class="badge">{{ d_review|default:0 }}</span>
+        <span>{% trans "Awaiting Review" %}</span><span class="badge">{{ d_review|default:0 }}</span>
       </a>
       <a class="item" href="{% url 'bo_deposits' %}?status=confirmed">
-        <span>Confirmed</span><span class="badge">{{ d_confirmed|default:0 }}</span>
+        <span>{% trans "Confirmed" %}</span><span class="badge">{{ d_confirmed|default:0 }}</span>
       </a>
     </div>
   </div>
 
   <!-- Content -->
   <div class="card pane">
-    <div class="muted">Content</div>
+    <div class="muted">{% trans "Content" %}</div>
     <div class="list" style="margin-top:8px">
-      <a class="btn" href="{% url 'bo_announcements' %}">Announcements</a>
-      <a class="btn" href="{% url 'bo_info_pages' %}">Info pages</a>
+      <a class="btn" href="{% url 'bo_announcements' %}">{% trans "Announcements" %}</a>
+      <a class="btn" href="{% url 'bo_info_pages' %}">{% trans "Info pages" %}</a>
     </div>
   </div>
 
   <!-- Tasks -->
   <div class="card pane">
-    <div class="muted">Tasks</div>
+    <div class="muted">{% trans "Tasks" %}</div>
     <div class="list" style="margin-top:8px">
-      <a class="btn" href="{% url 'bo_tasks' %}">User tasks</a>
-      <a class="btn" href="{% url 'bo_templates' %}">Task templates</a>
-      <a class="btn" href="{% url 'bo_directives' %}">Forced directives</a>
+      <a class="btn" href="{% url 'bo_tasks' %}">{% trans "User tasks" %}</a>
+      <a class="btn" href="{% url 'bo_templates' %}">{% trans "Task templates" %}</a>
+      <a class="btn" href="{% url 'bo_directives' %}">{% trans "Forced directives" %}</a>
     </div>
   </div>
 
   <!-- System -->
   <div class="card pane">
-    <div class="muted">System</div>
+    <div class="muted">{% trans "System" %}</div>
     <div class="list" style="margin-top:8px">
-      <a class="btn" href="{% url 'bo_settings' %}">Settings</a>
+      <a class="btn" href="{% url 'bo_settings' %}">{% trans "Settings" %}</a>
     </div>
   </div>
 </div>
@@ -106,8 +106,8 @@
 <!-- Pending withdrawals preview -->
 <div class="card pane">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-    <h3 class="section-title">Pending withdrawals (latest 10)</h3>
-    <a class="btn" href="{% url 'bo_withdrawals' %}?status=pending">View all</a>
+    <h3 class="section-title">{% trans "Pending withdrawals (latest 10)" %}</h3>
+    <a class="btn" href="{% url 'bo_withdrawals' %}?status=pending">{% trans "View all" %}</a>
   </div>
   <div class="list" style="margin-top:10px">
     {% if withdrawals %}
@@ -120,12 +120,12 @@
             </span>
           </div>
           <div>
-            <a class="btn" href="{% url 'bo_withdrawals' %}?q={{ w.id }}">Open</a>
+            <a class="btn" href="{% url 'bo_withdrawals' %}?q={{ w.id }}">{% trans "Open" %}</a>
           </div>
         </div>
       {% endfor %}
     {% else %}
-      <div class="muted">No pending withdrawals.</div>
+      <div class="muted">{% trans "No pending withdrawals." %}</div>
     {% endif %}
   </div>
 </div>
@@ -134,7 +134,7 @@
 
 <!-- Recent activity feed -->
 <div class="card pane">
-  <h3 class="section-title">Recent activity</h3>
+  <h3 class="section-title">{% trans "Recent activity" %}</h3>
   <div class="list" style="margin-top:10px">
     {% if activity %}
       {% for a in activity %}
@@ -150,7 +150,7 @@
         </div>
       {% endfor %}
     {% else %}
-      <div class="muted">Nothing yet.</div>
+      <div class="muted">{% trans "Nothing yet." %}</div>
     {% endif %}
   </div>
 </div>

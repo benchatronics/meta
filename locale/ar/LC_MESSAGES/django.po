@@ -8,616 +8,2294 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 16:12+0000\n"
+"POT-Creation-Date: 2025-09-23 16:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: main/admin.py:44
+#: main/admin.py:392
 msgid "Clear withdrawal PIN"
-msgstr ""
+msgstr "دبوس الانسحاب واضح"
 
-#: main/admin.py:46
+#: main/admin.py:394
 msgid ""
 "Tick to remove any existing withdrawal PIN so the user must set a new one."
 msgstr ""
+"علامة لإزالة أي دبوس سحب موجود بحيث يتعين على المستخدم تعيين جدول جديد."
 
-#: main/admin.py:49
+#: main/admin.py:397
 msgid "Set new withdrawal PIN"
-msgstr ""
+msgstr "تعيين دبوس الانسحاب الجديد"
 
-#: main/admin.py:57
+#: main/admin.py:405
 msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
-msgstr ""
+msgstr "خياري. أدخل بالضبط 6 أرقام لتعيين/إعادة تعيين الدبوس."
 
-#: main/admin.py:70
+#: main/admin.py:418
 msgid "PIN must be exactly 6 digits."
-msgstr ""
+msgstr "يجب أن يكون الدبوس بالضبط 6 أرقام."
 
-#: main/admin.py:136
+#: main/admin.py:483
 msgid "Withdrawal security"
-msgstr ""
+msgstr "أمن الانسحاب"
 
 #: main/forms.py:27
 msgid "Account password"
-msgstr ""
+msgstr "كلمة مرور الحساب"
 
-#: main/forms.py:31
+#: main/forms.py:31 templates/meta_search/withdrawal.html:350
 msgid "Withdrawal password (6 digits)"
-msgstr ""
+msgstr "كلمة مرور السحب (6 أرقام)"
 
 #: main/forms.py:35
 msgid "Confirm withdrawal password"
-msgstr ""
+msgstr "تأكيد كلمة مرور السحب"
 
 #: main/forms.py:46
 msgid "Incorrect account password."
-msgstr ""
+msgstr "كلمة مرور الحساب غير صحيحة."
 
 #: main/forms.py:53 main/forms.py:87
 msgid "Enter exactly 6 digits."
-msgstr ""
+msgstr "أدخل بالضبط 6 أرقام."
 
-#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:268
 msgid "Passwords do not match."
-msgstr ""
+msgstr "كلمات المرور لا تتطابق."
 
 #: main/forms.py:61
 msgid "Current withdrawal password"
-msgstr ""
+msgstr "كلمة مرور السحب الحالية"
 
 #: main/forms.py:65
 msgid "New withdrawal password (6 digits)"
-msgstr ""
+msgstr "كلمة مرور سحب جديدة (6 أرقام)"
 
 #: main/forms.py:69
 msgid "Confirm new withdrawal password"
-msgstr ""
+msgstr "تأكيد كلمة مرور السحب الجديدة"
 
 #: main/forms.py:80
 msgid "Incorrect withdrawal password."
-msgstr ""
+msgstr "كلمة مرور السحب غير صحيحة."
 
 #: main/forms.py:161
 #, python-format
 msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
-msgstr ""
+msgstr "JPG/PNG/WebP/GIF ، حتى [[[[[token_0]]]] MB."
 
 #: main/forms.py:162
 msgid "Direct image URL (used only if no file is uploaded)."
-msgstr ""
+msgstr "عنوان URL المباشر للصور (يستخدم فقط إذا لم يتم تحميل أي ملف)."
 
 #: main/forms.py:180
 msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
-msgstr ""
+msgstr "نوع الصورة غير المدعوم. استخدم JPG أو PNG أو WebP أو GIF."
 
 #: main/forms.py:182
 #, python-format
 msgid "Image too large (max %(mb)s MB)."
-msgstr ""
+msgstr "صورة كبيرة جدًا (كحد أقصى [[[[[token_0]]]]] MB)."
 
 #: main/forms.py:191
 msgid "Only http/https URLs are allowed."
-msgstr ""
+msgstr "يُسمح فقط بعنوان URL HTTP/HTTPS."
 
 #: main/forms.py:206 main/forms.py:371 main/forms.py:581
 msgid "Country code"
-msgstr ""
+msgstr "رمز البلد"
 
 #: main/forms.py:211 main/forms.py:376 main/forms.py:586
 msgid "Enter your phone number"
-msgstr ""
+msgstr "أدخل رقم هاتفك"
 
 #: main/forms.py:215 main/forms.py:380 main/forms.py:590
 msgid "Phone number"
-msgstr ""
+msgstr "رقم التليفون"
 
 #: main/forms.py:220
 msgid "Enter your invitation code"
-msgstr ""
+msgstr "أدخل رمز الدعوة الخاص بك"
 
 #: main/forms.py:223
 msgid "Invitation code"
-msgstr ""
+msgstr "رمز الدعوة"
 
 #: main/forms.py:225 main/forms.py:592
 msgid "I am not a robot"
-msgstr ""
+msgstr "أنا لست روبوت"
 
 #: main/forms.py:236 main/forms.py:385 main/forms.py:615
 msgid "Enter your password"
-msgstr ""
+msgstr "أدخل كلمة المرور الخاصة بك"
 
 #: main/forms.py:240
 msgid "Re-enter your password"
-msgstr ""
+msgstr "أعد إدخال كلمة المرور الخاصة بك"
 
-#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:233
 msgid "Invalid phone number format."
-msgstr ""
+msgstr "تنسيق رقم الهاتف غير صالح."
 
-#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:235
 msgid "This phone number is not possible for the selected country."
-msgstr ""
+msgstr "رقم الهاتف هذا غير ممكن للبلد المحدد."
 
-#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:237
 msgid "This phone number is not valid for the selected country."
-msgstr ""
+msgstr "رقم الهاتف هذا غير صالح للبلد المحدد."
 
 #: main/forms.py:281 main/forms.py:429 main/forms.py:657
 #, python-format
 msgid ""
 "Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
 msgstr ""
+"يجب أن يكون طول رقم الهاتف بين ٪ (lo) d و ٪ (hi) d لأرقام [[[[[token_0]]]]]."
 
 #: main/forms.py:293
 msgid "An account with this phone already exists."
-msgstr ""
+msgstr "يوجد حساب مع هذا الهاتف بالفعل."
 
-#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:80
+#: templates/meta_search/signup.html:54
 msgid "Password"
-msgstr ""
+msgstr "كلمة المرور"
 
 #: main/forms.py:325
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user’s "
 "password, but you can change the password using the “Change password” form."
 msgstr ""
+"لا يتم تخزين كلمات المرور الخام ، لذلك لا توجد طريقة لرؤية كلمة مرور هذا "
+"المستخدم ، ولكن يمكنك تغيير كلمة المرور باستخدام نموذج \"تغيير كلمة المرور\"."
 
 #: main/forms.py:352
 msgid "User phone (E.164 or local NG)"
-msgstr ""
+msgstr "هاتف المستخدم (E.164 أو NG المحلي)"
 
 #: main/forms.py:353
 msgid "+2348012345678 or 080..."
-msgstr ""
+msgstr "+2348012345678 أو 080 ..."
 
-#: main/forms.py:355 main/views.py:210
+#: main/forms.py:355 main/views.py:262
 #: templates/meta_search/settings_change_password.html:83
+#: templates/meta_search/support_reset_password.html:77
 msgid "New password"
-msgstr ""
+msgstr "كلمة المرور الجديدة"
 
-#: main/forms.py:356 main/views.py:211
+#: main/forms.py:356 main/views.py:263
 msgid "Confirm new password"
-msgstr ""
+msgstr "تأكيد كلمة مرور جديدة"
 
 #: main/forms.py:670
 msgid "Phone does not match your account."
-msgstr ""
+msgstr "الهاتف لا يتطابق مع حسابك."
 
-#: main/models.py:578 templates/base_info.html:22
+#: main/models.py:672 templates/base_info.html:22
 #: templates/meta_search/info_index.html:27
 msgid "About us"
-msgstr ""
+msgstr "معلومات عنا"
 
-#: main/models.py:579 templates/base_info.html:26
+#: main/models.py:673 templates/base_info.html:26
 #: templates/meta_search/info_index.html:31
 msgid "Contact us"
-msgstr ""
+msgstr "اتصل بنا"
 
-#: main/models.py:580 templates/base_info.html:30
+#: main/models.py:674 templates/base_info.html:30
 #: templates/meta_search/info_index.html:35
 msgid "Help"
-msgstr ""
+msgstr "يساعد"
 
-#: main/models.py:581 templates/base_info.html:34
+#: main/models.py:675 templates/base_info.html:34
 #: templates/meta_search/info_index.html:39
+#: templates/meta_search/profile_settings.html:75
 msgid "Level"
-msgstr ""
+msgstr "مستوى"
 
-#: main/models.py:582 templates/base_info.html:38
+#: main/models.py:676 templates/base_info.html:38
 #: templates/meta_search/info_index.html:43
 msgid "Sign-in reward"
-msgstr ""
+msgstr "مكافأة تسجيل الدخول"
 
-#: main/views.py:69
+#: main/views.py:121
 msgid "Withdrawal password set."
-msgstr ""
+msgstr "تعيين كلمة مرور السحب."
 
-#: main/views.py:79
+#: main/views.py:131
 msgid "You don’t have a withdrawal password yet. Set one first."
-msgstr ""
+msgstr "ليس لديك كلمة مرور سحب بعد. تعيين واحد أولا."
 
-#: main/views.py:86
+#: main/views.py:138
 msgid "Withdrawal password updated."
-msgstr ""
+msgstr "تم تحديث كلمة مرور السحب."
 
-#: main/views.py:209
+#: main/views.py:261
 msgid "Verification code"
-msgstr ""
+msgstr "رمز التحقق"
 
-#: main/views.py:247
+#: main/views.py:299
 msgid "No account found for that phone."
-msgstr ""
+msgstr "لم يتم العثور على حساب لهذا الهاتف."
 
-#: main/views.py:259
+#: main/views.py:311
 #, python-format
 msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
-msgstr ""
-
-#: main/views.py:263
-msgid "We couldn’t send the code. Please try again in a moment."
-msgstr ""
-
-#: main/views.py:267
-msgid "Unexpected error sending code. Try again later."
-msgstr ""
-
-#: main/views.py:272
-msgid "We sent a verification code to your phone."
-msgstr ""
-
-#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
-#: main/views.py:1169
-msgid "Please correct the errors below."
-msgstr ""
-
-#: main/views.py:290
-msgid "Start by entering your phone number."
-msgstr ""
-
-#: main/views.py:298
-msgid "Invalid or expired code."
-msgstr ""
-
-#: main/views.py:304
-msgid "Account not found. Please start over."
-msgstr ""
+msgstr "رمز إعادة الضبط الخاص بك هو: [[[[[token_0]]]]]. تنتهي في 10 دقائق."
 
 #: main/views.py:315
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr "لم نتمكن من إرسال الرمز. يرجى المحاولة مرة أخرى في لحظة."
+
+#: main/views.py:319
+msgid "Unexpected error sending code. Try again later."
+msgstr "خطأ غير متوقع إرسال رمز. حاول مرة أخرى لاحقًا."
+
+#: main/views.py:324
+msgid "We sent a verification code to your phone."
+msgstr "أرسلنا رمز التحقق إلى هاتفك."
+
+#: main/views.py:327 main/views.py:374 main/views.py:434 main/views.py:463
+#: main/views.py:1421
+msgid "Please correct the errors below."
+msgstr "الرجاء تصحيح الأخطاء أدناه."
+
+#: main/views.py:342
+msgid "Start by entering your phone number."
+msgstr "ابدأ بإدخال رقم هاتفك."
+
+#: main/views.py:350
+msgid "Invalid or expired code."
+msgstr "رمز غير صالح أو منتهي الصلاحية."
+
+#: main/views.py:356
+msgid "Account not found. Please start over."
+msgstr "الحساب لم يتم العثور عليه. من فضلك ابدأ من جديد."
+
+#: main/views.py:367
 msgid "Your password has been reset. You can now sign in."
-msgstr ""
+msgstr "تمت إعادة تعيين كلمة المرور الخاصة بك. يمكنك الآن تسجيل الدخول."
 
-#: main/views.py:341 main/views.py:392
+#: main/views.py:395 main/views.py:447
 msgid "You're already signed in."
-msgstr ""
+msgstr "لقد وقعت بالفعل في."
 
-#: main/views.py:375
+#: main/views.py:429
 msgid "Welcome back!"
-msgstr ""
+msgstr "مرحبًا بعودتك!"
 
-#: main/views.py:378
+#: main/views.py:432
 msgid "Invalid phone or password."
-msgstr ""
+msgstr "هاتف غير صالح أو كلمة مرور."
 
-#: main/views.py:405
+#: main/views.py:460
 msgid "Account created!"
-msgstr ""
+msgstr "حساب تم إنشاؤه!"
 
-#: main/views.py:421
+#: main/views.py:476
 msgid "You have been logged out."
-msgstr ""
+msgstr "لقد قمت بتسجيل الخروج."
 
-#: main/views.py:468
+#: main/views.py:523
 msgid "Invalid phone format. Please enter a valid number."
-msgstr ""
+msgstr "تنسيق هاتف غير صالح. الرجاء إدخال رقم صالح."
 
-#: main/views.py:474
+#: main/views.py:529
 #, python-format
 msgid "No user found with phone %(phone)s."
-msgstr ""
+msgstr "لم يتم العثور على مستخدم بالهاتف [[[[[token_0]]]]]."
 
-#: main/views.py:490
+#: main/views.py:545
 #, python-format
 msgid "Password reset for %(phone)s."
-msgstr ""
+msgstr "إعادة تعيين كلمة المرور لـ [[[[[token_0]]]]]."
 
-#: main/views.py:1167
+#: main/views.py:1419
 msgid "Password updated."
-msgstr ""
+msgstr "تم تحديث كلمة المرور."
 
-#: templates/base_info.html:4
-msgid "info"
-msgstr ""
+#: templates/base_auth.html:6
+msgid "Auth"
+msgstr "مصادقة"
 
-#: templates/meta_search/announcements.html:5
+#: templates/base_auth.html:18
+msgid "Orbitpedia"
+msgstr "إكسبيا"
+
+#: templates/base_auth.html:29 templates/meta_search/address_add.html:22
+#: templates/meta_search/deposit.html:20
+#: templates/meta_search/deposit_pay.html:21
+#: templates/meta_search/withdrawal.html:150
+#: templates/meta_search/withdrawal_success.html:101
+#, fuzzy
+#| msgid "Welcome back!"
+msgid "Go back"
+msgstr "مرحبًا بعودتك!"
+
+#: templates/base_auth.html:32 templates/base_info.html:5
+#: templates/base_settings.html:6 templates/base_user.html:122
+#: templates/base_user.html:124 templates/base_user.html:128
+#: templates/base_user.html:285 templates/base_user.html:287
+#: templates/meta_search/address_add.html:7
 #: templates/meta_search/announcements.html:13
-msgid "Announcements"
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/password_reset_verify.html:86
+#: templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "Home"
+msgstr "بيت"
+
+#: templates/base_info.html:4 templates/base_info.html:5
+msgid "info"
+msgstr "معلومات"
+
+#: templates/base_info.html:14 templates/base_user.html:152
+#: templates/base_user.html:154 templates/meta_search/announcements.html:10
+#: templates/meta_search/announcements.html:13
+msgid "Info"
+msgstr "معلومات"
+
+#: templates/base_settings.html:5 templates/base_user.html:148
+#: templates/base_user.html:150 templates/meta_search/admin_dashboard.html:99
+#: templates/meta_search/profile_settings.html:7
+msgid "Settings"
+msgstr "إعدادات"
+
+#: templates/base_settings.html:6 templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "setting"
+msgstr "جلسة"
+
+#: templates/base_settings.html:15
+msgid "Setting"
+msgstr "جلسة"
+
+#: templates/base_settings.html:23
+msgid "Profile"
+msgstr "حساب تعريفي"
+
+#: templates/base_settings.html:27 templates/meta_search/language.html:8
+#: templates/meta_search/profile_settings.html:71
+msgid "Language"
+msgstr "لغة"
+
+#: templates/base_settings.html:31
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "تغيير كلمة المرور"
+
+#: templates/base_settings.html:35
+#, fuzzy
+#| msgid "Withdrawal password set."
+msgid "Withdrawal password"
+msgstr "تعيين كلمة مرور السحب."
+
+#: templates/base_user.html:7 templates/base_user.html:144
+#: templates/meta_search/address_add.html:7
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5 templates/meta_search/wallet.html:5
+msgid "My Wallet"
+msgstr "محفظتي"
+
+#: templates/base_user.html:94 templates/base_user.html:95
+msgid "Dashboard"
+msgstr "لوحة القيادة"
+
+#: templates/base_user.html:99
+msgid "Collapse menu"
+msgstr "قائمة الانهيار"
+
+#: templates/base_user.html:99 templates/base_user.html:230
+msgid "Collapse"
+msgstr "ينهار"
+
+#: templates/base_user.html:107 templates/base_user.html:109
+#: templates/base_user.html:111
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "User avatar"
+msgstr "عميل الصورة الرمزية 1"
+
+#: templates/base_user.html:116 templates/meta_search/profile_settings.html:63
+msgid "User ID"
+msgstr "معرف المستخدم"
+
+#: templates/base_user.html:117
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:67 templates/meta_search/signup.html:46
+#: templates/meta_search/support_reset_password.html:62
+msgid "Phone"
+msgstr "هاتف"
+
+#: templates/base_user.html:121
+msgid "Sidebar"
+msgstr "الشريط الجانبي"
+
+#: templates/base_user.html:130
+msgid "impersonation"
 msgstr ""
 
-#: templates/meta_search/announcements.html:26
+#: templates/base_user.html:133 templates/meta_search/task_dashboard.html:4
+#: templates/meta_search/task_dashboard.html:5
+#: templates/meta_search/task_dashboard.html:14
+#: templates/tasks/task_detail.html:5
+msgid "Task"
+msgstr "مهمة"
+
+#: templates/base_user.html:135 templates/base_user.html:290
+#: templates/base_user.html:292 templates/meta_search/admin_dashboard.html:87
+msgid "Tasks"
+msgstr "المهام"
+
+#: templates/base_user.html:137 templates/meta_search/rewards.html:4
+#: templates/meta_search/rewards.html:5 templates/meta_search/rewards.html:85
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Rewards"
+msgstr "الحصول على مكافأة"
+
+#: templates/base_user.html:139 templates/base_user.html:296
+#: templates/base_user.html:298 templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/task_dashboard.html:52
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "Reward"
+msgstr "الحصول على مكافأة"
+
+#: templates/base_user.html:142
+#, fuzzy
+#| msgid "Account password"
+msgid "Account"
+msgstr "كلمة مرور الحساب"
+
+#: templates/base_user.html:146 templates/base_user.html:302
+#: templates/base_user.html:304 templates/meta_search/wallet.html:6
+msgid "Wallet"
+msgstr "محفظة"
+
+#: templates/base_user.html:159 templates/base_user.html:164
+msgid "Admin Panel"
+msgstr "لوحة المسؤول"
+
+#: templates/base_user.html:170 templates/base_user.html:172
+msgid "Admin settings"
+msgstr "إعدادات المسؤول"
+
+#: templates/base_user.html:176 templates/base_user.html:178
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+#: templates/base_user.html:191
+msgid "Menu"
+msgstr "قائمة طعام"
+
+#: templates/base_user.html:204 templates/base_user.html:205
+#: templates/meta_search/admin_dashboard.html:80
+#: templates/meta_search/announcements.html:6
+#: templates/meta_search/announcements.html:13
+#: templates/meta_search/announcements.html:21
+msgid "Announcements"
+msgstr "الإعلانات"
+
+#: templates/base_user.html:230
+msgid "Expand"
+msgstr "يوسع"
+
+#: templates/base_user.html:284
+msgid "Primary"
+msgstr "أساسي"
+
+#: templates/captcha/custom_widget.html:3
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:114 templates/meta_search/signup.html:124
+msgid "Captcha"
+msgstr "كابتشا"
+
+#: templates/captcha/custom_widget.html:6
+#, fuzzy
+#| msgid "Enter your password"
+msgid "Enter answer"
+msgstr "أدخل كلمة المرور الخاصة بك"
+
+#: templates/captcha/custom_widget.html:7
+msgid "Reload image"
+msgstr "صورة إعادة تحميل"
+
+#: templates/meta_search/address_add.html:4
+#: templates/meta_search/address_add.html:31
+#: templates/meta_search/address_add.html:37
+msgid "Add Payout Address"
+msgstr "أضف عنوان الدفع"
+
+#: templates/meta_search/address_add.html:5
+msgid "Wallet Address"
+msgstr "عنوان محفظة"
+
+#: templates/meta_search/address_add.html:7
+msgid "Add Address"
+msgstr "أضف العنوان"
+
+#: templates/meta_search/address_add.html:65
+msgid "Address Type"
+msgstr "نوع العنوان"
+
+#: templates/meta_search/address_add.html:81
+#: templates/meta_search/deposit.html:157
+msgid "Ethereum (ERC20)"
+msgstr "Ethereum (ERC20)"
+
+#: templates/meta_search/address_add.html:89
+#: templates/meta_search/deposit.html:163
+#: templates/meta_search/withdrawal.html:316
+msgid "USDT (TRC20)"
+msgstr "USDT (TRC20)"
+
+#: templates/meta_search/address_add.html:106
+#: templates/meta_search/deposit_pay.html:142
+#: templates/meta_search/withdrawal.html:252
+msgid "Address"
+msgstr "عنوان"
+
+#: templates/meta_search/address_add.html:112
+msgid "Select a network to see the required format."
+msgstr "حدد شبكة لرؤية التنسيق المطلوب."
+
+#: templates/meta_search/address_add.html:129
+msgid "Label (optional)"
+msgstr "التسمية (اختياري)"
+
+#: templates/meta_search/address_add.html:141
+msgid "Save Address"
+msgstr "حفظ العنوان"
+
+#: templates/meta_search/address_add.html:142
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "خلف"
+
+#: templates/meta_search/address_add.html:156
+msgid ""
+"Ethereum address must start with 0x and be 42 characters total (0x + 40 hex)."
+msgstr "يجب أن يبدأ عنوان Ethereum بـ 0x ويكون إجمالي 42 حرفًا (0x + 40 Hex)."
+
+#: templates/meta_search/address_add.html:157
+msgid "TRC20 address must start with T and be 34 characters (Base58)."
+msgstr "يجب أن يبدأ عنوان TRC20 بـ T و 34 حرفًا (BASE58)."
+
+#: templates/meta_search/admin_dashboard.html:5
+msgid "Admin Office"
+msgstr "مكتب المشرف"
+
+#: templates/meta_search/admin_dashboard.html:6
+msgid "Admin"
+msgstr "مسؤل"
+
+#: templates/meta_search/admin_dashboard.html:36
+msgid "Users"
+msgstr "المستخدمون"
+
+#: templates/meta_search/admin_dashboard.html:39
+msgid "Browse users"
+msgstr "تصفح المستخدمين"
+
+#: templates/meta_search/admin_dashboard.html:40
+msgid "Blocked users"
+msgstr "المستخدمين المحظورون"
+
+#: templates/meta_search/admin_dashboard.html:46
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawals"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/admin_dashboard.html:49
+#: templates/meta_search/wallet.html:578
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#: templates/meta_search/admin_dashboard.html:52
+#: templates/meta_search/admin_dashboard.html:71
+#: templates/meta_search/wallet.html:404 templates/meta_search/wallet.html:578
+#, fuzzy
+#| msgid "Confirm Password"
+msgid "Confirmed"
+msgstr "تأكيد كلمة المرور"
+
+#: templates/meta_search/admin_dashboard.html:55
+#: templates/meta_search/wallet.html:578
+msgid "Failed"
+msgstr "فشل"
+
+#: templates/meta_search/admin_dashboard.html:62
+msgid "Deposits"
+msgstr "الودائع"
+
+#: templates/meta_search/admin_dashboard.html:65
+msgid "Awaiting Payment"
+msgstr "في انتظار الدفع"
+
+#: templates/meta_search/admin_dashboard.html:68
+#, fuzzy
+#| msgid "Clients Review"
+msgid "Awaiting Review"
+msgstr "مراجعة العملاء"
+
+#: templates/meta_search/admin_dashboard.html:78
+msgid "Content"
+msgstr "محتوى"
+
+#: templates/meta_search/admin_dashboard.html:81
+msgid "Info pages"
+msgstr "صفحات المعلومات"
+
+#: templates/meta_search/admin_dashboard.html:89
+msgid "User tasks"
+msgstr "مهام المستخدم"
+
+#: templates/meta_search/admin_dashboard.html:90
+msgid "Task templates"
+msgstr "قوالب المهام"
+
+#: templates/meta_search/admin_dashboard.html:91
+msgid "Forced directives"
+msgstr "التوجيهات القسرية"
+
+#: templates/meta_search/admin_dashboard.html:97
+msgid "System"
+msgstr "نظام"
+
+#: templates/meta_search/admin_dashboard.html:109
+msgid "Pending withdrawals (latest 10)"
+msgstr "عمليات السحب المعلقة (أحدث 10)"
+
+#: templates/meta_search/admin_dashboard.html:110
+msgid "View all"
+msgstr "عرض الكل"
+
+#: templates/meta_search/admin_dashboard.html:123
+msgid "Open"
+msgstr "يفتح"
+
+#: templates/meta_search/admin_dashboard.html:128
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "No pending withdrawals."
+msgstr "تأكيد كلمة مرور السحب"
+
+#: templates/meta_search/admin_dashboard.html:137
+msgid "Recent activity"
+msgstr "النشاط الحديث"
+
+#: templates/meta_search/admin_dashboard.html:153
+msgid "Nothing yet."
+msgstr "لا شيء حتى الآن."
+
+#: templates/meta_search/announcements.html:9
+msgid "information"
+msgstr "معلومة"
+
+#: templates/meta_search/announcements.html:34
 msgid "No announcements at the moment."
+msgstr "لا إعلانات في الوقت الحالي."
+
+#: templates/meta_search/deposit.html:4 templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit.html:28
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/wallet.html:181 templates/meta_search/wallet.html:189
+#: templates/meta_search/wallet.html:202 templates/meta_search/wallet.html:327
+msgid "Deposit"
+msgstr "إيداع"
+
+#: templates/meta_search/deposit.html:119
+#: templates/meta_search/deposit_pay.html:139
+#: templates/meta_search/withdrawal.html:200
+#: templates/meta_search/withdrawal_success.html:137
+msgid "Amount"
+msgstr "كمية"
+
+#: templates/meta_search/deposit.html:131
+#: templates/meta_search/withdrawal.html:215
+msgid "Currency"
+msgstr "عملة"
+
+#: templates/meta_search/deposit.html:147
+msgid "Minimum 10. Choose a preset or enter an amount."
+msgstr "الحد الأدنى 10. اختر مسبقًا أو أدخل مبلغًا."
+
+#: templates/meta_search/deposit.html:152
+msgid "Payment Method"
+msgstr "طريقة الدفع"
+
+#: templates/meta_search/deposit.html:174
+msgid "Proceed to Pay →"
+msgstr "المضي قدمًا في الدفع →"
+
+#: templates/meta_search/deposit_pay.html:4
+msgid "Pay Deposit"
+msgstr "إيداع الدفع"
+
+#: templates/meta_search/deposit_pay.html:5
+msgid "Pay"
+msgstr "يدفع"
+
+#: templates/meta_search/deposit_pay.html:29
+#: templates/meta_search/deposit_pay.html:79
+msgid "Payment details"
+msgstr "تفاصيل الدفع"
+
+#: templates/meta_search/deposit_pay.html:85
+#, fuzzy
+#| msgid "Change password"
+msgid "Change payment method"
+msgstr "تغيير كلمة المرور"
+
+#: templates/meta_search/deposit_pay.html:96
+msgid "Ethereum"
+msgstr "ethereum"
+
+#: templates/meta_search/deposit_pay.html:104
+msgid "Copy amount"
+msgstr "نسخ المبلغ"
+
+#: templates/meta_search/deposit_pay.html:116
+msgid "QR code"
+msgstr "رمز الاستجابة السريعة"
+
+#: templates/meta_search/deposit_pay.html:121
+#, python-format
+msgid "Scan to pay · %(dep.get_network_display)s"
+msgstr "مسح للدفع · ٪ (dep.get_network_display) s"
+
+#: templates/meta_search/deposit_pay.html:132
+#: templates/meta_search/deposit_pay.html:177
+msgid "Verifying…"
+msgstr "التحقق ..."
+
+#: templates/meta_search/deposit_pay.html:133
+#, python-brace-format
+msgid "Verifying… ({time} left)"
+msgstr "التحقق ... ([[[[[token_0]]]] اليسار)"
+
+#: templates/meta_search/deposit_pay.html:134
+msgid "You can use “Verify now” for quick help."
+msgstr "يمكنك استخدام \"التحقق الآن\" للحصول على مساعدة سريعة."
+
+#: templates/meta_search/deposit_pay.html:135
+msgid "QR error"
+msgstr "خطأ QR"
+
+#: templates/meta_search/deposit_pay.html:138
+msgid "Network"
+msgstr "شبكة"
+
+#: templates/meta_search/deposit_pay.html:145
+msgid "Copy address"
+msgstr "عنوان النسخ"
+
+#: templates/meta_search/deposit_pay.html:152
+msgid "Reference"
+msgstr "مرجع"
+
+#: templates/meta_search/deposit_pay.html:155
+msgid "Copy reference"
+msgstr "نسخ مرجع"
+
+#: templates/meta_search/deposit_pay.html:164
+msgid "I’ve Paid — Verify"
+msgstr "لقد دفعت - تحقق"
+
+#: templates/meta_search/deposit_pay.html:166
+msgid "We’ll check the network and update your balance when confirmed."
+msgstr "سنقوم بالتحقق من الشبكة وتحديث رصيدك عند تأكيدها."
+
+#: templates/meta_search/deposit_pay.html:174
+#: templates/meta_search/deposit_pay.html:183
+msgid "Verify now"
+msgstr "تحقق الآن"
+
+#: templates/meta_search/deposit_pay.html:175
+msgid "Need quick approval? Use <strong>Verify now</strong>."
 msgstr ""
+"هل تحتاج إلى موافقة سريعة؟ استخدم [[[[[token_0]]]] تحقق الآن "
+"[[[[[token_1]]]]]."
+
+#: templates/meta_search/deposit_pay.html:185
+msgid "Need quick approval? You can use <strong>Verify now</strong>."
+msgstr ""
+"هل تحتاج إلى موافقة سريعة؟ يمكنك استخدام [[[[[token_0]]]] تحقق الآن "
+"[[[[[[token_1]]]]."
+
+#: templates/meta_search/deposit_pay.html:189
+msgid "Payment failed"
+msgstr "فشل الدفع"
+
+#: templates/meta_search/deposit_pay.html:190
+msgid "Try again"
+msgstr "حاول ثانية"
+
+#: templates/meta_search/deposit_pay.html:193
+msgid "This deposit is a draft."
+msgstr "هذا الودائع مسودة."
+
+#: templates/meta_search/deposit_pay.html:194
+msgid "Continue to deposit"
+msgstr "تواصل الإيداع"
+
+#: templates/meta_search/deposit_pay.html:197
+msgid "Thanks! Recieved We’ll verify the payment shortly."
+msgstr "شكرًا! تم استلامنا سنقوم بالتحقق من الدفع قريبًا."
+
+#: templates/meta_search/deposit_pay.html:198
+#: templates/meta_search/withdrawal_success.html:170
+msgid "Go to Wallet"
+msgstr "اذهب إلى المحفظة"
+
+#: templates/meta_search/deposit_pay.html:201
+#, python-format
+msgid "Status: %(dep.status)s"
+msgstr "الحالة: ٪ (dep.status) ق"
+
+#: templates/meta_search/deposit_pay.html:209
+#: templates/meta_search/withdrawal_success.html:196
+msgid "Copied"
+msgstr "نسخ"
 
 #: templates/meta_search/ide.html:18
 msgid "Seaside resort at dusk"
-msgstr ""
+msgstr "منتجع شاطئ البحر عند الغسق"
 
 #: templates/meta_search/ide.html:24
 msgid "Experience The Magic Of Relaxation"
-msgstr ""
+msgstr "تجربة سحر الاسترخاء"
 
 #: templates/meta_search/ide.html:25
 msgid ""
 "Indulge in the epitome of coastal living as you discover the breathtaking "
 "beauty and tranquility of luxury."
 msgstr ""
+"تنغمس في مثال الحياة الساحلية وأنت تكتشف الجمال المذهل والهدوء من الرفاهية."
 
 #: templates/meta_search/ide.html:30
 msgid "Customer avatar 1"
-msgstr ""
+msgstr "عميل الصورة الرمزية 1"
 
 #: templates/meta_search/ide.html:31
 msgid "Customer avatar 2"
-msgstr ""
+msgstr "العميل الصورة الرمزية 2"
 
 #: templates/meta_search/ide.html:32
 msgid "Customer avatar 3"
-msgstr ""
+msgstr "العميل الصورة الرمزية 3"
 
 #: templates/meta_search/ide.html:34
 msgid "Trusted by over 25k+ people"
-msgstr ""
+msgstr "موثوق به أكثر من 25 ألف شخص"
 
 #: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+#: templates/meta_search/index.html:148
 msgid "Explore Now"
-msgstr ""
+msgstr "استكشف الآن"
 
 #: templates/meta_search/ide.html:40
 msgid "Travel partners"
-msgstr ""
+msgstr "شركاء السفر"
 
-#: templates/meta_search/ide.html:58
+#: templates/meta_search/ide.html:58 templates/meta_search/index.html:98
 msgid "Premium Facilities"
-msgstr ""
+msgstr "مرافق قسط"
 
-#: templates/meta_search/ide.html:61
+#: templates/meta_search/ide.html:61 templates/meta_search/index.html:104
 msgid "Exclusive Sunset View"
-msgstr ""
+msgstr "عرض غروب الشمس الحصري"
 
-#: templates/meta_search/ide.html:62
+#: templates/meta_search/ide.html:62 templates/meta_search/index.html:105
 msgid "You witness the beauty of the world from your room"
-msgstr ""
+msgstr "أنت تشهد جمال العالم من غرفتك"
 
-#: templates/meta_search/ide.html:65
+#: templates/meta_search/ide.html:65 templates/meta_search/index.html:111
 msgid "Integrated Tourist Area"
-msgstr ""
+msgstr "منطقة سياحية متكاملة"
 
 #: templates/meta_search/ide.html:66
 msgid "Enhancing your travel experience"
-msgstr ""
+msgstr "تعزيز تجربة السفر الخاصة بك"
 
-#: templates/meta_search/ide.html:69
+#: templates/meta_search/ide.html:69 templates/meta_search/index.html:118
 msgid "Nature-Inspired Pool"
-msgstr ""
+msgstr "تجمع مستوحى من الطبيعة"
 
-#: templates/meta_search/ide.html:70
+#: templates/meta_search/ide.html:70 templates/meta_search/index.html:119
 msgid "Serene swimming pool with a touch of paradise"
-msgstr ""
+msgstr "حمام سباحة هادئ مع لمسة من الجنة"
 
 #: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+#: templates/meta_search/index.html:129 templates/meta_search/index.html:142
 msgid "Get Rewarded"
-msgstr ""
+msgstr "الحصول على مكافأة"
 
-#: templates/meta_search/ide.html:85
+#: templates/meta_search/ide.html:85 templates/meta_search/index.html:134
 msgid "Rate Apartments"
-msgstr ""
+msgstr "قيم الشقق"
 
-#: templates/meta_search/ide.html:86
+#: templates/meta_search/ide.html:86 templates/meta_search/index.html:135
 msgid "Give random objective ratings based on view and aesthetics."
-msgstr ""
+msgstr "إعطاء تصنيفات موضوعية عشوائية على أساس العرض والجمال."
 
-#: templates/meta_search/ide.html:94
+#: templates/meta_search/ide.html:94 templates/meta_search/index.html:143
 msgid "Earn instant rewards from the apartments you rate."
-msgstr ""
+msgstr "كسب مكافآت فورية من الشقق التي تقيمها."
 
 #: templates/meta_search/ide.html:102
 msgid "Featured apartments carousel"
-msgstr ""
+msgstr "شقق مميزة كاروسيل"
 
-#: templates/meta_search/ide.html:103
+#: templates/meta_search/ide.html:103 templates/meta_search/index.html:167
 msgid "Previous slide"
-msgstr ""
+msgstr "الشريحة السابقة"
 
-#: templates/meta_search/ide.html:104
+#: templates/meta_search/ide.html:104 templates/meta_search/index.html:168
 msgid "Next slide"
-msgstr ""
+msgstr "الشريحة التالية"
 
-#: templates/meta_search/ide.html:108
+#: templates/meta_search/ide.html:108 templates/meta_search/index.html:159
 msgid "Modern apartment interior"
-msgstr ""
+msgstr "الشقة الحديثة الداخلية"
 
-#: templates/meta_search/ide.html:111
+#: templates/meta_search/ide.html:111 templates/meta_search/index.html:160
 msgid "Resort pool at sunset"
-msgstr ""
+msgstr "تجمع المنتجع عند غروب الشمس"
 
-#: templates/meta_search/ide.html:114
+#: templates/meta_search/ide.html:114 templates/meta_search/index.html:161
 msgid "Scenic valley view"
-msgstr ""
+msgstr "عرض الوادي المناظر الخلابة"
 
-#: templates/meta_search/ide.html:129
+#: templates/meta_search/ide.html:129 templates/meta_search/index.html:175
 msgid "Clients Review"
-msgstr ""
+msgstr "مراجعة العملاء"
 
-#: templates/meta_search/ide.html:130
+#: templates/meta_search/ide.html:130 templates/meta_search/index.html:176
 msgid "See some honest reviews from our users on the platform"
-msgstr ""
+msgstr "شاهد بعض المراجعات الصادقة من مستخدمينا على النظام الأساسي"
 
-#: templates/meta_search/ide.html:135
+#: templates/meta_search/ide.html:135 templates/meta_search/index.html:182
 msgid "Client"
-msgstr ""
+msgstr "عميل"
 
 #: templates/meta_search/ide.html:137
 msgid ""
 "Had a great experience using this for solid bookings. Customer service was "
 "top-notch."
 msgstr ""
+"كان لديه تجربة رائعة باستخدام هذا للحجوزات الصلبة. كانت خدمة العملاء من "
+"الدرجة الأولى."
 
 #: templates/meta_search/ide.html:147
 msgid "Get your inspiration of luxury and get rewarded"
-msgstr ""
+msgstr "احصل على مصدر إلهامك للرفاهية واحصل على مكافأة"
 
 #: templates/meta_search/ide.html:148
 msgid "Earn new rewards at every step you take under true luxury."
-msgstr ""
+msgstr "كسب مكافآت جديدة في كل خطوة تتخذها تحت الرفاهية الحقيقية."
 
 #: templates/meta_search/ide.html:149
 msgid "See More"
-msgstr ""
+msgstr "رؤية المزيد"
 
 #: templates/meta_search/ide.html:152
 msgid "Luxury inspiration"
-msgstr ""
+msgstr "إلهام فاخر"
 
 #: templates/meta_search/includes/_header.html:60
 msgid "Get started"
+msgstr "ابدأ"
+
+#: templates/meta_search/index.html:112
+#, fuzzy
+#| msgid "Enhancing your travel experience"
+msgid "Tourism integration is enhancing travel experience"
+msgstr "تعزيز تجربة السفر الخاصة بك"
+
+#: templates/meta_search/index.html:191
+msgid ""
+"I had a great experience working with this fantastic platform that delivers "
+"reward to users for best rating apartments. They have exceptional customer "
+"service and high-quality service."
 msgstr ""
+"لقد كانت تجربة رائعة في العمل مع هذه المنصة الرائعة التي توفر مكافأة "
+"للمستخدمين لأفضل شقق تصنيف. لديهم خدمة عملاء استثنائية وخدمة عالية الجودة."
+
+#: templates/meta_search/index.html:194 templates/meta_search/index.html:195
+msgid "James Lee"
+msgstr "جيمس لي"
 
 #: templates/meta_search/info_index.html:6
 msgid "Info Center"
-msgstr ""
+msgstr "مركز المعلومات"
 
 #: templates/meta_search/info_index.html:7
 msgid "Pick a section on the left, or use the quick links below."
-msgstr ""
+msgstr "اختر قسمًا على اليسار ، أو استخدم الروابط السريعة أدناه."
 
 #: templates/meta_search/info_index.html:19
 #: templates/meta_search/info_page.html:17
 msgid "View all announcements"
-msgstr ""
-
-#: templates/meta_search/language.html:8
-msgid "Language"
-msgstr ""
+msgstr "عرض جميع الإعلانات"
 
 #: templates/meta_search/language.html:9
 msgid "Select your language."
-msgstr ""
+msgstr "حدد لغتك."
 
 #: templates/meta_search/password_reset_phone.html:4
 msgid "Reset Password – Step 1"
-msgstr ""
+msgstr "إعادة تعيين كلمة المرور - الخطوة 1"
 
 #: templates/meta_search/password_reset_phone.html:6
 #: templates/meta_search/password_reset_verify.html:6
 #: templates/meta_search/password_reset_verify.html:79
 msgid "Reset Password"
-msgstr ""
+msgstr "إعادة تعيين كلمة المرور"
 
 #: templates/meta_search/password_reset_phone.html:21
 msgid "Enter your phone number to get a verification code."
-msgstr ""
-
-#: templates/meta_search/password_reset_phone.html:41
-#: templates/meta_search/settings_change_password.html:42
-#: templates/meta_search/signin.html:45
-msgid "Phone"
-msgstr ""
+msgstr "أدخل رقم هاتفك للحصول على رمز التحقق."
 
 #: templates/meta_search/password_reset_phone.html:59
 msgid "Send Code"
-msgstr ""
+msgstr "إرسال الرمز"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Remembered your password?"
-msgstr ""
+msgstr "تذكرت كلمة المرور الخاصة بك؟"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Sign in"
-msgstr ""
+msgstr "تسجيل الدخول"
 
 #: templates/meta_search/password_reset_verify.html:4
 msgid "Reset Password – Step 2"
-msgstr ""
+msgstr "إعادة تعيين كلمة المرور - الخطوة 2"
 
 #: templates/meta_search/password_reset_verify.html:21
 msgid "Enter the code sent to your phone, then choose a new password."
-msgstr ""
+msgstr "أدخل الرمز المرسلة إلى هاتفك ، ثم اختر كلمة مرور جديدة."
 
 #: templates/meta_search/password_reset_verify.html:43
 msgid "Verification Code"
-msgstr ""
+msgstr "رمز التحقق"
 
 #: templates/meta_search/password_reset_verify.html:52
 msgid "New Password"
-msgstr ""
+msgstr "كلمة المرور الجديدة"
 
 #: templates/meta_search/password_reset_verify.html:61
 #: templates/meta_search/password_reset_verify.html:74
 #: templates/meta_search/settings_change_password.html:76
 #: templates/meta_search/settings_change_password.html:93
 #: templates/meta_search/settings_change_password.html:112
-#: templates/meta_search/signin.html:68
+#: templates/meta_search/signin.html:94
 msgid "Show/Hide password"
-msgstr ""
+msgstr "عرض/إخفاء كلمة المرور"
 
 #: templates/meta_search/password_reset_verify.html:65
+#: templates/meta_search/signup.html:85
 msgid "Confirm Password"
-msgstr ""
+msgstr "تأكيد كلمة المرور"
 
-#: templates/meta_search/password_reset_verify.html:84
-msgid "Back"
-msgstr ""
+#: templates/meta_search/profile_settings.html:5
+msgid "Settings — Profile"
+msgstr "الإعدادات - الملف الشخصي"
 
-#: templates/meta_search/password_reset_verify.html:86
-msgid "Home"
-msgstr ""
+#: templates/meta_search/profile_settings.html:8
+msgid "profile"
+msgstr "حساب تعريفي"
+
+#: templates/meta_search/profile_settings.html:15
+msgid "Basic Info"
+msgstr "المعلومات الأساسية"
+
+#: templates/meta_search/profile_settings.html:16
+msgid "Manage your details and personal preferences here."
+msgstr "إدارة التفاصيل الخاصة بك والتفضيلات الشخصية هنا."
+
+#: templates/meta_search/profile_settings.html:33
+msgid "Avatar"
+msgstr "الصورة الرمزية"
+
+#: templates/meta_search/profile_settings.html:40
+msgid "Change image"
+msgstr "تغيير الصورة"
+
+#: templates/meta_search/profile_settings.html:51
+msgid "Remove"
+msgstr "يزيل"
+
+#: templates/meta_search/profile_settings.html:55
+msgid "JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80)."
+msgstr "JPG ، PNG ، WebP أو GIF. مثالي: 120 × 120 (دقيقة 80 × 80)."
+
+#: templates/meta_search/profile_settings.html:67
+#, fuzzy
+#| msgid "Phone number"
+msgid "Phone Number"
+msgstr "رقم التليفون"
+
+#: templates/meta_search/profile_settings.html:76
+msgid "LEVEL 1"
+msgstr "المستوى 1"
+
+#: templates/meta_search/profile_settings.html:83
+msgid "Nickname"
+msgstr "كنية"
+
+#: templates/meta_search/profile_settings.html:89
+msgid "Image URL (optional)"
+msgstr "عنوان URL للصور (اختياري)"
+
+#: templates/meta_search/profile_settings.html:92
+msgid "Used only if no uploaded image exists."
+msgstr "تستخدم فقط إذا لم تكن هناك صورة تم تحميلها."
+
+#: templates/meta_search/profile_settings.html:97
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: templates/meta_search/rewards.html:94 templates/meta_search/rewards.html:97
+#: templates/meta_search/rewards.html:118
+msgid "Deposit Bonus"
+msgstr "مكافأة الإيداع"
+
+#: templates/meta_search/rewards.html:98
+msgid "Reset Amount Reward"
+msgstr "إعادة ضبط المكافأة"
+
+#: templates/meta_search/rewards.html:100
+#: templates/meta_search/rewards.html:101
+#: templates/meta_search/rewards.html:102
+#: templates/meta_search/rewards.html:103
+#: templates/meta_search/rewards.html:121
+#: templates/meta_search/rewards.html:122
+#: templates/meta_search/rewards.html:123
+#: templates/meta_search/rewards.html:124
+#: templates/meta_search/rewards.html:155
+#: templates/meta_search/rewards.html:156
+#: templates/meta_search/rewards.html:157
+msgid "Get"
+msgstr "يحصل"
+
+#: templates/meta_search/rewards.html:106
+#, fuzzy
+#| msgid "Please correct the errors below."
+msgid "Please contact customer service for reward."
+msgstr "الرجاء تصحيح الأخطاء أدناه."
+
+#: templates/meta_search/rewards.html:107
+msgid "You can only collect once a day; reset the reward."
+msgstr "يمكنك جمع مرة واحدة في اليوم فقط ؛ إعادة ضبط المكافأة."
+
+#: templates/meta_search/rewards.html:115
+msgid "Deposit Bonus Details"
+msgstr "تفاصيل المكافأة الإيداع"
+
+#: templates/meta_search/rewards.html:119
+msgid "Repeat of tiers for clarity"
+msgstr "كرر المستويات من أجل الوضوح"
+
+#: templates/meta_search/rewards.html:126
+msgid "Collect once per day."
+msgstr "اجمع مرة واحدة يوميًا."
+
+#: templates/meta_search/rewards.html:133
+#: templates/meta_search/rewards.html:136
+msgid "Consecutive Days Rewards"
+msgstr "مكافآت أيام متتالية"
+
+#: templates/meta_search/rewards.html:137
+msgid "Work for consecutive days and receive a reward of:"
+msgstr "العمل في أيام متتالية واتخاذ مكافأة:"
+
+#: templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:155
+msgid "5 days"
+msgstr "5 أيام"
+
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:156
+msgid "15 days"
+msgstr "15 يومًا"
+
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/rewards.html:157
+msgid "30 days"
+msgstr "30 يومًا"
+
+#: templates/meta_search/rewards.html:149
+msgid "Consecutive Days Details"
+msgstr "تفاصيل أيام متتالية"
+
+#: templates/meta_search/rewards.html:152
+msgid "Consecutive Days"
+msgstr "أيام متتالية"
+
+#: templates/meta_search/rewards.html:153
+msgid "Maintain streaks to unlock larger rewards."
+msgstr "الحفاظ على خطوط لفتح مكافآت أكبر."
+
+#: templates/meta_search/rewards.html:165
+#: templates/meta_search/rewards.html:168
+msgid "About Gift Boxes"
+msgstr "حول صناديق الهدايا"
+
+#: templates/meta_search/rewards.html:169
+msgid "Have a chance to get 0–3 random Gift Boxes every round."
+msgstr "احصل على فرصة للحصول على صناديق هدايا من 0 إلى 3 كل جولة."
+
+#: templates/meta_search/rewards.html:171
+msgid "Gift Boxes Cash Bonus"
+msgstr "صناديق الهدايا المكافأة النقدية"
+
+#: templates/meta_search/rewards.html:171
+#: templates/meta_search/rewards.html:172
+msgid "Up to"
+msgstr "حتى"
+
+#: templates/meta_search/rewards.html:172
+msgid "Gift Boxes Commission Bonus"
+msgstr "مكافأة لجنة صناديق الهدايا"
+
+#: templates/meta_search/rewards.html:172
+msgid "30× commission"
+msgstr "30 × اللجنة"
+
+#: templates/meta_search/rewards.html:174
+msgid "For more details, contact customer service."
+msgstr "لمزيد من التفاصيل ، اتصل بخدمة العملاء."
+
+#: templates/meta_search/rewards.html:181
+msgid "Gift Boxes Detail"
+msgstr "مربعات الهدايا التفاصيل"
+
+#: templates/meta_search/rewards.html:184
+msgid "Gift Boxes"
+msgstr "صناديق الهدايا"
+
+#: templates/meta_search/rewards.html:185
+msgid "Two types of Gift Boxes rewards are available."
+msgstr "هناك نوعان من مكافآت صناديق الهدايا متوفرة."
+
+#: templates/meta_search/rewards.html:187
+msgid "Daily Box"
+msgstr "مربع يومي"
+
+#: templates/meta_search/rewards.html:187
+#: templates/meta_search/rewards.html:188
+msgid "Chance"
+msgstr "فرصة"
+
+#: templates/meta_search/rewards.html:188
+msgid "Milestone Box"
+msgstr "مربع معلم"
+
+#: templates/meta_search/rewards.html:190
+msgid "Box odds reset weekly."
+msgstr "صناديق احتمالات إعادة تعيين أسبوعي."
+
+#: templates/meta_search/rewards.html:197
+#: templates/meta_search/rewards.html:200
+#, fuzzy
+#| msgid "About us"
+msgid "About Rank"
+msgstr "معلومات عنا"
+
+#: templates/meta_search/rewards.html:201
+msgid "Commission tiers & upgrade notes"
+msgstr "اللجنة مستويات وترقية الملاحظات"
+
+#: templates/meta_search/rewards.html:203
+#: templates/meta_search/rewards.html:204
+#: templates/meta_search/rewards.html:205 templates/meta_search/wallet.html:191
+#: templates/meta_search/wallet.html:204 templates/meta_search/wallet.html:238
+#: templates/meta_search/wallet.html:251 templates/meta_search/wallet.html:282
+#: templates/meta_search/wallet.html:295 templates/meta_search/wallet.html:382
+#: templates/meta_search/wallet.html:573 templates/meta_search/wallet.html:581
+#: templates/tasks/task_detail.html:154
+msgid "Commission"
+msgstr "عمولة"
+
+#: templates/meta_search/rewards.html:207
+msgid "Contact Customer Service for more details."
+msgstr "اتصل بخدمة العملاء لمزيد من التفاصيل."
+
+#: templates/meta_search/rewards.html:214
+msgid "About Rank Details"
+msgstr "حول تفاصيل الترتيب"
+
+#: templates/meta_search/rewards.html:217
+msgid "Rank Upgrade Details"
+msgstr "ترتيب تفاصيل الترقية"
+
+#: templates/meta_search/rewards.html:218
+msgid "More constraints & upgrade hints"
+msgstr "المزيد من القيود وتلميحات الترقية"
+
+#: templates/meta_search/rewards.html:220
+#: templates/meta_search/rewards.html:221
+msgid "Note"
+msgstr "ملحوظة"
+
+#: templates/meta_search/rewards.html:220
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "One withdrawal/day"
+msgstr "تعيين دبوس الانسحاب الجديد"
+
+#: templates/meta_search/rewards.html:221
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Two withdrawals/day"
+msgstr "تأكيد كلمة مرور السحب"
+
+#: templates/meta_search/rewards.html:222
+msgid "Upgrade"
+msgstr "يرقي"
+
+#: templates/meta_search/rewards.html:222
+msgid "Recharge"
+msgstr "إعادة الشحن"
+
+#: templates/meta_search/rewards.html:224
+msgid "SVIP can become an agent; subordinate commissions may apply."
+msgstr "يمكن أن يصبح SVIP وكيلًا ؛ قد تنطبق اللجان المرؤوس."
+
+#: templates/meta_search/rewards.html:235
+#, fuzzy
+#| msgid "Previous slide"
+msgid "Previous"
+msgstr "الشريحة السابقة"
+
+#: templates/meta_search/rewards.html:236
+msgid "Next"
+msgstr "التالي"
+
+#: templates/meta_search/rewards.html:238
+msgid "Slide indicators"
+msgstr "مؤشرات الشرائح"
 
 #: templates/meta_search/settings_change_password.html:4
 msgid "Settings — Change password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:20
-msgid "Change password"
-msgstr ""
+msgstr "الإعدادات - تغيير كلمة المرور"
 
 #: templates/meta_search/settings_change_password.html:22
 msgid ""
 "For security, confirm your phone, pass the captcha, then set a strong "
 "password."
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:55
-#: templates/meta_search/signin.html:73
-msgid "Captcha"
-msgstr ""
+msgstr "للأمان ، قم بتأكيد هاتفك ، مرر Captcha ، ثم قم بتعيين كلمة مرور قوية."
 
 #: templates/meta_search/settings_change_password.html:66
 msgid "Old password"
-msgstr ""
+msgstr "كلمة المرور القديمة"
 
 #: templates/meta_search/settings_change_password.html:79
 msgid "Forgot current password?"
-msgstr ""
+msgstr "هل نسيت كلمة المرور الحالية؟"
 
 #: templates/meta_search/settings_change_password.html:95
 msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
-msgstr ""
+msgstr "استخدم 8+ أحرف مع مزيج من الحروف والأرقام والرموز."
 
 #: templates/meta_search/settings_change_password.html:102
+#: templates/meta_search/support_reset_password.html:94
 msgid "Confirm password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:116
-msgid "Save Changes"
-msgstr ""
+msgstr "تأكيد كلمة المرور"
 
 #: templates/meta_search/signin.html:4
-msgid "Sign In - Expedia"
-msgstr ""
+msgid "Sign In - Orbitpedia"
+msgstr "تسجيل الدخول - Orbitpedia"
 
-#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:123
 msgid "Sign In"
-msgstr ""
+msgstr "تسجيل الدخول"
 
-#: templates/meta_search/signin.html:21
+#: templates/meta_search/signin.html:43
 msgid "Welcome back, please sign in"
-msgstr ""
+msgstr "مرحبًا بك مرة أخرى ، يرجى تسجيل الدخول"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Don’t have an account?"
-msgstr ""
+msgstr "ليس لديك حساب؟"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Create one"
-msgstr ""
+msgstr "إنشاء واحد"
 
-#: templates/meta_search/signin.html:89
+#: templates/meta_search/signin.html:130
 msgid "Forgotten password?"
+msgstr "نسيت كلمة المرور؟"
+
+#: templates/meta_search/signup.html:4
+#, fuzzy
+#| msgid "Sign In - Orbitpedia"
+msgid "Sign Up - Orbitpedia"
+msgstr "تسجيل الدخول - Orbitpedia"
+
+#: templates/meta_search/signup.html:6
+#, fuzzy
+#| msgid "Sign in"
+msgid "Sign Up"
+msgstr "تسجيل الدخول"
+
+#: templates/meta_search/signup.html:41
+msgid "Hello friend, let’s get you registered"
+msgstr "مرحبًا يا صديقي ، دعنا ننشئك مسجلاً"
+
+#: templates/meta_search/signup.html:66 templates/meta_search/signup.html:67
+#: templates/meta_search/signup.html:69 templates/meta_search/signup.html:97
+#: templates/meta_search/signup.html:98 templates/meta_search/signup.html:100
+#, fuzzy
+#| msgid "Show/Hide password"
+msgid "Show password"
+msgstr "عرض/إخفاء كلمة المرور"
+
+#: templates/meta_search/signup.html:68 templates/meta_search/signup.html:99
+#, fuzzy
+#| msgid "Show/Hide password"
+msgid "Hide password"
+msgstr "عرض/إخفاء كلمة المرور"
+
+#: templates/meta_search/signup.html:116
+#, fuzzy
+#| msgid "Invitation code"
+msgid "Invitation Code"
+msgstr "رمز الدعوة"
+
+#: templates/meta_search/signup.html:133
+#, fuzzy
+#| msgid "Get started"
+msgid "Get Started"
+msgstr "ابدأ"
+
+#: templates/meta_search/signup.html:138
+#, fuzzy
+#| msgid "Don’t have an account?"
+msgid "Already have an account?"
+msgstr "ليس لديك حساب؟"
+
+#: templates/meta_search/signup.html:138
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+#: templates/meta_search/support_reset_password.html:6
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Support – Reset Password"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: templates/meta_search/support_reset_password.html:38
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset User Password (Support)"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: templates/meta_search/support_reset_password.html:39
+msgid "Enter the user’s phone and a new password. This action is logged."
+msgstr "أدخل هاتف المستخدم وكلمة مرور جديدة. تم تسجيل هذا الإجراء."
+
+#: templates/meta_search/support_reset_password.html:70
+msgid ""
+"Accepts <b>E.164</b> (e.g. <code>+2348012345678</code>) or local NG like "
+"<code>080…</code>."
 msgstr ""
+"يقبل [[[[[token_0]]]]] e.164 [[[[[[token_1]]]]] (على سبيل المثال ، "
+"[[[[[[token_2]]]]+2348012345678 [[[[[[[token_3]]]]) أو NG محليًا مثل "
+"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[["
+
+#: templates/meta_search/support_reset_password.html:82
+#: templates/meta_search/support_reset_password.html:84
+#: templates/meta_search/support_reset_password.html:99
+#: templates/meta_search/support_reset_password.html:101
+msgid "Show"
+msgstr "يعرض"
+
+#: templates/meta_search/support_reset_password.html:83
+#: templates/meta_search/support_reset_password.html:100
+msgid "Hide"
+msgstr "يخفي"
+
+#: templates/meta_search/support_reset_password.html:112
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Reset password"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: templates/meta_search/support_reset_password.html:113
+msgid "You must be logged in as <b>staff</b>."
+msgstr "يجب تسجيل الدخول في [[[[[[[token_0]]]]] الموظفين [[[[[token_1]]]]"
+
+#: templates/meta_search/support_reset_password.html:118
+msgid ""
+"Tip: Use strong passwords (12+ chars, mix of letters, numbers & symbols). "
+"This operation is recorded in the Admin log."
+msgstr ""
+"نصيحة: استخدم كلمات مرور قوية (12+ chars ، مزيج من الحروف والأرقام والرموز). "
+"يتم تسجيل هذه العملية في سجل المسؤول."
+
+#: templates/meta_search/support_reset_password.html:147
+msgid "Working…"
+msgstr "عمل…"
+
+#: templates/meta_search/task_dashboard.html:25
+msgid "Balances"
+msgstr "الأرصدة"
+
+#: templates/meta_search/task_dashboard.html:38
+msgid "Tasks Promo"
+msgstr "المهام الترويجية"
+
+#: templates/meta_search/task_dashboard.html:45
+msgid "Complete Tasks"
+msgstr "مهام كاملة"
+
+#: templates/meta_search/task_dashboard.html:46
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "and get rewarded"
+msgstr "الحصول على مكافأة"
+
+#: templates/meta_search/task_dashboard.html:60
+msgid "Locked:"
+msgstr "مغلق:"
+
+#: templates/meta_search/task_dashboard.html:61
+msgid "You have completed your trial. Please contact customer care."
+msgstr "لقد أكملت تجربتك. يرجى الاتصال بخدمة العملاء."
+
+#: templates/meta_search/task_dashboard.html:64
+#, python-format
+msgid "Tasks available: <strong>%(n)s</strong>"
+msgstr "المهام المتاحة: [[[[[token_0]]]]] [[[[[token_2]]]]"
+
+#: templates/meta_search/task_dashboard.html:66
+msgid "You’re up to date. Click below to get your next task."
+msgstr "أنت محدث. انقر أدناه للحصول على مهمتك التالية."
+
+#: templates/meta_search/task_dashboard.html:78
+msgid "Locked — contact support"
+msgstr "Locked - دعم الاتصال"
+
+#: templates/meta_search/task_dashboard.html:80
+#: templates/tasks/user_task_dashboard.html:254
+msgid "Click to get your task"
+msgstr "انقر للحصول على مهمتك"
+
+#: templates/meta_search/task_dashboard.html:90
+msgid "Filter tasks"
+msgstr "مهام التصفية"
+
+#: templates/meta_search/task_dashboard.html:91
+#: templates/meta_search/task_dashboard.html:105
+#: templates/meta_search/wallet.html:188 templates/meta_search/wallet.html:201
+#: templates/tasks/user_task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:300
+msgid "All"
+msgstr "الجميع"
+
+#: templates/meta_search/task_dashboard.html:92
+#: templates/meta_search/task_dashboard.html:106
+#: templates/tasks/task_detail.html:169
+#: templates/tasks/user_task_dashboard.html:265
+#: templates/tasks/user_task_dashboard.html:301
+msgid "Completed"
+msgstr "مكتمل"
+
+#: templates/meta_search/task_dashboard.html:93
+#: templates/meta_search/task_dashboard.html:107
+#: templates/tasks/user_task_dashboard.html:239
+#: templates/tasks/user_task_dashboard.html:266
+#: templates/tasks/user_task_dashboard.html:302
+msgid "Processing"
+msgstr "يعالج"
+
+#: templates/meta_search/task_dashboard.html:98
+#: templates/meta_search/task_dashboard.html:101
+#: templates/meta_search/task_dashboard.html:112
+#: templates/tasks/user_task_dashboard.html:260
+msgid "Task History"
+msgstr "تاريخ المهمة"
+
+#: templates/meta_search/task_dashboard.html:103
+#: templates/meta_search/task_dashboard.html:104
+#: templates/meta_search/task_dashboard.html:138
+#: templates/meta_search/task_dashboard.html:168
+#: templates/meta_search/task_dashboard.html:198
+#: templates/meta_search/task_dashboard.html:223
+#: templates/meta_search/withdrawal_success.html:144
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:319
+msgid "Status"
+msgstr "حالة"
+
+#: templates/meta_search/task_dashboard.html:124
+#: templates/meta_search/task_dashboard.html:154
+#: templates/meta_search/task_dashboard.html:184
+#: templates/meta_search/task_dashboard.html:239
+#: templates/meta_search/task_dashboard.html:252
+#: templates/meta_search/task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:288
+#: templates/tasks/user_task_dashboard.html:313
+msgid "View"
+msgstr "منظر"
+
+#: templates/meta_search/task_dashboard.html:128
+#: templates/meta_search/task_dashboard.html:158
+#: templates/meta_search/task_dashboard.html:188
+#: templates/tasks/user_task_dashboard.html:317
+msgid "Product"
+msgstr "منتج"
+
+#: templates/meta_search/task_dashboard.html:134
+#: templates/meta_search/task_dashboard.html:164
+#: templates/meta_search/task_dashboard.html:194
+#: templates/meta_search/task_dashboard.html:221
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:318
+msgid "Price"
+msgstr "سعر"
+
+#: templates/meta_search/task_dashboard.html:142
+#: templates/meta_search/task_dashboard.html:172
+#: templates/meta_search/task_dashboard.html:202
+#: templates/meta_search/task_dashboard.html:222
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:320
+msgid "Comm"
+msgstr "إتصالات"
+
+#: templates/meta_search/task_dashboard.html:209
+#: templates/meta_search/task_dashboard.html:269
+msgid "No Task History"
+msgstr "لا يوجد تاريخ مهمة"
+
+#: templates/meta_search/task_dashboard.html:218
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Product Name"
+msgstr "اسم المنتج"
+
+#: templates/meta_search/task_dashboard.html:219
+#: templates/tasks/task_detail.html:110
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Order ID"
+msgstr "معرف الطلب"
+
+#: templates/meta_search/task_dashboard.html:220
+#: templates/meta_search/user_dashboard.html:101
+#: templates/tasks/task_detail.html:118
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Date"
+msgstr "تاريخ"
+
+#: templates/meta_search/task_dashboard.html:224
+msgid "Action"
+msgstr "فعل"
+
+#: templates/meta_search/task_dashboard.html:233
+#: templates/meta_search/task_dashboard.html:246
+#: templates/meta_search/task_dashboard.html:258
+#, python-format
+msgid "Task #%(id)s"
+msgstr "المهمة #[[[[[token_0]]]]]"
+
+#: templates/meta_search/task_dashboard.html:280
+#: templates/meta_search/wallet.html:397 templates/tasks/task_detail.html:186
+#: templates/tasks/user_task_dashboard.html:350
+msgid "Close"
+msgstr "يغلق"
+
+#: templates/meta_search/task_dashboard.html:290
+msgid "Trial Complete"
+msgstr "محاكمة كاملة"
+
+#: templates/meta_search/task_dashboard.html:291
+msgid ""
+"You’ve completed all trial tasks. Please contact customer care to continue."
+msgstr "لقد أكملت جميع المهام التجريبية. يرجى الاتصال بخدمة العملاء للمتابعة."
+
+#: templates/meta_search/task_dashboard.html:292
+#: templates/tasks/task_detail.html:195
+#: templates/tasks/user_task_dashboard.html:357
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "Customer care"
+msgstr "عميل الصورة الرمزية 1"
+
+#: templates/meta_search/user_dashboard.html:6
+msgid "Dashboard — Tasks & Rewards"
+msgstr "لوحة القيادة - المهام والمكافآت"
+
+#: templates/meta_search/user_dashboard.html:7
+msgid "My Dashboard"
+msgstr "لوحة القيادة الخاصة بي"
+
+#: templates/meta_search/user_dashboard.html:9
+msgid "Home / dashboard"
+msgstr "الصفحة الرئيسية / لوحة القيادة"
+
+#: templates/meta_search/user_dashboard.html:98
+#: templates/meta_search/user_dashboard.html:164
+msgid "User"
+msgstr "مستخدم"
+
+#: templates/meta_search/user_dashboard.html:99
+msgid "View Profile"
+msgstr "عرض الملف الشخصي"
+
+#: templates/meta_search/user_dashboard.html:100
+msgid "Location"
+msgstr "موقع"
+
+#: templates/meta_search/user_dashboard.html:102
+#: templates/meta_search/user_dashboard.html:107
+msgid "Rating"
+msgstr "تصنيف"
+
+#: templates/meta_search/user_dashboard.html:103
+msgid "Search"
+msgstr "يبحث"
+
+#: templates/meta_search/user_dashboard.html:104
+#: templates/meta_search/user_dashboard.html:238
+msgid "Filters"
+msgstr "المرشحات"
+
+#: templates/meta_search/user_dashboard.html:105
+msgid "Recommended"
+msgstr "مُستَحسَن"
+
+#: templates/meta_search/user_dashboard.html:106
+msgid "Popular"
+msgstr "شائع"
+
+#: templates/meta_search/user_dashboard.html:108
+#, fuzzy
+#| msgid "Customer avatar 1"
+msgid "Your avatar"
+msgstr "عميل الصورة الرمزية 1"
+
+#: templates/meta_search/user_dashboard.html:109
+#: templates/meta_search/user_dashboard.html:169
+msgid "Let’s do some task and earn reward"
+msgstr "دعونا نفعل بعض المهام ونكسب المكافأة"
+
+#: templates/meta_search/user_dashboard.html:208
+msgid "Mobile header & filters"
+msgstr "رأس الجوال والمرشحات"
+
+#: templates/meta_search/user_dashboard.html:210
+msgid "View profile"
+msgstr "عرض الملف الشخصي"
+
+#: templates/meta_search/user_dashboard.html:224
+msgid "wave"
+msgstr "موجة"
+
+#: templates/meta_search/user_dashboard.html:293
+#, fuzzy, python-format
+#| msgid "Save Changes"
+msgid "Save %(name)s"
+msgstr "حفظ التغييرات"
+
+#: templates/meta_search/user_dashboard.html:320
+#, python-format
+msgid "No %(tab)s hotels available."
+msgstr "لا [[[[token_0]]]] الفنادق المتاحة."
+
+#: templates/meta_search/wallet.html:7
+msgid "Home / my wallet"
+msgstr "الصفحة الرئيسية / محفظتي"
+
+#: templates/meta_search/wallet.html:160
+msgid "Wallet Summary"
+msgstr "ملخص محفظة"
+
+#: templates/meta_search/wallet.html:163
+msgid "Current Balance"
+msgstr "التوازن الحالي"
+
+#: templates/meta_search/wallet.html:166 templates/meta_search/wallet.html:601
+msgid "Hide balance"
+msgstr "إخفاء التوازن"
+
+#: templates/meta_search/wallet.html:176
+msgid "Trial Bonus"
+msgstr "مكافأة التجربة"
+
+#: templates/meta_search/wallet.html:182 templates/meta_search/wallet.html:249
+#: templates/meta_search/wallet.html:293 templates/meta_search/wallet.html:581
+#: templates/meta_search/withdrawal.html:5
+#: templates/meta_search/withdrawal.html:157
+msgid "Withdraw"
+msgstr "ينسحب"
+
+#: templates/meta_search/wallet.html:187
+msgid "Filter transactions (mobile)"
+msgstr "معاملات التصفية (الهاتف المحمول)"
+
+#: templates/meta_search/wallet.html:190 templates/meta_search/wallet.html:203
+#: templates/meta_search/wallet.html:240 templates/meta_search/wallet.html:284
+#: templates/meta_search/wallet.html:351 templates/meta_search/wallet.html:573
+#: templates/meta_search/withdrawal.html:6
+#: templates/meta_search/withdrawal.html:199
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/wallet.html:196
+msgid "Transactions"
+msgstr "المعاملات"
+
+#: templates/meta_search/wallet.html:199
+msgid "Filter transactions (desktop)"
+msgstr "معاملات التصفية (سطح المكتب)"
+
+#: templates/meta_search/wallet.html:247 templates/meta_search/wallet.html:291
+msgid "Added funds"
+msgstr "أموال إضافية"
+
+#: templates/meta_search/wallet.html:253 templates/meta_search/wallet.html:297
+#: templates/meta_search/wallet.html:581
+msgid "Adjustment"
+msgstr "تعديل"
+
+#: templates/meta_search/wallet.html:310
+msgid "No Transaction History"
+msgstr "لا يوجد تاريخ للمعاملة"
+
+#: templates/meta_search/wallet.html:311
+msgid "When you start using your wallet, entries will show here."
+msgstr "عندما تبدأ في استخدام محفظتك ، ستعرض الإدخالات هنا."
+
+#: templates/meta_search/wallet.html:327
+#, python-format
+msgid "Added funds • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "أموال إضافية • ٪ (T.Created_at | التاريخ: \"Y-M-D\") S"
+
+#: templates/meta_search/wallet.html:331
+msgid "No deposits yet"
+msgstr "لا ودائع حتى الآن"
+
+#: templates/meta_search/wallet.html:347
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal (Pending)"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/wallet.html:349
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal (Failed)"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/wallet.html:356
+msgid "Requested"
+msgstr "مطلوب"
+
+#: templates/meta_search/wallet.html:358
+msgid "Request"
+msgstr "طلب"
+
+#: templates/meta_search/wallet.html:360
+msgid "Posted"
+msgstr "نشر"
+
+#: templates/meta_search/wallet.html:367
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "No withdrawals yet"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/wallet.html:382
+#, python-format
+msgid "Payment • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "الدفع • ٪ (t.created_at | التاريخ: \"y-m-d\") s"
+
+#: templates/meta_search/wallet.html:386
+msgid "No commissions yet"
+msgstr "لا عمولات حتى الآن"
+
+#: templates/meta_search/wallet.html:398
+msgid "Transaction Details"
+msgstr "تفاصيل المعاملة"
+
+#: templates/meta_search/wallet.html:406
+msgid "Transaction ID"
+msgstr "معرف المعاملة"
+
+#: templates/meta_search/wallet.html:406
+msgid "Copy ID"
+msgstr "نسخ معرف"
+
+#: templates/meta_search/wallet.html:408
+msgid "Description"
+msgstr "وصف"
+
+#: templates/meta_search/wallet.html:410
+msgid "State"
+msgstr "ولاية"
+
+#: templates/meta_search/wallet.html:581
+msgid "Added fund to wallet"
+msgstr "تمت إضافة صندوق إلى المحفظة"
+
+#: templates/meta_search/wallet.html:600
+msgid "Show balance"
+msgstr "عرض التوازن"
+
+#: templates/meta_search/withdrawal.html:8
+msgid "Home / my Wallet / Withdrawal"
+msgstr "الصفحة الرئيسية / محفظتي / الانسحاب"
+
+#: templates/meta_search/withdrawal.html:167
+msgid "Your withdrawal method is verified."
+msgstr "تم التحقق من طريقة السحب الخاصة بك."
+
+#: templates/meta_search/withdrawal.html:222
+msgid "EUR (Euro)"
+msgstr "يورو (يورو)"
+
+#: templates/meta_search/withdrawal.html:227
+msgid "USD (US Dollar)"
+msgstr "الدولار الأمريكي (الدولار الأمريكي)"
+
+#: templates/meta_search/withdrawal.html:232
+msgid "GBP (Pound)"
+msgstr "GBP (الجنيه)"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Min"
+msgstr "دقيقة"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Max"
+msgstr "الأعلى"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "per request"
+msgstr "لكل طلب"
+
+#: templates/meta_search/withdrawal.html:256
+msgid "Bound wallet address"
+msgstr "عنوان محفظة ملزمة"
+
+#: templates/meta_search/withdrawal.html:257
+msgid "Update address"
+msgstr "تحديث العنوان"
+
+#: templates/meta_search/withdrawal.html:264
+msgid "Network:"
+msgstr "شبكة:"
+
+#: templates/meta_search/withdrawal.html:278
+msgid "Bind your wallet address first"
+msgstr "ربط عنوان محفظتك أولاً"
+
+#: templates/meta_search/withdrawal.html:279
+msgid "Bind Wallet Address"
+msgstr "ربط عنوان المحفظة"
+
+#: templates/meta_search/withdrawal.html:283
+msgid ""
+"You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste "
+"your wallet address → verify (email/SMS) → the address will be saved and "
+"auto-filled here."
+msgstr ""
+"ستذهب إلى صفحة عنوان الربط → اختر الشبكة (على سبيل المثال TRC20) → لصق عنوان "
+"محفظتك → تحقق (البريد الإلكتروني/الرسائل القصيرة) → سيتم حفظ العنوان وملء "
+"تلقائيًا هنا."
+
+#: templates/meta_search/withdrawal.html:285
+msgid "Bind wallet address?"
+msgstr "ربط عنوان المحفظة؟"
+
+#: templates/meta_search/withdrawal.html:296
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal Method"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/withdrawal.html:303
+msgid "ETHEREUM"
+msgstr "ethereum"
+
+#: templates/meta_search/withdrawal.html:330
+#: templates/meta_search/withdrawal.html:472
+msgid "The withdrawal requirement has yet to be fulfilled."
+msgstr "لم يتم الوفاء بمتطلبات الانسحاب بعد."
+
+#: templates/meta_search/withdrawal.html:332
+msgid "WITHDRAW"
+msgstr "ينسحب"
+
+#: templates/meta_search/withdrawal.html:339
+#, fuzzy
+#| msgid "You don’t have a withdrawal password yet. Set one first."
+msgid "For security, you must set a withdrawal password first."
+msgstr "ليس لديك كلمة مرور سحب بعد. تعيين واحد أولا."
+
+#: templates/meta_search/withdrawal.html:340
+#, fuzzy
+#| msgid "Current withdrawal password"
+msgid "Set withdrawal password"
+msgstr "كلمة مرور السحب الحالية"
+
+#: templates/meta_search/withdrawal.html:349
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Confirm withdrawal"
+msgstr "تأكيد كلمة مرور السحب"
+
+#: templates/meta_search/withdrawal.html:354
+#, fuzzy
+#| msgid "Incorrect withdrawal password."
+msgid "Enter your 6-digit withdrawal password to continue."
+msgstr "كلمة مرور السحب غير صحيحة."
+
+#: templates/meta_search/withdrawal.html:356
+msgid "Cancel"
+msgstr "يلغي"
+
+#: templates/meta_search/withdrawal.html:357
+#, fuzzy
+#| msgid "Confirm withdrawal password"
+msgid "Confirm & Withdraw"
+msgstr "تأكيد كلمة مرور السحب"
+
+#: templates/meta_search/withdrawal.html:368
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal policy"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "The withdrawal requirement has yet to be fulfilled"
+msgstr "لم يتم الوفاء بمتطلبات السحب بعد"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "COMPLETE MORE TASKS"
+msgstr "أكمل المزيد من المهام"
+
+#: templates/meta_search/withdrawal.html:371
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "before the next withdrawal."
+msgstr "تعيين دبوس الانسحاب الجديد"
+
+#: templates/meta_search/withdrawal.html:373
+#, python-format
+msgid ""
+"Locked: The withdrawal requirement has yet to be fulfilled "
+"%(withdraw_cycles_remaining)s"
+msgstr "مغلق: لم يتم الوفاء بمتطلبات الانسحاب بعد [[[[[token_0]]]]]]"
+
+#: templates/meta_search/withdrawal.html:377
+msgid "Got it"
+msgstr "فهمتها"
+
+#: templates/meta_search/withdrawal.html:500
+msgid "Processing…"
+msgstr "يعالج…"
+
+#: templates/meta_search/withdrawal_success.html:5
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal Submitted"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/withdrawal_success.html:6
+msgid "Home / my Wallet / Withdrawal / Success"
+msgstr "الصفحة الرئيسية / محفظتي / الانسحاب / النجاح"
+
+#: templates/meta_search/withdrawal_success.html:108
+msgid "Awaiting Approval"
+msgstr "في انتظار الموافقة"
+
+#: templates/meta_search/withdrawal_success.html:114
+#, fuzzy
+#| msgid "Withdrawal security"
+msgid "Withdrawal submitted"
+msgstr "أمن الانسحاب"
+
+#: templates/meta_search/withdrawal_success.html:121
+msgid "We’ve received your request."
+msgstr "لقد تلقينا طلبك."
+
+#: templates/meta_search/withdrawal_success.html:122
+msgid "You’ll get an update once it’s reviewed."
+msgstr "ستحصل على تحديث بمجرد مراجعته."
+
+#: templates/meta_search/withdrawal_success.html:129
+msgid "Request ID"
+msgstr "طلب معرف"
+
+#: templates/meta_search/withdrawal_success.html:132
+#: templates/meta_search/withdrawal_success.html:197
+msgid "Copy"
+msgstr "ينسخ"
+
+#: templates/meta_search/withdrawal_success.html:150
+#: templates/tasks/user_task_dashboard.html:312
+msgid "Submitted"
+msgstr "مُقَدَّم"
+
+#: templates/meta_search/withdrawal_success.html:157
+msgid "To"
+msgstr "ل"
+
+#: templates/meta_search/withdrawal_success.html:166
+msgid "Your withdrawal request has been submitted."
+msgstr "تم تقديم طلب السحب الخاص بك."
+
+#: templates/meta_search/withdrawal_success.html:171
+#, fuzzy
+#| msgid "Set new withdrawal PIN"
+msgid "Make another withdrawal"
+msgstr "تعيين دبوس الانسحاب الجديد"
+
+#: templates/meta_search/withdrawal_success.html:175
+msgid ""
+"Tip: If you navigate back to the withdrawal page, it will load a fresh form "
+"so it can’t be submitted twice."
+msgstr ""
+"نصيحة: إذا انتقلت إلى صفحة السحب ، فسيتم تحميل نموذج جديد بحيث لا يمكن "
+"إرساله مرتين."
+
+#: templates/tasks/task_detail.html:4
+msgid "Task Preview"
+msgstr "معاينة المهام"
+
+#: templates/tasks/task_detail.html:6
+msgid "Home / Task / Detail"
+msgstr "الصفحة الرئيسية / المهمة / التفاصيل"
+
+#: templates/tasks/task_detail.html:90
+msgid "Task image"
+msgstr "صورة المهمة"
+
+#: templates/tasks/task_detail.html:103
+msgid "Rated"
+msgstr "تقييم"
+
+#: templates/tasks/task_detail.html:152
+msgid "1X commission"
+msgstr "1x لجنة"
+
+#: templates/tasks/task_detail.html:165
+msgid "Submit"
+msgstr "يُقدِّم"
+
+#: templates/tasks/task_detail.html:167
+msgid "Submitted (waiting)"
+msgstr "مقدم (الانتظار)"
+
+#: templates/tasks/task_detail.html:191
+msgid "Congratulations!"
+msgstr "مبروك!"
+
+#: templates/tasks/task_detail.html:193
+msgid ""
+"You have received a platinum package. For more info please contact customer "
+"service."
+msgstr ""
+"لقد تلقيت حزمة البلاتين. لمزيد من المعلومات ، يرجى الاتصال بخدمة العملاء."
+
+#: templates/tasks/user_task_dashboard.html:5
+#: templates/tasks/user_task_dashboard.html:6
+msgid "Tasks Dashboard"
+msgstr "مهام لوحة القيادة"
+
+#: templates/tasks/user_task_dashboard.html:213
+msgid "Home / Task"
+msgstr "الصفحة الرئيسية / المهمة"
+
+#: templates/tasks/user_task_dashboard.html:227
+msgid "Total Asset"
+msgstr "إجمالي الأصول"
+
+#: templates/tasks/user_task_dashboard.html:231
+msgid "Asset"
+msgstr "أصل"
+
+#: templates/tasks/user_task_dashboard.html:235
+msgid "Dividends"
+msgstr "أرباح"
+
+#: templates/tasks/user_task_dashboard.html:246
+msgid "Complete Tasks and get"
+msgstr "أكمل المهام واحصل"
+
+#: templates/tasks/user_task_dashboard.html:246
+#, fuzzy
+#| msgid "Get Rewarded"
+msgid "rewarded"
+msgstr "الحصول على مكافأة"
+
+#: templates/tasks/user_task_dashboard.html:247
+msgid "Banner Image"
+msgstr "صورة لافتة"
+
+#: templates/tasks/user_task_dashboard.html:249
+msgid "Order received today:"
+msgstr "تم استلام الطلب اليوم:"
+
+#: templates/tasks/user_task_dashboard.html:252
+msgid "Fetching your task…"
+msgstr "جلب مهمتك ..."
+
+#: templates/tasks/user_task_dashboard.html:262
+msgid "Filter status"
+msgstr "حالة التصفية"
+
+#: templates/tasks/user_task_dashboard.html:268
+msgid "Apply"
+msgstr "يتقدم"
+
+#: templates/tasks/user_task_dashboard.html:293
+#: templates/tasks/user_task_dashboard.html:323
+msgid "No tasks yet."
+msgstr "لا توجد مهام حتى الآن."
+
+#: templates/tasks/user_task_dashboard.html:311
+msgid "Approved"
+msgstr "موافقة"
+
+#: templates/tasks/user_task_dashboard.html:335
+#: templates/tasks/user_task_dashboard.html:392
+msgid "Loading…"
+msgstr "تحميل…"
+
+#: templates/tasks/user_task_dashboard.html:336
+#: templates/tasks/user_task_dashboard.html:386
+msgid "Please wait a moment"
+msgstr "من فضلك انتظر لحظة"
+
+#: templates/tasks/user_task_dashboard.html:353
+msgid "Oh No!"
+msgstr "أوه لا!"
+
+#: templates/tasks/user_task_dashboard.html:355
+msgid ""
+"You have completed <strong id=\"completedCount\">0</strong> orders."
+"<br>Please contact customer service for assistance."
+msgstr ""
+"لقد أكملت [[[[[token_0]]]]] 0 [[[[[[token_1]]]] أوامر. [[[[[[token_2]]]"

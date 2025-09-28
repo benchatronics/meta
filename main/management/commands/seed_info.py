@@ -12,7 +12,7 @@ PAGES = {
     "about": {
         "title": "About us",
         "body": (
-            "Expedia is a fast, secure platform for travel and rewards.\n\n"
+            "Orbitpedia (metasearch) is a fast, secure platform for travel and rewards.\n\n"
             "We help you discover hotels, track favorites, and manage your wallet."
         ),
     },
@@ -54,7 +54,7 @@ PAGES = {
 }
 
 WELCOME_ANNOUNCEMENT = {
-    "title": "Welcome to Expedia 🎉",
+    "title": "Welcome to Orbitpedia (metasearch) 🎉",
     "body": (
         "We’ve launched a refreshed Settings experience with language picker, "
         "profile management, and secure password tools. Thanks for trying it out!"

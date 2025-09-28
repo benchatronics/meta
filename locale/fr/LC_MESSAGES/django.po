@@ -1,55 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-23 07:43+0000\n"
-"PO-Revision-Date: 2025-08-22 09:00+0000\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: French\n"
+"POT-Creation-Date: 2025-09-23 16:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-
-
-#: main/admin.py:44
+#: main/admin.py:392
 msgid "Clear withdrawal PIN"
-msgstr "Effacer le code PIN de retrait"
+msgstr "PIN DE RETRAIT"
 
-#: main/admin.py:46
+#: main/admin.py:394
 msgid ""
 "Tick to remove any existing withdrawal PIN so the user must set a new one."
-msgstr "Cochez pour supprimer tout code PIN de retrait existant afin que l’utilisateur doive en définir un nouveau."
+msgstr ""
+"Cochez pour supprimer toute broche de retrait existante afin que "
+"l'utilisateur doit en définir un nouveau."
 
-#: main/admin.py:49
+#: main/admin.py:397
 msgid "Set new withdrawal PIN"
-msgstr "Définir un nouveau code PIN de retrait"
+msgstr "Définir la nouvelle broche de retrait"
 
-#: main/admin.py:57
+#: main/admin.py:405
 msgid "Optional. Enter exactly 6 digits to set/reset the PIN."
-msgstr "Optionnel. Entrez exactement 6 chiffres pour définir/réinitialiser le code PIN."
+msgstr ""
+"Facultatif. Entrez exactement 6 chiffres pour définir / réinitialiser la "
+"broche."
 
-#: main/admin.py:70
+#: main/admin.py:418
 msgid "PIN must be exactly 6 digits."
-msgstr "Le code PIN doit comporter exactement 6 chiffres."
+msgstr "La broche doit être exactement à 6 chiffres."
 
-#: main/admin.py:136
+#: main/admin.py:483
 msgid "Withdrawal security"
-msgstr "Sécurité du retrait"
+msgstr "Garantie de retrait"
 
 #: main/forms.py:27
 msgid "Account password"
 msgstr "Mot de passe du compte"
 
-#: main/forms.py:31
+#: main/forms.py:31 templates/meta_search/withdrawal.html:350
 msgid "Withdrawal password (6 digits)"
 msgstr "Mot de passe de retrait (6 chiffres)"
 
 #: main/forms.py:35
 msgid "Confirm withdrawal password"
-msgstr "Confirmez le mot de passe de retrait"
+msgstr "Confirmer le mot de passe de retrait"
 
 #: main/forms.py:46
 msgid "Incorrect account password."
@@ -59,7 +66,7 @@ msgstr "Mot de passe du compte incorrect."
 msgid "Enter exactly 6 digits."
 msgstr "Entrez exactement 6 chiffres."
 
-#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:216
+#: main/forms.py:55 main/forms.py:89 main/forms.py:362 main/views.py:268
 msgid "Passwords do not match."
 msgstr "Les mots de passe ne correspondent pas."
 
@@ -73,7 +80,7 @@ msgstr "Nouveau mot de passe de retrait (6 chiffres)"
 
 #: main/forms.py:69
 msgid "Confirm new withdrawal password"
-msgstr "Confirmez le nouveau mot de passe de retrait"
+msgstr "Confirmer un nouveau mot de passe de retrait"
 
 #: main/forms.py:80
 msgid "Incorrect withdrawal password."
@@ -82,28 +89,29 @@ msgstr "Mot de passe de retrait incorrect."
 #: main/forms.py:161
 #, python-format
 msgid "JPG/PNG/WebP/GIF, up to %(mb)s MB."
-msgstr "JPG/PNG/WebP/GIF, jusqu’à %(mb)s Mo."
+msgstr "Jpg/png/webp/gif, jusqu'à %(mb)s MB."
 
 #: main/forms.py:162
 msgid "Direct image URL (used only if no file is uploaded)."
-msgstr "URL d’image directe (utilisée uniquement si aucun fichier n’est téléchargé)."
+msgstr ""
+"URL d'image directe (utilisée uniquement si aucun fichier n'est téléchargé)."
 
 #: main/forms.py:180
 msgid "Unsupported image type. Use JPG, PNG, WebP, or GIF."
-msgstr "Type d’image non pris en charge. Utilisez JPG, PNG, WebP ou GIF."
+msgstr "Type d'image non pris en charge. Utilisez JPG, PNG, WebP ou GIF."
 
 #: main/forms.py:182
 #, python-format
 msgid "Image too large (max %(mb)s MB)."
-msgstr "Image trop grande (max %(mb)s Mo)."
+msgstr "Image trop grande (max %(mb)s MB)."
 
 #: main/forms.py:191
 msgid "Only http/https URLs are allowed."
-msgstr "Seules les URL http/https sont autorisées."
+msgstr "Seules les URL HTTP / HTTPS sont autorisées."
 
 #: main/forms.py:206 main/forms.py:371 main/forms.py:581
 msgid "Country code"
-msgstr "Code pays"
+msgstr "Code du pays"
 
 #: main/forms.py:211 main/forms.py:376 main/forms.py:586
 msgid "Enter your phone number"
@@ -115,11 +123,11 @@ msgstr "Numéro de téléphone"
 
 #: main/forms.py:220
 msgid "Enter your invitation code"
-msgstr "Entrez votre code d’invitation"
+msgstr "Entrez votre code d'invitation"
 
 #: main/forms.py:223
 msgid "Invitation code"
-msgstr "Code d’invitation"
+msgstr "Code d'invitation"
 
 #: main/forms.py:225 main/forms.py:592
 msgid "I am not a robot"
@@ -131,31 +139,34 @@ msgstr "Entrez votre mot de passe"
 
 #: main/forms.py:240
 msgid "Re-enter your password"
-msgstr "Saisissez de nouveau votre mot de passe"
+msgstr "Rentrez votre mot de passe"
 
-#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:181
+#: main/forms.py:261 main/forms.py:410 main/forms.py:637 main/views.py:233
 msgid "Invalid phone number format."
-msgstr "Format de numéro de téléphone invalide."
+msgstr "Format de numéro de téléphone non valide."
 
-#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:183
+#: main/forms.py:264 main/forms.py:413 main/forms.py:640 main/views.py:235
 msgid "This phone number is not possible for the selected country."
-msgstr "Ce numéro de téléphone n’est pas possible pour le pays sélectionné."
+msgstr "Ce numéro de téléphone n'est pas possible pour le pays sélectionné."
 
-#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:185
+#: main/forms.py:266 main/forms.py:415 main/forms.py:642 main/views.py:237
 msgid "This phone number is not valid for the selected country."
-msgstr "Ce numéro de téléphone n’est pas valide pour le pays sélectionné."
+msgstr "Ce numéro de téléphone n'est pas valable pour le pays sélectionné."
 
 #: main/forms.py:281 main/forms.py:429 main/forms.py:657
 #, python-format
 msgid ""
 "Phone number length must be between %(lo)d and %(hi)d digits for %(country)s."
-msgstr "La longueur du numéro doit être comprise entre %(lo)d et %(hi)d chiffres pour %(country)s."
+msgstr ""
+"La longueur du numéro de téléphone doit être entre %(lo)d et %(hi)d "
+"chiffres pour %(country)s."
 
 #: main/forms.py:293
 msgid "An account with this phone already exists."
-msgstr "Un compte avec ce numéro de téléphone existe déjà."
+msgstr "Un compte avec ce téléphone existe déjà."
 
-#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:58
+#: main/forms.py:323 main/forms.py:389 templates/meta_search/signin.html:80
+#: templates/meta_search/signup.html:54
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -163,457 +174,2072 @@ msgstr "Mot de passe"
 msgid ""
 "Raw passwords are not stored, so there is no way to see this user’s "
 "password, but you can change the password using the “Change password” form."
-msgstr "Les mots de passe bruts ne sont pas stockés, il n’y a donc aucun moyen de voir le mot de passe de l’utilisateur, mais vous pouvez le modifier à l’aide du formulaire « Changer le mot de passe »."
+msgstr ""
+"Les mots de passe bruts ne sont pas stockés, il n'y a donc aucun moyen de "
+"voir le mot de passe de cet utilisateur, mais vous pouvez modifier le mot de "
+"passe à l'aide du formulaire «Changer le mot de passe»."
 
 #: main/forms.py:352
 msgid "User phone (E.164 or local NG)"
-msgstr "Téléphone utilisateur (E.164 ou format local NG)"
+msgstr "Téléphone utilisateur (E.164 ou NG local)"
 
 #: main/forms.py:353
 msgid "+2348012345678 or 080..."
-msgstr "+2348012345678 ou 080..."
+msgstr "+2348012345678 ou 080 ..."
 
-#: main/forms.py:355 main/views.py:210
+#: main/forms.py:355 main/views.py:262
 #: templates/meta_search/settings_change_password.html:83
+#: templates/meta_search/support_reset_password.html:77
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: main/forms.py:356 main/views.py:211
+#: main/forms.py:356 main/views.py:263
 msgid "Confirm new password"
-msgstr "Confirmez le nouveau mot de passe"
+msgstr "Confirmer un nouveau mot de passe"
 
 #: main/forms.py:670
 msgid "Phone does not match your account."
-msgstr "Le numéro de téléphone ne correspond pas à votre compte."
+msgstr "Le téléphone ne correspond pas à votre compte."
 
-#: main/models.py:578 templates/base_info.html:22
+#: main/models.py:672 templates/base_info.html:22
 #: templates/meta_search/info_index.html:27
 msgid "About us"
 msgstr "À propos de nous"
 
-#: main/models.py:579 templates/base_info.html:26
+#: main/models.py:673 templates/base_info.html:26
 #: templates/meta_search/info_index.html:31
 msgid "Contact us"
 msgstr "Contactez-nous"
 
-#: main/models.py:580 templates/base_info.html:30
+#: main/models.py:674 templates/base_info.html:30
 #: templates/meta_search/info_index.html:35
 msgid "Help"
 msgstr "Aide"
 
-
-#: main/models.py:581 templates/base_info.html:34
+#: main/models.py:675 templates/base_info.html:34
 #: templates/meta_search/info_index.html:39
+#: templates/meta_search/profile_settings.html:75
 msgid "Level"
-msgstr ""
+msgstr "Niveau"
 
-#: main/models.py:582 templates/base_info.html:38
+#: main/models.py:676 templates/base_info.html:38
 #: templates/meta_search/info_index.html:43
 msgid "Sign-in reward"
-msgstr ""
+msgstr "Récompense de connexion"
 
-#: main/views.py:69
+#: main/views.py:121
 msgid "Withdrawal password set."
-msgstr ""
+msgstr "Ensemble de mot de passe de retrait."
 
-#: main/views.py:79
+#: main/views.py:131
 msgid "You don’t have a withdrawal password yet. Set one first."
 msgstr ""
+"Vous n'avez pas encore de mot de passe de retrait. Réglez un en premier."
 
-#: main/views.py:86
+#: main/views.py:138
 msgid "Withdrawal password updated."
-msgstr ""
+msgstr "Mot de passe de retrait mis à jour."
 
-#: main/views.py:209
+#: main/views.py:261
 msgid "Verification code"
-msgstr ""
+msgstr "Le code de vérification"
 
-#: main/views.py:247
+#: main/views.py:299
 msgid "No account found for that phone."
-msgstr ""
+msgstr "Aucun compte trouvé pour ce téléphone."
 
-#: main/views.py:259
+#: main/views.py:311
 #, python-format
 msgid "Your reset code is: %(otp)s. It expires in 10 minutes."
 msgstr ""
-
-#: main/views.py:263
-msgid "We couldn’t send the code. Please try again in a moment."
-msgstr ""
-
-#: main/views.py:267
-msgid "Unexpected error sending code. Try again later."
-msgstr ""
-
-#: main/views.py:272
-msgid "We sent a verification code to your phone."
-msgstr ""
-
-#: main/views.py:275 main/views.py:322 main/views.py:380 main/views.py:408
-#: main/views.py:1169
-msgid "Please correct the errors below."
-msgstr ""
-
-#: main/views.py:290
-msgid "Start by entering your phone number."
-msgstr ""
-
-#: main/views.py:298
-msgid "Invalid or expired code."
-msgstr ""
-
-#: main/views.py:304
-msgid "Account not found. Please start over."
-msgstr ""
+"Votre code de réinitialisation est: %(otp)s. Il expire en 10 minutes."
 
 #: main/views.py:315
+msgid "We couldn’t send the code. Please try again in a moment."
+msgstr ""
+"Nous ne pouvions pas envoyer le code. Veuillez réessayer dans un instant."
+
+#: main/views.py:319
+msgid "Unexpected error sending code. Try again later."
+msgstr "Code d'envoi d'erreur inattendu. Réessayez plus tard."
+
+#: main/views.py:324
+msgid "We sent a verification code to your phone."
+msgstr "Nous avons envoyé un code de vérification à votre téléphone."
+
+#: main/views.py:327 main/views.py:374 main/views.py:434 main/views.py:463
+#: main/views.py:1421
+msgid "Please correct the errors below."
+msgstr "Veuillez corriger les erreurs ci-dessous."
+
+#: main/views.py:342
+msgid "Start by entering your phone number."
+msgstr "Commencez par entrer dans votre numéro de téléphone."
+
+#: main/views.py:350
+msgid "Invalid or expired code."
+msgstr "Code non valide ou expiré."
+
+#: main/views.py:356
+msgid "Account not found. Please start over."
+msgstr "Compte non trouvé. Veuillez recommencer."
+
+#: main/views.py:367
 msgid "Your password has been reset. You can now sign in."
 msgstr ""
+"Votre mot de passe a été réinitialisé. Vous pouvez maintenant vous connecter."
 
-#: main/views.py:341 main/views.py:392
+#: main/views.py:395 main/views.py:447
 msgid "You're already signed in."
-msgstr ""
+msgstr "Vous êtes déjà connecté."
 
-#: main/views.py:375
+#: main/views.py:429
 msgid "Welcome back!"
-msgstr ""
+msgstr "Content de te revoir!"
 
-#: main/views.py:378
+#: main/views.py:432
 msgid "Invalid phone or password."
-msgstr ""
+msgstr "Téléphone ou mot de passe non valide."
 
-#: main/views.py:405
+#: main/views.py:460
 msgid "Account created!"
-msgstr ""
+msgstr "Compte créé!"
 
-#: main/views.py:421
+#: main/views.py:476
 msgid "You have been logged out."
-msgstr ""
+msgstr "Vous avez été déconnecté."
 
-#: main/views.py:468
+#: main/views.py:523
 msgid "Invalid phone format. Please enter a valid number."
-msgstr ""
+msgstr "Format de téléphone non valide. Veuillez saisir un numéro valide."
 
-#: main/views.py:474
+#: main/views.py:529
 #, python-format
 msgid "No user found with phone %(phone)s."
-msgstr ""
+msgstr "Aucun utilisateur trouvé avec le téléphone %(phone)s."
 
-#: main/views.py:490
+#: main/views.py:545
 #, python-format
 msgid "Password reset for %(phone)s."
-msgstr ""
+msgstr "Réinitialisation du mot de passe pour %(phone)s."
 
-#: main/views.py:1167
+#: main/views.py:1419
 msgid "Password updated."
-msgstr ""
+msgstr "Mot de passe mis à jour."
 
-#: templates/base_info.html:4
-msgid "info"
-msgstr ""
+#: templates/base_auth.html:6
+msgid "Auth"
+msgstr "Authentification"
 
-#: templates/meta_search/announcements.html:5
+#: templates/base_auth.html:18
+msgid "Orbitpedia"
+msgstr "Orbitpedia"
+
+#: templates/base_auth.html:29 templates/meta_search/address_add.html:22
+#: templates/meta_search/deposit.html:20
+#: templates/meta_search/deposit_pay.html:21
+#: templates/meta_search/withdrawal.html:150
+#: templates/meta_search/withdrawal_success.html:101
+msgid "Go back"
+msgstr "Remonter"
+
+#: templates/base_auth.html:32 templates/base_info.html:5
+#: templates/base_settings.html:6 templates/base_user.html:122
+#: templates/base_user.html:124 templates/base_user.html:128
+#: templates/base_user.html:285 templates/base_user.html:287
+#: templates/meta_search/address_add.html:7
 #: templates/meta_search/announcements.html:13
-msgid "Announcements"
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/password_reset_verify.html:86
+#: templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "Home"
+msgstr "Maison"
+
+#: templates/base_info.html:4 templates/base_info.html:5
+msgid "info"
+msgstr "informations"
+
+#: templates/base_info.html:14 templates/base_user.html:152
+#: templates/base_user.html:154 templates/meta_search/announcements.html:10
+#: templates/meta_search/announcements.html:13
+msgid "Info"
+msgstr "Informations"
+
+#: templates/base_settings.html:5 templates/base_user.html:148
+#: templates/base_user.html:150 templates/meta_search/admin_dashboard.html:99
+#: templates/meta_search/profile_settings.html:7
+msgid "Settings"
+msgstr "Paramètres"
+
+#: templates/base_settings.html:6 templates/meta_search/profile_settings.html:8
+#: templates/meta_search/task_dashboard.html:5
+msgid "setting"
+msgstr "paramètre"
+
+#: templates/base_settings.html:15
+msgid "Setting"
+msgstr "Paramètre"
+
+#: templates/base_settings.html:23
+msgid "Profile"
+msgstr "Profil"
+
+#: templates/base_settings.html:27 templates/meta_search/language.html:8
+#: templates/meta_search/profile_settings.html:71
+msgid "Language"
+msgstr "Langue"
+
+#: templates/base_settings.html:31
+#: templates/meta_search/settings_change_password.html:20
+msgid "Change password"
+msgstr "Changer le mot de passe"
+
+#: templates/base_settings.html:35
+msgid "Withdrawal password"
+msgstr "Mot de passe de retrait"
+
+#: templates/base_user.html:7 templates/base_user.html:144
+#: templates/meta_search/address_add.html:7
+#: templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit_pay.html:5 templates/meta_search/wallet.html:5
+msgid "My Wallet"
+msgstr "Mon portefeuille"
+
+#: templates/base_user.html:94 templates/base_user.html:95
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: templates/base_user.html:99
+msgid "Collapse menu"
+msgstr "Menu d'effondrement"
+
+#: templates/base_user.html:99 templates/base_user.html:230
+msgid "Collapse"
+msgstr "Effondrement"
+
+#: templates/base_user.html:107 templates/base_user.html:109
+#: templates/base_user.html:111
+msgid "User avatar"
+msgstr "Avatar de l'utilisateur"
+
+#: templates/base_user.html:116 templates/meta_search/profile_settings.html:63
+msgid "User ID"
+msgstr "ID de l'utilisateur"
+
+#: templates/base_user.html:117
+#: templates/meta_search/password_reset_phone.html:41
+#: templates/meta_search/settings_change_password.html:42
+#: templates/meta_search/signin.html:67 templates/meta_search/signup.html:46
+#: templates/meta_search/support_reset_password.html:62
+msgid "Phone"
+msgstr "Téléphone"
+
+#: templates/base_user.html:121
+msgid "Sidebar"
+msgstr "Barre latérale"
+
+#: templates/base_user.html:130
+msgid "impersonation"
 msgstr ""
 
-#: templates/meta_search/announcements.html:26
-msgid "No announcements at the moment."
+#: templates/base_user.html:133 templates/meta_search/task_dashboard.html:4
+#: templates/meta_search/task_dashboard.html:5
+#: templates/meta_search/task_dashboard.html:14
+#: templates/tasks/task_detail.html:5
+msgid "Task"
+msgstr "Tâche"
+
+#: templates/base_user.html:135 templates/base_user.html:290
+#: templates/base_user.html:292 templates/meta_search/admin_dashboard.html:87
+msgid "Tasks"
+msgstr "Tâches"
+
+#: templates/base_user.html:137 templates/meta_search/rewards.html:4
+#: templates/meta_search/rewards.html:5 templates/meta_search/rewards.html:85
+msgid "Rewards"
+msgstr "Récompenses"
+
+#: templates/base_user.html:139 templates/base_user.html:296
+#: templates/base_user.html:298 templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/task_dashboard.html:52
+msgid "Reward"
+msgstr "Récompense"
+
+#: templates/base_user.html:142
+msgid "Account"
+msgstr "Compte"
+
+#: templates/base_user.html:146 templates/base_user.html:302
+#: templates/base_user.html:304 templates/meta_search/wallet.html:6
+msgid "Wallet"
+msgstr "Portefeuille"
+
+#: templates/base_user.html:159 templates/base_user.html:164
+msgid "Admin Panel"
+msgstr "Panneau d'administration"
+
+#: templates/base_user.html:170 templates/base_user.html:172
+msgid "Admin settings"
+msgstr "Paramètres d'administration"
+
+#: templates/base_user.html:176 templates/base_user.html:178
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: templates/base_user.html:191
+msgid "Menu"
+msgstr "Menu"
+
+#: templates/base_user.html:204 templates/base_user.html:205
+#: templates/meta_search/admin_dashboard.html:80
+#: templates/meta_search/announcements.html:6
+#: templates/meta_search/announcements.html:13
+#: templates/meta_search/announcements.html:21
+msgid "Announcements"
+msgstr "Annonces"
+
+#: templates/base_user.html:230
+msgid "Expand"
+msgstr "Développer"
+
+#: templates/base_user.html:284
+msgid "Primary"
+msgstr "Primaire"
+
+#: templates/captcha/custom_widget.html:3
+#: templates/meta_search/settings_change_password.html:55
+#: templates/meta_search/signin.html:114 templates/meta_search/signup.html:124
+msgid "Captcha"
+msgstr "Captcha"
+
+#: templates/captcha/custom_widget.html:6
+msgid "Enter answer"
+msgstr "Entrer la réponse"
+
+#: templates/captcha/custom_widget.html:7
+msgid "Reload image"
+msgstr "Image de rechargement"
+
+#: templates/meta_search/address_add.html:4
+#: templates/meta_search/address_add.html:31
+#: templates/meta_search/address_add.html:37
+msgid "Add Payout Address"
+msgstr "Ajouter l'adresse de paiement"
+
+#: templates/meta_search/address_add.html:5
+msgid "Wallet Address"
+msgstr "Adresse du portefeuille"
+
+#: templates/meta_search/address_add.html:7
+msgid "Add Address"
+msgstr "Ajouter l'adresse"
+
+#: templates/meta_search/address_add.html:65
+msgid "Address Type"
+msgstr "Type d'adresse"
+
+#: templates/meta_search/address_add.html:81
+#: templates/meta_search/deposit.html:157
+msgid "Ethereum (ERC20)"
+msgstr "Ethereum (ERC20)"
+
+#: templates/meta_search/address_add.html:89
+#: templates/meta_search/deposit.html:163
+#: templates/meta_search/withdrawal.html:316
+msgid "USDT (TRC20)"
+msgstr "USDT (TRC20)"
+
+#: templates/meta_search/address_add.html:106
+#: templates/meta_search/deposit_pay.html:142
+#: templates/meta_search/withdrawal.html:252
+msgid "Address"
+msgstr "Adresse"
+
+#: templates/meta_search/address_add.html:112
+msgid "Select a network to see the required format."
+msgstr "Sélectionnez un réseau pour voir le format requis."
+
+#: templates/meta_search/address_add.html:129
+msgid "Label (optional)"
+msgstr "Étiquette (facultatif)"
+
+#: templates/meta_search/address_add.html:141
+msgid "Save Address"
+msgstr "ARRESSION SAVE"
+
+#: templates/meta_search/address_add.html:142
+#: templates/meta_search/password_reset_verify.html:84
+msgid "Back"
+msgstr "Dos"
+
+#: templates/meta_search/address_add.html:156
+msgid ""
+"Ethereum address must start with 0x and be 42 characters total (0x + 40 hex)."
 msgstr ""
+"L'adresse Ethereum doit commencer avec 0x et 42 caractères au total (0x + 40 "
+"hex)."
+
+#: templates/meta_search/address_add.html:157
+msgid "TRC20 address must start with T and be 34 characters (Base58)."
+msgstr ""
+"L'adresse TRC20 doit commencer par T et être de 34 caractères (base58)."
+
+#: templates/meta_search/admin_dashboard.html:5
+msgid "Admin Office"
+msgstr "Bureau d'administration"
+
+#: templates/meta_search/admin_dashboard.html:6
+msgid "Admin"
+msgstr "Administrer"
+
+#: templates/meta_search/admin_dashboard.html:36
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: templates/meta_search/admin_dashboard.html:39
+msgid "Browse users"
+msgstr "Parcourir les utilisateurs"
+
+#: templates/meta_search/admin_dashboard.html:40
+msgid "Blocked users"
+msgstr "Utilisateurs bloqués"
+
+#: templates/meta_search/admin_dashboard.html:46
+msgid "Withdrawals"
+msgstr "Retraits"
+
+#: templates/meta_search/admin_dashboard.html:49
+#: templates/meta_search/wallet.html:578
+msgid "Pending"
+msgstr "En attente"
+
+#: templates/meta_search/admin_dashboard.html:52
+#: templates/meta_search/admin_dashboard.html:71
+#: templates/meta_search/wallet.html:404 templates/meta_search/wallet.html:578
+msgid "Confirmed"
+msgstr "Confirmé"
+
+#: templates/meta_search/admin_dashboard.html:55
+#: templates/meta_search/wallet.html:578
+msgid "Failed"
+msgstr "Échoué"
+
+#: templates/meta_search/admin_dashboard.html:62
+msgid "Deposits"
+msgstr "Dépôts"
+
+#: templates/meta_search/admin_dashboard.html:65
+msgid "Awaiting Payment"
+msgstr "En attente de paiement"
+
+#: templates/meta_search/admin_dashboard.html:68
+msgid "Awaiting Review"
+msgstr "En attente de revue"
+
+#: templates/meta_search/admin_dashboard.html:78
+msgid "Content"
+msgstr "Contenu"
+
+#: templates/meta_search/admin_dashboard.html:81
+msgid "Info pages"
+msgstr "Pages d'informations"
+
+#: templates/meta_search/admin_dashboard.html:89
+msgid "User tasks"
+msgstr "Tâches utilisateur"
+
+#: templates/meta_search/admin_dashboard.html:90
+msgid "Task templates"
+msgstr "Modèles de tâche"
+
+#: templates/meta_search/admin_dashboard.html:91
+msgid "Forced directives"
+msgstr "Directives forcées"
+
+#: templates/meta_search/admin_dashboard.html:97
+msgid "System"
+msgstr "Système"
+
+#: templates/meta_search/admin_dashboard.html:109
+msgid "Pending withdrawals (latest 10)"
+msgstr "Retraits en attente (dernier 10)"
+
+#: templates/meta_search/admin_dashboard.html:110
+msgid "View all"
+msgstr "Afficher tous"
+
+#: templates/meta_search/admin_dashboard.html:123
+msgid "Open"
+msgstr "Ouvrir"
+
+#: templates/meta_search/admin_dashboard.html:128
+msgid "No pending withdrawals."
+msgstr "Pas de retraits en suspens."
+
+#: templates/meta_search/admin_dashboard.html:137
+msgid "Recent activity"
+msgstr "Activité récente"
+
+#: templates/meta_search/admin_dashboard.html:153
+msgid "Nothing yet."
+msgstr "Rien encore."
+
+#: templates/meta_search/announcements.html:9
+msgid "information"
+msgstr "information"
+
+#: templates/meta_search/announcements.html:34
+msgid "No announcements at the moment."
+msgstr "Aucune annonce pour le moment."
+
+#: templates/meta_search/deposit.html:4 templates/meta_search/deposit.html:5
+#: templates/meta_search/deposit.html:28
+#: templates/meta_search/deposit_pay.html:5
+#: templates/meta_search/wallet.html:181 templates/meta_search/wallet.html:189
+#: templates/meta_search/wallet.html:202 templates/meta_search/wallet.html:327
+msgid "Deposit"
+msgstr "Dépôt"
+
+#: templates/meta_search/deposit.html:119
+#: templates/meta_search/deposit_pay.html:139
+#: templates/meta_search/withdrawal.html:200
+#: templates/meta_search/withdrawal_success.html:137
+msgid "Amount"
+msgstr "Montant"
+
+#: templates/meta_search/deposit.html:131
+#: templates/meta_search/withdrawal.html:215
+msgid "Currency"
+msgstr "Devise"
+
+#: templates/meta_search/deposit.html:147
+msgid "Minimum 10. Choose a preset or enter an amount."
+msgstr "Minimum 10. Choisissez un préréglage ou entrez un montant."
+
+#: templates/meta_search/deposit.html:152
+msgid "Payment Method"
+msgstr "Mode de paiement"
+
+#: templates/meta_search/deposit.html:174
+msgid "Proceed to Pay →"
+msgstr "Procéder à payer →"
+
+#: templates/meta_search/deposit_pay.html:4
+msgid "Pay Deposit"
+msgstr "Acompte"
+
+#: templates/meta_search/deposit_pay.html:5
+msgid "Pay"
+msgstr "Payer"
+
+#: templates/meta_search/deposit_pay.html:29
+#: templates/meta_search/deposit_pay.html:79
+msgid "Payment details"
+msgstr "Détails de paiement"
+
+#: templates/meta_search/deposit_pay.html:85
+msgid "Change payment method"
+msgstr "Modifier le mode de paiement"
+
+#: templates/meta_search/deposit_pay.html:96
+msgid "Ethereum"
+msgstr "Ethereum"
+
+#: templates/meta_search/deposit_pay.html:104
+msgid "Copy amount"
+msgstr "Copier le montant"
+
+#: templates/meta_search/deposit_pay.html:116
+msgid "QR code"
+msgstr "Code QR"
+
+#: templates/meta_search/deposit_pay.html:121
+#, python-format
+msgid "Scan to pay · %(dep.get_network_display)s"
+msgstr "Scanner pour payer ·%(dep.get_network_display)s"
+
+#: templates/meta_search/deposit_pay.html:132
+#: templates/meta_search/deposit_pay.html:177
+msgid "Verifying…"
+msgstr "Vérifier…"
+
+#: templates/meta_search/deposit_pay.html:133
+#, python-brace-format
+msgid "Verifying… ({time} left)"
+msgstr "Vérification… ({time}) gauche)"
+
+#: templates/meta_search/deposit_pay.html:134
+msgid "You can use “Verify now” for quick help."
+msgstr "Vous pouvez utiliser «Vérifier maintenant» pour une aide rapide."
+
+#: templates/meta_search/deposit_pay.html:135
+msgid "QR error"
+msgstr "Erreur QR"
+
+#: templates/meta_search/deposit_pay.html:138
+msgid "Network"
+msgstr "Réseau"
+
+#: templates/meta_search/deposit_pay.html:145
+msgid "Copy address"
+msgstr "Copier l'adresse"
+
+#: templates/meta_search/deposit_pay.html:152
+msgid "Reference"
+msgstr "Référence"
+
+#: templates/meta_search/deposit_pay.html:155
+msgid "Copy reference"
+msgstr "Copie de référence"
+
+#: templates/meta_search/deposit_pay.html:164
+msgid "I’ve Paid — Verify"
+msgstr "J'ai payé - Vérifiez"
+
+#: templates/meta_search/deposit_pay.html:166
+msgid "We’ll check the network and update your balance when confirmed."
+msgstr ""
+"Nous vérifierons le réseau et mettrons à jour votre solde lorsqu'il est "
+"confirmé."
+
+#: templates/meta_search/deposit_pay.html:174
+#: templates/meta_search/deposit_pay.html:183
+msgid "Verify now"
+msgstr "Vérifiez maintenant"
+
+#: templates/meta_search/deposit_pay.html:175
+msgid "Need quick approval? Use <strong>Verify now</strong>."
+msgstr ""
+"Besoin d'une approbation rapide? Utiliser <strong> Vérifiez maintenant </"
+"strong>."
+
+#: templates/meta_search/deposit_pay.html:185
+msgid "Need quick approval? You can use <strong>Verify now</strong>."
+msgstr ""
+"Besoin d'une approbation rapide? Vous pouvez utiliser <strong> Vérifiez "
+"maintenant </strong>."
+
+#: templates/meta_search/deposit_pay.html:189
+msgid "Payment failed"
+msgstr "Échec du paiement"
+
+#: templates/meta_search/deposit_pay.html:190
+msgid "Try again"
+msgstr "Essayer à nouveau"
+
+#: templates/meta_search/deposit_pay.html:193
+msgid "This deposit is a draft."
+msgstr "Ce dépôt est un projet."
+
+#: templates/meta_search/deposit_pay.html:194
+msgid "Continue to deposit"
+msgstr "Continuer à déposer"
+
+#: templates/meta_search/deposit_pay.html:197
+msgid "Thanks! Recieved We’ll verify the payment shortly."
+msgstr "Merci! Recevé, nous vérifierons le paiement sous peu."
+
+#: templates/meta_search/deposit_pay.html:198
+#: templates/meta_search/withdrawal_success.html:170
+msgid "Go to Wallet"
+msgstr "Aller au portefeuille"
+
+#: templates/meta_search/deposit_pay.html:201
+#, python-format
+msgid "Status: %(dep.status)s"
+msgstr "Statut:%(dep.status)s"
+
+#: templates/meta_search/deposit_pay.html:209
+#: templates/meta_search/withdrawal_success.html:196
+msgid "Copied"
+msgstr "Copié"
 
 #: templates/meta_search/ide.html:18
 msgid "Seaside resort at dusk"
-msgstr ""
+msgstr "Resort balnéaire au crépuscule"
 
 #: templates/meta_search/ide.html:24
 msgid "Experience The Magic Of Relaxation"
-msgstr ""
+msgstr "Découvrez la magie de la relaxation"
 
 #: templates/meta_search/ide.html:25
 msgid ""
 "Indulge in the epitome of coastal living as you discover the breathtaking "
 "beauty and tranquility of luxury."
 msgstr ""
+"Offrez-vous à la quintessence de la vie côtière lorsque vous découvrez la "
+"beauté et la tranquillité à couper le souffle du luxe."
 
 #: templates/meta_search/ide.html:30
 msgid "Customer avatar 1"
-msgstr ""
+msgstr "Client Avatar 1"
 
 #: templates/meta_search/ide.html:31
 msgid "Customer avatar 2"
-msgstr ""
+msgstr "Client Avatar 2"
 
 #: templates/meta_search/ide.html:32
 msgid "Customer avatar 3"
-msgstr ""
+msgstr "Client Avatar 3"
 
 #: templates/meta_search/ide.html:34
 msgid "Trusted by over 25k+ people"
-msgstr ""
+msgstr "Considéré par plus de 25 000 personnes"
 
 #: templates/meta_search/ide.html:35 templates/meta_search/ide.html:98
+#: templates/meta_search/index.html:148
 msgid "Explore Now"
-msgstr ""
+msgstr "Explorez maintenant"
 
 #: templates/meta_search/ide.html:40
 msgid "Travel partners"
-msgstr ""
+msgstr "Partenaires de voyage"
 
-#: templates/meta_search/ide.html:58
+#: templates/meta_search/ide.html:58 templates/meta_search/index.html:98
 msgid "Premium Facilities"
-msgstr ""
+msgstr "Installations premium"
 
-#: templates/meta_search/ide.html:61
+#: templates/meta_search/ide.html:61 templates/meta_search/index.html:104
 msgid "Exclusive Sunset View"
-msgstr ""
+msgstr "Vue au coucher du soleil exclusive"
 
-#: templates/meta_search/ide.html:62
+#: templates/meta_search/ide.html:62 templates/meta_search/index.html:105
 msgid "You witness the beauty of the world from your room"
-msgstr ""
+msgstr "Vous assistez à la beauté du monde de votre chambre"
 
-#: templates/meta_search/ide.html:65
+#: templates/meta_search/ide.html:65 templates/meta_search/index.html:111
 msgid "Integrated Tourist Area"
-msgstr ""
+msgstr "Zone touristique intégrée"
 
 #: templates/meta_search/ide.html:66
 msgid "Enhancing your travel experience"
-msgstr ""
+msgstr "Améliorer votre expérience de voyage"
 
-#: templates/meta_search/ide.html:69
+#: templates/meta_search/ide.html:69 templates/meta_search/index.html:118
 msgid "Nature-Inspired Pool"
-msgstr ""
+msgstr "Piscine inspirée de la nature"
 
-#: templates/meta_search/ide.html:70
+#: templates/meta_search/ide.html:70 templates/meta_search/index.html:119
 msgid "Serene swimming pool with a touch of paradise"
-msgstr ""
+msgstr "Piscine sereine avec une touche de paradis"
 
 #: templates/meta_search/ide.html:80 templates/meta_search/ide.html:93
+#: templates/meta_search/index.html:129 templates/meta_search/index.html:142
 msgid "Get Rewarded"
-msgstr ""
+msgstr "Être récompensé"
 
-#: templates/meta_search/ide.html:85
+#: templates/meta_search/ide.html:85 templates/meta_search/index.html:134
 msgid "Rate Apartments"
-msgstr ""
+msgstr "Évaluer les appartements"
 
-#: templates/meta_search/ide.html:86
+#: templates/meta_search/ide.html:86 templates/meta_search/index.html:135
 msgid "Give random objective ratings based on view and aesthetics."
 msgstr ""
+"Donnez des notes objectives aléatoires en fonction de la vue et de "
+"l'esthétique."
 
-#: templates/meta_search/ide.html:94
+#: templates/meta_search/ide.html:94 templates/meta_search/index.html:143
 msgid "Earn instant rewards from the apartments you rate."
-msgstr ""
+msgstr "Gagnez des récompenses instantanées des appartements que vous évaluez."
 
 #: templates/meta_search/ide.html:102
 msgid "Featured apartments carousel"
-msgstr ""
+msgstr "Carrousel d'appartements en vedette"
 
-#: templates/meta_search/ide.html:103
+#: templates/meta_search/ide.html:103 templates/meta_search/index.html:167
 msgid "Previous slide"
-msgstr ""
+msgstr "Diapositive précédente"
 
-#: templates/meta_search/ide.html:104
+#: templates/meta_search/ide.html:104 templates/meta_search/index.html:168
 msgid "Next slide"
-msgstr ""
+msgstr "Diapositive suivante"
 
-#: templates/meta_search/ide.html:108
+#: templates/meta_search/ide.html:108 templates/meta_search/index.html:159
 msgid "Modern apartment interior"
-msgstr ""
+msgstr "Intérieur d'appartement moderne"
 
-#: templates/meta_search/ide.html:111
+#: templates/meta_search/ide.html:111 templates/meta_search/index.html:160
 msgid "Resort pool at sunset"
-msgstr ""
+msgstr "Piscine de villégiature au coucher du soleil"
 
-#: templates/meta_search/ide.html:114
+#: templates/meta_search/ide.html:114 templates/meta_search/index.html:161
 msgid "Scenic valley view"
-msgstr ""
+msgstr "Vue de vallée scénique"
 
-#: templates/meta_search/ide.html:129
+#: templates/meta_search/ide.html:129 templates/meta_search/index.html:175
 msgid "Clients Review"
-msgstr ""
+msgstr "Clients Review"
 
-#: templates/meta_search/ide.html:130
+#: templates/meta_search/ide.html:130 templates/meta_search/index.html:176
 msgid "See some honest reviews from our users on the platform"
-msgstr ""
+msgstr "Voir quelques critiques honnêtes de nos utilisateurs sur la plateforme"
 
-#: templates/meta_search/ide.html:135
+#: templates/meta_search/ide.html:135 templates/meta_search/index.html:182
 msgid "Client"
-msgstr ""
+msgstr "Client"
 
 #: templates/meta_search/ide.html:137
 msgid ""
 "Had a great experience using this for solid bookings. Customer service was "
 "top-notch."
 msgstr ""
+"A eu une grande expérience de l'utiliser pour les réservations solides. Le "
+"service client était de premier ordre."
 
 #: templates/meta_search/ide.html:147
 msgid "Get your inspiration of luxury and get rewarded"
-msgstr ""
+msgstr "Obtenez votre inspiration de luxe et soyez récompensé"
 
 #: templates/meta_search/ide.html:148
 msgid "Earn new rewards at every step you take under true luxury."
 msgstr ""
+"Gagnez de nouvelles récompenses à chaque étape que vous faites sous le vrai "
+"luxe."
 
 #: templates/meta_search/ide.html:149
 msgid "See More"
-msgstr ""
+msgstr "Voir plus"
 
 #: templates/meta_search/ide.html:152
 msgid "Luxury inspiration"
-msgstr ""
+msgstr "Inspiration de luxe"
 
 #: templates/meta_search/includes/_header.html:60
 msgid "Get started"
+msgstr "Commencer"
+
+#: templates/meta_search/index.html:112
+msgid "Tourism integration is enhancing travel experience"
+msgstr "L'intégration touristique améliore l'expérience de voyage"
+
+#: templates/meta_search/index.html:191
+msgid ""
+"I had a great experience working with this fantastic platform that delivers "
+"reward to users for best rating apartments. They have exceptional customer "
+"service and high-quality service."
 msgstr ""
+"J'ai eu une grande expérience de travail avec cette fantastique plate-forme "
+"qui offre une récompense aux utilisateurs pour les meilleurs appartements de "
+"notation. Ils ont un service client exceptionnel et un service de haute "
+"qualité."
+
+#: templates/meta_search/index.html:194 templates/meta_search/index.html:195
+msgid "James Lee"
+msgstr "James Lee"
 
 #: templates/meta_search/info_index.html:6
 msgid "Info Center"
-msgstr ""
+msgstr "Centre d'information"
 
 #: templates/meta_search/info_index.html:7
 msgid "Pick a section on the left, or use the quick links below."
 msgstr ""
+"Choisissez une section à gauche ou utilisez les liens rapides ci-dessous."
 
 #: templates/meta_search/info_index.html:19
 #: templates/meta_search/info_page.html:17
 msgid "View all announcements"
-msgstr ""
-
-#: templates/meta_search/language.html:8
-msgid "Language"
-msgstr ""
+msgstr "Afficher toutes les annonces"
 
 #: templates/meta_search/language.html:9
 msgid "Select your language."
-msgstr ""
+msgstr "Sélectionnez votre langue."
 
 #: templates/meta_search/password_reset_phone.html:4
 msgid "Reset Password – Step 1"
-msgstr ""
+msgstr "Réinitialiser le mot de passe - Étape 1"
 
 #: templates/meta_search/password_reset_phone.html:6
 #: templates/meta_search/password_reset_verify.html:6
 #: templates/meta_search/password_reset_verify.html:79
 msgid "Reset Password"
-msgstr ""
+msgstr "Réinitialiser le mot de passe"
 
 #: templates/meta_search/password_reset_phone.html:21
 msgid "Enter your phone number to get a verification code."
-msgstr ""
-
-#: templates/meta_search/password_reset_phone.html:41
-#: templates/meta_search/settings_change_password.html:42
-#: templates/meta_search/signin.html:45
-msgid "Phone"
-msgstr ""
+msgstr "Entrez votre numéro de téléphone pour obtenir un code de vérification."
 
 #: templates/meta_search/password_reset_phone.html:59
 msgid "Send Code"
-msgstr ""
+msgstr "Envoyer un code"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Remembered your password?"
-msgstr ""
+msgstr "Vous vous souvenez de votre mot de passe?"
 
 #: templates/meta_search/password_reset_phone.html:64
 msgid "Sign in"
-msgstr ""
+msgstr "Se connecter"
 
 #: templates/meta_search/password_reset_verify.html:4
 msgid "Reset Password – Step 2"
-msgstr ""
+msgstr "Réinitialiser le mot de passe - Étape 2"
 
 #: templates/meta_search/password_reset_verify.html:21
 msgid "Enter the code sent to your phone, then choose a new password."
 msgstr ""
+"Entrez le code envoyé à votre téléphone, puis choisissez un nouveau mot de "
+"passe."
 
 #: templates/meta_search/password_reset_verify.html:43
 msgid "Verification Code"
-msgstr ""
+msgstr "Le code de vérification"
 
 #: templates/meta_search/password_reset_verify.html:52
 msgid "New Password"
-msgstr ""
+msgstr "Nouveau mot de passe"
 
 #: templates/meta_search/password_reset_verify.html:61
 #: templates/meta_search/password_reset_verify.html:74
 #: templates/meta_search/settings_change_password.html:76
 #: templates/meta_search/settings_change_password.html:93
 #: templates/meta_search/settings_change_password.html:112
-#: templates/meta_search/signin.html:68
+#: templates/meta_search/signin.html:94
 msgid "Show/Hide password"
-msgstr ""
+msgstr "Afficher / masquer le mot de passe"
 
 #: templates/meta_search/password_reset_verify.html:65
+#: templates/meta_search/signup.html:85
 msgid "Confirm Password"
-msgstr ""
+msgstr "Confirmez le mot de passe"
 
-#: templates/meta_search/password_reset_verify.html:84
-msgid "Back"
-msgstr ""
+#: templates/meta_search/profile_settings.html:5
+msgid "Settings — Profile"
+msgstr "Paramètres - Profil"
 
-#: templates/meta_search/password_reset_verify.html:86
-msgid "Home"
+#: templates/meta_search/profile_settings.html:8
+msgid "profile"
+msgstr "profil"
+
+#: templates/meta_search/profile_settings.html:15
+msgid "Basic Info"
+msgstr "Informations de base"
+
+#: templates/meta_search/profile_settings.html:16
+msgid "Manage your details and personal preferences here."
+msgstr "Gérez vos coordonnées et vos préférences personnelles ici."
+
+#: templates/meta_search/profile_settings.html:33
+msgid "Avatar"
+msgstr "Avatar"
+
+#: templates/meta_search/profile_settings.html:40
+msgid "Change image"
+msgstr "Changer d'image"
+
+#: templates/meta_search/profile_settings.html:51
+msgid "Remove"
+msgstr "Retirer"
+
+#: templates/meta_search/profile_settings.html:55
+msgid "JPG, PNG, WebP or GIF. Ideal: 120×120 (min 80×80)."
+msgstr "Jpg, png, webp ou gif. Idéal: 120 × 120 (min 80 × 80)."
+
+#: templates/meta_search/profile_settings.html:67
+msgid "Phone Number"
+msgstr "Numéro de téléphone"
+
+#: templates/meta_search/profile_settings.html:76
+msgid "LEVEL 1"
+msgstr "Niveau 1"
+
+#: templates/meta_search/profile_settings.html:83
+msgid "Nickname"
+msgstr "Surnom"
+
+#: templates/meta_search/profile_settings.html:89
+msgid "Image URL (optional)"
+msgstr "URL d'image (facultatif)"
+
+#: templates/meta_search/profile_settings.html:92
+msgid "Used only if no uploaded image exists."
+msgstr "Utilisé uniquement si aucune image téléchargée n'existe."
+
+#: templates/meta_search/profile_settings.html:97
+#: templates/meta_search/settings_change_password.html:116
+msgid "Save Changes"
+msgstr "Enregistrer les modifications"
+
+#: templates/meta_search/rewards.html:94 templates/meta_search/rewards.html:97
+#: templates/meta_search/rewards.html:118
+msgid "Deposit Bonus"
+msgstr "Bonus de dépôt"
+
+#: templates/meta_search/rewards.html:98
+msgid "Reset Amount Reward"
+msgstr "Réinitialiser la récompense du montant"
+
+#: templates/meta_search/rewards.html:100
+#: templates/meta_search/rewards.html:101
+#: templates/meta_search/rewards.html:102
+#: templates/meta_search/rewards.html:103
+#: templates/meta_search/rewards.html:121
+#: templates/meta_search/rewards.html:122
+#: templates/meta_search/rewards.html:123
+#: templates/meta_search/rewards.html:124
+#: templates/meta_search/rewards.html:155
+#: templates/meta_search/rewards.html:156
+#: templates/meta_search/rewards.html:157
+msgid "Get"
+msgstr "Obtenir"
+
+#: templates/meta_search/rewards.html:106
+msgid "Please contact customer service for reward."
+msgstr "Veuillez contacter le service client pour récompense."
+
+#: templates/meta_search/rewards.html:107
+msgid "You can only collect once a day; reset the reward."
 msgstr ""
+"Vous ne pouvez collecter qu'une fois par jour; réinitialisez la récompense."
+
+#: templates/meta_search/rewards.html:115
+msgid "Deposit Bonus Details"
+msgstr "Détails de bonus de dépôt"
+
+#: templates/meta_search/rewards.html:119
+msgid "Repeat of tiers for clarity"
+msgstr "Répéter les niveaux pour plus de clarté"
+
+#: templates/meta_search/rewards.html:126
+msgid "Collect once per day."
+msgstr "Collectez une fois par jour."
+
+#: templates/meta_search/rewards.html:133
+#: templates/meta_search/rewards.html:136
+msgid "Consecutive Days Rewards"
+msgstr "Récompenses de jours consécutifs"
+
+#: templates/meta_search/rewards.html:137
+msgid "Work for consecutive days and receive a reward of:"
+msgstr "Travailler pour des jours consécutifs et recevoir une récompense de:"
+
+#: templates/meta_search/rewards.html:139
+#: templates/meta_search/rewards.html:155
+msgid "5 days"
+msgstr "5 jours"
+
+#: templates/meta_search/rewards.html:140
+#: templates/meta_search/rewards.html:156
+msgid "15 days"
+msgstr "15 jours"
+
+#: templates/meta_search/rewards.html:141
+#: templates/meta_search/rewards.html:157
+msgid "30 days"
+msgstr "30 jours"
+
+#: templates/meta_search/rewards.html:149
+msgid "Consecutive Days Details"
+msgstr "Détails des jours consécutifs"
+
+#: templates/meta_search/rewards.html:152
+msgid "Consecutive Days"
+msgstr "Jours consécutifs"
+
+#: templates/meta_search/rewards.html:153
+msgid "Maintain streaks to unlock larger rewards."
+msgstr "Maintenez des séquences pour débloquer des récompenses plus grandes."
+
+#: templates/meta_search/rewards.html:165
+#: templates/meta_search/rewards.html:168
+msgid "About Gift Boxes"
+msgstr "À propos des coffrets-cadeaux"
+
+#: templates/meta_search/rewards.html:169
+msgid "Have a chance to get 0–3 random Gift Boxes every round."
+msgstr ""
+"Ayez la chance d'obtenir 0 à 3 coffrets cadeaux aléatoires à chaque tour."
+
+#: templates/meta_search/rewards.html:171
+msgid "Gift Boxes Cash Bonus"
+msgstr "Boîtes-cadeaux Bonus en espèces"
+
+#: templates/meta_search/rewards.html:171
+#: templates/meta_search/rewards.html:172
+msgid "Up to"
+msgstr "Jusqu'à"
+
+#: templates/meta_search/rewards.html:172
+msgid "Gift Boxes Commission Bonus"
+msgstr "Bonus de la Commission des coffrets cadeaux"
+
+#: templates/meta_search/rewards.html:172
+msgid "30× commission"
+msgstr "30 × commission"
+
+#: templates/meta_search/rewards.html:174
+msgid "For more details, contact customer service."
+msgstr "Pour plus de détails, contactez le service client."
+
+#: templates/meta_search/rewards.html:181
+msgid "Gift Boxes Detail"
+msgstr "Détail des coffres-cadeaux"
+
+#: templates/meta_search/rewards.html:184
+msgid "Gift Boxes"
+msgstr "Coffres-cadeaux"
+
+#: templates/meta_search/rewards.html:185
+msgid "Two types of Gift Boxes rewards are available."
+msgstr "Deux types de récompenses cadeaux sont disponibles."
+
+#: templates/meta_search/rewards.html:187
+msgid "Daily Box"
+msgstr "Boîte quotidienne"
+
+#: templates/meta_search/rewards.html:187
+#: templates/meta_search/rewards.html:188
+msgid "Chance"
+msgstr "Chance"
+
+#: templates/meta_search/rewards.html:188
+msgid "Milestone Box"
+msgstr "Boîte d'étape"
+
+#: templates/meta_search/rewards.html:190
+msgid "Box odds reset weekly."
+msgstr "Les cotes de la boîte réinitialisent chaque semaine."
+
+#: templates/meta_search/rewards.html:197
+#: templates/meta_search/rewards.html:200
+msgid "About Rank"
+msgstr "À propos du rang"
+
+#: templates/meta_search/rewards.html:201
+msgid "Commission tiers & upgrade notes"
+msgstr "Commission Tiers et notes de mise à niveau"
+
+#: templates/meta_search/rewards.html:203
+#: templates/meta_search/rewards.html:204
+#: templates/meta_search/rewards.html:205 templates/meta_search/wallet.html:191
+#: templates/meta_search/wallet.html:204 templates/meta_search/wallet.html:238
+#: templates/meta_search/wallet.html:251 templates/meta_search/wallet.html:282
+#: templates/meta_search/wallet.html:295 templates/meta_search/wallet.html:382
+#: templates/meta_search/wallet.html:573 templates/meta_search/wallet.html:581
+#: templates/tasks/task_detail.html:154
+msgid "Commission"
+msgstr "Commission"
+
+#: templates/meta_search/rewards.html:207
+msgid "Contact Customer Service for more details."
+msgstr "Contactez le service client pour plus de détails."
+
+#: templates/meta_search/rewards.html:214
+msgid "About Rank Details"
+msgstr "À propos des détails du grade"
+
+#: templates/meta_search/rewards.html:217
+msgid "Rank Upgrade Details"
+msgstr "Détails de mise à niveau de classement"
+
+#: templates/meta_search/rewards.html:218
+msgid "More constraints & upgrade hints"
+msgstr "Plus de contraintes et de mise à niveau des conseils"
+
+#: templates/meta_search/rewards.html:220
+#: templates/meta_search/rewards.html:221
+msgid "Note"
+msgstr "Note"
+
+#: templates/meta_search/rewards.html:220
+msgid "One withdrawal/day"
+msgstr "Un retrait / jour"
+
+#: templates/meta_search/rewards.html:221
+msgid "Two withdrawals/day"
+msgstr "Deux retraits / jour"
+
+#: templates/meta_search/rewards.html:222
+msgid "Upgrade"
+msgstr "Mise à niveau"
+
+#: templates/meta_search/rewards.html:222
+msgid "Recharge"
+msgstr "Recharger"
+
+#: templates/meta_search/rewards.html:224
+msgid "SVIP can become an agent; subordinate commissions may apply."
+msgstr ""
+"SVIP peut devenir un agent; Les commissions subordonnées peuvent s'appliquer."
+
+#: templates/meta_search/rewards.html:235
+msgid "Previous"
+msgstr "Précédent"
+
+#: templates/meta_search/rewards.html:236
+msgid "Next"
+msgstr "Suivant"
+
+#: templates/meta_search/rewards.html:238
+msgid "Slide indicators"
+msgstr "Indicateurs de diapositives"
 
 #: templates/meta_search/settings_change_password.html:4
 msgid "Settings — Change password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:20
-msgid "Change password"
-msgstr ""
+msgstr "Paramètres - Modifier le mot de passe"
 
 #: templates/meta_search/settings_change_password.html:22
 msgid ""
 "For security, confirm your phone, pass the captcha, then set a strong "
 "password."
 msgstr ""
-
-#: templates/meta_search/settings_change_password.html:55
-#: templates/meta_search/signin.html:73
-msgid "Captcha"
-msgstr ""
+"Pour la sécurité, confirmez votre téléphone, passez le captcha, puis "
+"définissez un mot de passe fort."
 
 #: templates/meta_search/settings_change_password.html:66
 msgid "Old password"
-msgstr ""
+msgstr "Ancien mot de passe"
 
 #: templates/meta_search/settings_change_password.html:79
 msgid "Forgot current password?"
-msgstr ""
+msgstr "Mot de passe actuel oublié?"
 
 #: templates/meta_search/settings_change_password.html:95
 msgid "Use 8+ characters with a mix of letters, numbers, and symbols."
 msgstr ""
+"Utilisez plus de 8 caractères avec un mélange de lettres, de chiffres et de "
+"symboles."
 
 #: templates/meta_search/settings_change_password.html:102
+#: templates/meta_search/support_reset_password.html:94
 msgid "Confirm password"
-msgstr ""
-
-#: templates/meta_search/settings_change_password.html:116
-msgid "Save Changes"
-msgstr ""
+msgstr "Confirmez le mot de passe"
 
 #: templates/meta_search/signin.html:4
-msgid "Sign In - Expedia"
-msgstr ""
+msgid "Sign In - Orbitpedia"
+msgstr "Connectez-vous - Orbitpedia"
 
-#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:82
+#: templates/meta_search/signin.html:6 templates/meta_search/signin.html:123
 msgid "Sign In"
-msgstr ""
+msgstr "Se connecter"
 
-#: templates/meta_search/signin.html:21
+#: templates/meta_search/signin.html:43
 msgid "Welcome back, please sign in"
-msgstr ""
+msgstr "Bienvenue, veuillez vous connecter"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Don’t have an account?"
-msgstr ""
+msgstr "Vous n'avez pas de compte?"
 
-#: templates/meta_search/signin.html:87
+#: templates/meta_search/signin.html:128
 msgid "Create one"
-msgstr ""
+msgstr "Créer un"
 
-#: templates/meta_search/signin.html:89
+#: templates/meta_search/signin.html:130
 msgid "Forgotten password?"
+msgstr "Mot de passe oublié?"
+
+#: templates/meta_search/signup.html:4
+msgid "Sign Up - Orbitpedia"
+msgstr "Inscription - Orbitpedia"
+
+#: templates/meta_search/signup.html:6
+msgid "Sign Up"
+msgstr "S'inscrire"
+
+#: templates/meta_search/signup.html:41
+msgid "Hello friend, let’s get you registered"
+msgstr "Bonjour mon ami, allons vous inscrire"
+
+#: templates/meta_search/signup.html:66 templates/meta_search/signup.html:67
+#: templates/meta_search/signup.html:69 templates/meta_search/signup.html:97
+#: templates/meta_search/signup.html:98 templates/meta_search/signup.html:100
+msgid "Show password"
+msgstr "Montrer le mot de passe"
+
+#: templates/meta_search/signup.html:68 templates/meta_search/signup.html:99
+msgid "Hide password"
+msgstr "Masquer le mot de passe"
+
+#: templates/meta_search/signup.html:116
+msgid "Invitation Code"
+msgstr "Code d'invitation"
+
+#: templates/meta_search/signup.html:133
+msgid "Get Started"
+msgstr "Commencer"
+
+#: templates/meta_search/signup.html:138
+msgid "Already have an account?"
+msgstr "Vous avez déjà un compte?"
+
+#: templates/meta_search/signup.html:138
+msgid "Login"
+msgstr "Se connecter"
+
+#: templates/meta_search/support_reset_password.html:6
+msgid "Support – Reset Password"
+msgstr "Support - Réinitialiser le mot de passe"
+
+#: templates/meta_search/support_reset_password.html:38
+msgid "Reset User Password (Support)"
+msgstr "Réinitialiser le mot de passe utilisateur (support)"
+
+#: templates/meta_search/support_reset_password.html:39
+msgid "Enter the user’s phone and a new password. This action is logged."
 msgstr ""
+"Entrez le téléphone de l'utilisateur et un nouveau mot de passe. Cette "
+"action est enregistrée."
+
+#: templates/meta_search/support_reset_password.html:70
+msgid ""
+"Accepts <b>E.164</b> (e.g. <code>+2348012345678</code>) or local NG like "
+"<code>080…</code>."
+msgstr ""
+"Accepte le format <b>E.164</b> (par ex. <code>+2348012345678</code>) ou le "
+"format local NG comme <code>080…</code>."
+
+#: templates/meta_search/support_reset_password.html:82
+#: templates/meta_search/support_reset_password.html:84
+#: templates/meta_search/support_reset_password.html:99
+#: templates/meta_search/support_reset_password.html:101
+msgid "Show"
+msgstr "Montrer"
+
+#: templates/meta_search/support_reset_password.html:83
+#: templates/meta_search/support_reset_password.html:100
+msgid "Hide"
+msgstr "Cacher"
+
+#: templates/meta_search/support_reset_password.html:112
+msgid "Reset password"
+msgstr "Réinitialiser le mot de passe"
+
+#: templates/meta_search/support_reset_password.html:113
+msgid "You must be logged in as <b>staff</b>."
+msgstr "Vous devez être connecté en tant que [[[[Token_0]]]] [[[[Token_1]]]."
+
+#: templates/meta_search/support_reset_password.html:118
+msgid ""
+"Tip: Use strong passwords (12+ chars, mix of letters, numbers & symbols). "
+"This operation is recorded in the Admin log."
+msgstr ""
+"Astuce: utilisez des mots de passe forts (12+ caractères, mélange de "
+"lettres, de chiffres et de symboles). Cette opération est enregistrée dans "
+"le journal d'administration."
+
+#: templates/meta_search/support_reset_password.html:147
+msgid "Working…"
+msgstr "Fonctionnement…"
+
+#: templates/meta_search/task_dashboard.html:25
+msgid "Balances"
+msgstr "Soldes"
+
+#: templates/meta_search/task_dashboard.html:38
+msgid "Tasks Promo"
+msgstr "Promo de tâches"
+
+#: templates/meta_search/task_dashboard.html:45
+msgid "Complete Tasks"
+msgstr "Tâches complètes"
+
+#: templates/meta_search/task_dashboard.html:46
+msgid "and get rewarded"
+msgstr "et se récompenser"
+
+#: templates/meta_search/task_dashboard.html:60
+msgid "Locked:"
+msgstr "Fermé:"
+
+#: templates/meta_search/task_dashboard.html:61
+msgid "You have completed your trial. Please contact customer care."
+msgstr "Vous avez terminé votre essai. Veuillez contacter le service client."
+
+#: templates/meta_search/task_dashboard.html:64
+#, python-format
+msgid "Tasks available: <strong>%(n)s</strong>"
+msgstr "Tâches disponibles: <strong>%(n)s</strong>"
+
+#: templates/meta_search/task_dashboard.html:66
+msgid "You’re up to date. Click below to get your next task."
+msgstr ""
+"Vous êtes à jour. Cliquez ci-dessous pour obtenir votre prochaine tâche."
+
+#: templates/meta_search/task_dashboard.html:78
+msgid "Locked — contact support"
+msgstr "Verrouillé - support de contact"
+
+#: templates/meta_search/task_dashboard.html:80
+#: templates/tasks/user_task_dashboard.html:254
+msgid "Click to get your task"
+msgstr "Cliquez pour obtenir votre tâche"
+
+#: templates/meta_search/task_dashboard.html:90
+msgid "Filter tasks"
+msgstr "Tâches de filtre"
+
+#: templates/meta_search/task_dashboard.html:91
+#: templates/meta_search/task_dashboard.html:105
+#: templates/meta_search/wallet.html:188 templates/meta_search/wallet.html:201
+#: templates/tasks/user_task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:300
+msgid "All"
+msgstr "Tous"
+
+#: templates/meta_search/task_dashboard.html:92
+#: templates/meta_search/task_dashboard.html:106
+#: templates/tasks/task_detail.html:169
+#: templates/tasks/user_task_dashboard.html:265
+#: templates/tasks/user_task_dashboard.html:301
+msgid "Completed"
+msgstr "Complété"
+
+#: templates/meta_search/task_dashboard.html:93
+#: templates/meta_search/task_dashboard.html:107
+#: templates/tasks/user_task_dashboard.html:239
+#: templates/tasks/user_task_dashboard.html:266
+#: templates/tasks/user_task_dashboard.html:302
+msgid "Processing"
+msgstr "Traitement"
+
+#: templates/meta_search/task_dashboard.html:98
+#: templates/meta_search/task_dashboard.html:101
+#: templates/meta_search/task_dashboard.html:112
+#: templates/tasks/user_task_dashboard.html:260
+msgid "Task History"
+msgstr "Historique des tâches"
+
+#: templates/meta_search/task_dashboard.html:103
+#: templates/meta_search/task_dashboard.html:104
+#: templates/meta_search/task_dashboard.html:138
+#: templates/meta_search/task_dashboard.html:168
+#: templates/meta_search/task_dashboard.html:198
+#: templates/meta_search/task_dashboard.html:223
+#: templates/meta_search/withdrawal_success.html:144
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:319
+msgid "Status"
+msgstr "Statut"
+
+#: templates/meta_search/task_dashboard.html:124
+#: templates/meta_search/task_dashboard.html:154
+#: templates/meta_search/task_dashboard.html:184
+#: templates/meta_search/task_dashboard.html:239
+#: templates/meta_search/task_dashboard.html:252
+#: templates/meta_search/task_dashboard.html:264
+#: templates/tasks/user_task_dashboard.html:288
+#: templates/tasks/user_task_dashboard.html:313
+msgid "View"
+msgstr "Voir"
+
+#: templates/meta_search/task_dashboard.html:128
+#: templates/meta_search/task_dashboard.html:158
+#: templates/meta_search/task_dashboard.html:188
+#: templates/tasks/user_task_dashboard.html:317
+msgid "Product"
+msgstr "Produit"
+
+#: templates/meta_search/task_dashboard.html:134
+#: templates/meta_search/task_dashboard.html:164
+#: templates/meta_search/task_dashboard.html:194
+#: templates/meta_search/task_dashboard.html:221
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:318
+msgid "Price"
+msgstr "Prix"
+
+#: templates/meta_search/task_dashboard.html:142
+#: templates/meta_search/task_dashboard.html:172
+#: templates/meta_search/task_dashboard.html:202
+#: templates/meta_search/task_dashboard.html:222
+#: templates/tasks/user_task_dashboard.html:274
+#: templates/tasks/user_task_dashboard.html:320
+msgid "Comm"
+msgstr "Communiquer"
+
+#: templates/meta_search/task_dashboard.html:209
+#: templates/meta_search/task_dashboard.html:269
+msgid "No Task History"
+msgstr "Aucun historique de tâche"
+
+#: templates/meta_search/task_dashboard.html:218
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Product Name"
+msgstr "Nom de produit"
+
+#: templates/meta_search/task_dashboard.html:219
+#: templates/tasks/task_detail.html:110
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Order ID"
+msgstr "ID de commande"
+
+#: templates/meta_search/task_dashboard.html:220
+#: templates/meta_search/user_dashboard.html:101
+#: templates/tasks/task_detail.html:118
+#: templates/tasks/user_task_dashboard.html:273
+msgid "Date"
+msgstr "Date"
+
+#: templates/meta_search/task_dashboard.html:224
+msgid "Action"
+msgstr "Action"
+
+#: templates/meta_search/task_dashboard.html:233
+#: templates/meta_search/task_dashboard.html:246
+#: templates/meta_search/task_dashboard.html:258
+#, python-format
+msgid "Task %(id)s"
+msgstr "Tâche %(id)s"
+
+#: templates/meta_search/task_dashboard.html:280
+#: templates/meta_search/wallet.html:397 templates/tasks/task_detail.html:186
+#: templates/tasks/user_task_dashboard.html:350
+msgid "Close"
+msgstr "Fermer"
+
+#: templates/meta_search/task_dashboard.html:290
+msgid "Trial Complete"
+msgstr "Essai complet"
+
+#: templates/meta_search/task_dashboard.html:291
+msgid ""
+"You’ve completed all trial tasks. Please contact customer care to continue."
+msgstr ""
+"Vous avez terminé toutes les tâches d'essai. Veuillez contacter le service "
+"client pour continuer."
+
+#: templates/meta_search/task_dashboard.html:292
+#: templates/tasks/task_detail.html:195
+#: templates/tasks/user_task_dashboard.html:357
+msgid "Customer care"
+msgstr "Service client"
+
+#: templates/meta_search/user_dashboard.html:6
+msgid "Dashboard — Tasks & Rewards"
+msgstr "Tableau de bord - Tâches et récompenses"
+
+#: templates/meta_search/user_dashboard.html:7
+msgid "My Dashboard"
+msgstr "Mon tableau de bord"
+
+#: templates/meta_search/user_dashboard.html:9
+msgid "Home / dashboard"
+msgstr "Maison / tableau de bord"
+
+#: templates/meta_search/user_dashboard.html:98
+#: templates/meta_search/user_dashboard.html:164
+msgid "User"
+msgstr "Utilisateur"
+
+#: templates/meta_search/user_dashboard.html:99
+msgid "View Profile"
+msgstr "Afficher le profil"
+
+#: templates/meta_search/user_dashboard.html:100
+msgid "Location"
+msgstr "Emplacement"
+
+#: templates/meta_search/user_dashboard.html:102
+#: templates/meta_search/user_dashboard.html:107
+msgid "Rating"
+msgstr "Notation"
+
+#: templates/meta_search/user_dashboard.html:103
+msgid "Search"
+msgstr "Recherche"
+
+#: templates/meta_search/user_dashboard.html:104
+#: templates/meta_search/user_dashboard.html:238
+msgid "Filters"
+msgstr "Filtres"
+
+#: templates/meta_search/user_dashboard.html:105
+msgid "Recommended"
+msgstr "Recommandé"
+
+#: templates/meta_search/user_dashboard.html:106
+msgid "Popular"
+msgstr "Populaire"
+
+#: templates/meta_search/user_dashboard.html:108
+msgid "Your avatar"
+msgstr "Votre avatar"
+
+#: templates/meta_search/user_dashboard.html:109
+#: templates/meta_search/user_dashboard.html:169
+msgid "Let’s do some task and earn reward"
+msgstr "Faisons une tâche et gagnons une récompense"
+
+#: templates/meta_search/user_dashboard.html:208
+msgid "Mobile header & filters"
+msgstr "En-tête mobile et filtres"
+
+#: templates/meta_search/user_dashboard.html:210
+msgid "View profile"
+msgstr "Afficher le profil"
+
+#: templates/meta_search/user_dashboard.html:224
+msgid "wave"
+msgstr "vague"
+
+#: templates/meta_search/user_dashboard.html:293
+#, python-format
+msgid "Save %(name)s"
+msgstr "Enregistrer %(name)s"
+
+#: templates/meta_search/user_dashboard.html:320
+#, python-format
+msgid "No %(tab)s hotels available."
+msgstr "Non %(tab)s hôtels disponibles."
+
+#: templates/meta_search/wallet.html:7
+msgid "Home / my wallet"
+msgstr "Accueil / mon portefeuille"
+
+#: templates/meta_search/wallet.html:160
+msgid "Wallet Summary"
+msgstr "Résumé du portefeuille"
+
+#: templates/meta_search/wallet.html:163
+msgid "Current Balance"
+msgstr "Solde actuel"
+
+#: templates/meta_search/wallet.html:166 templates/meta_search/wallet.html:601
+msgid "Hide balance"
+msgstr "Masquer l'équilibre"
+
+#: templates/meta_search/wallet.html:176
+msgid "Trial Bonus"
+msgstr "Bonus d'essai"
+
+#: templates/meta_search/wallet.html:182 templates/meta_search/wallet.html:249
+#: templates/meta_search/wallet.html:293 templates/meta_search/wallet.html:581
+#: templates/meta_search/withdrawal.html:5
+#: templates/meta_search/withdrawal.html:157
+msgid "Withdraw"
+msgstr "Retirer"
+
+#: templates/meta_search/wallet.html:187
+msgid "Filter transactions (mobile)"
+msgstr "Transactions de filtrage (mobile)"
+
+#: templates/meta_search/wallet.html:190 templates/meta_search/wallet.html:203
+#: templates/meta_search/wallet.html:240 templates/meta_search/wallet.html:284
+#: templates/meta_search/wallet.html:351 templates/meta_search/wallet.html:573
+#: templates/meta_search/withdrawal.html:6
+#: templates/meta_search/withdrawal.html:199
+msgid "Withdrawal"
+msgstr "Retrait"
+
+#: templates/meta_search/wallet.html:196
+msgid "Transactions"
+msgstr "Transactions"
+
+#: templates/meta_search/wallet.html:199
+msgid "Filter transactions (desktop)"
+msgstr "Transactions de filtrage (bureau)"
+
+#: templates/meta_search/wallet.html:247 templates/meta_search/wallet.html:291
+msgid "Added funds"
+msgstr "Ajout de fonds"
+
+#: templates/meta_search/wallet.html:253 templates/meta_search/wallet.html:297
+#: templates/meta_search/wallet.html:581
+msgid "Adjustment"
+msgstr "Ajustement"
+
+#: templates/meta_search/wallet.html:310
+msgid "No Transaction History"
+msgstr "Pas d'historique de transaction"
+
+#: templates/meta_search/wallet.html:311
+msgid "When you start using your wallet, entries will show here."
+msgstr ""
+"Lorsque vous commencez à utiliser votre portefeuille, les entrées seront "
+"affichées ici."
+
+#: templates/meta_search/wallet.html:327
+#, python-format
+msgid "Added funds • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "Fonds supplémentaires • %(t.created_at|date:\"Y-m-d\")s"
+
+#: templates/meta_search/wallet.html:331
+msgid "No deposits yet"
+msgstr "Pas encore de dépôts"
+
+#: templates/meta_search/wallet.html:347
+msgid "Withdrawal (Pending)"
+msgstr "Retrait (en attente)"
+
+#: templates/meta_search/wallet.html:349
+msgid "Withdrawal (Failed)"
+msgstr "Retrait (échoué)"
+
+#: templates/meta_search/wallet.html:356
+msgid "Requested"
+msgstr "Demandé"
+
+#: templates/meta_search/wallet.html:358
+msgid "Request"
+msgstr "Demande"
+
+#: templates/meta_search/wallet.html:360
+msgid "Posted"
+msgstr "Affiché"
+
+#: templates/meta_search/wallet.html:367
+msgid "No withdrawals yet"
+msgstr "Pas encore de retrait"
+
+#: templates/meta_search/wallet.html:382
+#, python-format
+msgid "Payment • %(t.created_at|date:\"Y-m-d\")s"
+msgstr "Paiement • %(t.created_at|date:\"Y-m-d\")s"
+
+#: templates/meta_search/wallet.html:386
+msgid "No commissions yet"
+msgstr "Pas encore de commissions"
+
+#: templates/meta_search/wallet.html:398
+msgid "Transaction Details"
+msgstr "Détails de la transaction"
+
+#: templates/meta_search/wallet.html:406
+msgid "Transaction ID"
+msgstr "ID de transaction"
+
+#: templates/meta_search/wallet.html:406
+msgid "Copy ID"
+msgstr "Copier ID"
+
+#: templates/meta_search/wallet.html:408
+msgid "Description"
+msgstr "Description"
+
+#: templates/meta_search/wallet.html:410
+msgid "State"
+msgstr "État"
+
+#: templates/meta_search/wallet.html:581
+msgid "Added fund to wallet"
+msgstr "Fonds ajouté au portefeuille"
+
+#: templates/meta_search/wallet.html:600
+msgid "Show balance"
+msgstr "Montrer l'équilibre"
+
+#: templates/meta_search/withdrawal.html:8
+msgid "Home / my Wallet / Withdrawal"
+msgstr "Accueil / mon portefeuille / retrait"
+
+#: templates/meta_search/withdrawal.html:167
+msgid "Your withdrawal method is verified."
+msgstr "Votre méthode de retrait est vérifiée."
+
+#: templates/meta_search/withdrawal.html:222
+msgid "EUR (Euro)"
+msgstr "EUR (EURO)"
+
+#: templates/meta_search/withdrawal.html:227
+msgid "USD (US Dollar)"
+msgstr "USD (dollar américain)"
+
+#: templates/meta_search/withdrawal.html:232
+msgid "GBP (Pound)"
+msgstr "GBP (livre)"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Min"
+msgstr "Min"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "Max"
+msgstr "Max"
+
+#: templates/meta_search/withdrawal.html:240
+#: templates/meta_search/withdrawal.html:421
+msgid "per request"
+msgstr "par demande"
+
+#: templates/meta_search/withdrawal.html:256
+msgid "Bound wallet address"
+msgstr "Adresse du portefeuille lié"
+
+#: templates/meta_search/withdrawal.html:257
+msgid "Update address"
+msgstr "Adresse de mise à jour"
+
+#: templates/meta_search/withdrawal.html:264
+msgid "Network:"
+msgstr "Réseau:"
+
+#: templates/meta_search/withdrawal.html:278
+msgid "Bind your wallet address first"
+msgstr "Liez d'abord votre adresse de portefeuille"
+
+#: templates/meta_search/withdrawal.html:279
+msgid "Bind Wallet Address"
+msgstr "Adresse de portefeuille de liaison"
+
+#: templates/meta_search/withdrawal.html:283
+msgid ""
+"You’ll go to the Bind Address page → choose network (e.g. TRC20) → paste "
+"your wallet address → verify (email/SMS) → the address will be saved and "
+"auto-filled here."
+msgstr ""
+"Vous irez à la page d'adresse de liaison → Choisissez le réseau (par exemple "
+"TRC20) → Collez votre adresse de portefeuille → Vérifier (Email / SMS) → "
+"L'adresse sera enregistrée et remplie automatique ici."
+
+#: templates/meta_search/withdrawal.html:285
+msgid "Bind wallet address?"
+msgstr "Adresse de portefeuille de liaison?"
+
+#: templates/meta_search/withdrawal.html:296
+msgid "Withdrawal Method"
+msgstr "Méthode de retrait"
+
+#: templates/meta_search/withdrawal.html:303
+msgid "ETHEREUM"
+msgstr "Ethereum"
+
+#: templates/meta_search/withdrawal.html:330
+#: templates/meta_search/withdrawal.html:472
+msgid "The withdrawal requirement has yet to be fulfilled."
+msgstr "L'exigence de retrait n'a pas encore été remplie."
+
+#: templates/meta_search/withdrawal.html:332
+msgid "WITHDRAW"
+msgstr "RETIRER"
+
+#: templates/meta_search/withdrawal.html:339
+msgid "For security, you must set a withdrawal password first."
+msgstr ""
+"Pour la sécurité, vous devez d'abord définir un mot de passe de retrait."
+
+#: templates/meta_search/withdrawal.html:340
+msgid "Set withdrawal password"
+msgstr "Définir le mot de passe de retrait"
+
+#: templates/meta_search/withdrawal.html:349
+msgid "Confirm withdrawal"
+msgstr "Confirmer le retrait"
+
+#: templates/meta_search/withdrawal.html:354
+msgid "Enter your 6-digit withdrawal password to continue."
+msgstr "Entrez votre mot de passe de retrait à 6 chiffres pour continuer."
+
+#: templates/meta_search/withdrawal.html:356
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/meta_search/withdrawal.html:357
+msgid "Confirm & Withdraw"
+msgstr "Confirmer et se retirer"
+
+#: templates/meta_search/withdrawal.html:368
+msgid "Withdrawal policy"
+msgstr "Politique de retrait"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "The withdrawal requirement has yet to be fulfilled"
+msgstr "L'exigence de retrait n'a pas encore été remplie"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "COMPLETE MORE TASKS"
+msgstr "Effectuez plus de tâches"
+
+#: templates/meta_search/withdrawal.html:371
+msgid "before the next withdrawal."
+msgstr "Avant le prochain retrait."
+
+#: templates/meta_search/withdrawal.html:373
+#, python-format
+msgid ""
+"Locked: The withdrawal requirement has yet to be fulfilled "
+"%(withdraw_cycles_remaining)s"
+msgstr ""
+"Verrouillé: l'exigence de retrait n'a pas encore été remplie %(withdraw_cycles_remaining)s"
+
+#: templates/meta_search/withdrawal.html:377
+msgid "Got it"
+msgstr "J'ai compris"
+
+#: templates/meta_search/withdrawal.html:500
+msgid "Processing…"
+msgstr "Traitement…"
+
+#: templates/meta_search/withdrawal_success.html:5
+msgid "Withdrawal Submitted"
+msgstr "Retrait soumis"
+
+#: templates/meta_search/withdrawal_success.html:6
+msgid "Home / my Wallet / Withdrawal / Success"
+msgstr "Accueil / mon portefeuille / retrait / succès"
+
+#: templates/meta_search/withdrawal_success.html:108
+msgid "Awaiting Approval"
+msgstr "En attente d'approbation"
+
+#: templates/meta_search/withdrawal_success.html:114
+msgid "Withdrawal submitted"
+msgstr "Retrait soumis"
+
+#: templates/meta_search/withdrawal_success.html:121
+msgid "We’ve received your request."
+msgstr "Nous avons reçu votre demande."
+
+#: templates/meta_search/withdrawal_success.html:122
+msgid "You’ll get an update once it’s reviewed."
+msgstr "Vous obtiendrez une mise à jour une fois examiné."
+
+#: templates/meta_search/withdrawal_success.html:129
+msgid "Request ID"
+msgstr "Demande d'identité"
+
+#: templates/meta_search/withdrawal_success.html:132
+#: templates/meta_search/withdrawal_success.html:197
+msgid "Copy"
+msgstr "Copie"
+
+#: templates/meta_search/withdrawal_success.html:150
+#: templates/tasks/user_task_dashboard.html:312
+msgid "Submitted"
+msgstr "Soumis"
+
+#: templates/meta_search/withdrawal_success.html:157
+msgid "To"
+msgstr "À"
+
+#: templates/meta_search/withdrawal_success.html:166
+msgid "Your withdrawal request has been submitted."
+msgstr "Votre demande de retrait a été soumise."
+
+#: templates/meta_search/withdrawal_success.html:171
+msgid "Make another withdrawal"
+msgstr "Faire un autre retrait"
+
+#: templates/meta_search/withdrawal_success.html:175
+msgid ""
+"Tip: If you navigate back to the withdrawal page, it will load a fresh form "
+"so it can’t be submitted twice."
+msgstr ""
+"Astuce: si vous retournez à la page de retrait, il chargera un nouveau "
+"formulaire afin qu'il ne puisse pas être soumis deux fois."
+
+#: templates/tasks/task_detail.html:4
+msgid "Task Preview"
+msgstr "Aperçu des tâches"
+
+#: templates/tasks/task_detail.html:6
+msgid "Home / Task / Detail"
+msgstr "Accueil / tâche / détail"
+
+#: templates/tasks/task_detail.html:90
+msgid "Task image"
+msgstr "Image de tâche"
+
+#: templates/tasks/task_detail.html:103
+msgid "Rated"
+msgstr "Classé"
+
+#: templates/tasks/task_detail.html:152
+msgid "1X commission"
+msgstr "1x commission"
+
+#: templates/tasks/task_detail.html:165
+msgid "Submit"
+msgstr "Soumettre"
+
+#: templates/tasks/task_detail.html:167
+msgid "Submitted (waiting)"
+msgstr "Soumis (en attente)"
+
+#: templates/tasks/task_detail.html:191
+msgid "Congratulations!"
+msgstr "Félicitations!"
+
+#: templates/tasks/task_detail.html:193
+msgid ""
+"You have received a platinum package. For more info please contact customer "
+"service."
+msgstr ""
+"Vous avez reçu un forfait Platinum. Pour plus d'informations, veuillez "
+"contacter le service client."
+
+#: templates/tasks/user_task_dashboard.html:5
+#: templates/tasks/user_task_dashboard.html:6
+msgid "Tasks Dashboard"
+msgstr "Tableau de bord des tâches"
+
+#: templates/tasks/user_task_dashboard.html:213
+msgid "Home / Task"
+msgstr "Accueil / Tâche"
+
+#: templates/tasks/user_task_dashboard.html:227
+msgid "Total Asset"
+msgstr "Actif total"
+
+#: templates/tasks/user_task_dashboard.html:231
+msgid "Asset"
+msgstr "Actif"
+
+#: templates/tasks/user_task_dashboard.html:235
+msgid "Dividends"
+msgstr "Dividendes"
+
+#: templates/tasks/user_task_dashboard.html:246
+msgid "Complete Tasks and get"
+msgstr "Effectuer des tâches et obtenir"
+
+#: templates/tasks/user_task_dashboard.html:246
+msgid "rewarded"
+msgstr "récompensé"
+
+#: templates/tasks/user_task_dashboard.html:247
+msgid "Banner Image"
+msgstr "Image de bannière"
+
+#: templates/tasks/user_task_dashboard.html:249
+msgid "Order received today:"
+msgstr "Commande reçue aujourd'hui:"
+
+#: templates/tasks/user_task_dashboard.html:252
+msgid "Fetching your task…"
+msgstr "Récupérer votre tâche…"
+
+#: templates/tasks/user_task_dashboard.html:262
+msgid "Filter status"
+msgstr "Statut de filtre"
+
+#: templates/tasks/user_task_dashboard.html:268
+msgid "Apply"
+msgstr "Appliquer"
+
+#: templates/tasks/user_task_dashboard.html:293
+#: templates/tasks/user_task_dashboard.html:323
+msgid "No tasks yet."
+msgstr "Pas encore de tâches."
+
+#: templates/tasks/user_task_dashboard.html:311
+msgid "Approved"
+msgstr "Approuvé"
+
+#: templates/tasks/user_task_dashboard.html:335
+#: templates/tasks/user_task_dashboard.html:392
+msgid "Loading…"
+msgstr "Chargement…"
+
+#: templates/tasks/user_task_dashboard.html:336
+#: templates/tasks/user_task_dashboard.html:386
+msgid "Please wait a moment"
+msgstr "Veuillez attendre un moment"
+
+#: templates/tasks/user_task_dashboard.html:353
+msgid "Oh No!"
+msgstr "Oh non!"
+
+#: templates/tasks/user_task_dashboard.html:355
+msgid ""
+"You have completed <strong id=\"completedCount\">0</strong> orders."
+"<br>Please contact customer service for assistance."
+msgstr ""
+"Vous avez terminé <strong id=\"completedCount\">0</strong> orders."
+"Veuillez contacter le service client pour obtenir de l'aide."
