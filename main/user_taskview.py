@@ -1,19 +1,44 @@
- # user_taskview.py
+# user_taskview.py
 from __future__ import annotations
-
 from datetime import date
+from decimal import Decimal
 
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from django.db import transaction
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.http import JsonResponse, Http404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse, NoReverseMatch
+from django.utils import timezone
+from django.utils.translation import gettext as _
+from django.views.decorators.http import require_POST
+from django.db import transaction
+
+# --- your existing imports (kept) ---
+from .signin_reward import compute_state, claim_today, _required_cycles_for_date
+from .models import maybe_offer_fortune, FortuneCardRule
+from .models import FortuneCardGrant, grant_cash_reward, convert_to_golden_task
+from .models import UserTaskProgress
+
+from .models import (
+    ensure_task_progress,
+    UserTask,
+    UserTaskTemplate,
+    FortuneCardRule,
+    maybe_offer_fortune,
+)
+
+from .signin_reward import (
+    _cycles_done_today,   # snapshot-based helper
+)
 
 from .models import (
     UserTask,
     spawn_next_task_for_user,
     ensure_task_progress,  # creates/repairs progress
 )
+# ------------------------------------
+
 
 def _eur(cents: int | None) -> str:
     try:
@@ -22,6 +47,45 @@ def _eur(cents: int | None) -> str:
         cents = 0
     return f"€{cents / 100:.2f}"
 
+
+@login_required
+def signin_reward_page(request):
+    state = compute_state(request.user)
+    today = timezone.localdate()
+
+    # snapshot-based "cycles today" (no UserCycleLog needed)
+    prog, _ = UserTaskProgress.objects.get_or_create(user=request.user)
+    cycles_done_today = _cycles_done_today(request.user, int(prog.cycles_completed or 0))
+
+    ctx = {
+        "active_page": "signinreward",
+        "streak": state.streak,                       # 0..5
+        "can_claim": state.can_claim,
+        "cant_reason": state.reason,
+        "claimed_today": state.claimed_today,
+        "next_reward": (state.next_reward_cents // 100) if state.next_reward_cents else 0,
+        "missed_dates": state.missed_dates,
+        "is_blocked": state.is_blocked,
+        # informational counters
+        "required_cycles_today": _required_cycles_for_date(request.user, today),
+        "cycles_done_today": cycles_done_today,
+    }
+    return render(request, "meta_search/signin_reward.html", ctx)
+
+
+@login_required
+def signin_reward_claim(request):
+    if request.method != "POST":
+        return redirect("signinreward")
+    ok, reason, _state = claim_today(request.user)
+    if ok:
+        messages.success(request, _("Sign-in reward claimed."))
+    else:
+        messages.warning(request, _(reason))
+    return redirect("signinreward")
+
+
+# fortune card
 @login_required
 def task_dashboard(request):
     """
@@ -30,13 +94,6 @@ def task_dashboard(request):
       - 'Order received today' counter and cycle limit
       - GET TASK button (disabled if blocked or while processing)
       - Tabs (all/completed/processing) + latest tasks list
-
-    RULES:
-      • While an ADMIN task is ASSIGNED (processing > 0):
-          Total Asset == Asset == (- required)  ← show negative required (from model).
-      • When NOT processing:
-          Total Asset == Wallet (cash + bonus).
-      • Asset never includes commissions directly.
     """
     # Ensure progress exists
     prog = ensure_task_progress(request.user)
@@ -51,7 +108,7 @@ def task_dashboard(request):
     wallet_bonus = int(getattr(wallet, "bonus_cents", 0) or 0)
     wallet_total_cents = wallet_cash + wallet_bonus
 
-    # IMPORTANT: Only force Total Asset = Wallet when NOT processing.
+    # Only force Total Asset = Wallet when NOT processing.
     if processing_cents == 0:
         totals["total_asset_cents"] = wallet_total_cents
     # else: keep totals from model so negative required shows in both Total & Asset
@@ -69,14 +126,8 @@ def task_dashboard(request):
     limit        = int(prog.limit_snapshot or 0)
     next_visible = int(prog.current_task_index or 0) + 1
 
-    # Disable GET TASK while processing or blocked
-    #can_get_task = (not prog.is_blocked) and (processing_cents == 0)
-
-    #To unblock the get task on taskdashboard for admin task
-    # Leave GET TASK enabled unless blocked; do_task() will resume the in-flight task
+    # GET TASK enabled unless blocked
     can_get_task = (not prog.is_blocked)
-
-
 
     # Withdrawal gating (policy unchanged)
     ok_to_withdraw, withdraw_msg = prog.can_withdraw()
@@ -95,7 +146,50 @@ def task_dashboard(request):
         qs = qs.filter(status__in=[UserTask.Status.IN_PROGRESS, UserTask.Status.SUBMITTED])
     tasks = list(qs[:20])
 
-    ctx = {
+    # ===== Fortune (5b) =====
+    grant = maybe_offer_fortune(request.user)
+    fortune = None
+    if grant:
+        mode = "cash" if grant.kind == FortuneCardRule.Kind.CASH else "golden"
+        price_cents = 0
+        if mode == "golden":
+            try:
+                tpl = (UserTaskTemplate.objects
+                       .only("id", "task_price")
+                       .get(pk=grant.golden_template_id))
+                # avoid to_cents dependency; compute directly
+                eff_price = tpl.effective_price() or Decimal("0")
+                price_cents = int(eff_price * 100)
+            except Exception:
+                price_cents = 0
+
+        fortune = {
+            "grant_id": grant.pk,
+            "mode": mode,
+            "amount_cents": int(grant.amount_cents or 0),
+            "price_cents": int(price_cents or 0),
+        }
+
+    # --- DEBUG/QA: force the fortune modal from URL without touching models ---
+    force = request.GET.get("force_fortune")
+    if not fortune and force:
+        try:
+            kind, _, amt = force.partition(":")
+            kind = kind.strip().lower()
+            amount = int(amt) if amt.strip().isdigit() else (2 if kind == "cash" else 100)
+            if kind == "cash":
+                fortune = {"grant_id": 0, "mode": "cash", "amount_cents": amount * 100, "price_cents": 0}
+            elif kind == "golden":
+                fortune = {"grant_id": 0, "mode": "golden", "amount_cents": 0, "price_cents": amount * 100}
+        except Exception:
+            pass
+    # --- /force hook ---
+
+    # Build context WITHOUT overwriting fortune
+    ctx = {}
+    ctx["fortune"] = fortune  # keep 5b available to template
+
+    ctx.update({
         "active_page": "task",
 
         # money strings for the 4 cards
@@ -122,9 +216,9 @@ def task_dashboard(request):
         # list + tabs
         "tab": tab,
         "tasks": tasks,
-    }
-    return render(request, "tasks/user_task_dashboard.html", ctx)
+    })
 
+    return render(request, "tasks/user_task_dashboard.html", ctx)
 
 
 @login_required
@@ -153,6 +247,7 @@ def do_task(request):
     except Exception as e:
         messages.error(request, f"Could not start a task. {e!s}")
     return redirect("task_dashboard")
+
 
 @login_required
 def task_detail(request, pk: int):
@@ -183,3 +278,72 @@ def task_detail(request, pk: int):
             messages.error(request, "Submission failed. Please try again.")
 
     return render(request, "tasks/task_detail.html", {"task": task, "active_page": "task"})
+
+
+
+
+
+
+from .models import FortuneCardGrant, FortuneCardRule, grant_cash_reward, convert_to_golden_task
+
+@login_required
+@require_POST
+def fortune_receive(request, pk: int):
+    with transaction.atomic():
+        grant = get_object_or_404(
+            FortuneCardGrant.objects.select_for_update(),
+            pk=pk, user=request.user
+        )
+        if grant.kind != FortuneCardRule.Kind.CASH:
+            raise Http404("Not a cash grant")
+
+        picked = int(request.POST.get("box") or 0)
+        updates = []
+        if grant.status == FortuneCardGrant.Status.OFFERED:
+            grant.status = FortuneCardGrant.Status.CLICKED
+            updates.append("status")
+        if picked and picked != grant.picked_box:
+            grant.picked_box = picked
+            updates.append("picked_box")
+        if updates:
+            grant.save(update_fields=[*updates, "updated_at"])
+
+        grant = grant_cash_reward(grant)
+
+    return JsonResponse({"ok": True, "credited_cents": int(grant.amount_cents)})
+
+
+@login_required
+@require_POST
+def fortune_open(request, pk: int):
+    with transaction.atomic():
+        grant = get_object_or_404(
+            FortuneCardGrant.objects.select_for_update(),
+            pk=pk, user=request.user
+        )
+        if grant.kind != FortuneCardRule.Kind.GOLDEN:
+            raise Http404("Not a golden grant")
+
+        picked = int(request.POST.get("box") or 0)
+        updates = []
+        if grant.status == FortuneCardGrant.Status.OFFERED:
+            grant.status = FortuneCardGrant.Status.CLICKED
+            updates.append("status")
+        if picked and picked != grant.picked_box:
+            grant.picked_box = picked
+            updates.append("picked_box")
+        if updates:
+            grant.save(update_fields=[*updates, "updated_at"])
+
+        task = convert_to_golden_task(grant)
+
+    try:
+        redirect_url = reverse("task_detail", kwargs={"pk": task.pk})
+    except NoReverseMatch:
+        try:
+            redirect_url = reverse("do_task")
+        except NoReverseMatch:
+            redirect_url = "/"
+
+    return JsonResponse({"ok": True, "redirect": redirect_url})
+

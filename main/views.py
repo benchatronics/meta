@@ -91,12 +91,6 @@ from .services import confirm_deposit
     #vip_deposit_shortfall_cents,
 #)
 
-def signinreward(request):
-    ctx = {
-        "active_page": "signinreward",
-        }
-    return render(request, "meta_search/signinreward.html", ctx)
-
 
 def level(request):
     ctx = {

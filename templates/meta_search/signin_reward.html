@@ -1,0 +1,523 @@
+{% extends "base_user.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign-in Reward" %}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'meta_search/signinreward.css' %}" media="(min-width: 768px)">
+
+<style>
+/* ===== MOBILE ONLY (<=767px) ===== */
+.sr-chip{ min-width:0; }
+.sr-chip .sr-meta, .sr-chip .sr-val{
+  overflow:visible;    /* ensure nothing hides the text */
+}
+
+@media (max-width: 767px){
+  .sr-wrap{max-width:420px;margin:16px auto 56px;padding:0 16px}
+
+  /* Banner */
+  .sr-banner{
+    position:relative; overflow:hidden;
+    background:#FFF3C7; border:1px solid #FFE89A; border-radius:22px;
+    box-shadow:0 6px 16px rgba(0,0,0,.06);
+  }
+  .sr-banner > .sr-row{align-items:flex-start; gap:12px; padding:16px 16px 12px}
+  .sr-badge{flex:0 0 32px; width:32px;height:32px;border-radius:50%;
+    background:#fff;border:1px solid #FFE386;display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .sr-text{max-width:60%; padding-left:0; margin-left:0}
+  .sr-kicker{margin:0;font-weight:600;color:#0F172A;font-size:16px;line-height:1}
+  .sr-amount{margin:.5rem 0 0;color:#0B3AAE;font-weight:800;font-size:28px;line-height:1}
+  .sr-sub{margin:.4rem 0 0;color:#64748B;font-size:10px;line-height:1.2}
+
+  /* Banner image (inside card) */
+  .sr-art{position:absolute; right:12px; top:12px}
+  .sr-art img{display:block; width:92px; height:auto; border-radius:12px}
+
+  /* Day chips (own card, floating just over main card top) */
+  .sr-banner-spacer{height:0} /* we’ll control spacing with margins below */
+  .sr-days-card{
+    margin-top:-12px; position:relative; z-index:20;
+  }
+  .sr-days{
+    display:flex; justify-content:space-between; gap:8px;
+    padding:12px 14px; border-radius:18px; background:#fff;
+    border:1px solid #e5e7eb; box-shadow:0 10px 20px rgba(0,0,0,.08);
+  }
+  .sr-chip{width:19%; text-align:left; display:flex; flex-direction:column; align-items:flex-start}
+  .sr-chip .circle{width:40px;height:40px;border-radius:50%;background:#e8f0ff;display:grid;place-items:center;border:1px solid #cfe0ff}
+  .sr-chip .sr-meta{margin-top:6px;font-size:11px;color:#667085;white-space:nowrap}
+  .sr-chip .sr-val{font-weight:800;font-size:13px;color:#111827;white-space:nowrap}
+
+  /* Timeline card (provides room under the floating chips) */
+  .sr-notes{
+    margin-top:-8px; padding:16px; position:relative; z-index:10;
+    background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 10px 20px rgba(0,0,0,.08);
+  }
+  .sr-timeline{margin:0;padding:0;list-style:none}
+  .sr-item{display:grid;grid-template-columns:40px 1fr;column-gap:16px;position:relative;padding:20px 0}
+  .sr-item::before{content:"";position:absolute;left:20px;top:0;bottom:0;width:2px;background:#bfdbfe;z-index:0}
+  .sr-item.first::before{top:40px}
+  .sr-item.last::before{bottom:80px}
+
+ .sr-icon{width:40px;height:40px;border-radius:50%;background:#2563eb;color:#fff;display:grid;place-items:center;box-shadow:0 6px 16px rgba(37,99,235,.35);position:relative;z-index:1}
+  .sr-item p{margin:0;color:#374151;line-height:1.6}
+
+
+  /* Bottom bar */
+  .sr-bottom{margin-top:12px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 10px 20px rgba(0,0,0,.08)}
+  .sr-bottom-row{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-top:1px solid #e5e7eb}
+  .sr-progress{font-weight:800;font-size:32px;color:#0f172a}
+  .sr-btn{appearance:none;border:0;outline:0;background:#2563eb;color:#fff;font-weight:600;padding:12px 22px;border-radius:14px;cursor:pointer}
+
+}
+
+/* ===== Fix mobile layout for banner + day chips ===== */
+
+@media (max-width: 767px){
+
+  /* Banner: keep content left, leave room for the floating chips */
+  .sr-banner{
+    position: relative;
+    padding: 16px 16px 84px;   /* bottom padding so chips won’t overlap text */
+    overflow: hidden;
+    background: #FFF3C7;
+    border: 1px solid #FFE89A;
+    border-radius: 22px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.06);
+  }
+  .sr-row{ align-items: flex-start; gap: 12px; }
+  .sr-text{ max-width: 58%; margin: 0; padding: 0; }
+  .sr-kicker{ font-size: 16px; line-height: 1; margin: 0; }
+  .sr-amount{ font-size: 28px; line-height: 1; margin: .5rem 0 0; }
+  .sr-sub{ font-size: 11px; line-height: 1.25; margin: .4rem 0 0; }
+
+  /* Illustration sits inside banner, top-right */
+  .sr-art{ position: absolute; right: 12px; top: 70px; }
+  .sr-art img{ width: 120px; height: auto; border-radius: 12px; display: block; }
+
+  /* Day chips: white card that floats just BELOW the banner */
+  .sr-chips{
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -26px;                 /* pulls the card below the banner edge */
+    z-index: 20;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.08);
+  }
+
+  .sr-chip .circle{
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #e8f0ff;
+    border: 1px solid #cfe0ff;
+    display: grid; place-items: center;
+  }
+  .sr-chip .meta{ font-size: 11px; margin-top: 4px; color: #667085; white-space: nowrap; }
+  .sr-chip .val{ font-size: 13px; font-weight: 800; color: #111827; white-space: nowrap; }
+
+  /* Space under banner to clear the floating chips */
+  .sr-banner-spacer{ height: 46px; }
+
+  /* (Unrelated) Ensure timeline line stays behind the icons */
+  .sr-item::before{ z-index: 0; }
+  .sr-icon{ position: relative; z-index: 1; }
+}
+
+/* ===== MOBILE FIX: let chips show fully ===== */
+@media (max-width: 767px){
+  /* allow the floating chips to hang outside the banner */
+  .sr-banner{
+    overflow: visible;          /* was: hidden */
+    padding-bottom: 96px;       /* give room for the chips */
+  }
+
+  /* keep chips just below the banner edge */
+  .sr-chips{
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -34px;              /* a bit lower so nothing is clipped */
+    z-index: 20;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.08);
+  }
+
+  /* spacer under banner so timeline doesn't collide with chips */
+  .sr-banner-spacer{ height: 58px; } /* was 46px */
+}
+
+
+</style>
+
+
+{% endblock %}
+
+{% block page_title %}{% trans "Sign-in Reward" %}{% endblock %}
+
+{% block content %}
+<div class="sr-wrap">
+
+  <!-- Banner -->
+  <section class="sr-banner">
+    <div class="sr-row">
+      <div class="sr-badge" aria-hidden="true">
+     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.86866 15.4599L7 22L11.5884 19.247C11.7381 19.1572 11.8129 19.1123 11.8928 19.0947C11.9634 19.0792 12.0366 19.0792 12.1072 19.0947C12.1871 19.1123 12.2619 19.1572 12.4116 19.247L17 22L16.1319 15.4571M16.4259 4.24888C16.5803 4.6224 16.8768 4.9193 17.25 5.0743L18.5589 5.61648C18.9325 5.77121 19.2292 6.06799 19.384 6.44154C19.5387 6.81509 19.5387 7.23481 19.384 7.60836L18.8422 8.91635C18.6874 9.29007 18.6872 9.71021 18.8427 10.0837L19.3835 11.3913C19.4602 11.5764 19.4997 11.7747 19.4997 11.975C19.4998 12.1752 19.4603 12.3736 19.3837 12.5586C19.3071 12.7436 19.1947 12.9118 19.0531 13.0534C18.9114 13.195 18.7433 13.3073 18.5582 13.3839L17.2503 13.9256C16.8768 14.0801 16.5799 14.3765 16.4249 14.7498L15.8827 16.0588C15.728 16.4323 15.4312 16.7291 15.0577 16.8838C14.6841 17.0386 14.2644 17.0386 13.8909 16.8838L12.583 16.342C12.2094 16.1877 11.7899 16.188 11.4166 16.3429L10.1077 16.8843C9.73434 17.0387 9.31501 17.0386 8.94178 16.884C8.56854 16.7293 8.27194 16.4329 8.11711 16.0598L7.57479 14.7504C7.42035 14.3769 7.12391 14.08 6.75064 13.925L5.44175 13.3828C5.06838 13.2282 4.77169 12.9316 4.61691 12.5582C4.46213 12.1849 4.46192 11.7654 4.61633 11.3919L5.1581 10.0839C5.31244 9.71035 5.31213 9.29079 5.15722 8.91746L4.61623 7.60759C4.53953 7.42257 4.50003 7.22426 4.5 7.02397C4.49997 6.82369 4.5394 6.62536 4.61604 6.44032C4.69268 6.25529 4.80504 6.08716 4.94668 5.94556C5.08832 5.80396 5.25647 5.69166 5.44152 5.61508L6.74947 5.07329C7.12265 4.91898 7.41936 4.6229 7.57448 4.25004L8.11664 2.94111C8.27136 2.56756 8.56813 2.27078 8.94167 2.11605C9.3152 1.96132 9.7349 1.96132 10.1084 2.11605L11.4164 2.65784C11.7899 2.81218 12.2095 2.81187 12.5828 2.65696L13.8922 2.11689C14.2657 1.96224 14.6853 1.96228 15.0588 2.11697C15.4322 2.27167 15.729 2.56837 15.8837 2.94182L16.426 4.25115L16.4259 4.24888Z" stroke="#212121" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+      </div>
+
+      <div class="sr-text">
+        <div class="sr-kicker">{% trans "Reward Point" %}</div>
+        <div class="sr-amount">+&euro;350</div>
+        <div class="sr-sub">{% trans "Sign in for 5 consecutive days to receive rewards" %}</div>
+      </div>
+
+      <!-- Banner illustration (image instead of inline SVG) -->
+<div class="sr-art" aria-hidden="true">
+  <img
+    src="{% static 'meta_search/images/signinreward.png' %}"
+    alt="{% trans 'Reward banner' %}">
+</div>
+
+
+    </div>
+
+    <!-- Floating chips (hard-coded to avoid template tag issues) -->
+    <div class="sr-chips">
+      <div class="sr-chip">
+        <div class="circle">
+    <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.19922 8.70111H15.5992V16.5011C15.5992 17.2968 15.2831 18.0598 14.7205 18.6224C14.1579 19.185 13.3949 19.5011 12.5992 19.5011H4.19922C3.40357 19.5011 2.64051 19.185 2.0779 18.6224C1.51529 18.0598 1.19922 17.2968 1.19922 16.5011V8.70111Z" fill="url(#paint0_linear_1113_6441)"/>
+        <path d="M15.6 5.10107H1.2C0.537258 5.10107 0 5.63833 0 6.30107V8.70107C0 9.36382 0.537258 9.90107 1.2 9.90107H15.6C16.2627 9.90107 16.8 9.36382 16.8 8.70107V6.30107C16.8 5.63833 16.2627 5.10107 15.6 5.10107Z" fill="url(#paint1_linear_1113_6441)"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="#212121"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="url(#paint2_linear_1113_6441)"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="#212121"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="url(#paint3_linear_1113_6441)"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.40077 1.03669L8.46797 0.967092C8.85254 0.582733 9.32612 0.299351 9.84662 0.142141C10.3671 -0.0150685 10.9184 -0.0412355 11.4514 0.0659668C11.9845 0.173169 12.4828 0.410419 12.902 0.756624C13.3213 1.10283 13.6485 1.54726 13.8546 2.05041C14.0606 2.55356 14.1392 3.09983 14.0833 3.64066C14.0273 4.18149 13.8386 4.70012 13.534 5.15045C13.2293 5.60077 12.818 5.96884 12.3368 6.22191C11.8556 6.47499 11.3193 6.60525 10.7756 6.60109C10.284 6.59897 9.79237 6.59857 9.30077 6.59989V6.60349L8.40077 6.60109L7.50077 6.60349V6.59989H6.02597C5.47803 6.60433 4.93761 6.47226 4.45348 6.2156C3.96936 5.95893 3.55676 5.58575 3.25294 5.12974C2.94912 4.67373 2.76363 4.14924 2.71322 3.6036C2.6628 3.05797 2.74905 2.50837 2.96418 2.00441C3.17931 1.50045 3.51655 1.058 3.94545 0.716973C4.37436 0.37595 4.88143 0.147097 5.4209 0.0510696C5.96038 -0.0449581 6.51528 -0.00513795 7.03551 0.166936C7.55575 0.33901 8.02495 0.637921 8.40077 1.03669ZM11.8616 2.24029C11.6518 2.03046 11.3845 1.88755 11.0935 1.82965C10.8025 1.77175 10.5008 1.80145 10.2267 1.91501C9.95258 2.02856 9.71829 2.22087 9.55347 2.46759C9.38866 2.71432 9.30071 3.00438 9.30077 3.30109V4.79989H9.36317C9.88037 4.79869 10.4804 4.79869 10.7888 4.80109C11.0865 4.80354 11.3782 4.71732 11.6268 4.55342C11.8754 4.38952 12.0696 4.15536 12.1846 3.88073C12.2996 3.60611 12.3304 3.30347 12.2728 3.01133C12.2153 2.7192 12.0721 2.45079 11.8616 2.24029ZM7.50077 3.30109C7.50076 3.00391 7.41247 2.71343 7.24712 2.4665C7.08176 2.21958 6.84678 2.02733 6.57199 1.91416C6.2972 1.80099 5.99499 1.772 5.70369 1.83085C5.4124 1.88971 5.14515 2.03377 4.93586 2.24475C4.72656 2.45573 4.58466 2.72412 4.52814 3.01588C4.47163 3.30764 4.50305 3.60961 4.61842 3.88348C4.7338 4.15735 4.92792 4.39078 5.17617 4.55415C5.42442 4.71752 5.7156 4.80347 6.01277 4.80109C6.32117 4.79869 6.92117 4.79869 7.43837 4.79869H7.50077V3.30109Z" fill="url(#paint4_linear_1113_6441)"/>
+        <defs>
+        <linearGradient id="paint0_linear_1113_6441" x1="7.48002" y1="23.7455" x2="7.48002" y2="4.49511" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#007BFF"/>
+        <stop offset="0.348" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#003773"/>
+        </linearGradient>
+        <linearGradient id="paint1_linear_1113_6441" x1="-13.2374" y1="3.30107" x2="30.0374" y2="3.30107" gradientUnits="userSpaceOnUse">
+        <stop offset="0.196" stop-color="#003773"/>
+        <stop offset="0.763" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#007BFF"/>
+        </linearGradient>
+        <linearGradient id="paint2_linear_1113_6441" x1="7.5" y1="4.50106" x2="7.5" y2="17.8319" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint3_linear_1113_6441" x1="7.5" y1="-17.0557" x2="7.5" y2="18.6443" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint4_linear_1113_6441" x1="11.5676" y1="6.60229" x2="8.15357" y2="-6.96971" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        </defs>
+   </svg>
+
+        </div>
+        <div class="sr-meta">{% trans "Day 1" %}</div>
+        <div class="sr-val">&euro;10</div>
+      </div>
+
+      <div class="sr-chip">
+        <div class="circle">
+         <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.19922 8.70111H15.5992V16.5011C15.5992 17.2968 15.2831 18.0598 14.7205 18.6224C14.1579 19.185 13.3949 19.5011 12.5992 19.5011H4.19922C3.40357 19.5011 2.64051 19.185 2.0779 18.6224C1.51529 18.0598 1.19922 17.2968 1.19922 16.5011V8.70111Z" fill="url(#paint0_linear_1113_6441)"/>
+        <path d="M15.6 5.10107H1.2C0.537258 5.10107 0 5.63833 0 6.30107V8.70107C0 9.36382 0.537258 9.90107 1.2 9.90107H15.6C16.2627 9.90107 16.8 9.36382 16.8 8.70107V6.30107C16.8 5.63833 16.2627 5.10107 15.6 5.10107Z" fill="url(#paint1_linear_1113_6441)"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="#212121"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="url(#paint2_linear_1113_6441)"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="#212121"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="url(#paint3_linear_1113_6441)"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.40077 1.03669L8.46797 0.967092C8.85254 0.582733 9.32612 0.299351 9.84662 0.142141C10.3671 -0.0150685 10.9184 -0.0412355 11.4514 0.0659668C11.9845 0.173169 12.4828 0.410419 12.902 0.756624C13.3213 1.10283 13.6485 1.54726 13.8546 2.05041C14.0606 2.55356 14.1392 3.09983 14.0833 3.64066C14.0273 4.18149 13.8386 4.70012 13.534 5.15045C13.2293 5.60077 12.818 5.96884 12.3368 6.22191C11.8556 6.47499 11.3193 6.60525 10.7756 6.60109C10.284 6.59897 9.79237 6.59857 9.30077 6.59989V6.60349L8.40077 6.60109L7.50077 6.60349V6.59989H6.02597C5.47803 6.60433 4.93761 6.47226 4.45348 6.2156C3.96936 5.95893 3.55676 5.58575 3.25294 5.12974C2.94912 4.67373 2.76363 4.14924 2.71322 3.6036C2.6628 3.05797 2.74905 2.50837 2.96418 2.00441C3.17931 1.50045 3.51655 1.058 3.94545 0.716973C4.37436 0.37595 4.88143 0.147097 5.4209 0.0510696C5.96038 -0.0449581 6.51528 -0.00513795 7.03551 0.166936C7.55575 0.33901 8.02495 0.637921 8.40077 1.03669ZM11.8616 2.24029C11.6518 2.03046 11.3845 1.88755 11.0935 1.82965C10.8025 1.77175 10.5008 1.80145 10.2267 1.91501C9.95258 2.02856 9.71829 2.22087 9.55347 2.46759C9.38866 2.71432 9.30071 3.00438 9.30077 3.30109V4.79989H9.36317C9.88037 4.79869 10.4804 4.79869 10.7888 4.80109C11.0865 4.80354 11.3782 4.71732 11.6268 4.55342C11.8754 4.38952 12.0696 4.15536 12.1846 3.88073C12.2996 3.60611 12.3304 3.30347 12.2728 3.01133C12.2153 2.7192 12.0721 2.45079 11.8616 2.24029ZM7.50077 3.30109C7.50076 3.00391 7.41247 2.71343 7.24712 2.4665C7.08176 2.21958 6.84678 2.02733 6.57199 1.91416C6.2972 1.80099 5.99499 1.772 5.70369 1.83085C5.4124 1.88971 5.14515 2.03377 4.93586 2.24475C4.72656 2.45573 4.58466 2.72412 4.52814 3.01588C4.47163 3.30764 4.50305 3.60961 4.61842 3.88348C4.7338 4.15735 4.92792 4.39078 5.17617 4.55415C5.42442 4.71752 5.7156 4.80347 6.01277 4.80109C6.32117 4.79869 6.92117 4.79869 7.43837 4.79869H7.50077V3.30109Z" fill="url(#paint4_linear_1113_6441)"/>
+        <defs>
+        <linearGradient id="paint0_linear_1113_6441" x1="7.48002" y1="23.7455" x2="7.48002" y2="4.49511" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#007BFF"/>
+        <stop offset="0.348" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#003773"/>
+        </linearGradient>
+        <linearGradient id="paint1_linear_1113_6441" x1="-13.2374" y1="3.30107" x2="30.0374" y2="3.30107" gradientUnits="userSpaceOnUse">
+        <stop offset="0.196" stop-color="#003773"/>
+        <stop offset="0.763" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#007BFF"/>
+        </linearGradient>
+        <linearGradient id="paint2_linear_1113_6441" x1="7.5" y1="4.50106" x2="7.5" y2="17.8319" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint3_linear_1113_6441" x1="7.5" y1="-17.0557" x2="7.5" y2="18.6443" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint4_linear_1113_6441" x1="11.5676" y1="6.60229" x2="8.15357" y2="-6.96971" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        </defs>
+   </svg>
+
+        </div>
+        <div class="sr-meta">{% trans "Day 2" %}</div>
+        <div class="sr-val">&euro;30</div>
+      </div>
+
+      <div class="sr-chip">
+        <div class="circle">
+
+           <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.19922 8.70111H15.5992V16.5011C15.5992 17.2968 15.2831 18.0598 14.7205 18.6224C14.1579 19.185 13.3949 19.5011 12.5992 19.5011H4.19922C3.40357 19.5011 2.64051 19.185 2.0779 18.6224C1.51529 18.0598 1.19922 17.2968 1.19922 16.5011V8.70111Z" fill="url(#paint0_linear_1113_6441)"/>
+        <path d="M15.6 5.10107H1.2C0.537258 5.10107 0 5.63833 0 6.30107V8.70107C0 9.36382 0.537258 9.90107 1.2 9.90107H15.6C16.2627 9.90107 16.8 9.36382 16.8 8.70107V6.30107C16.8 5.63833 16.2627 5.10107 15.6 5.10107Z" fill="url(#paint1_linear_1113_6441)"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="#212121"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="url(#paint2_linear_1113_6441)"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="#212121"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="url(#paint3_linear_1113_6441)"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.40077 1.03669L8.46797 0.967092C8.85254 0.582733 9.32612 0.299351 9.84662 0.142141C10.3671 -0.0150685 10.9184 -0.0412355 11.4514 0.0659668C11.9845 0.173169 12.4828 0.410419 12.902 0.756624C13.3213 1.10283 13.6485 1.54726 13.8546 2.05041C14.0606 2.55356 14.1392 3.09983 14.0833 3.64066C14.0273 4.18149 13.8386 4.70012 13.534 5.15045C13.2293 5.60077 12.818 5.96884 12.3368 6.22191C11.8556 6.47499 11.3193 6.60525 10.7756 6.60109C10.284 6.59897 9.79237 6.59857 9.30077 6.59989V6.60349L8.40077 6.60109L7.50077 6.60349V6.59989H6.02597C5.47803 6.60433 4.93761 6.47226 4.45348 6.2156C3.96936 5.95893 3.55676 5.58575 3.25294 5.12974C2.94912 4.67373 2.76363 4.14924 2.71322 3.6036C2.6628 3.05797 2.74905 2.50837 2.96418 2.00441C3.17931 1.50045 3.51655 1.058 3.94545 0.716973C4.37436 0.37595 4.88143 0.147097 5.4209 0.0510696C5.96038 -0.0449581 6.51528 -0.00513795 7.03551 0.166936C7.55575 0.33901 8.02495 0.637921 8.40077 1.03669ZM11.8616 2.24029C11.6518 2.03046 11.3845 1.88755 11.0935 1.82965C10.8025 1.77175 10.5008 1.80145 10.2267 1.91501C9.95258 2.02856 9.71829 2.22087 9.55347 2.46759C9.38866 2.71432 9.30071 3.00438 9.30077 3.30109V4.79989H9.36317C9.88037 4.79869 10.4804 4.79869 10.7888 4.80109C11.0865 4.80354 11.3782 4.71732 11.6268 4.55342C11.8754 4.38952 12.0696 4.15536 12.1846 3.88073C12.2996 3.60611 12.3304 3.30347 12.2728 3.01133C12.2153 2.7192 12.0721 2.45079 11.8616 2.24029ZM7.50077 3.30109C7.50076 3.00391 7.41247 2.71343 7.24712 2.4665C7.08176 2.21958 6.84678 2.02733 6.57199 1.91416C6.2972 1.80099 5.99499 1.772 5.70369 1.83085C5.4124 1.88971 5.14515 2.03377 4.93586 2.24475C4.72656 2.45573 4.58466 2.72412 4.52814 3.01588C4.47163 3.30764 4.50305 3.60961 4.61842 3.88348C4.7338 4.15735 4.92792 4.39078 5.17617 4.55415C5.42442 4.71752 5.7156 4.80347 6.01277 4.80109C6.32117 4.79869 6.92117 4.79869 7.43837 4.79869H7.50077V3.30109Z" fill="url(#paint4_linear_1113_6441)"/>
+        <defs>
+        <linearGradient id="paint0_linear_1113_6441" x1="7.48002" y1="23.7455" x2="7.48002" y2="4.49511" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#007BFF"/>
+        <stop offset="0.348" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#003773"/>
+        </linearGradient>
+        <linearGradient id="paint1_linear_1113_6441" x1="-13.2374" y1="3.30107" x2="30.0374" y2="3.30107" gradientUnits="userSpaceOnUse">
+        <stop offset="0.196" stop-color="#003773"/>
+        <stop offset="0.763" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#007BFF"/>
+        </linearGradient>
+        <linearGradient id="paint2_linear_1113_6441" x1="7.5" y1="4.50106" x2="7.5" y2="17.8319" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint3_linear_1113_6441" x1="7.5" y1="-17.0557" x2="7.5" y2="18.6443" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint4_linear_1113_6441" x1="11.5676" y1="6.60229" x2="8.15357" y2="-6.96971" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        </defs>
+   </svg>
+
+        </div>
+        <div class="sr-meta">{% trans "Day 3" %}</div>
+        <div class="sr-val">&euro;50</div>
+      </div>
+
+      <div class="sr-chip">
+        <div class="circle">
+
+           <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.19922 8.70111H15.5992V16.5011C15.5992 17.2968 15.2831 18.0598 14.7205 18.6224C14.1579 19.185 13.3949 19.5011 12.5992 19.5011H4.19922C3.40357 19.5011 2.64051 19.185 2.0779 18.6224C1.51529 18.0598 1.19922 17.2968 1.19922 16.5011V8.70111Z" fill="url(#paint0_linear_1113_6441)"/>
+        <path d="M15.6 5.10107H1.2C0.537258 5.10107 0 5.63833 0 6.30107V8.70107C0 9.36382 0.537258 9.90107 1.2 9.90107H15.6C16.2627 9.90107 16.8 9.36382 16.8 8.70107V6.30107C16.8 5.63833 16.2627 5.10107 15.6 5.10107Z" fill="url(#paint1_linear_1113_6441)"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="#212121"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="url(#paint2_linear_1113_6441)"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="#212121"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="url(#paint3_linear_1113_6441)"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.40077 1.03669L8.46797 0.967092C8.85254 0.582733 9.32612 0.299351 9.84662 0.142141C10.3671 -0.0150685 10.9184 -0.0412355 11.4514 0.0659668C11.9845 0.173169 12.4828 0.410419 12.902 0.756624C13.3213 1.10283 13.6485 1.54726 13.8546 2.05041C14.0606 2.55356 14.1392 3.09983 14.0833 3.64066C14.0273 4.18149 13.8386 4.70012 13.534 5.15045C13.2293 5.60077 12.818 5.96884 12.3368 6.22191C11.8556 6.47499 11.3193 6.60525 10.7756 6.60109C10.284 6.59897 9.79237 6.59857 9.30077 6.59989V6.60349L8.40077 6.60109L7.50077 6.60349V6.59989H6.02597C5.47803 6.60433 4.93761 6.47226 4.45348 6.2156C3.96936 5.95893 3.55676 5.58575 3.25294 5.12974C2.94912 4.67373 2.76363 4.14924 2.71322 3.6036C2.6628 3.05797 2.74905 2.50837 2.96418 2.00441C3.17931 1.50045 3.51655 1.058 3.94545 0.716973C4.37436 0.37595 4.88143 0.147097 5.4209 0.0510696C5.96038 -0.0449581 6.51528 -0.00513795 7.03551 0.166936C7.55575 0.33901 8.02495 0.637921 8.40077 1.03669ZM11.8616 2.24029C11.6518 2.03046 11.3845 1.88755 11.0935 1.82965C10.8025 1.77175 10.5008 1.80145 10.2267 1.91501C9.95258 2.02856 9.71829 2.22087 9.55347 2.46759C9.38866 2.71432 9.30071 3.00438 9.30077 3.30109V4.79989H9.36317C9.88037 4.79869 10.4804 4.79869 10.7888 4.80109C11.0865 4.80354 11.3782 4.71732 11.6268 4.55342C11.8754 4.38952 12.0696 4.15536 12.1846 3.88073C12.2996 3.60611 12.3304 3.30347 12.2728 3.01133C12.2153 2.7192 12.0721 2.45079 11.8616 2.24029ZM7.50077 3.30109C7.50076 3.00391 7.41247 2.71343 7.24712 2.4665C7.08176 2.21958 6.84678 2.02733 6.57199 1.91416C6.2972 1.80099 5.99499 1.772 5.70369 1.83085C5.4124 1.88971 5.14515 2.03377 4.93586 2.24475C4.72656 2.45573 4.58466 2.72412 4.52814 3.01588C4.47163 3.30764 4.50305 3.60961 4.61842 3.88348C4.7338 4.15735 4.92792 4.39078 5.17617 4.55415C5.42442 4.71752 5.7156 4.80347 6.01277 4.80109C6.32117 4.79869 6.92117 4.79869 7.43837 4.79869H7.50077V3.30109Z" fill="url(#paint4_linear_1113_6441)"/>
+        <defs>
+        <linearGradient id="paint0_linear_1113_6441" x1="7.48002" y1="23.7455" x2="7.48002" y2="4.49511" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#007BFF"/>
+        <stop offset="0.348" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#003773"/>
+        </linearGradient>
+        <linearGradient id="paint1_linear_1113_6441" x1="-13.2374" y1="3.30107" x2="30.0374" y2="3.30107" gradientUnits="userSpaceOnUse">
+        <stop offset="0.196" stop-color="#003773"/>
+        <stop offset="0.763" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#007BFF"/>
+        </linearGradient>
+        <linearGradient id="paint2_linear_1113_6441" x1="7.5" y1="4.50106" x2="7.5" y2="17.8319" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint3_linear_1113_6441" x1="7.5" y1="-17.0557" x2="7.5" y2="18.6443" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint4_linear_1113_6441" x1="11.5676" y1="6.60229" x2="8.15357" y2="-6.96971" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        </defs>
+   </svg>
+
+        </div>
+        <div class="sr-meta">{% trans "Day 4" %}</div>
+        <div class="sr-val">&euro;100</div>
+      </div>
+
+      <div class="sr-chip">
+        <div class="circle">
+
+       <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.19922 8.70111H15.5992V16.5011C15.5992 17.2968 15.2831 18.0598 14.7205 18.6224C14.1579 19.185 13.3949 19.5011 12.5992 19.5011H4.19922C3.40357 19.5011 2.64051 19.185 2.0779 18.6224C1.51529 18.0598 1.19922 17.2968 1.19922 16.5011V8.70111Z" fill="url(#paint0_linear_1113_6441)"/>
+        <path d="M15.6 5.10107H1.2C0.537258 5.10107 0 5.63833 0 6.30107V8.70107C0 9.36382 0.537258 9.90107 1.2 9.90107H15.6C16.2627 9.90107 16.8 9.36382 16.8 8.70107V6.30107C16.8 5.63833 16.2627 5.10107 15.6 5.10107Z" fill="url(#paint1_linear_1113_6441)"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="#212121"/>
+        <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="url(#paint2_linear_1113_6441)"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="#212121"/>
+        <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="url(#paint3_linear_1113_6441)"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.40077 1.03669L8.46797 0.967092C8.85254 0.582733 9.32612 0.299351 9.84662 0.142141C10.3671 -0.0150685 10.9184 -0.0412355 11.4514 0.0659668C11.9845 0.173169 12.4828 0.410419 12.902 0.756624C13.3213 1.10283 13.6485 1.54726 13.8546 2.05041C14.0606 2.55356 14.1392 3.09983 14.0833 3.64066C14.0273 4.18149 13.8386 4.70012 13.534 5.15045C13.2293 5.60077 12.818 5.96884 12.3368 6.22191C11.8556 6.47499 11.3193 6.60525 10.7756 6.60109C10.284 6.59897 9.79237 6.59857 9.30077 6.59989V6.60349L8.40077 6.60109L7.50077 6.60349V6.59989H6.02597C5.47803 6.60433 4.93761 6.47226 4.45348 6.2156C3.96936 5.95893 3.55676 5.58575 3.25294 5.12974C2.94912 4.67373 2.76363 4.14924 2.71322 3.6036C2.6628 3.05797 2.74905 2.50837 2.96418 2.00441C3.17931 1.50045 3.51655 1.058 3.94545 0.716973C4.37436 0.37595 4.88143 0.147097 5.4209 0.0510696C5.96038 -0.0449581 6.51528 -0.00513795 7.03551 0.166936C7.55575 0.33901 8.02495 0.637921 8.40077 1.03669ZM11.8616 2.24029C11.6518 2.03046 11.3845 1.88755 11.0935 1.82965C10.8025 1.77175 10.5008 1.80145 10.2267 1.91501C9.95258 2.02856 9.71829 2.22087 9.55347 2.46759C9.38866 2.71432 9.30071 3.00438 9.30077 3.30109V4.79989H9.36317C9.88037 4.79869 10.4804 4.79869 10.7888 4.80109C11.0865 4.80354 11.3782 4.71732 11.6268 4.55342C11.8754 4.38952 12.0696 4.15536 12.1846 3.88073C12.2996 3.60611 12.3304 3.30347 12.2728 3.01133C12.2153 2.7192 12.0721 2.45079 11.8616 2.24029ZM7.50077 3.30109C7.50076 3.00391 7.41247 2.71343 7.24712 2.4665C7.08176 2.21958 6.84678 2.02733 6.57199 1.91416C6.2972 1.80099 5.99499 1.772 5.70369 1.83085C5.4124 1.88971 5.14515 2.03377 4.93586 2.24475C4.72656 2.45573 4.58466 2.72412 4.52814 3.01588C4.47163 3.30764 4.50305 3.60961 4.61842 3.88348C4.7338 4.15735 4.92792 4.39078 5.17617 4.55415C5.42442 4.71752 5.7156 4.80347 6.01277 4.80109C6.32117 4.79869 6.92117 4.79869 7.43837 4.79869H7.50077V3.30109Z" fill="url(#paint4_linear_1113_6441)"/>
+        <defs>
+        <linearGradient id="paint0_linear_1113_6441" x1="7.48002" y1="23.7455" x2="7.48002" y2="4.49511" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#007BFF"/>
+        <stop offset="0.348" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#003773"/>
+        </linearGradient>
+        <linearGradient id="paint1_linear_1113_6441" x1="-13.2374" y1="3.30107" x2="30.0374" y2="3.30107" gradientUnits="userSpaceOnUse">
+        <stop offset="0.196" stop-color="#003773"/>
+        <stop offset="0.763" stop-color="#0062CC"/>
+        <stop offset="1" stop-color="#007BFF"/>
+        </linearGradient>
+        <linearGradient id="paint2_linear_1113_6441" x1="7.5" y1="4.50106" x2="7.5" y2="17.8319" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint3_linear_1113_6441" x1="7.5" y1="-17.0557" x2="7.5" y2="18.6443" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        <linearGradient id="paint4_linear_1113_6441" x1="11.5676" y1="6.60229" x2="8.15357" y2="-6.96971" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/>
+        <stop offset="1" stop-color="#FFD84D"/>
+        </linearGradient>
+        </defs>
+   </svg>
+
+        </div>
+        <div class="sr-meta">{% trans "Day 5" %}</div>
+        <div class="sr-val">&euro;200</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sr-banner-spacer"></div>
+
+  <!-- Notes + timeline -->
+  <section class="sr-notes">
+    <ul class="sr-timeline">
+      <li class="sr-item first">
+        <div class="sr-icon" aria-hidden="true">
+         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <path d="M10.0002 13C10.4297 13.5742 10.9776 14.0492 11.6067 14.393C12.2359 14.7367 12.9317 14.9411 13.6468 14.9924C14.362 15.0436 15.0798 14.9404 15.7515 14.6898C16.4233 14.4392 17.0333 14.0471 17.5402 13.54L20.5402 10.54C21.451 9.59702 21.955 8.334 21.9436 7.02302C21.9322 5.71204 21.4063 4.45797 20.4793 3.53093C19.5523 2.60389 18.2982 2.07805 16.9872 2.06666C15.6762 2.05526 14.4132 2.55924 13.4702 3.47003L11.7502 5.18003M14.0002 11C13.5707 10.4259 13.0228 9.95084 12.3936 9.60709C11.7645 9.26333 11.0687 9.05891 10.3535 9.00769C9.63841 8.95648 8.92061 9.05966 8.24885 9.31025C7.5771 9.56083 6.96709 9.95296 6.4602 10.46L3.4602 13.46C2.54941 14.403 2.04544 15.666 2.05683 16.977C2.06822 18.288 2.59407 19.5421 3.52111 20.4691C4.44815 21.3962 5.70221 21.922 7.01319 21.9334C8.32418 21.9448 9.58719 21.4408 10.5302 20.53L12.2402 18.82" stroke="#FEFEFE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        </div>
+        <p>{% trans "Everyday member must finish their daily workload, 2×25 purchase. After 50 purchase, membership may click on login to do daily sign in, everyday the reward goes higher." %}</p>
+      </li>
+
+      <li class="sr-item">
+        <div class="sr-icon" aria-hidden="true">
+
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 10H3M16 2V6M8 2V6M10.5 14L12 13V18M10.75 18H13.25M7.8 22H16.2C17.8802 22 18.7202 22 19.362 21.673C19.9265 21.3854 20.3854 20.9265 20.673 20.362C21 19.7202 21 18.8802 21 17.2V8.8C21 7.11984 21 6.27976 20.673 5.63803C20.3854 5.07354 19.9265 4.6146 19.362 4.32698C18.7202 4 17.8802 4 16.2 4H7.8C6.11984 4 5.27976 4 4.63803 4.32698C4.07354 4.6146 3.6146 5.07354 3.32698 5.63803C3 6.27976 3 7.11984 3 8.8V17.2C3 18.8802 3 19.7202 3.32698 20.362C3.6146 20.9265 4.07354 21.3854 4.63803 21.673C5.27976 22 6.11984 22 7.8 22Z" stroke="#FEFEFE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+        </div>
+        <p>{% trans "If the registration date reaches 5 days, you will get the first day sign-in reward again. If you sign in for 5 days in a row, you will receive an additional sign-in bonus of 350 euros." %}</p>
+      </li>
+
+      <li class="sr-item last">
+        <div class="sr-icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 9.5V7.2C20 6.0799 20 5.51984 19.782 5.09202C19.5903 4.7157 19.2843 4.40974 18.908 4.21799C18.4802 4 17.9201 4 16.8 4H5.2C4.0799 4 3.51984 4 3.09202 4.21799C2.7157 4.40973 2.40973 4.71569 2.21799 5.09202C2 5.51984 2 6.0799 2 7.2V16.8C2 17.9201 2 18.4802 2.21799 18.908C2.40973 19.2843 2.71569 19.5903 3.09202 19.782C3.51984 20 4.07989 20 5.2 20L16.8 20C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V14.5M15 12C15 11.5353 15 11.303 15.0384 11.1098C15.1962 10.3164 15.8164 9.69624 16.6098 9.53843C16.803 9.5 17.0353 9.5 17.5 9.5H19.5C19.9647 9.5 20.197 9.5 20.3902 9.53843C21.1836 9.69624 21.8038 10.3164 21.9616 11.1098C22 11.303 22 11.5353 22 12C22 12.4647 22 12.697 21.9616 12.8902C21.8038 13.6836 21.1836 14.3038 20.3902 14.4616C20.197 14.5 19.9647 14.5 19.5 14.5H17.5C17.0353 14.5 16.803 14.5 16.6098 14.4616C15.8164 14.3038 15.1962 13.6836 15.0384 12.8902C15 12.697 15 12.4647 15 12Z" stroke="#FEFEFE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+
+        </div>
+        <p>{% trans "If you sign in for 5 days in a row, you will receive an additional sign-in bonus of 350 euros." %}</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Bottom bar -->
+  <section class="sr-bottom">
+  <div class="sr-bottom-row">
+    <div class="sr-progress">
+      {{ streak|default:0 }}/5
+      <span style="font-size:.9em;color:#64748B;margin-left:.5rem;">
+
+      {% comment %}
+           {{ cycles_done_today|default:0 }}/{{ required_cycles_today|default:2 }} {% trans "cycles today" %}
+
+        {% endcomment %}
+
+      </span>
+      {% if missed_dates %}
+        <button type="button" class="sr-btn"
+                style="margin-left:.75rem;background:#f59e0b"
+                onclick="document.getElementById('sr-missed-modal').showModal()">
+          {% blocktrans %}Missed ({{ missed_dates|length }}){% endblocktrans %}
+        </button>
+      {% endif %}
+    </div>
+
+    <form method="post" action="{% url 'signinreward-claim' %}">
+      {% csrf_token %}
+      <button class="sr-btn" type="submit" data-sr-claim
+              {% if not can_claim %}disabled style="opacity:.6;cursor:not-allowed"{% endif %}>
+        {% if can_claim and next_reward %}
+          {% blocktrans with amt=next_reward %}Claim €{{ amt }}{% endblocktrans %}
+        {% elif can_claim %}
+          {% trans "Claim" %}
+        {% else %}
+          {{ cant_reason|default:_("Not available") }}
+        {% endif %}
+      </button>
+    </form>
+  </div>
+</section>
+
+<dialog id="sr-missed-modal" style="border:1px solid #e5e7eb;border-radius:12px;padding:16px;max-width:360px">
+  <h3 style="margin:0 0 8px 0">{% trans "Missed rewards" %}</h3>
+  <p style="margin:0 0 8px 0;color:#475569">{% trans "These days met the cycle requirement but were not claimed:" %}</p>
+  <ul style="margin:0 0 12px 16px;padding:0;line-height:1.6">
+    {% for d in missed_dates %}
+      <li>{{ d }}</li>
+    {% empty %}
+      <li>{% trans "None" %}</li>
+    {% endfor %}
+  </ul>
+  <form method="dialog">
+
+    <button class="sr-btn" style="background:#2563eb">{% trans "Close" %}</button>
+
+  </form>
+</dialog>
+
+</div>
+
+<div id="sr-data"
+     data-streak="{{ streak|default:'0' }}"
+     data-can-claim="{% if can_claim %}1{% else %}0{% endif %}"
+     data-claimed-today="{% if claimed_today %}1{% else %}0{% endif %}"
+     data-next="{{ next_reward|default:'0' }}">
+</div>
+
+
+<script src="{% static 'meta_search/js/signin_toast.js' %}"></script>
+
+{% endblock %}

@@ -22,12 +22,14 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
-from .models import CustomUser
+
 #from .models import InvitationCode, InvitationUsage
 
 # ---- Models you actually have (per your models.py) ----
 from .models import (
     CustomUser,
+    FortuneCardRule,
+    FortuneCardGrant,
     Wallet, WalletTxn,
     Country, Hotel, Favorite,
     PayoutAddress, WithdrawalRequest,
@@ -36,6 +38,25 @@ from .models import (
     tasksettngs as TaskSettings,  # singleton
     UserTaskTemplate,
 )
+
+
+
+
+
+# admin.py
+@admin.register(FortuneCardRule)
+class FortuneCardRuleAdmin(admin.ModelAdmin):
+    list_display = ("kind","cycle_number","order_index","reward_amount_cents","golden_template","active","created_at")
+    list_filter  = ("kind","active")
+    search_fields = ("cycle_number","order_index")
+
+@admin.register(FortuneCardGrant)
+class FortuneCardGrantAdmin(admin.ModelAdmin):
+    list_display = ("user","kind","cycle_number","order_index","status","amount_cents","user_task","created_at")
+    list_filter  = ("status","kind")
+    search_fields = ("user__username",)
+
+
 
 
 #Change admin names

@@ -207,13 +207,47 @@
   .drow .status-dot{margin-right:.35rem}
 }
 </style>
-
 {% endblock %}
 
 {% block breadcrumb %}{% trans "Home / Task" %}{% endblock %}
 
 {% block content %}
+
 <!-- inline sprite -->
+
+  <!-- Gift icon (stroke = currentColor) -->
+ <!-- Hidden SVG sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="i-gift" viewBox="0 0 17 20">
+    <path d="M1.19922 8.70111H15.5992V16.5011C15.5992 17.2968 15.2831 18.0598 14.7205 18.6224C14.1579 19.185 13.3949 19.5011 12.5992 19.5011H4.19922C3.40357 19.5011 2.64051 19.185 2.0779 18.6224C1.51529 18.0598 1.19922 17.2968 1.19922 16.5011V8.70111Z" fill="url(#gift_paint0)"/>
+    <path d="M15.6 5.10107H1.2C0.537258 5.10107 0 5.63833 0 6.30107V8.70107C0 9.36382 0.537258 9.90107 1.2 9.90107H15.6C16.2627 9.90107 16.8 9.36382 16.8 8.70107V6.30107C16.8 5.63833 16.2627 5.10107 15.6 5.10107Z" fill="url(#gift_paint1)"/>
+    <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="#212121"/>
+    <path d="M7.5 19.5011V9.90106H9.3V19.5011H7.5Z" fill="url(#gift_paint2)"/>
+    <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="#212121"/>
+    <path d="M9.3 4.80109V9.90109H7.5V4.80109H9.3Z" fill="url(#gift_paint3)"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.40077 1.03669L8.46797 0.967092C8.85254 0.582733 9.32612 0.299351 9.84662 0.142141C10.3671 -0.0150685 10.9184 -0.0412355 11.4514 0.0659668C11.9845 0.173169 12.4828 0.410419 12.902 0.756624C13.3213 1.10283 13.6485 1.54726 13.8546 2.05041C14.0606 2.55356 14.1392 3.09983 14.0833 3.64066C14.0273 4.18149 13.8386 4.70012 13.534 5.15045C13.2293 5.60077 12.818 5.96884 12.3368 6.22191C11.8556 6.47499 11.3193 6.60525 10.7756 6.60109C10.284 6.59897 9.79237 6.59857 9.30077 6.59989V6.60349L8.40077 6.60109L7.50077 6.60349V6.59989H6.02597C5.47803 6.60433 4.93761 6.47226 4.45348 6.2156C3.96936 5.95893 3.55676 5.58575 3.25294 5.12974C2.94912 4.67373 2.76363 4.14924 2.71322 3.6036C2.6628 3.05797 2.74905 2.50837 2.96418 2.00441C3.17931 1.50045 3.51655 1.058 3.94545 0.716973C4.37436 0.37595 4.88143 0.147097 5.4209 0.0510696C5.96038 -0.0449581 6.51528 -0.00513795 7.03551 0.166936C7.55575 0.33901 8.02495 0.637921 8.40077 1.03669Z" fill="url(#gift_paint4)"/>
+
+    <defs>
+      <linearGradient id="gift_paint0" x1="7.48002" y1="23.7455" x2="7.48002" y2="4.49511" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#007BFF"/><stop offset="0.348" stop-color="#0062CC"/><stop offset="1" stop-color="#003773"/>
+      </linearGradient>
+      <linearGradient id="gift_paint1" x1="-13.2374" y1="3.30107" x2="30.0374" y2="3.30107" gradientUnits="userSpaceOnUse">
+        <stop offset="0.196" stop-color="#003773"/><stop offset="0.763" stop-color="#0062CC"/><stop offset="1" stop-color="#007BFF"/>
+      </linearGradient>
+      <linearGradient id="gift_paint2" x1="7.5" y1="4.50106" x2="7.5" y2="17.8319" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/><stop offset="1" stop-color="#FFD84D"/>
+      </linearGradient>
+      <linearGradient id="gift_paint3" x1="7.5" y1="-17.0557" x2="7.5" y2="18.6443" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/><stop offset="1" stop-color="#FFD84D"/>
+      </linearGradient>
+      <linearGradient id="gift_paint4" x1="11.5676" y1="6.60229" x2="8.15357" y2="-6.96971" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#CCAD3E"/><stop offset="1" stop-color="#FFD84D"/>
+      </linearGradient>
+    </defs>
+  </symbol>
+</svg>
+
+
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
   <symbol id="i-asset-total" viewBox="0 0 24 24"><path d="M13 5C13 6.10457 10.5376 7 7.5 7C4.46243 7 2 6.10457 2 5M13 5C13 3.89543 10.5376 3 7.5 3C4.46243 3 2 3.89543 2 5M13 5V9.45715C11.7785 9.82398 11 10.3789 11 11M2 5V17C2 18.1046 4.46243 19 7.5 19C8.82963 19 10.0491 18.8284 11 18.5429V11M2 9C2 10.1046 4.46243 11 7.5 11C8.82963 11 10.0491 10.8284 11 10.5429M2 13C2 14.1046 4.46243 15 7.5 15C8.82963 15 10.0491 14.8284 11 14.5429M22 11C22 12.1046 19.5376 13 16.5 13C13.4624 13 11 12.1046 11 11M22 11C22 9.89543 19.5376 9 16.5 9C13.4624 9 11 9.89543 11 11M22 11V19C22 20.1046 19.5376 21 16.5 21C13.4624 21 11 20.1046 11 19V11M22 15C22 16.1046 19.5376 17 16.5 17C13.4624 17 11 16.1046 11 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-asset" viewBox="0 0 24 24"><path d="M6.5 15.5L12.0002 18L17.5 15.5M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM6.5 11.5L12.0002 14L17.5 11.5L12.0002 5L6.5 11.5Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -358,6 +392,102 @@
     </div>
   </div>
 </div>
+
+{# ===== 5b fortune: server JSON (kept exactly as you had it) ===== #}
+{% if fortune %}
+<script id="fortune-data" type="application/json">
+  {"grant_id": {{ fortune.grant_id }}, "mode": "{{ fortune.mode }}", "amount_cents": {{ fortune.amount_cents }}, "price_cents": {{ fortune.price_cents }} }
+</script>
+{% endif %}
+
+{# ===== 5b fortune: CSS + HTML moved INSIDE content block so it renders ===== #}
+<style>
+
+#fortune-intro .box .gift{
+  width:56px; height:56px; display:block;
+  color:#000 !important;          /* force black */
+  background:transparent !important;
+}
+#fortune-intro .box .gift *{
+  fill:currentColor !important;   /* ensure it follows color */
+  stroke:currentColor !important; /* safe for stroke icons too */
+  background:transparent !important;
+}
+
+/* begining of background */
+/* Make the gift icon outline-only (no fill) */
+#fortune-intro .box .gift,
+#fortune-intro .box .gift *{
+  background: transparent !important;
+  fill: none !important;               /* kill all fills (removes the “background”) */
+  stroke: currentColor !important;      /* outline uses the text color */
+  stroke-width: 1.6px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+#fortune-intro .box {
+  background: transparent !important;   /* kill white background */
+  border: none;                         /* remove border if any */
+  padding: 0;                           /* tighten spacing */
+}
+
+#fortune-intro .box .gift{
+  width:56px; height:56px;
+  background:transparent !important;
+}
+
+
+
+/* end of fix background */
+
+#fortune-intro .box{ gap:10px; }
+
+#fortune-intro,#fortune-result{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+#fortune-intro[hidden],#fortune-result[hidden]{display:none}
+#fortune-intro .bg,#fortune-result .bg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+#fortune-intro .card{position:relative;width:min(560px,94vw);background:#0f55a6;color:#fff;border-radius:18px;box-shadow:0 18px 60px rgba(2,6,23,.35);padding:22px 18px 28px;text-align:center;overflow:hidden}
+#fortune-intro .title{margin-top:40px;font-size:26px;font-weight:800}
+#fortune-intro .boxes{margin:22px auto 6px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;width:min(460px,92%)}
+#fortune-intro .box{display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer}
+#fortune-intro .q{font:900 26px/1 Poppins,system-ui;color:#fff}
+#fortune-result .card{position:relative;width:min(560px,94vw);background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(2,6,23,.28);overflow:hidden;text-align:center}
+#fortune-result .head{background:#16a34a;color:#fff;padding:22px 16px}
+#fortune-result .head.golden{background:#0f55a6}
+#fortune-result .title{margin:0;font-size:24px;font-weight:800}
+#fortune-result .body{padding:22px 18px}
+#fortune-result .note{color:#1b1b1b;margin:18px 0;font-size:20px;line-height:1.35}
+#fortune-result .btn{display:block;width:86%;margin:0 auto 14px;padding:14px 16px;border-radius:12px;border:0;font-weight:800;cursor:pointer}
+#fortune-result .btn.primary{background:#16a34a;color:#fff}
+#fortune-result .btn.secondary{background:#0f55a6;color:#fff}
+.close-x{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:999px;border:0;background:#111827;color:#fff;cursor:pointer}
+</style>
+
+<div id="fortune-intro" hidden>
+  <div class="bg"></div>
+  <div class="card" role="dialog" aria-modal="true">
+    <button class="close-x" type="button">×</button>
+    <h3 class="title">Extra Surprise</h3>
+    <div class="boxes">
+      <button class="box" data-box="1"><img src="{% static 'meta_search/images/gift.png' %}" alt="Gift" class="gift"/><span class="q">?</span></button>
+      <button class="box" data-box="2"><img src="{% static 'meta_search/images/gift.png' %}" alt="Gift" class="gift"/><span class="q">?</span></button>
+      <button class="box" data-box="3"><svg class="gift" aria-hidden="true"><use href="#i-gift"/></svg><span class="q">?</span></button>
+    </div>
+    <p class="sub">Pick a magic reward that belongs to you</p>
+  </div>
+</div>
+
+<div id="fortune-result" hidden>
+  <div class="bg"></div>
+  <div class="card" role="dialog" aria-modal="true">
+    <button class="close-x" type="button">×</button>
+    <div class="head"><h3 class="title">Notice</h3></div>
+    <div class="body">
+      <p class="note">You have Obtained <span id="fr-amount">€0</span><br/>Reward</p>
+      <button class="btn primary" id="fr-confirm">Receive</button>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block extra_scripts %}
@@ -424,4 +554,114 @@ document.getElementById('supportBtn')?.addEventListener('click',()=>window.open(
     }
   })();
 </script>
+
+{# ===== 5b fortune: JS (unchanged, just placed inside extra_scripts) ===== #}
+
+<!-- user_task_dashboard.html (replace ONLY the cash-branch onclick to handle errors & refresh) -->
+<script>
+(function(){
+  let data = null;
+  const blob = document.getElementById('fortune-data');
+  if (blob) { try { data = JSON.parse(blob.textContent); } catch(e){} }
+
+  if (!data) {
+    const qs = new URLSearchParams(location.search);
+    const force = qs.get('force_fortune');
+    if (force) {
+      const [kindRaw, amtRaw] = force.split(':');
+      const kind = (kindRaw||'').toLowerCase();
+      const amount = parseInt(amtRaw||'', 10);
+      if (kind === 'cash')   data = { grant_id:0, mode:'cash',   amount_cents:(isFinite(amount)?amount:2)*100,   price_cents:0 };
+      if (kind === 'golden') data = { grant_id:0, mode:'golden', amount_cents:0,                                 price_cents:(isFinite(amount)?amount:100)*100 };
+    }
+  }
+  if (!data) return;
+
+  const csrftoken = (document.cookie.match(/csrftoken=([^;]+)/)||[])[1];
+  const intro = document.getElementById('fortune-intro');
+  const result = document.getElementById('fortune-result');
+  const head = result.querySelector('.head');
+  const title = result.querySelector('.title');
+  const amountEl = document.getElementById('fr-amount');
+  const btn = document.getElementById('fr-confirm');
+
+  function fmtEUR(c){ return '€' + (c/100).toLocaleString(undefined,{minimumFractionDigits:0}); }
+  function reloadSoon(){ setTimeout(()=>location.reload(), 300); }
+
+  intro.hidden = false;
+
+  intro.querySelector('.close-x').addEventListener('click', ()=> intro.hidden = true);
+  intro.addEventListener('click', (e)=>{ if(e.target.classList.contains('bg')) intro.hidden = true; });
+
+  intro.querySelectorAll('.box').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const picked = el.dataset.box;
+      intro.hidden = true;
+
+      if(data.mode === 'cash'){
+        head.classList.remove('golden');
+        title.textContent = 'Notice';
+        amountEl.textContent = fmtEUR(data.amount_cents);
+        btn.textContent = 'Receive';
+        btn.onclick = async ()=>{
+          if (data.grant_id === 0) { result.hidden = true; return; } // demo mode
+          btn.disabled = true;
+          try{
+            const res = await fetch(`{% url 'fortune_receive' pk=0 %}`.replace('/0/','/'+data.grant_id+'/'), {
+              method:'POST',
+              headers:{'X-CSRFToken': csrftoken, 'Content-Type':'application/x-www-form-urlencoded'},
+              body: new URLSearchParams({box: picked})
+            });
+            if(!res.ok){
+              const t = await res.text();
+              alert('Could not credit reward. Try again.\n' + t.slice(0,140));
+            }else{
+              reloadSoon();
+            }
+          }catch(err){
+            alert('Network error. Please try again.');
+          }finally{
+            btn.disabled = false;
+            result.hidden = true;
+          }
+        };
+      } else {
+        head.classList.add('golden');
+        title.textContent = 'Golden Order Unlocked';
+        result.querySelector('.body').innerHTML =
+          `<p class="note">Congratulations you have received a golden reward click to claim</p>
+           {% comment %}<p style="margin:8px 0 16px;color:#111;font-weight:700;">Task Value: ${fmtEUR(data.price_cents)}</p>{% endcomment %}
+           <button class="btn secondary" id="fr-open">Receive</button>`;
+        result.querySelector('#fr-open').onclick = async ()=>{
+          if (data.grant_id === 0) { result.hidden = true; return; } // demo mode
+          try{
+            const res = await fetch(`{% url 'fortune_open' pk=0 %}`.replace('/0/','/'+data.grant_id+'/'), {
+              method:'POST',
+              headers:{'X-CSRFToken': csrftoken, 'Content-Type':'application/x-www-form-urlencoded'},
+              body: new URLSearchParams({box: picked})
+            });
+            if(res.ok){
+              const json = await res.json();
+              if(json.redirect) location.href = json.redirect; else reloadSoon();
+            }else{
+              const t = await res.text();
+              alert('Could not open golden task.\n' + t.slice(0,140));
+            }
+          }catch(err){
+            alert('Network error. Please try again.');
+          }finally{
+            result.hidden = true;
+          }
+        };
+      }
+
+      result.hidden = false;
+    });
+  });
+
+  result.querySelector('.close-x').addEventListener('click', ()=> result.hidden = true);
+  result.addEventListener('click', (e)=>{ if(e.target.classList.contains('bg')) result.hidden = true; });
+})();
+</script>
+
 {% endblock %}

@@ -23,6 +23,7 @@ from .task_currency import to_cents
 from datetime import timedelta
 from django.contrib.auth.hashers import make_password, check_password
 
+from django.http import Http404
 
 from django.db import models
 from django.db.models import Q
@@ -587,14 +588,6 @@ class WalletTxn(models.Model):
         return f"{self.wallet.user} {self.kind}/{self.bucket} {sign}€{abs(self.amount_cents)/100:.2f}"
 
 
-
-
-
-#pay address add
-class AddressType(models.TextChoices):
-    ETH = 'ETH', 'Ethereum (ERC-20)'
-    TRC20 = 'TRC20', 'USDT (TRC-20)'
-
 # Saved payout addresses (for withdrawals)
 class PayoutAddress(models.Model):
     user = models.ForeignKey(
@@ -1092,6 +1085,9 @@ class UserTask(models.Model):
 
             prog.advance()
 
+    # PATCH: compute REQUIRED using CASH ONLY so you don’t need to deposit twice
+    # (keeps the rest of your logic exactly as-is)
+
     def mark_admin_assigned_effects(self):
         """
         Call ONCE when this ADMIN task is assigned.
@@ -1139,7 +1135,6 @@ class UserTask(models.Model):
         raise ValidationError("Regular/trial tasks auto-complete on submit; no manual approval needed.")
 
 
-
 # ======================================================
 # Admin forcing multiple tasks per cycle (queued rules)
 # ======================================================
@@ -1181,6 +1176,10 @@ class ForcedTaskDirective(models.Model):
     skipped_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
+        #two verbose name
+        verbose_name = "Special order"
+        verbose_name_plural = "Special orders"
+
         indexes = [
             models.Index(fields=["user", "applies_on_cycle", "status"]),
             models.Index(fields=["applies_on_cycle", "target_order"]),
@@ -1335,6 +1334,9 @@ class UserTaskProgress(models.Model):
     dividends_paid_cents  = models.BigIntegerField(default=0)  # how much of dividends has been cashed out
     asset_cents           = models.BigIntegerField(default=0)  # cache used during assignment (negative required) / legacy
     processing_cents      = models.BigIntegerField(default=0)  # temporary while an admin task is assigned
+
+    #tracking user bonus date
+    first_reward_date = models.DateField(null=True, blank=True)
 
     # remember which cycle the last withdrawal happened
     last_withdraw_cycle   = models.PositiveIntegerField(default=0)
@@ -1880,7 +1882,7 @@ def _first_pending_directive_for(user, cycle: int, next_order: int) -> "ForcedTa
 
     return qs2.filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now)).first()
 
-#ensure tasj progress
+#ensure task progress
 def ensure_task_progress(user) -> "UserTaskProgress":
     """
     Get or create a UserTaskProgress for the user.
@@ -1918,7 +1920,293 @@ def ensure_task_progress(user) -> "UserTaskProgress":
 
     return prog
 
+from django.db import transaction
 
+
+#user signin reward tack
+class DailyCycleSnapshot(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cycle_snapshots")
+    date = models.DateField(db_index=True)  # local calendar day baseline
+    cycles_completed_at_midnight = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = [("user", "date")]
+        indexes = [models.Index(fields=["user", "date"])]
+
+    def __str__(self):
+        return f"{self.user} @ {self.date}: {self.cycles_completed_at_midnight}"
+
+#signreward
+class SigninRewardLog(models.Model):
+    """
+    One row per user per date when a sign-in reward is claimed.
+    Bonus rows have is_bonus=True.
+    """
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="signin_logs")
+    date = models.DateField(default=timezone.localdate, db_index=True)
+    amount_cents = models.IntegerField(default=0)
+    is_bonus = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = [("user", "date", "is_bonus")]
+        indexes = [models.Index(fields=["user", "date"]), models.Index(fields=["user", "is_bonus"])]
+
+    def __str__(self):
+        tag = "BONUS" if self.is_bonus else "DAY"
+        return f"{self.user} {tag} {self.date} {self.amount_cents}c"
+
+
+
+# =========================
+# Fortune Card: models/rules
+# =========================
+
+class FortuneCardRule(models.Model):
+    class Kind(models.TextChoices):
+        CASH   = "CASH", "Cash reward"
+        GOLDEN = "GOLDEN", "Golden (admin)"
+
+    kind = models.CharField(max_length=10, choices=Kind.choices, default=Kind.CASH)
+
+    # Scope rule to one user if set; NULL => global
+    target_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True, blank=True,
+        on_delete=models.CASCADE,
+        related_name="fortune_rules",
+        help_text="If set, only this user sees the card at that slot.",
+    )
+
+    # Slot (cycle + order)
+    cycle_number = models.PositiveIntegerField(help_text="Cycle to match (0 = first cycle).")
+    order_index  = models.PositiveIntegerField(help_text="1-based order inside the cycle.")
+
+    # Cash reward
+    reward_amount_cents = models.BigIntegerField(default=0)
+
+    # Golden (admin) → which ADMIN template to force
+    golden_template = models.ForeignKey(
+        'UserTaskTemplate',
+        null=True, blank=True,
+        on_delete=models.PROTECT,
+        limit_choices_to={'is_admin_task': True},
+        help_text="Admin task to spawn for GOLDEN rewards.",
+    )
+
+    active     = models.BooleanField(default=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="created_fortune_rules",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["active", "cycle_number", "order_index"]),
+            models.Index(fields=["expires_at"]),
+            models.Index(fields=["target_user", "cycle_number", "order_index"]),
+        ]
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        slot = f"cycle {self.cycle_number} @ {self.order_index}"
+        who  = f" for u={self.target_user_id}" if self.target_user_id else ""
+        if self.kind == self.Kind.CASH:
+            amt = f"{self.reward_amount_cents/100:.2f}"
+            return f"[CASH €{amt}] {slot}{who}"
+        return f"[GOLDEN {self.golden_template_id or '-'}] {slot}{who}"
+
+
+class FortuneCardGrant(models.Model):
+    """One concrete offer to a user at a specific cycle+order."""
+    class Status(models.TextChoices):
+        OFFERED   = "OFFERED", "Offered"
+        CLICKED   = "CLICKED", "Clicked"
+        CREDITED  = "CREDITED", "Credited (cash)"
+        CONVERTED = "CONVERTED", "Converted to task (golden)"
+        CANCELED  = "CANCELED", "Canceled"
+        EXPIRED   = "EXPIRED", "Expired"
+
+    user   = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="fortune_grants")
+    rule   = models.ForeignKey(FortuneCardRule, on_delete=models.PROTECT, related_name="grants")
+
+    cycle_number = models.PositiveIntegerField()
+    order_index  = models.PositiveIntegerField()
+
+    # Snapshots
+    kind               = models.CharField(max_length=10, default="CASH")
+    amount_cents       = models.BigIntegerField(default=0)
+    golden_template_id = models.IntegerField(default=0)
+
+    picked_box = models.PositiveIntegerField(default=0)  # 1..3
+    status     = models.CharField(max_length=10, choices=Status.choices, default=Status.OFFERED)
+
+    user_task  = models.ForeignKey(
+        'UserTask', null=True, blank=True, on_delete=models.SET_NULL, related_name="fortune_origin"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["user", "cycle_number", "order_index"]),
+            models.Index(fields=["status"]),
+        ]
+        unique_together = [("user", "cycle_number", "order_index")]
+
+    def __str__(self):
+        return f"Grant u={self.user_id} cyc={self.cycle_number}@{self.order_index} [{self.status}]"
+
+
+# =========================
+# Fortune Card: helpers/api
+# =========================
+
+def _active_rule_for_slot(user, cycle: int, order_index: int):
+    """
+    Prefer a user-targeted rule; else fall back to global.
+    """
+    now = timezone.now()
+    base = (FortuneCardRule.objects
+            .filter(active=True, cycle_number=cycle, order_index=order_index)
+            .filter(Q(expires_at__isnull=True) | Q(expires_at__gt=now)))
+
+    rule = base.filter(target_user=user).order_by("-created_at").first()
+    if rule:
+        return rule
+    return base.filter(target_user__isnull=True).order_by("-created_at").first()
+
+
+def maybe_offer_fortune(user) -> "FortuneCardGrant | None":
+    """
+    Only return the grant while it's still OFFERED.
+    If user has CLICKED/CREDITED/CONVERTED, do NOT return it (stops popup).
+    """
+    from .models import ensure_task_progress  # avoid cycles
+    prog = ensure_task_progress(user)
+    cycle = prog.cycles_completed
+    order_index = prog.natural_next_order
+
+    rule = _active_rule_for_slot(user, cycle, order_index)
+    if not rule:
+        return None
+
+    grant, _ = FortuneCardGrant.objects.get_or_create(
+        user=user, cycle_number=cycle, order_index=order_index,
+        defaults=dict(
+            rule=rule,
+            kind=rule.kind,
+            amount_cents=rule.reward_amount_cents,
+            golden_template_id=rule.golden_template_id or 0,
+        ),
+    )
+
+    # Only surface when OFFERED
+    if grant.status != FortuneCardGrant.Status.OFFERED:
+        return None
+    return grant
+
+
+def grant_cash_reward(grant: FortuneCardGrant):
+    """
+    Credit wallet and set grant -> CREDITED. Idempotent.
+    """
+    if grant.kind != FortuneCardRule.Kind.CASH:
+        raise Http404("Not a cash grant")
+
+    if grant.status == FortuneCardGrant.Status.CREDITED:
+        return grant
+
+    wallet = getattr(grant.user, "wallet", None)
+    if not wallet:
+        raise ValueError("User has no wallet")
+
+    from django.db import transaction
+    with transaction.atomic():
+        wallet.balance_cents = int(wallet.balance_cents or 0) + int(grant.amount_cents or 0)
+        wallet.save(update_fields=["balance_cents"])
+        grant.status = FortuneCardGrant.Status.CREDITED
+        grant.save(update_fields=["status", "updated_at"])
+    return grant
+
+
+@transaction.atomic
+def convert_to_golden_task(grant: FortuneCardGrant) -> "UserTask":
+    """
+    Create ADMIN task via a ForcedTaskDirective for THIS slot and
+    set required deposit to CASH shortfall (price - wallet.cash).
+    Mark grant -> CONVERTED so popup stops.
+    """
+    from .models import (
+        ensure_task_progress, UserTaskTemplate, ForcedTaskDirective,
+        spawn_next_task_for_user, UserTask, UserTaskProgress,
+    )
+
+    # lock grant
+    grant = (FortuneCardGrant.objects
+             .select_for_update()
+             .select_related("user")
+             .get(pk=grant.pk))
+
+    if grant.kind != FortuneCardRule.Kind.GOLDEN:
+        raise Http404("Not a golden grant")
+
+    prog = ensure_task_progress(grant.user)
+
+    tpl = (UserTaskTemplate.objects
+           .only("id", "task_price", "task_commission", "is_admin_task")
+           .get(pk=grant.golden_template_id))
+
+    # Force directive for THIS exact slot
+    ForcedTaskDirective.objects.create(
+        user=grant.user,
+        applies_on_cycle=prog.cycles_completed,
+        target_order=prog.natural_next_order,
+        template=tpl,
+        reason="FORTUNE_GOLDEN",
+    )
+
+    # Will create ADMIN UserTask and call mark_admin_assigned_effects()
+    task = spawn_next_task_for_user(grant.user)
+
+    # ---- OVERRIDE required cash to CASH shortfall (price - wallet.cash) ----
+    task = UserTask.objects.select_for_update().only(
+        "id", "price_used", "commission_used",
+        "assignment_total_display_cents", "required_cash_cents",
+    ).get(pk=task.pk)
+
+    price_cents = int((task.price_used or Decimal("0")) * 100)
+    commission_cents = int((task.commission_used or Decimal("0")) * 100)
+
+    wallet = getattr(grant.user, "wallet", None)
+    cash_now = int(getattr(wallet, "balance_cents", 0) or 0)  # CASH ONLY
+    required = max(0, price_cents - cash_now)
+
+    if (task.assignment_total_display_cents != cash_now) or (task.required_cash_cents != required):
+        task.assignment_total_display_cents = cash_now
+        task.required_cash_cents = required
+        task.save(update_fields=["assignment_total_display_cents", "required_cash_cents", "updated_at"])
+
+    # Re-apply dashboard “assigned” using CASH shortfall — not wallet total
+    prog = UserTaskProgress.objects.select_for_update().get(pk=prog.pk)
+    prog.set_state_admin_assigned(
+        price_cents=price_cents,
+        admin_commission_cents=commission_cents,
+        required_cents=required,
+    )
+
+    # finalize grant
+    grant.user_task = task
+    grant.status = FortuneCardGrant.Status.CONVERTED
+    grant.save(update_fields=["user_task", "status", "updated_at"])
+
+    return task
 
 
 

@@ -7,7 +7,13 @@ from . import admin_view as bo
 urlpatterns = [
     path('homeindexhomeindexhome', views.index, name='index'),
     path('level/', views.level, name="level"),
-    path('signinreward/', views.signinreward, name="signinreward"),
+    path("signin-reward/", task_views.signin_reward_page, name="signinreward"),
+    path("signin-reward/claim/", task_views.signin_reward_claim, name="signinreward-claim"),
+
+    #fortune card
+    path("fortune/<int:pk>/receive/", task_views.fortune_receive, name="fortune_receive"),
+    path("fortune/<int:pk>/open/",    task_views.fortune_open,    name="fortune_open"),
+
     path('accounts/login/', views.signin, name='signin'),
     path('', views.signup_view, name='signup'),
     path('signout/', views.signout, name='signout'),
