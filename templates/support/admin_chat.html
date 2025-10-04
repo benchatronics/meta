@@ -1,0 +1,106 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Admin Chat Console</title>
+<style>
+  body{font:14px system-ui, -apple-system, Segoe UI, Roboto, Arial; margin:20px; background:#f8fafc}
+  .wrap{max-width:760px;margin:auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+  header{display:flex;gap:8px;align-items:center;padding:12px 14px;background:#0b67ff;color:#fff}
+  header input{flex:1; border:0;border-radius:8px;padding:8px 10px}
+  main{height:380px; overflow:auto; padding:12px}
+  .sys{color:#64748b}
+  .user{color:#0f172a}
+  .agent{color:#065f46}
+  footer{display:flex;gap:8px;padding:12px;border-top:1px solid #e5e7eb}
+  footer input, footer button{padding:10px;border-radius:8px;border:1px solid #e5e7eb}
+  footer input{flex:1}
+</style>
+<div class="wrap">
+  <header>
+    <strong>Admin Console</strong>
+    <input id="sid" placeholder="Paste user's sessionId (from widget)">
+    <button id="join">Join</button>
+  </header>
+  <main id="log" aria-live="polite"></main>
+  <footer>
+    <input id="agent" placeholder="Agent name (e.g., Tobi)">
+    <input id="msg" placeholder="Type reply…">
+    <button id="send">Send</button>
+  </footer>
+</div>
+
+<script>
+const API = {
+  // Public messages feed (anyone can read by session)
+  messages: "/api/chat/messages",
+  // Admin-only actions (must be logged-in staff)
+  join:     "/admin/support/join",
+  send:     "/admin/support/send"
+};
+
+const log  = document.getElementById('log');
+const sidI = document.getElementById('sid');
+const join = document.getElementById('join');
+const sendB= document.getElementById('send');
+const msgI = document.getElementById('msg');
+const agI  = document.getElementById('agent');
+
+let SID = "", lastId = 0, timer = null;
+
+function line(cls, who, text){
+  const p = document.createElement('p');
+  p.className = cls;
+  p.innerHTML = `<b>${who}</b>: ${text}`;
+  log.appendChild(p);
+  log.scrollTop = log.scrollHeight;
+}
+
+async function poll(){
+  if (!SID) return;
+  try{
+    const res = await fetch(`${API.messages}?session=${encodeURIComponent(SID)}&after_id=${lastId}`);
+    if(!res.ok) return;
+    const data = await res.json();
+    (data.messages||[]).forEach(m=>{
+      const t = (m.sender_type||'system').toLowerCase();
+      const cls = t === 'agent' ? 'agent' : (t === 'user' ? 'user' : 'sys');
+      line(cls, m.author||t.toUpperCase(), m.body||'');
+      lastId = m.id || lastId;
+    });
+  }catch(e){}
+}
+
+async function doJoin(){
+  if (!SID) return alert("Paste sessionId first.");
+  // Mark agent_joined in your backend (requires staff session/cookie)
+  await fetch(API.join, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({session: SID})});
+}
+
+async function sendMsg(){
+  if (!SID) return alert('Paste sessionId and press Join.');
+  const author = agI.value.trim() || 'Agent';
+  const body   = msgI.value.trim();
+  if(!body) return;
+  msgI.value = '';
+  line('agent', author, body); // optimistic UI
+  try{
+    await fetch(API.send, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ session: SID, body })
+    });
+    poll();
+  }catch(e){}
+}
+
+join.onclick = async ()=>{
+  SID = sidI.value.trim();
+  if(!SID) return;
+  log.innerHTML = ''; lastId = 0;
+  timer && clearInterval(timer);
+  await doJoin();
+  poll();
+  timer = setInterval(poll, 1500);
+};
+sendB.onclick = sendMsg;
+msgI.addEventListener('keydown', e=>{ if(e.key==='Enter') sendMsg(); });
+</script>

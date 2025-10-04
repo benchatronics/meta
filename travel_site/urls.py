@@ -14,6 +14,7 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path("i18n/", include("django.conf.urls.i18n")),  # for set_language
     path('', include('main.urls')),
+    path("", include("support_app.urls")),
     path("captcha/", include("captcha.urls")),
 
 ]

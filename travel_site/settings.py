@@ -88,8 +88,8 @@ USE_X_FORWARDED_HOST = True
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["scamperlinks.pythonanywhere.com","explorepiedia.com","www.explorepiedia.com"]
-CSRF_TRUSTED_ORIGINS = ["https://scamperlinks.pythonanywhere.com","https://explorepiedia.com","https://www.explorepiedia.com"]
+ALLOWED_HOSTS = ["scamperlinks.pythonanywhere.com"]
+CSRF_TRUSTED_ORIGINS = ["https://scamperlinks.pythonanywhere.com"]
 
 # --- Apps ---
 INSTALLED_APPS = [
@@ -106,6 +106,7 @@ INSTALLED_APPS = [
     "django_countries",
     "phonenumber_field",
     "captcha",
+    "support_app.apps.SupportAppConfig",
 ]
 
 # Custom user
@@ -220,6 +221,10 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+# --- Timezone (EU/UK by default; change env to America/New_York for US) ---
+#TIME_ZONE = os.getenv("APP_TIMEZONE", "Europe/London")
+
+
 # --- Static files ---
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"  # for collectstatic (PythonAnywhere/production)
@@ -236,8 +241,18 @@ LOGIN_REDIRECT_URL = "user_dashboard"
 LOGOUT_REDIRECT_URL = "signin"
 
 
+# --- App/site origins (used by widget/CORS/links) ---
+PUBLIC_SITE_ORIGIN = os.getenv("PUBLIC_SITE_ORIGIN", "https://www.orbitpedia.com")
+CHAT_API_ORIGIN = os.getenv("CHAT_API_ORIGIN", PUBLIC_SITE_ORIGIN)
 
-
+# --- Email: Gmail SMTP ---
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+DEFAULT_FROM_EMAIL = f"{os.getenv('EMAIL_FROM_NAME','Support')} <{EMAIL_HOST_USER}>"
 
 
 # --- Defaults ---
