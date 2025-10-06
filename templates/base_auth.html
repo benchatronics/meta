@@ -4,7 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <title>{% block title %}{% trans "Auth" %}{% endblock %}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+ {% if user.is_authenticated %}
+  <meta name="op-user-ref" content="{{ user.pk }}">
+{% else %}
+  <meta name="op-user-ref" content="">
+{% endif %}
+
   <link rel="stylesheet" href="{% static 'meta_search/signup.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   {% block extra_css %}{% endblock %}
@@ -81,6 +87,576 @@
     btn.classList.toggle('showing');
   });
 </script>
+
+  {# show live chat to users only #}
+  {% if user.is_authenticated and user.is_staff or user.is_authenticated and user.is_superuser %}
+  {# see nothing #}
+  {% else %}
+<!-- Live chat support-->
+<!-- ORBITPEDIA SUPPORT WIDGET — BLUE + MOVABLE + SCOPED + CLICK-SAFE -->
+<style>
+
+/* bubble alignment */
+#op-root .op-msg{display:flex; margin:8px 0}
+#op-root .op-msg > .bubble{max-width:82%; padding:8px 10px; border-radius:12px}
+#op-root .op-msg.agent{justify-content:flex-start}
+#op-root .op-msg.agent > .bubble{background:#f1f5f9}
+#op-root .op-msg.user{justify-content:flex-end}
+#op-root .op-msg.user > .bubble{background:#e6f0ff}
+#op-root .op-msg.sys{justify-content:center}
+#op-root .op-msg.sys > .bubble{background:#f9fafb; color:#475569}
+
+  /* All rules scoped to #op-root to avoid site CSS clashes */
+  #op-root{position:fixed;z-index:9999;font-family:system-ui,Segoe UI,Roboto,Arial}
+
+  /* Theme vars */
+  #op-root{--op-blue:#2563eb; --op-blue-dark:#1e40af; --op-border:#e5e7eb;}
+
+  #op-root .op-launcher{
+    position:fixed;
+    width:56px;height:56px;border-radius:999px;border:0;cursor:pointer;
+    background:var(--op-blue);color:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);user-select:none;touch-action:none;
+  }
+  #op-root .op-launcher:hover{background:var(--op-blue-dark)}
+  #op-root .op-launcher svg{width:26px;height:26px}
+  #op-root .op-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:999px;
+    background:#ff3b30;color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px;display:none}
+
+  #op-root .op-panel{
+    position:fixed;
+    width:360px;max-width:92vw;height:520px;max-height:78vh;
+    background:#fff;border:1px solid var(--op-border);border-radius:14px;display:none;flex-direction:column;
+    box-shadow:0 18px 50px rgba(0,0,0,.25);overflow:hidden;user-select:none;touch-action:none;
+  }
+  #op-root .op-head{background:var(--op-blue);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:move}
+  #op-root .op-title{font-weight:700;font-size:14px;flex:1}
+  #op-root .op-actions{display:flex;gap:8px}
+  #op-root .op-actions button{background:transparent;border:0;color:#fff;cursor:pointer}
+
+  #op-root .op-body{flex:1;overflow:auto;background:#fafafa;padding:10px}
+  #op-root .op-msg{margin:8px 0;padding:8px 10px;border-radius:10px;background:#f1f5f9}
+  #op-root .op-msg.user{background:#eef6ff}
+
+  #op-root .op-form{display:flex;gap:8px;padding:10px;border-top:1px solid #eee;background:#fff}
+  #op-root .op-form input{flex:1;padding:10px;border:1px solid var(--op-border);border-radius:10px}
+  #op-root .op-form button{padding:10px 14px;border:0;border-radius:10px;background:var(--op-blue);color:#fff;font-weight:600;cursor:pointer}
+  #op-root .op-form button:hover{background:var(--op-blue-dark)}
+
+  #op-root .op-human{margin:8px 10px 12px;border:0;border-radius:10px;padding:8px 10px;background:#f3f4f6;cursor:pointer}
+
+  @media (max-width:480px){
+    #op-root .op-panel{width:94vw;height:70vh}
+  }
+</style>
+
+<div class="op-root" id="op-root" aria-live="polite">
+  <!-- Launcher (round bubble) -->
+  <button class="op-launcher" id="op-launcher" type="button" aria-label="Open chat">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM6 9h12v2H6V9Zm0-4h12v2H6V5Zm0 8h8v2H6v-2Z"/>
+    </svg>
+    <span class="op-badge" id="op-badge">1</span>
+  </button>
+
+  <!-- Panel (minimizable window) -->
+  <section class="op-panel" id="op-panel" role="dialog" aria-label="Orbitpedia Support" aria-modal="false">
+    <header class="op-head" id="op-drag-handle">
+      <div class="op-title">Orbitpedia Support</div>
+      <div class="op-actions">
+        <button id="op-min" type="button" title="Minimize" aria-label="Minimize">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><rect x="5" y="11" width="14" height="2"/></svg>
+        </button>
+        <button id="op-close" type="button" title="Close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4l-6.3 6.3-1.42-1.42L9.17 12 2.88 5.71 4.3 4.29l6.29 6.3 6.3-6.3Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="op-body" id="op-body"></div>
+
+    <div style="padding:8px 10px;border-top:1px solid #eee;background:#fff">
+      <input id="op-name" placeholder="Your name" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+    </div>
+
+    <form class="op-form" id="op-form">
+      <input id="op-text" placeholder="Type a message…" required>
+      <button type="submit">Send</button>
+    </form>
+
+    <button id="op-human" class="op-human" type="button">Talk to a human</button>
+  </section>
+</div>
+
+<script>
+(function(){
+  const API_BASE = "";
+  const API = {
+    start:    API_BASE + "/api/chat/start",
+    messages: API_BASE + "/api/chat/messages",
+    send:     API_BASE + "/api/chat/send",
+    request:  API_BASE + "/api/chat/agent-request",
+    heartbeat:API_BASE + "/api/chat/heartbeat",
+  };
+
+  // ---- NEW: guard if script injected twice ----
+  if (window.__OP_WIDGET_BOUND__) return;
+  window.__OP_WIDGET_BOUND__ = true;
+
+  const launcher = document.getElementById("op-launcher");
+  const badge    = document.getElementById("op-badge");
+  const panel    = document.getElementById("op-panel");
+  const handle   = document.getElementById("op-drag-handle");
+  const actions  = handle ? handle.querySelector(".op-actions") : null;
+  const minBtn   = document.getElementById("op-min");
+  const closeBtn = document.getElementById("op-close");
+  const bodyEl   = document.getElementById("op-body");
+  const formEl   = document.getElementById("op-form");
+  const nameEl   = document.getElementById("op-name");
+  const textEl   = document.getElementById("op-text");
+  const humanBtn = document.getElementById("op-human");
+
+  // status bar
+  const statusBar = document.createElement("div");
+  statusBar.style.cssText = "font:12px/1.4 system-ui;background:#f3f4f6;color:#111;padding:8px 10px;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:1";
+  statusBar.setAttribute("role","status");
+  bodyEl.parentNode.insertBefore(statusBar, bodyEl);
+  function setStatus(text, tone){
+    statusBar.textContent = text || "";
+    if (tone === "agent")      { statusBar.style.background = "#e8fff1"; statusBar.style.color="#065f46"; }
+    else if (tone === "queue") { statusBar.style.background = "#fff7ed"; statusBar.style.color="#9a3412"; }
+    else                       { statusBar.style.background = "#f3f4f6"; statusBar.style.color="#111"; }
+  }
+
+  // agent badge
+  const agentBadge = document.createElement("div");
+  agentBadge.style.cssText = "display:none;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #eee;background:#fff;position:sticky;top:36px;z-index:1";
+  const agentImg = document.createElement("img");
+  agentImg.width = 20; agentImg.height = 20;
+  agentImg.style.cssText = "width:20px;height:20px;border-radius:999px;object-fit:cover;display:inline-block";
+  const agentTxt = document.createElement("span");
+  agentTxt.style.cssText = "font:12px/1.4 system-ui;color:#111";
+  agentBadge.appendChild(agentImg);
+  agentBadge.appendChild(agentTxt);
+  statusBar.parentNode.insertBefore(agentBadge, bodyEl);
+
+  let agentPresent = false;
+  function showAgentBadge(ap){
+    if (!ap) { agentPresent = false; agentBadge.style.display = "none"; return; }
+    agentImg.src = ap.avatar || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+    agentImg.alt = (ap.nickname || "Agent");
+    agentTxt.textContent = `Connected to ${ap.nickname || 'Agent'}`;
+    agentBadge.style.display = "flex";
+    agentPresent = true;
+  }
+
+  // state
+  let sessionId = null, lastId = 0, open = (localStorage.getItem("op_open")==="1"), unread = 0;
+  let chatMode = "bot";
+  let pollTimer = null, beatTimer = null;
+
+  // ---- NEW: idempotency + optimistic state ----
+  function makeNonce(){
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return String(Date.now()) + "-" + Math.random().toString(16).slice(2);
+  }
+  const optimistic = new Map(); // nonce -> DOM row
+  let sendLock = false;
+
+  function getUserRef(){
+    if (window.OP_USER_REF && String(window.OP_USER_REF).trim()) return String(window.OP_USER_REF).trim();
+    const m = document.querySelector('meta[name="op-user-ref"]');
+    if (m && m.content && m.content.trim()) return m.content.trim();
+    if (launcher?.dataset?.userRef) return launcher.dataset.userRef.trim();
+    if (panel?.dataset?.userRef) return panel.dataset.userRef.trim();
+    return "";
+  }
+  function isRegisteredUser(){ return !!getUserRef(); }
+
+  const CURRENT_USER = (getUserRef() || "anon");
+  const SESSION_KEY  = `op_session_v2:${CURRENT_USER}`;
+  const LAST_USERREF = "op_last_userref_v2";
+  try{
+    const last = localStorage.getItem(LAST_USERREF) || "";
+    if (last !== CURRENT_USER){
+      localStorage.removeItem("op_session");
+      localStorage.setItem(LAST_USERREF, CURRENT_USER);
+    }
+  }catch{}
+
+  function saveSession(id){ try{ localStorage.setItem(SESSION_KEY, String(id)); }catch{} }
+  function loadSession(){ try{ return localStorage.getItem(SESSION_KEY) || null; }catch{ return null; } }
+  function forgetSession(){ try{ localStorage.removeItem(SESSION_KEY); }catch{} }
+
+  function vid(){
+    try{
+      const k = "op_vid";
+      let v = localStorage.getItem(k);
+      if(!v){
+        v = (crypto && crypto.randomUUID ? crypto.randomUUID()
+             : Math.random().toString(36).slice(2) + Date.now());
+        localStorage.setItem(k, v);
+      }
+      return v;
+    }catch(e){
+      return (crypto && crypto.randomUUID ? crypto.randomUUID()
+              : Math.random().toString(36).slice(2) + Date.now());
+    }
+  }
+
+  function niceErrorText(raw, fallback){
+    try{
+      const txt = String(raw || "");
+      const stripped = txt.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+      if (!stripped) return fallback;
+      const head = stripped.slice(0, 240);
+      return head + (stripped.length > 240 ? " …" : "");
+    }catch(e){ return fallback; }
+  }
+
+  const vw = ()=> window.innerWidth, vh = ()=> window.innerHeight;
+  const clamp = (v,min,max)=> Math.min(Math.max(v,min),max);
+  const setPos = (el,x,y)=> { el.style.left=x+"px"; el.style.top=y+"px"; };
+  const savePos = (k,x,y)=> localStorage.setItem(k, JSON.stringify({x,y}));
+  const readPos = (k)=> { try{ return JSON.parse(localStorage.getItem(k)||"null"); }catch{ return null; } };
+  function loadPositions(){
+    const lp = readPos("op_launcher_pos") || { x: vw()-72, y: vh()-72 };
+    setPos(launcher, clamp(lp.x,8,vw()-64), clamp(lp.y,8,vh()-64));
+    const pw = Math.min(360, Math.floor(vw()*0.92));
+    const ph = Math.min(520, Math.floor(vh()*0.78));
+    const pp = readPos("op_panel_pos") || { x: vw()-pw-24, y: vh()-ph-96 };
+    setPos(panel, clamp(pp.x,8,vw()-pw-8), clamp(pp.y,8,vh()-ph-8));
+  }
+  window.addEventListener("resize", loadPositions);
+
+  function makeDraggable(dragHandle, targetEl, storageKey, onTap){
+    if (!dragHandle || !targetEl) return;
+    let sx=0, sy=0, ox=0, oy=0, dragging=false, moved=false, startTime=0;
+    const CLICK_MOVE_PX = 4, CLICK_TIME_MS = 300;
+    const isHeaderActionClick = (ev)=>{
+      if (!actions) return false;
+      const t = ('touches' in ev) ? ev.touches[0].target : ev.target;
+      return !!(t && t.closest && t.closest('#op-drag-handle .op-actions'));
+    };
+    const start = (e)=>{
+      if (dragHandle === handle && isHeaderActionClick(e)) return;
+      const pt=('touches' in e)? e.touches[0] : e;
+      sx = pt.clientX; sy = pt.clientY;
+      const rect = targetEl.getBoundingClientRect(); ox = rect.left; oy = rect.top;
+      dragging=true; moved=false; startTime=Date.now();
+      e.preventDefault();
+    };
+    const move = (e)=>{
+      if(!dragging) return;
+      const pt=('touches' in e)? e.touches[0] : e;
+      const dx = pt.clientX - sx, dy = pt.clientY - sy;
+      if (Math.abs(dx) > CLICK_MOVE_PX || Math.abs(dy) > CLICK_MOVE_PX) moved = true;
+      const maxX = vw() - targetEl.offsetWidth - 8;
+      const maxY = vh() - targetEl.offsetHeight - 8;
+      setPos(targetEl, clamp(ox+dx,8,maxX), clamp(oy+dy,8,maxY));
+      e.preventDefault();
+    };
+    const end = ()=>{
+      if(!dragging) return;
+      dragging=false;
+      const rect = targetEl.getBoundingClientRect();
+      savePos(storageKey, rect.left, rect.top);
+      const took = Date.now() - startTime;
+      if (!moved && took <= CLICK_TIME_MS && typeof onTap === 'function') onTap();
+    };
+    dragHandle.addEventListener("mousedown", start, {passive:false});
+    window.addEventListener("mousemove", move, {passive:false});
+    window.addEventListener("mouseup", end, {passive:true});
+    dragHandle.addEventListener("touchstart", start, {passive:false});
+    window.addEventListener("touchmove", move, {passive:false});
+    window.addEventListener("touchend", end, {passive:true});
+  }
+
+  function updateBadge(){ badge.style.display = unread>0 && !open ? "inline-block" : "none"; badge.textContent = String(unread); }
+  function esc(s){return (s||"").replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+
+  // Base renderer (used by both normal + reconcile paths)
+  function buildBubble(sender, author, text){
+    const wrap = document.createElement("div");
+    let roleClass = 'sys';
+    if (sender === 'user') roleClass = 'user';
+    else if (sender === 'agent') roleClass = 'agent';
+    wrap.className = "op-msg " + roleClass;
+
+    let prefix = "";
+    if (sender === 'system' || sender === 'bot') {
+      prefix = `<b>${esc(sender === 'bot' ? 'Assistant' : 'System')}</b>: `;
+    } else if (sender === 'agent') {
+      prefix = "";
+    } else if (sender === 'user') {
+      if (!isRegisteredUser()) {
+        const label = author?.trim() ? author.trim() : "Guest";
+        prefix = `<b>${esc(label)}</b>: `;
+      }
+    }
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.innerHTML = `${prefix}${esc(text || "")}`;
+    wrap.appendChild(bubble);
+    return wrap;
+  }
+
+  // ---- NEW: optimistic add (tags data-nonce and stores ref) ----
+  function addMsgOptimistic(author, text, nonce){
+    const el = buildBubble('user', author, text);
+    if (nonce) el.dataset.nonce = nonce;
+    bodyEl.appendChild(el);
+    if (open){ bodyEl.scrollTop = bodyEl.scrollHeight; } else { unread++; updateBadge(); }
+    if (nonce) optimistic.set(nonce, el);
+  }
+
+  // ---- NEW: reconcile-aware render of server messages ----
+  function renderMsg(m){
+    const sender = (m.sender_type || 'system').toLowerCase();
+    // If this server message matches an optimistic one we showed, upgrade it in-place
+    if (m.client_nonce && optimistic.has(m.client_nonce)){
+      const el = optimistic.get(m.client_nonce);
+      optimistic.delete(m.client_nonce);
+      if (el && el.isConnected){
+        // Rebuild bubble content to ensure parity with server (handles prefixes)
+        const patched = buildBubble(sender, m.author || 'System', m.body || '');
+        el.className = patched.className;               // align role class
+        el.querySelector('.bubble').innerHTML = patched.querySelector('.bubble').innerHTML;
+        el.dataset.nonce = '';                          // consumed
+        // Do NOT increment unread here
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+        return;
+      }
+    }
+
+    // Normal path (non-optimistic or other senders)
+    const el = buildBubble(sender, m.author || 'System', m.body || '');
+    bodyEl.appendChild(el);
+    if (open){ bodyEl.scrollTop = bodyEl.scrollHeight; } else { unread++; updateBadge(); }
+  }
+
+  // focus trap utilities (unchanged)
+  let lastFocused = null;
+  function focusables(container){
+    return Array.from(container.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'))
+      .filter(el => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+  }
+  function enableTrap(){
+    if (!lastFocused) lastFocused = document.activeElement;
+    const els = focusables(panel);
+    if (els.length) els[0].focus({preventScroll:true});
+    panel._onKeyTrap && panel.removeEventListener('keydown', panel._onKeyTrap);
+    panel._onKeyTrap = function(e){
+      if (e.key !== 'Tab') return;
+      const items = focusables(panel);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length-1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    };
+    panel.addEventListener('keydown', panel._onKeyTrap);
+  }
+  function disableTrap(){
+    panel._onKeyTrap && panel.removeEventListener('keydown', panel._onKeyTrap);
+    panel._onKeyTrap = null;
+    if (launcher && document.contains(launcher)) launcher.focus({preventScroll:true});
+    lastFocused = null;
+  }
+
+  function showPanel(){ panel.style.display="flex"; open=true; try{ localStorage.setItem("op_open","1"); }catch{}; unread=0; updateBadge(); setTimeout(()=>bodyEl.scrollTop=bodyEl.scrollHeight,0); enableTrap(); }
+  function hidePanel(){ panel.style.display="none"; open=false; try{ localStorage.setItem("op_open","0"); }catch{}; disableTrap(); }
+  function togglePanel(){ open ? hidePanel() : showPanel(); }
+
+  function botAutoReply(userText){
+    if (chatMode !== "bot") return;
+    const t = userText.trim().toLowerCase();
+    if (/^(hi|hello|hey|good (morning|afternoon|evening))\b/.test(t)){
+      renderMsg({sender_type:'system', author:'Assistant', body:'Hi! 👋 A human can join if you tap “Talk to human.” Meanwhile, tell me your issue and I’ll log it.'});
+    } else {
+      renderMsg({sender_type:'system', author:'Assistant', body:'Noted ✅ — tap “Talk to human” to connect to an agent, or keep chatting here and I’ll keep recording your details.'});
+    }
+  }
+
+  async function start(){
+    try{
+      const userRef = getUserRef();
+      const res = await fetch(API.start,{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ visitor_id: vid(), user_ref: userRef }) });
+      if(!res.ok){
+        let raw = ''; try { raw = await res.text(); } catch {}
+        renderMsg({sender_type:'system', author:'System', body: niceErrorText(raw, 'Could not start chat. Please try again later.')});
+        return;
+      }
+      const data = await res.json();
+      sessionId = data.session.id;
+      saveSession(sessionId);
+      setStatus('You are chatting with our assistant. Tap “Talk to human” to connect.', 'bot');
+
+      pull();
+      pollTimer && clearInterval(pollTimer);
+      beatTimer && clearInterval(beatTimer);
+      pollTimer = setInterval(pull, 2000);
+      beatTimer = setInterval(beat, 30000);
+    }catch(e){ renderMsg({sender_type:'system', author:'System', body:'Network error starting chat.'}); }
+  }
+
+  async function resumeOrStart(){
+    const sid = loadSession();
+    if (sid){
+      sessionId = sid;
+      const ok = await probeSession();
+      if (ok){
+        pull();
+        pollTimer && clearInterval(pollTimer);
+        beatTimer && clearInterval(beatTimer);
+        pollTimer = setInterval(pull, 2000);
+        beatTimer = setInterval(beat, 30000);
+        return;
+      } else { forgetSession(); sessionId = null; }
+    }
+    await start();
+  }
+
+  async function probeSession(){
+    try{
+      const r = await fetch(`${API.messages}?session=${encodeURIComponent(sessionId)}&after_id=0&t=${Date.now()}`);
+      if(!r.ok) return false;
+      const data = await r.json();
+      if (data.status === 'resolved' || data.status === 'closed') return false;
+
+      if (data.agent_profile) showAgentBadge(data.agent_profile); else showAgentBadge(null);
+
+      setStatus(
+        data.agent_joined ? 'Connected to an agent. You can chat live now.'
+                          : (data.status === 'waiting_agent' ? 'Waiting for an agent… You can keep typing; they will see your messages.'
+                                                             : 'You are chatting with our assistant. Tap “Talk to human” to connect.'),
+        data.agent_joined ? 'agent' : (data.status === 'waiting_agent' ? 'queue' : 'bot')
+      );
+
+      (data.messages||[]).forEach(m=>{ renderMsg(m); lastId = m.id || lastId; });
+      return true;
+    }catch(e){ return false; }
+  }
+
+  function inferAgentFromPayload(payload){
+    if (payload && (payload.agent_joined === true)) return true;
+    if (Array.isArray(payload?.messages)){
+      return payload.messages.some(m=> (m.sender_type||'').toLowerCase() === 'agent');
+    }
+    return false;
+  }
+
+  async function pull(){
+    if(!sessionId) return;
+    try{
+      const res = await fetch(`${API.messages}?session=${encodeURIComponent(sessionId)}&after_id=${lastId}&t=${Date.now()}`);
+      if(!res.ok) return;
+      const data = await res.json();
+
+      const st = (data && data.status) || "";
+      if (st === "resolved" || st === "closed"){ forgetSession(); }
+
+      if (data.agent_profile) showAgentBadge(data.agent_profile); else showAgentBadge(null);
+
+      const agentNow = inferAgentFromPayload(data);
+      if (agentNow && chatMode !== 'agent'){
+        chatMode = 'agent';
+        setStatus('Connected to an agent. You can chat live now.', 'agent');
+      }
+
+      (data.messages||[]).forEach(m=>{ renderMsg(m); lastId = m.id || lastId; });
+    }catch(e){}
+  }
+
+  async function beat(){
+    if(!sessionId) return;
+    try{ await fetch(API.heartbeat,{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({session:sessionId}) }); }catch(e){}
+  }
+
+  async function send(e){
+    e && e.preventDefault();
+    if(!textEl || !textEl.value.trim()) return;
+    if(!sessionId){ renderMsg({sender_type:'system', author:'System', body:'Starting chat… please try again.'}); return; }
+
+    const author = (nameEl && nameEl.value.trim()) || "Guest";
+    const body   = textEl.value.trim();
+
+    // ---- NEW: optimistic send with nonce ----
+    const nonce = makeNonce();
+    addMsgOptimistic(author, body, nonce);
+    textEl.value="";
+    botAutoReply(body);
+
+    if (sendLock) return;
+    sendLock = true;
+    try{
+      await fetch(API.send,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({session:sessionId, author, body, client_nonce: nonce})
+      });
+      // Do NOT call pull() here; interval poll will reconcile
+    }catch(e){
+      // On hard failure, remove optimistic bubble (optional UX)
+      const el = optimistic.get(nonce);
+      if (el && el.isConnected) el.remove();
+      optimistic.delete(nonce);
+    }finally{
+      sendLock = false;
+    }
+  }
+
+  async function requestHuman(){
+    if(!sessionId){ renderMsg({sender_type:'system', author:'System', body:'Starting chat… please try again.'}); return; }
+    chatMode = 'queue';
+    setStatus('Waiting for an agent… You can keep typing; they will see your messages.', 'queue');
+    renderMsg({sender_type:'system', author:'System', body:'An agent has been notified. Please hold on.'});
+    try{
+      const res = await fetch(API.request,{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({session:sessionId}) });
+      if(res.ok){ pull(); }
+      else {
+        let raw = ''; try { raw = await res.text(); } catch {}
+        renderMsg({sender_type:'system', author:'System', body:niceErrorText(raw, 'Could not request a human right now.')});
+        chatMode = 'bot';
+        setStatus('You are chatting with our assistant. Tap “Talk to human” to connect.', 'bot');
+      }
+    }catch(e){
+      chatMode = 'bot';
+      setStatus('Network error. You can continue with the assistant and try again.', 'bot');
+      renderMsg({sender_type:'system', author:'System', body:'Network error requesting human.'});
+    }
+  }
+
+  function makeReady(){
+    makeDraggable(launcher, launcher, "op_launcher_pos", togglePanel);
+    makeDraggable(handle,   panel,    "op_panel_pos",  null);
+    if (minBtn)  minBtn.addEventListener("click", (e)=>{ e.stopPropagation(); hidePanel(); });
+    if (closeBtn) closeBtn.addEventListener("click",(e)=>{ e.stopPropagation(); hidePanel(); });
+    if (formEl)   formEl.addEventListener("submit", send);
+    if (humanBtn) humanBtn.addEventListener("click", requestHuman);
+    document.addEventListener("pointerdown", (e)=>{ if (!open) return; if (panel.contains(e.target) || launcher.contains(e.target)) return; hidePanel(); });
+    document.addEventListener("keydown", (e)=>{ if (e.key === "Escape" && open) hidePanel(); });
+    loadPositions();
+    open ? showPanel() : hidePanel();
+  }
+
+  makeReady();
+  resumeOrStart();
+
+  window.opWidget = {
+    open: showPanel,
+    minimize: hidePanel,
+    close: hidePanel,
+    toggle: togglePanel,
+    state: () => open ? 'open' : 'closed',
+    sessionId: () => sessionId,
+    mode: () => chatMode
+  };
+})();
+</script>
+
+<!--end of livesupport-->
+{% endif %}
 {% endblock %}
 </body>
 </html>

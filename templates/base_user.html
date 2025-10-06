@@ -368,6 +368,17 @@
 <!-- Live chat support-->
 <!-- ORBITPEDIA SUPPORT WIDGET — BLUE + MOVABLE + SCOPED + CLICK-SAFE -->
 <style>
+
+/* bubble alignment */
+#op-root .op-msg{display:flex; margin:8px 0}
+#op-root .op-msg > .bubble{max-width:82%; padding:8px 10px; border-radius:12px}
+#op-root .op-msg.agent{justify-content:flex-start}
+#op-root .op-msg.agent > .bubble{background:#f1f5f9}
+#op-root .op-msg.user{justify-content:flex-end}
+#op-root .op-msg.user > .bubble{background:#e6f0ff}
+#op-root .op-msg.sys{justify-content:center}
+#op-root .op-msg.sys > .bubble{background:#f9fafb; color:#475569}
+
   /* All rules scoped to #op-root to avoid site CSS clashes */
   #op-root{position:fixed;z-index:9999;font-family:system-ui,Segoe UI,Roboto,Arial}
 
@@ -452,7 +463,6 @@
 
 <script>
 (function(){
-  // ====== Config ======
   const API_BASE = "";
   const API = {
     start:    API_BASE + "/api/chat/start",
@@ -462,7 +472,10 @@
     heartbeat:API_BASE + "/api/chat/heartbeat",
   };
 
-  // ====== Elements ======
+  // ---- NEW: guard if script injected twice ----
+  if (window.__OP_WIDGET_BOUND__) return;
+  window.__OP_WIDGET_BOUND__ = true;
+
   const launcher = document.getElementById("op-launcher");
   const badge    = document.getElementById("op-badge");
   const panel    = document.getElementById("op-panel");
@@ -476,58 +489,82 @@
   const textEl   = document.getElementById("op-text");
   const humanBtn = document.getElementById("op-human");
 
-  // ====== Status banner ======
+  // status bar
   const statusBar = document.createElement("div");
   statusBar.style.cssText = "font:12px/1.4 system-ui;background:#f3f4f6;color:#111;padding:8px 10px;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:1";
   statusBar.setAttribute("role","status");
   bodyEl.parentNode.insertBefore(statusBar, bodyEl);
 
-  function setStatus(text, tone){
-    statusBar.textContent = text || "";
+  // ---- UPDATED: presence-aware status ----
+  function setStatus(text, tone, presence){
+    // presence: "online" | "away" | "offline" | undefined
+    const suffix = presence ? ` (${presence})` : "";
+    statusBar.textContent = (text || "") + suffix;
     if (tone === "agent")      { statusBar.style.background = "#e8fff1"; statusBar.style.color="#065f46"; }
     else if (tone === "queue") { statusBar.style.background = "#fff7ed"; statusBar.style.color="#9a3412"; }
     else                       { statusBar.style.background = "#f3f4f6"; statusBar.style.color="#111"; }
   }
 
-  // ====== State ======
+  // agent badge
+  const agentBadge = document.createElement("div");
+  agentBadge.style.cssText = "display:none;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #eee;background:#fff;position:sticky;top:36px;z-index:1";
+  const agentImg = document.createElement("img");
+  agentImg.width = 20; agentImg.height = 20;
+  agentImg.style.cssText = "width:20px;height:20px;border-radius:999px;object-fit:cover;display:inline-block";
+  const agentTxt = document.createElement("span");
+  agentTxt.style.cssText = "font:12px/1.4 system-ui;color:#111";
+  agentBadge.appendChild(agentImg);
+  agentBadge.appendChild(agentTxt);
+  statusBar.parentNode.insertBefore(agentBadge, bodyEl);
+
+  let agentPresent = false;
+  function showAgentBadge(ap){
+    if (!ap) { agentPresent = false; agentBadge.style.display = "none"; return; }
+    agentImg.src = ap.avatar || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+    agentImg.alt = (ap.nickname || "Agent");
+    agentTxt.textContent = `Connected to ${ap.nickname || 'Agent'}`;
+    agentBadge.style.display = "flex";
+    agentPresent = true;
+  }
+
+  // state
   let sessionId = null, lastId = 0, open = (localStorage.getItem("op_open")==="1"), unread = 0;
   let chatMode = "bot";
   let pollTimer = null, beatTimer = null;
 
-  // ====== user_ref (from meta/JS data) ======
+  // ---- NEW: idempotency + optimistic state ----
+  function makeNonce(){
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return String(Date.now()) + "-" + Math.random().toString(16).slice(2);
+  }
+  const optimistic = new Map(); // nonce -> DOM row
+  let sendLock = false;
+
   function getUserRef(){
     if (window.OP_USER_REF && String(window.OP_USER_REF).trim()) return String(window.OP_USER_REF).trim();
     const m = document.querySelector('meta[name="op-user-ref"]');
     if (m && m.content && m.content.trim()) return m.content.trim();
-    if (launcher && launcher.dataset && launcher.dataset.userRef) return launcher.dataset.userRef.trim();
-    if (panel && panel.dataset && panel.dataset.userRef) return panel.dataset.userRef.trim();
-    return ""; // anonymous
+    if (launcher?.dataset?.userRef) return launcher.dataset.userRef.trim();
+    if (panel?.dataset?.userRef) return panel.dataset.userRef.trim();
+    return "";
   }
+  function isRegisteredUser(){ return !!getUserRef(); }
 
-  // ====== Per-user storage keys (prevents cross-user leakage) ======
   const CURRENT_USER = (getUserRef() || "anon");
   const SESSION_KEY  = `op_session_v2:${CURRENT_USER}`;
   const LAST_USERREF = "op_last_userref_v2";
-
   try{
     const last = localStorage.getItem(LAST_USERREF) || "";
     if (last !== CURRENT_USER){
-      localStorage.removeItem("op_session"); // cleanup very old key
+      localStorage.removeItem("op_session");
       localStorage.setItem(LAST_USERREF, CURRENT_USER);
     }
   }catch{}
 
-  function saveSession(id){
-    try{ localStorage.setItem(SESSION_KEY, String(id)); }catch{}
-  }
-  function loadSession(){
-    try{ return localStorage.getItem(SESSION_KEY) || null; }catch{ return null; }
-  }
-  function forgetSession(){
-    try{ localStorage.removeItem(SESSION_KEY); }catch{}
-  }
+  function saveSession(id){ try{ localStorage.setItem(SESSION_KEY, String(id)); }catch{} }
+  function loadSession(){ try{ return localStorage.getItem(SESSION_KEY) || null; }catch{ return null; } }
+  function forgetSession(){ try{ localStorage.removeItem(SESSION_KEY); }catch{} }
 
-  // ====== visitor_id (safe even if storage blocked) ======
   function vid(){
     try{
       const k = "op_vid";
@@ -544,27 +581,21 @@
     }
   }
 
-  // ====== Error text cleaner (prevents raw HTML dump) ======
   function niceErrorText(raw, fallback){
     try{
       const txt = String(raw || "");
-      // remove tags, collapse whitespace, truncate
       const stripped = txt.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
       if (!stripped) return fallback;
       const head = stripped.slice(0, 240);
       return head + (stripped.length > 240 ? " …" : "");
-    }catch(e){
-      return fallback;
-    }
+    }catch(e){ return fallback; }
   }
 
-  // ====== Position helpers ======
   const vw = ()=> window.innerWidth, vh = ()=> window.innerHeight;
   const clamp = (v,min,max)=> Math.min(Math.max(v,min),max);
   const setPos = (el,x,y)=> { el.style.left=x+"px"; el.style.top=y+"px"; };
   const savePos = (k,x,y)=> localStorage.setItem(k, JSON.stringify({x,y}));
   const readPos = (k)=> { try{ return JSON.parse(localStorage.getItem(k)||"null"); }catch{ return null; } };
-
   function loadPositions(){
     const lp = readPos("op_launcher_pos") || { x: vw()-72, y: vh()-72 };
     setPos(launcher, clamp(lp.x,8,vw()-64), clamp(lp.y,8,vh()-64));
@@ -575,18 +606,15 @@
   }
   window.addEventListener("resize", loadPositions);
 
-  // ====== Drag ======
   function makeDraggable(dragHandle, targetEl, storageKey, onTap){
     if (!dragHandle || !targetEl) return;
     let sx=0, sy=0, ox=0, oy=0, dragging=false, moved=false, startTime=0;
     const CLICK_MOVE_PX = 4, CLICK_TIME_MS = 300;
-
     const isHeaderActionClick = (ev)=>{
       if (!actions) return false;
       const t = ('touches' in ev) ? ev.touches[0].target : ev.target;
       return !!(t && t.closest && t.closest('#op-drag-handle .op-actions'));
     };
-
     const start = (e)=>{
       if (dragHandle === handle && isHeaderActionClick(e)) return;
       const pt=('touches' in e)? e.touches[0] : e;
@@ -613,7 +641,6 @@
       const took = Date.now() - startTime;
       if (!moved && took <= CLICK_TIME_MS && typeof onTap === 'function') onTap();
     };
-
     dragHandle.addEventListener("mousedown", start, {passive:false});
     window.addEventListener("mousemove", move, {passive:false});
     window.addEventListener("mouseup", end, {passive:true});
@@ -622,18 +649,71 @@
     window.addEventListener("touchend", end, {passive:true});
   }
 
-  // ====== UI helpers ======
   function updateBadge(){ badge.style.display = unread>0 && !open ? "inline-block" : "none"; badge.textContent = String(unread); }
   function esc(s){return (s||"").replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
-  function addMsg(sender, author, text){
-    const wrap=document.createElement("div");
-    wrap.className="op-msg"+(sender==='user'?' user':'');
-    wrap.innerHTML=`<div><b>${esc(author)}</b>: ${esc(text)}</div>`;
-    bodyEl.appendChild(wrap);
-    if(open){ bodyEl.scrollTop=bodyEl.scrollHeight; } else { unread++; updateBadge(); }
+
+  // Base renderer (used by both normal + reconcile paths)
+  function buildBubble(sender, author, text){
+    const wrap = document.createElement("div");
+    let roleClass = 'sys';
+    if (sender === 'user') roleClass = 'user';
+    else if (sender === 'agent') roleClass = 'agent';
+    wrap.className = "op-msg " + roleClass;
+
+    let prefix = "";
+    if (sender === 'system' || sender === 'bot') {
+      prefix = `<b>${esc(sender === 'bot' ? 'Assistant' : 'System')}</b>: `;
+    } else if (sender === 'agent') {
+      prefix = "";
+    } else if (sender === 'user') {
+      if (!isRegisteredUser()) {
+        const label = author?.trim() ? author.trim() : "Guest";
+        prefix = `<b>${esc(label)}</b>: `;
+      }
+    }
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.innerHTML = `${prefix}${esc(text || "")}`;
+    wrap.appendChild(bubble);
+    return wrap;
   }
 
-  // ====== Focus trap ======
+  // ---- NEW: optimistic add (tags data-nonce and stores ref) ----
+  function addMsgOptimistic(author, text, nonce){
+    const el = buildBubble('user', author, text);
+    if (nonce) el.dataset.nonce = nonce;
+    bodyEl.appendChild(el);
+    if (open){ bodyEl.scrollTop = bodyEl.scrollHeight; } else { unread++; updateBadge(); }
+    if (nonce) optimistic.set(nonce, el);
+  }
+
+  // ---- NEW: reconcile-aware render of server messages ----
+  function renderMsg(m){
+    const sender = (m.sender_type || 'system').toLowerCase();
+    // If this server message matches an optimistic one we showed, upgrade it in-place
+    if (m.client_nonce && optimistic.has(m.client_nonce)){
+      const el = optimistic.get(m.client_nonce);
+      optimistic.delete(m.client_nonce);
+      if (el && el.isConnected){
+        // Rebuild bubble content to ensure parity with server (handles prefixes)
+        const patched = buildBubble(sender, m.author || 'System', m.body || '');
+        el.className = patched.className;               // align role class
+        el.querySelector('.bubble').innerHTML = patched.querySelector('.bubble').innerHTML;
+        el.dataset.nonce = '';                          // consumed
+        // Do NOT increment unread here
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+        return;
+      }
+    }
+
+    // Normal path (non-optimistic or other senders)
+    const el = buildBubble(sender, m.author || 'System', m.body || '');
+    bodyEl.appendChild(el);
+    if (open){ bodyEl.scrollTop = bodyEl.scrollHeight; } else { unread++; updateBadge(); }
+  }
+
+  // focus trap utilities (unchanged)
   let lastFocused = null;
   function focusables(container){
     return Array.from(container.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'))
@@ -661,48 +741,27 @@
     lastFocused = null;
   }
 
-  // ====== Panel open/close/minimize ======
-  function showPanel(){
-    panel.style.display="flex";
-    open=true;
-    try{ localStorage.setItem("op_open","1"); }catch{}
-    unread=0; updateBadge();
-    setTimeout(()=>bodyEl.scrollTop=bodyEl.scrollHeight,0);
-    enableTrap();
-  }
-  function hidePanel(){
-    panel.style.display="none";
-    open=false;
-    try{ localStorage.setItem("op_open","0"); }catch{}
-    disableTrap();
-  }
+  function showPanel(){ panel.style.display="flex"; open=true; try{ localStorage.setItem("op_open","1"); }catch{}; unread=0; updateBadge(); setTimeout(()=>bodyEl.scrollTop=bodyEl.scrollHeight,0); enableTrap(); }
+  function hidePanel(){ panel.style.display="none"; open=false; try{ localStorage.setItem("op_open","0"); }catch{}; disableTrap(); }
   function togglePanel(){ open ? hidePanel() : showPanel(); }
 
-  // ====== Simple bot autoresponder (pre-agent) ======
   function botAutoReply(userText){
     if (chatMode !== "bot") return;
     const t = userText.trim().toLowerCase();
     if (/^(hi|hello|hey|good (morning|afternoon|evening))\b/.test(t)){
-      addMsg('system','Assistant','Hi! 👋 A human can join if you tap “Talk to human.” Meanwhile, tell me your issue and I’ll log it.');
+      renderMsg({sender_type:'system', author:'Assistant', body:'Hi! 👋 A human can join if you tap “Talk to human.” Meanwhile, tell me your issue and I’ll log it.'});
     } else {
-      addMsg('system','Assistant','Noted ✅ — tap “Talk to human” to connect to an agent, or keep chatting here and I’ll keep recording your details.');
+      renderMsg({sender_type:'system', author:'Assistant', body:'Noted ✅ — tap “Talk to human” to connect to an agent, or keep chatting here and I’ll keep recording your details.'});
     }
   }
 
-  // ====== API: start / resume / poll ======
   async function start(){
     try{
       const userRef = getUserRef();
-      const res = await fetch(API.start,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({ visitor_id: vid(), user_ref: userRef })
-      });
+      const res = await fetch(API.start,{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ visitor_id: vid(), user_ref: userRef }) });
       if(!res.ok){
-        let raw = '';
-        try { raw = await res.text(); } catch {}
-        const msg = niceErrorText(raw, 'Could not start chat. Please try again later.');
-        addMsg('system','System', msg);
+        let raw = ''; try { raw = await res.text(); } catch {}
+        renderMsg({sender_type:'system', author:'System', body: niceErrorText(raw, 'Could not start chat. Please try again later.')});
         return;
       }
       const data = await res.json();
@@ -715,9 +774,7 @@
       beatTimer && clearInterval(beatTimer);
       pollTimer = setInterval(pull, 2000);
       beatTimer = setInterval(beat, 30000);
-    }catch(e){
-      addMsg('system','System','Network error starting chat.');
-    }
+    }catch(e){ renderMsg({sender_type:'system', author:'System', body:'Network error starting chat.'}); }
   }
 
   async function resumeOrStart(){
@@ -732,12 +789,35 @@
         pollTimer = setInterval(pull, 2000);
         beatTimer = setInterval(beat, 30000);
         return;
-      }else{
-        forgetSession();
-        sessionId = null;
-      }
+      } else { forgetSession(); sessionId = null; }
     }
     await start();
+  }
+
+  // ---- NEW: helper to set button state and status by payload
+  function applyPresenceUI(data){
+    const presence = (data && data.agent_status) || null; // "online"|"away"|"offline"|null
+    const joined   = !!(data && data.agent_joined);
+    const st       = (data && data.status) || "";
+
+    // Badge
+    if (data && data.agent_profile) showAgentBadge(data.agent_profile); else showAgentBadge(null);
+
+    // Status text
+    if (joined){
+      setStatus('Connected to an agent. You can chat live now.', 'agent', presence || undefined);
+    } else if (st === 'waiting_agent'){
+      setStatus('Waiting for an agent… You can keep typing; they will see your messages.', 'queue', presence || undefined);
+    } else {
+      setStatus('You are chatting with our assistant. Tap “Talk to human” to connect.', 'bot', presence || undefined);
+    }
+
+    // Button enable/disable
+    const canRequest = !!(data && Object.prototype.hasOwnProperty.call(data, 'can_request_human') ? data.can_request_human : (st !== 'waiting_agent' && st !== 'agent_joined' && st !== 'resolved' && st !== 'closed'));
+    if (humanBtn){
+      humanBtn.disabled = !canRequest;
+      humanBtn.setAttribute('aria-disabled', String(!canRequest));
+    }
   }
 
   async function probeSession(){
@@ -747,18 +827,9 @@
       const data = await r.json();
       if (data.status === 'resolved' || data.status === 'closed') return false;
 
-      nudgeFromStatus(data);
-      setStatus(
-        data.agent_joined ? 'Connected to an agent. You can chat live now.'
-                          : (data.status === 'waiting_agent' ? 'Waiting for an agent… You can keep typing; they will see your messages.'
-                                                             : 'You are chatting with our assistant. Tap “Talk to human” to connect.'),
-        data.agent_joined ? 'agent' : (data.status === 'waiting_agent' ? 'queue' : 'bot')
-      );
+      applyPresenceUI(data);
 
-      (data.messages||[]).forEach(m=>{
-        addMsg(m.sender_type || 'system', m.author || 'System', m.body || '');
-        lastId = m.id || lastId;
-      });
+      (data.messages||[]).forEach(m=>{ renderMsg(m); lastId = m.id || lastId; });
       return true;
     }catch(e){ return false; }
   }
@@ -770,13 +841,6 @@
     }
     return false;
   }
-  function nudgeFromStatus(payload){
-    const st = (payload && payload.status) || "";
-    if (st === "waiting_agent" && chatMode !== "agent"){
-      chatMode = "queue";
-      setStatus('Waiting for an agent… You can keep typing; they will see your messages.', 'queue');
-    }
-  }
 
   async function pull(){
     if(!sessionId) return;
@@ -786,114 +850,97 @@
       const data = await res.json();
 
       const st = (data && data.status) || "";
-      if (st === "resolved" || st === "closed"){
-        forgetSession();
-      }
+      if (st === "resolved" || st === "closed"){ forgetSession(); }
 
-      nudgeFromStatus(data);
+      // Presence + button state
+      applyPresenceUI(data);
 
+      // Mode switch if/when agent joins
       const agentNow = inferAgentFromPayload(data);
       if (agentNow && chatMode !== 'agent'){
         chatMode = 'agent';
-        setStatus('Connected to an agent. You can chat live now.', 'agent');
+        setStatus('Connected to an agent. You can chat live now.', 'agent', data.agent_status || undefined);
       }
 
-      (data.messages||[]).forEach(m=>{
-        addMsg(m.sender_type || 'system', m.author || 'System', m.body || '');
-        lastId = m.id || lastId;
-      });
+      (data.messages||[]).forEach(m=>{ renderMsg(m); lastId = m.id || lastId; });
     }catch(e){}
   }
 
   async function beat(){
     if(!sessionId) return;
-    try{
-      await fetch(API.heartbeat,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({session:sessionId})
-      });
-    }catch(e){}
+    try{ await fetch(API.heartbeat,{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({session:sessionId}) }); }catch(e){}
   }
 
-  // ====== Send / Request human ======
   async function send(e){
     e && e.preventDefault();
     if(!textEl || !textEl.value.trim()) return;
+    if(!sessionId){ renderMsg({sender_type:'system', author:'System', body:'Starting chat… please try again.'}); return; }
+
     const author = (nameEl && nameEl.value.trim()) || "Guest";
     const body   = textEl.value.trim();
 
-    addMsg('user', author, body);
+    // ---- NEW: optimistic send with nonce ----
+    const nonce = makeNonce();
+    addMsgOptimistic(author, body, nonce);
     textEl.value="";
     botAutoReply(body);
 
+    if (sendLock) return;
+    sendLock = true;
     try{
       await fetch(API.send,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({session:sessionId,author,body})
+        body:JSON.stringify({session:sessionId, author, body, client_nonce: nonce})
       });
-      pull();
-    }catch(e){}
+      // Do NOT call pull() here; interval poll will reconcile
+    }catch(e){
+      // On hard failure, remove optimistic bubble (optional UX)
+      const el = optimistic.get(nonce);
+      if (el && el.isConnected) el.remove();
+      optimistic.delete(nonce);
+    }finally{
+      sendLock = false;
+    }
   }
 
   async function requestHuman(){
-    if(!sessionId){ addMsg('system','System','Starting chat… please try again.'); return; }
+    if(!sessionId){ renderMsg({sender_type:'system', author:'System', body:'Starting chat… please try again.'}); return; }
     chatMode = 'queue';
     setStatus('Waiting for an agent… You can keep typing; they will see your messages.', 'queue');
-    addMsg('system','System','An agent has been notified. Please hold on.');
+    renderMsg({sender_type:'system', author:'System', body:'An agent has been notified. Please hold on.'});
     try{
-      const res = await fetch(API.request,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({session:sessionId})
-      });
-      if(res.ok){
-        pull();
-      } else {
-        let raw = '';
-        try { raw = await res.text(); } catch {}
-        const msg = niceErrorText(raw, 'Could not request a human right now.');
-        addMsg('system','System', msg);
+      const res = await fetch(API.request,{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({session:sessionId}) });
+      if(res.ok){ pull(); }
+      else {
+        let raw = ''; try { raw = await res.text(); } catch {}
+        renderMsg({sender_type:'system', author:'System', body:niceErrorText(raw, 'Could not request a human right now.')});
         chatMode = 'bot';
         setStatus('You are chatting with our assistant. Tap “Talk to human” to connect.', 'bot');
       }
     }catch(e){
       chatMode = 'bot';
       setStatus('Network error. You can continue with the assistant and try again.', 'bot');
-      addMsg('system','System','Network error requesting human.');
+      renderMsg({sender_type:'system', author:'System', body:'Network error requesting human.'});
     }
   }
 
-  // ====== Wire up ======
   function makeReady(){
     makeDraggable(launcher, launcher, "op_launcher_pos", togglePanel);
     makeDraggable(handle,   panel,    "op_panel_pos",  null);
-
     if (minBtn)  minBtn.addEventListener("click", (e)=>{ e.stopPropagation(); hidePanel(); });
     if (closeBtn) closeBtn.addEventListener("click",(e)=>{ e.stopPropagation(); hidePanel(); });
-
     if (formEl)   formEl.addEventListener("submit", send);
     if (humanBtn) humanBtn.addEventListener("click", requestHuman);
-
-    document.addEventListener("pointerdown", (e)=>{
-      if (!open) return;
-      if (panel.contains(e.target) || launcher.contains(e.target)) return;
-      hidePanel();
-    });
-    document.addEventListener("keydown", (e)=>{
-      if (e.key === "Escape" && open) hidePanel();
-    });
-
+    document.addEventListener("pointerdown", (e)=>{ if (!open) return; if (panel.contains(e.target) || launcher.contains(e.target)) return; hidePanel(); });
+    document.addEventListener("keydown", (e)=>{ if (e.key === "Escape" && open) hidePanel(); });
     loadPositions();
     open ? showPanel() : hidePanel();
   }
 
-  // init
   makeReady();
   resumeOrStart();
 
-  // Public API
   window.opWidget = {
     open: showPanel,
     minimize: hidePanel,

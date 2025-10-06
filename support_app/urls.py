@@ -12,6 +12,13 @@ urlpatterns = [
     path("api/chat/heartbeat", pub.heartbeat),
     path("api/chat/end", pub.end),
 
+    #delete chat messages
+    path("support/delete-message", adm.delete_message, name="support_delete_message"),
+    path("support/delete-chat", adm.delete_chat, name="support_delete_chat"),
+
+    path("support/leave", adm.leave, name="support_leave"),
+
+
     # Support (staff-only pages & JSON) — lives at /support/...
     path("support/queue/", adm.queue_page, name="support_queue"),
     path("support/dashboard/", adm.dashboard_page, name="support_dashboard"),

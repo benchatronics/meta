@@ -88,7 +88,6 @@ class ChatSession(models.Model):
     def __str__(self):
         return f"Session #{self.id} ({self.status})"
 
-
 class Message(models.Model):
     SENDER = [("user", "User"), ("bot", "Bot"), ("agent", "Agent"), ("system", "System")]
 
@@ -104,24 +103,57 @@ class Message(models.Model):
         choices=[("public", "Public"), ("internal_note", "Internal note")],
     )
 
+    # NEW: client-provided idempotency token to prevent dupes (per session)
+    client_nonce = models.CharField(max_length=64, null=True, blank=True)
+
     class Meta:
         ordering = ["id"]
         indexes = [
             models.Index(fields=["session", "id"]),
+            # NEW: speeds up dedupe checks by (session, client_nonce)
+            models.Index(fields=["session", "client_nonce"]),
+        ]
+        constraints = [
+            # NEW: enforce uniqueness of nonce within a session (only when nonce is not NULL)
+            models.UniqueConstraint(
+                fields=["session", "client_nonce"],
+                name="uniq_session_client_nonce",
+                condition=~models.Q(client_nonce=None),
+            ),
         ]
 
+from django.db import models
 
 class Event(models.Model):
-    KIND = [
-        ("agent_requested", "Agent requested"),
-        ("agent_joined", "Agent joined"),
-        ("bot_suppressed", "Bot suppressed"),
-        ("resolved", "Resolved"),
-        ("reopened", "Reopened"),
-        ("email_sent", "Email sent"),
-        ("telegram_sent", "Telegram sent"),
-    ]
-    session = models.ForeignKey(ChatSession, on_delete=models.CASCADE, related_name="events")
-    kind = models.CharField(max_length=40, choices=KIND)
+    class Kind(models.TextChoices):
+        AGENT_REQUESTED = "agent_requested", "Agent requested"
+        AGENT_JOINED    = "agent_joined",    "Agent joined"
+        AGENT_LEFT      = "agent_left",      "Agent left"          # ✅ new
+        BOT_SUPPRESSED  = "bot_suppressed",  "Bot suppressed"
+        RESOLVED        = "resolved",        "Resolved"
+        REOPENED        = "reopened",        "Reopened"
+        EMAIL_SENT      = "email_sent",      "Email sent"
+        TELEGRAM_SENT   = "telegram_sent",   "Telegram sent"
+
+    session = models.ForeignKey(
+        ChatSession,
+        on_delete=models.CASCADE,
+        related_name="events",
+    )
+    kind = models.CharField(
+        max_length=40,
+        choices=Kind.choices,
+    )
     payload = models.JSONField(default=dict, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]  # events naturally in timeline order
+        indexes = [
+            models.Index(fields=["session", "id"]),
+            models.Index(fields=["session", "created_at"]),
+            models.Index(fields=["kind", "created_at"]),
+        ]
+
+    def __str__(self):
+        return f"Event({self.kind}) • session #{self.session_id}"

@@ -137,21 +137,34 @@ def start(request):
 @require_http_methods(["GET"])
 def messages(request):
     session_id = request.GET.get("session")
+
+    # after_id (safe int)
     try:
         after_id = int(request.GET.get("after_id") or 0)
     except (TypeError, ValueError):
         after_id = 0
 
+    # optional limit (cap to avoid huge payloads)
+    try:
+        limit = int(request.GET.get("limit") or 200)
+    except (TypeError, ValueError):
+        limit = 200
+    limit = max(1, min(limit, 500))  # 1..500
+
     if not session_id:
         return HttpResponseBadRequest("missing session")
 
     try:
-        sess = ChatSession.objects.get(id=session_id)
+        sess = ChatSession.objects.select_related("agent__user").get(id=session_id)
     except ChatSession.DoesNotExist:
         return HttpResponseBadRequest("invalid session")
 
-    # Explicit order; cap results
-    qs = sess.messages.filter(id__gt=after_id).order_by("id")[:200]
+    # Public API: only public messages; strictly after the cursor; oldest-first
+    qs = (
+        sess.messages
+        .filter(visibility="public", id__gt=after_id)
+        .order_by("id")[:limit]
+    )
 
     data = [
         {
@@ -160,18 +173,45 @@ def messages(request):
             "author": m.author,
             "body": m.body,
             "created_at": m.created_at.isoformat(),
+            "client_nonce": getattr(m, "client_nonce", None),  # for optimistic reconcile (may be absent)
         }
         for m in qs
     ]
 
-    return JsonResponse(
-        {
-            "messages": data,
-            "status": sess.status,
-            "agent": sess.agent.display_nickname if sess.agent else None,
-            "agent_joined": bool(sess.status == "agent_joined"),
+    # Agent profile + presence for UI
+    agent_profile = None
+    agent_nickname = None
+    agent_joined = (sess.status == "agent_joined")
+    agent_status = None  # "online" | "away" | "offline" | None
+
+    if sess.agent:
+        au = getattr(sess.agent, "user", None)
+        avatar = getattr(au, "display_avatar", None) if au is not None else None
+        agent_profile = {
+            "id": sess.agent.id,
+            "nickname": sess.agent.display_nickname,
+            "email": sess.agent.email,
+            "avatar": avatar,
         }
-    )
+        agent_nickname = sess.agent.display_nickname
+        agent_status = getattr(sess.agent, "status", None)  # stored on Agent model
+
+    payload = {
+        "messages": data,
+        "status": sess.status,
+        "agent": agent_nickname,
+        "agent_joined": agent_joined,
+        "agent_profile": agent_profile,
+        # Presence helpers for the public widget:
+        "agent_status": agent_status,               # "online" | "away" | "offline" (or None)
+        "can_request_human": sess.status not in ("waiting_agent", "agent_joined", "resolved", "closed"),
+    }
+
+    resp = JsonResponse(payload)
+    # Avoid caches holding onto poll responses
+    resp["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    resp["Pragma"] = "no-cache"
+    return resp
 
 
 @csrf_exempt
@@ -182,9 +222,10 @@ def send(request):
     except Exception:
         return HttpResponseBadRequest("invalid JSON")
 
-    session_id = data.get("session")
-    author = (str(data.get("author") or "Guest")).strip()[:80]
-    body = (str(data.get("body") or "")).strip()
+    session_id   = data.get("session")
+    author       = (str(data.get("author") or "Guest")).strip()[:80]
+    body         = (str(data.get("body") or "")).strip()
+    client_nonce = (str(data.get("client_nonce") or "")).strip()[:64]  # NEW
 
     if not session_id or not body:
         return HttpResponseBadRequest("missing fields")
@@ -194,24 +235,39 @@ def send(request):
     except ChatSession.DoesNotExist:
         return HttpResponseBadRequest("invalid session")
 
-    Message.objects.create(session=sess, sender_type="user", author=author, body=body)
+    # Dedupe: if this nonce already stored for this session, do not create a second row
+    if client_nonce:
+        exists = Message.objects.filter(session=sess, client_nonce=client_nonce).exists()
+        if exists:
+            return JsonResponse({"ok": True, "dedup": True})
+
+    # Create the user's message (default to public visibility)
+    msg = Message.objects.create(
+        session=sess,
+        sender_type="user",
+        author=author,
+        body=body,
+        visibility="public",
+        client_nonce=client_nonce or None,  # NEW
+    )
 
     # If a human is requested or joined, suppress bot
     if sess.status in ("waiting_agent", "agent_joined"):
-        return JsonResponse({"ok": True})
+        return JsonResponse({"ok": True, "id": msg.id})
 
     if bot.BOT_ENABLED:
         reply, solved = bot.answer(body, context={"topic": sess.topic})
-        Message.objects.create(session=sess, sender_type="bot", author=bot.BOT_NAME, body=reply)
+        Message.objects.create(session=sess, sender_type="bot", author=bot.BOT_NAME, body=reply, visibility="public")
         if not solved:
             Message.objects.create(
                 session=sess,
                 sender_type="bot",
                 author=bot.BOT_NAME,
                 body='If you’d like to talk to a human, click “Talk to a human”.',
+                visibility="public",
             )
 
-    return JsonResponse({"ok": True})
+    return JsonResponse({"ok": True, "id": msg.id})
 
 
 @csrf_exempt
